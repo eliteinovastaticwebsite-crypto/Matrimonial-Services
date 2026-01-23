@@ -1,5 +1,6 @@
 // Home.jsx
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 // Import banner images from assets
 import banner1 from '../assets/banner1.png';
@@ -7,7 +8,8 @@ import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
 import banner5 from '../assets/banner5.png';
-
+import photography from '../assets/photography.jpg';
+import catering from '../assets/catering.jpg';
 const Home = () => {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
 
@@ -160,6 +162,133 @@ const Home = () => {
           </div>
         </div>
       </main>
+
+{/* Categories Section */}
+      <section className="container mx-auto px-4 py-12">
+        <h2 className="text-3xl font-bold text-center text-red-800 mb-12">
+          Our Categories
+        </h2>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 max-w-6xl mx-auto">
+          {/* Photography */}
+          <div className="flex flex-col items-center">
+  <Link to="/photography" className="block group">
+    <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+      <div className="w-full h-full rounded-full overflow-hidden">
+        <img 
+          src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=400&h=400&fit=crop" 
+          alt="Photography" 
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+        />
+      </div>
+    </div>
+  </Link>
+  <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Photography</h3>
+  <p className="text-sm text-gray-600">products</p>
+</div>
+
+          {/* Catering & Foods */}
+          <div className="flex flex-col items-center">
+            <a href="/catering" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=400&fit=crop" 
+                    alt="Catering & Foods" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Catering & Foods</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+
+          {/* Mandapam & Wedding Halls */}
+          <div className="flex flex-col items-center">
+            <a href="/mandapam" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1519167758481-83f29da8c43e?w=400&h=400&fit=crop" 
+                    alt="Mandapam & Wedding Halls" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Mandapam & Wedding Halls</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+
+          {/* Decorations */}
+          <div className="flex flex-col items-center">
+            <a href="/decorations" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1464347744102-11db6282f854?w=400&h=400&fit=crop" 
+                    alt="Decorations" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Decorations</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+
+          {/* Entertainment & Events */}
+          <div className="flex flex-col items-center">
+            <a href="/entertainment" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400&h=400&fit=crop" 
+                    alt="Entertainment & Events" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Entertainment & Events</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+
+          {/* Invitation & Gifts */}
+          <div className="flex flex-col items-center">
+            <a href="/invitation" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=400&fit=crop" 
+                    alt="Invitation & Gifts" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Invitation & Gifts</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+
+          {/* Bridal and Groom Styling */}
+          <div className="flex flex-col items-center">
+            <a href="/styling" className="block group">
+              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img 
+                    src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&h=400&fit=crop" 
+                    alt="Bridal & Groom Styling" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              </div>
+            </a>
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Bridal & Groom Styling</h3>
+            <p className="text-sm text-gray-600">products</p>
+          </div>
+        </div>
+      </section>
 
       {/* Features Section */}
       <section className="container mx-auto px-4 py-12">

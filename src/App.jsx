@@ -13,6 +13,8 @@ import HelpSupport from './pages/HelpSupport';
 import AboutUs from './pages/AboutUs';
 import Register from './pages/Register'; // You'll need to create this */}
 
+import Photography from './pages/Photography'; 
+
 function App() {
   return (
     <Router>
@@ -20,6 +22,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/photography" element={<Photography />} /> {/* Add this route */}
          {/*} <Route path="/customer-login" element={<CustomerLogin />} />
           <Route path="/vendor-login" element={<VendorLogin />} />
           <Route path="/office-panel" element={<OfficePanel />} />
