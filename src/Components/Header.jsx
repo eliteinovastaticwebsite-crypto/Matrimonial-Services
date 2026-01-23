@@ -1,6 +1,6 @@
-// Header.jsx - Updated with React Router
+// Header.jsx - Updated with React Router and Pacifico Font
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom'; // Add this import
+import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Header = () => {
@@ -25,17 +25,17 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-50 shadow-lg w-full">
       {/* Top decorative strip */}
-      <div className="h-2 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 w-full"></div>
+      <div className="h-1 bg-gradient-to-r from-red-600 via-yellow-500 to-red-600 w-full"></div>
       
       <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top Row: Logo, Heading, and Register Now Button */}
-          <div className="flex items-center justify-between py-4 border-b border-yellow-500/30">
+          <div className="flex items-center justify-between py-3 border-b border-yellow-500/30">
             {/* Logo and Heading - LEFT */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3">
               {/* Logo with Link to Home */}
-              <Link to="/" className="flex items-center space-x-4">
-                <div className="flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg border-3 border-yellow-300 overflow-hidden flex-shrink-0">
+              <Link to="/" className="flex items-center space-x-3">
+                <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg border-3 border-yellow-300 overflow-hidden flex-shrink-0">
                   <img 
                     src={logo} 
                     alt="Eliteinova Logo" 
@@ -49,10 +49,10 @@ const Header = () => {
                 
                 {/* Heading and Subheading */}
                 <div className="text-yellow-50">
-                  <h1 className="font-bold text-xl sm:text-2xl md:text-3xl leading-tight">
+                  <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Matrimonial Services
                   </h1>
-                  <p className="text-yellow-200 text-sm md:text-lg mt-1">
+                  <p className="text-yellow-200 text-xs md:text-sm" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Tech Pvt Ltd
                   </p>
                 </div>
@@ -62,7 +62,7 @@ const Header = () => {
             {/* Register Now Button - RIGHT */}
             <div className="hidden lg:block">
               <Link to="/register">
-                <button className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold text-lg rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105">
+                <button className="px-5 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold text-base rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105">
                   REGISTER NOW
                 </button>
               </Link>
@@ -73,7 +73,7 @@ const Header = () => {
               className="lg:hidden text-yellow-50 p-2 rounded-lg hover:bg-red-800 flex-shrink-0"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 {isMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
@@ -84,7 +84,7 @@ const Header = () => {
           </div>
 
           {/* Navigation Menu Row */}
-          <div className="py-3">
+          <div className="py-1">
             {/* Desktop Navigation - Full Width */}
             <nav className="hidden lg:flex items-center justify-center space-x-2">
               {menuItems.map((item) => (
@@ -92,7 +92,7 @@ const Header = () => {
                   key={item.name}
                   to={item.path}
                   onClick={handleMenuClick}
-                  className={`px-4 py-2 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center ${
+                  className={`px-3 py-1 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center ${
                     activeMenu === (item.path.substring(1) || 'HOME')
                       ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 shadow-md'
                       : 'text-yellow-50 hover:bg-red-800 hover:text-yellow-200'

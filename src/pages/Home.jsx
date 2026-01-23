@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from 'react';
 
 // Import banner images from assets
-import banner1 from '../assets/banner1.jpg';
-import banner2 from '../assets/banner1.jpg';
-import banner3 from '../assets/banner1.jpg';
-import banner4 from '../assets/banner1.jpg';
+import banner1 from '../assets/banner1.png';
+import banner2 from '../assets/banner2.png';
+import banner3 from '../assets/banner3.png';
+import banner4 from '../assets/banner4.png';
+import banner5 from '../assets/banner5.png';
 
 const Home = () => {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
@@ -35,7 +36,19 @@ const Home = () => {
       image: banner4,
       title: "Premium Membership Benefits",
       subtitle: "Exclusive features for serious seekers"
-    }
+    },
+    {
+      id: 5,
+      image: banner5,
+      title: "Premium Membership Benefits",
+      subtitle: "Exclusive features for serious seekers"
+    },
+    /*{
+      id: 4,
+      image: banner4,
+      title: "Premium Membership Benefits",
+      subtitle: "Exclusive features for serious seekers"
+    }*/
   ];
 
   // Auto change banner every 3 seconds
@@ -57,7 +70,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* Banner Section - Clean version without overlay text */}
-      <section className="relative h-[500px] overflow-hidden">
+      <section className="relative h-[600px] overflow-hidden">
         {/* Banner Images */}
         {banners.map((banner, index) => (
           <div
@@ -69,7 +82,7 @@ const Home = () => {
             <img
               src={banner.image}
               alt={banner.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-fill"
               onError={(e) => {
                 e.target.onerror = null;
                 // Fallback if image fails to load
