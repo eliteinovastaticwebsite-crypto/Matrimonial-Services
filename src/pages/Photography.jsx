@@ -5,6 +5,8 @@ import videography from '../assets/videography.jpg';
 import event from '../assets/event.jpg';
 import weddingphoto from '../assets/weddingphoto.jpg';
 import fashion from '../assets/fashion.jpg';
+import commercial from '../assets/commercial.jpg';
+import religious from '../assets/religious.jpg';
 
 const Photography = () => {
   return (
@@ -121,7 +123,7 @@ const Photography = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=400&fit=crop"
+                    src={commercial}
                     alt="Album Designing" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -137,7 +139,7 @@ const Photography = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=400&h=400&fit=crop"
+                    src={religious}
                     alt="Live Wedding Streaming" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
