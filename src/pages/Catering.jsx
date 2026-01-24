@@ -4,6 +4,9 @@ import specialcatering from '../assets/specialcatering.jpg';
 import snackscatering from '../assets/snackscatering.jpg';
 import buffet from '../assets/buffet.jpg';
 import livecounter from '../assets/livecounter.jpg';
+import nonveg from '../assets/nonveg.jpg';
+import veg from '../assets/veg.jpg';
+import multicuisine from '../assets/multicuisine.jpg';
 
 const Catering = () => {
   return (
@@ -52,7 +55,7 @@ const Catering = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400&h=400&fit=crop"
+                    src={veg}
                     alt="Vegetarian Catering" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -68,7 +71,7 @@ const Catering = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=400&fit=crop"
+                    src={nonveg}
                     alt="Non-Vegetarian Catering" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -84,7 +87,7 @@ const Catering = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1490818387583-1baba5e638af?w=400&h=400&fit=crop"
+                    src={multicuisine}
                     alt="Multi-Cuisine Catering" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />

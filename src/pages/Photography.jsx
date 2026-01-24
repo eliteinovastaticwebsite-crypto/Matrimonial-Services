@@ -3,6 +3,8 @@ import album from '../assets/album.jpg';
 import kids from '../assets/kids.jpg';
 import videography from '../assets/videography.jpg';
 import event from '../assets/event.jpg';
+import weddingphoto from '../assets/weddingphoto.jpg';
+import fashion from '../assets/fashion.jpg';
 
 const Photography = () => {
   return (
@@ -35,7 +37,7 @@ const Photography = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=400&h=400&fit=crop"
+                    src={weddingphoto}
                     alt="Wedding Photography" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -81,18 +83,19 @@ const Photography = () => {
 
           {/* Pre Wedding Shoot */}
           <div className="flex flex-col items-center">
-            <a href="/photography/pre-wedding-shoot" className="block group">
+            <a href="/photography/live-streaming" className="block group">
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&h=400&fit=crop"
-                    alt="Pre Wedding Shoot" 
+                    src={album}
+                    alt="Live Wedding Streaming" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </a>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Portrait Photography
+            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Editing & Album Services
+
 </h3>
           </div>
 
@@ -102,7 +105,7 @@ const Photography = () => {
               <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
-                    src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?w=400&h=400&fit=crop"
+                    src={fashion}
                     alt="Post Wedding Shoot" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -160,22 +163,6 @@ const Photography = () => {
 </h3>
           </div>
 
-          <div className="flex flex-col items-center">
-            <a href="/photography/live-streaming" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={album}
-                    alt="Live Wedding Streaming" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </a>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Editing & Album Services
-
-</h3>
-          </div>
         </div>
 
         
