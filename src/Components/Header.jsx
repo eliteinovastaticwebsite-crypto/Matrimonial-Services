@@ -1,16 +1,31 @@
 // Header.jsx - Updated with React Router and Pacifico Font
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCustomerDropdownOpen, setIsCustomerDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const location = useLocation();
   const activeMenu = location.pathname.substring(1) || 'HOME';
 
   const menuItems = [
     { name: 'HOME', path: '/' },
-    { name: 'CUSTOMER LOGIN', path: '/customer-login' },
+    { 
+      name: 'CUSTOMER LOGIN', 
+      path: '/customer-login',
+      hasDropdown: true,
+      submenus: [
+        { name: 'Photography', path: '/photography' },
+        { name: 'Catering & Foods', path: '/catering' },
+        { name: 'Mandapam & Wedding Halls', path: '/wedding-halls' },
+        { name: 'Decorations', path: '/decorations' },
+        { name: 'Entertainment & Events', path: '/entertainment' },
+        { name: 'Invitation & Gifts', path: '/invitation' },
+        { name: 'Bridal & Groom Styling', path: '/styling' },
+      ]
+    },
     { name: 'VENDOR LOGIN', path: '/vendor-login' },
     { name: 'OFFICE PANNEL', path: '/office-panel' },
     { name: 'ADMIN PANNEL', path: '/admin-panel' },
@@ -18,8 +33,27 @@ const Header = () => {
     { name: 'ABOUT US', path: '/about-us' },
   ];
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsCustomerDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   const handleMenuClick = () => {
     setIsMenuOpen(false);
+    setIsCustomerDropdownOpen(false);
+  };
+
+  const handleSubmenuClick = () => {
+    setIsCustomerDropdownOpen(false);
   };
 
   return (
@@ -88,18 +122,64 @@ const Header = () => {
             {/* Desktop Navigation - Full Width */}
             <nav className="hidden lg:flex items-center justify-center space-x-2">
               {menuItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.path}
-                  onClick={handleMenuClick}
-                  className={`px-3 py-1 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center ${
-                    activeMenu === (item.path.substring(1) || 'HOME')
-                      ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 shadow-md'
-                      : 'text-yellow-50 hover:bg-red-800 hover:text-yellow-200'
-                  }`}
-                >
-                  {item.name}
-                </Link>
+                <div key={item.name} className="relative">
+                  {item.hasDropdown ? (
+                    <div
+                      ref={dropdownRef}
+                      className="relative"
+                      onMouseEnter={() => setIsCustomerDropdownOpen(true)}
+                      onMouseLeave={() => setIsCustomerDropdownOpen(false)}
+                    >
+                      <button
+                        onClick={() => setIsCustomerDropdownOpen(!isCustomerDropdownOpen)}
+                        className={`px-3 py-1 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center flex items-center gap-1 ${
+                          activeMenu === (item.path.substring(1) || 'HOME')
+                            ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 shadow-md'
+                            : 'text-yellow-50 hover:bg-red-800 hover:text-yellow-200'
+                        }`}
+                      >
+                        {item.name}
+                        <svg 
+                          className={`w-4 h-4 transition-transform duration-300 ${isCustomerDropdownOpen ? 'rotate-180' : ''}`} 
+                          fill="none" 
+                          stroke="currentColor" 
+                          viewBox="0 0 24 24" 
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      
+                      {/* Dropdown Menu - Milder Colors */}
+                      {isCustomerDropdownOpen && (
+                        <div className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-50">
+                          {item.submenus.map((submenu) => (
+                            <Link
+                              key={submenu.name}
+                              to={submenu.path}
+                              onClick={handleSubmenuClick}
+                              className="block px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-300 font-medium"
+                            >
+                              {submenu.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      onClick={handleMenuClick}
+                      className={`px-3 py-1 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center ${
+                        activeMenu === (item.path.substring(1) || 'HOME')
+                          ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 shadow-md'
+                          : 'text-yellow-50 hover:bg-red-800 hover:text-yellow-200'
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  )}
+                </div>
               ))}
             </nav>
 
@@ -108,18 +188,59 @@ const Header = () => {
               <div className="lg:hidden bg-gradient-to-b from-red-700 to-red-800 rounded-lg shadow-xl border border-yellow-500/30 p-4">
                 <div className="flex flex-col space-y-2">
                   {menuItems.map((item) => (
-                    <Link
-                      key={item.name}
-                      to={item.path}
-                      onClick={handleMenuClick}
-                      className={`px-4 py-3 rounded text-center transition-all duration-300 font-medium ${
-                        activeMenu === (item.path.substring(1) || 'HOME')
-                          ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900'
-                          : 'text-yellow-100 hover:bg-red-600'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
+                    <div key={item.name}>
+                      {item.hasDropdown ? (
+                        <div>
+                          <button
+                            onClick={() => setIsCustomerDropdownOpen(!isCustomerDropdownOpen)}
+                            className={`w-full px-4 py-3 rounded text-center transition-all duration-300 font-medium flex items-center justify-between ${
+                              activeMenu === (item.path.substring(1) || 'HOME')
+                                ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900'
+                                : 'text-yellow-100 hover:bg-red-600'
+                            }`}
+                          >
+                            {item.name}
+                            <svg 
+                              className={`w-4 h-4 transition-transform duration-300 ${isCustomerDropdownOpen ? 'rotate-180' : ''}`} 
+                              fill="none" 
+                              stroke="currentColor" 
+                              viewBox="0 0 24 24" 
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                            </svg>
+                          </button>
+                          
+                          {/* Mobile Dropdown - Milder Colors */}
+                          {isCustomerDropdownOpen && (
+                            <div className="mt-2 ml-4 space-y-2 bg-white rounded-lg p-2 shadow-lg">
+                              {item.submenus.map((submenu) => (
+                                <Link
+                                  key={submenu.name}
+                                  to={submenu.path}
+                                  onClick={handleMenuClick}
+                                  className="block px-4 py-2 text-gray-700 hover:bg-red-50 hover:text-red-700 rounded transition-all duration-300 font-medium"
+                                >
+                                  {submenu.name}
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <Link
+                          to={item.path}
+                          onClick={handleMenuClick}
+                          className={`px-4 py-3 rounded text-center transition-all duration-300 font-medium block ${
+                            activeMenu === (item.path.substring(1) || 'HOME')
+                              ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900'
+                              : 'text-yellow-100 hover:bg-red-600'
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      )}
+                    </div>
                   ))}
                   
                   {/* Mobile Register Now Button */}
