@@ -431,35 +431,39 @@ const Photography = () => {
         </button>
       </section>
 
-      {/* Main Categories Navigation - IMPROVED WITH THIN BORDER */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-red-600 to-red-700 shadow-xl py-8">
-        <div className="container mx-auto px-4">
-          <h3 className="text-white text-2xl font-bold mb-6 text-center">
-            Browse All Wedding Services
-          </h3>
-          <div className="flex items-center justify-center overflow-x-auto pb-3 scrollbar-hide space-x-10">
-            {mainCategories.map((category) => (
-              <Link
-                key={category.name}
-                to={category.path}
-                className="flex flex-col items-center transition-all duration-300 hover:scale-110 flex-shrink-0 min-w-[100px]"
-              >
-                <div className="w-28 h-28 rounded-full border border-yellow-300 overflow-hidden bg-white mb-4 shadow-xl">
-                  <img 
-                    src={category.image}
-                    alt={category.name} 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <span className="text-base font-bold text-white text-center leading-tight px-1">
-                  {category.name}
-                </span>
-              </Link>
-            ))}
+   {/* Main Categories Navigation - REDUCED BORDER SIZE */}
+<div className="sticky top-0 z-50 bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-xl py-8">
+  <div className="container mx-auto px-4">
+    <h3 className="text-white text-2xl font-bold mb-6 text-center">
+      Browse All Wedding Services
+    </h3>
+    <div className="flex items-center justify-center overflow-x-auto pb-3 scrollbar-hide space-x-10">
+      {mainCategories.map((category) => (
+        <Link
+          key={category.name}
+          to={category.path}
+          className="flex flex-col items-center transition-all duration-300 flex-shrink-0 min-w-[120px] group"
+        >
+          {/* Reduced border size - from border-[8px] to border-4 */}
+          <div className="w-32 h-32 rounded-full border-4 border-white p-1 shadow-xl mb-4 transition-all duration-300 group-hover:border-yellow-300 group-hover:shadow-2xl">
+            <div className="w-full h-full rounded-full overflow-hidden">
+              <img 
+                src={category.image}
+                alt={category.name} 
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+              />
+            </div>
           </div>
-        </div>
-      </div>
-
+          
+          {/* Category Name */}
+          <span className="text-base font-bold text-white text-center leading-tight px-1 transition-all duration-300 group-hover:text-yellow-300 group-hover:font-extrabold">
+            {category.name}
+          </span>
+        </Link>
+      ))}
+    </div>
+  </div>
+</div>
       {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col lg:flex-row gap-8">
