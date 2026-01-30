@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowLeft, Camera, Video, Upload, Globe, Banknote, X } from "lucide-react";
+import { ArrowLeft, Camera, Video, Upload, Globe, Banknote, X, Pen } from "lucide-react";
 
 // Form steps based on the details provided
 const steps = [
@@ -43,6 +43,8 @@ const locations = [
 
 export default function VendorRegistrationModal({ isOpen, onClose }) {
   const [step, setStep] = useState(0);
+  const [isDrawing, setIsDrawing] = useState(false);
+  const canvasRef = React.useRef(null);
   const [formData, setFormData] = useState({
     // Step 1
     vendorName: "",
@@ -135,6 +137,51 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
     });
   };
 
+  const startDrawing = (e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    setIsDrawing(true);
+  };
+
+  const draw = (e) => {
+    if (!isDrawing) return;
+    
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX || e.touches[0].clientX) - rect.left;
+    const y = (e.clientY || e.touches[0].clientY) - rect.top;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = '#991B1B';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+  };
+
+  const stopDrawing = () => {
+    setIsDrawing(false);
+  };
+
+  const clearSignature = () => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
     alert("Registration submitted successfully!");
@@ -143,15 +190,15 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-md lg:max-w-lg rounded-xl shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] lg:max-h-[90vh] border border-red-200">
+      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-md rounded-xl shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] border border-red-200">
 
-        {/* Top Bar - Compact width */}
-        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-xl flex items-center gap-3 px-4 py-3 sm:py-3 shrink-0">
+        {/* Top Bar */}
+        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-xl flex items-center gap-3 px-4 py-3 shrink-0">
           <button 
             onClick={onClose} 
             className="shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200"
           >
-            <ArrowLeft className="w-5 h-5 sm:w-5 sm:h-5" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
           <h2 className="font-pacifico font-semibold text-sm sm:text-base text-yellow-50 truncate">
             Photography Vendor Registration
@@ -160,17 +207,17 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
             onClick={onClose} 
             className="ml-auto shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200 lg:hidden"
           >
-            <X className="w-5 h-5 sm:w-5 sm:h-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Steps - Compact width */}
-        <div className="bg-gradient-to-r from-red-600/90 to-red-700/90 px-3 py-2 sm:py-2 shrink-0 overflow-x-auto">
+        {/* Steps */}
+        <div className="bg-gradient-to-r from-red-600/90 to-red-700/90 px-3 py-2 shrink-0 overflow-x-auto">
           <div className="flex items-start justify-between">
             {steps.map((s, i) => (
               <div key={i} className="flex-1 flex flex-col items-center min-w-[55px] sm:min-w-0">
                 <div
-                  className={`w-6 h-6 sm:w-6 sm:h-6 rounded-full text-xs flex items-center justify-center font-bold ${
+                  className={`w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold ${
                     i <= step
                       ? "bg-gradient-to-br from-yellow-400 to-yellow-600 text-red-900 shadow-lg"
                       : "bg-red-800/50 text-yellow-100"
@@ -192,61 +239,66 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* SCROLLABLE CONTENT - Compact width */}
-        <div className="px-4 py-3 sm:py-4 space-y-3 overflow-y-auto flex-1">
+        {/* SCROLLABLE CONTENT */}
+        <div className="px-4 py-3 sm:py-4 space-y-4 overflow-y-auto flex-1">
 
           {/* STEP 1: Vendor Details */}
           {step === 0 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 <Camera className="inline w-4 h-4 mr-2" />
                 Vendor Basic Details
               </h3>
               
-              <input 
-                name="vendorName"
-                value={formData.vendorName}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Vendor / Studio Name *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Vendor / Studio Name *</label>
+                <input 
+                  name="vendorName"
+                  value={formData.vendorName}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter vendor or studio name" 
+                />
+              </div>
               
-              <input 
-                name="ownerName"
-                value={formData.ownerName}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Owner / Photographer Name *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Owner / Photographer Name *</label>
+                <input 
+                  name="ownerName"
+                  value={formData.ownerName}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter owner or photographer name" 
+                />
+              </div>
               
-              <p className="text-sm font-semibold text-red-800 mb-2">
-                Type of Service: *
-              </p>
-              
-              <div className="space-y-2 pl-2">
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
-                  {serviceTypes.map(service => (
-                    <label key={service} className="flex items-center gap-2 text-xs">
-                      <input 
-                        type="checkbox" 
-                        checked={formData.selectedServices.includes(service)}
-                        onChange={() => handleServiceToggle(service)}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="truncate">{service}</span>
-                    </label>
-                  ))}
-                </div>
-                
-                <div className="flex items-center gap-2 mt-3">
-                  <label className="text-xs font-semibold">Other:</label>
-                  <input 
-                    name="otherService"
-                    value={formData.otherService}
-                    onChange={handleInputChange}
-                    className="input-field text-sm flex-1" 
-                    placeholder="Specify other service" 
-                  />
+              <div className="form-group">
+                <label className="form-label">Type of Service *</label>
+                <div className="space-y-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {serviceTypes.map(service => (
+                      <label key={service} className="flex items-center gap-2 text-xs">
+                        <input 
+                          type="checkbox" 
+                          checked={formData.selectedServices.includes(service)}
+                          onChange={() => handleServiceToggle(service)}
+                          className="w-3.5 h-3.5 accent-red-600" 
+                        /> 
+                        <span>{service}</span>
+                      </label>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mt-3">
+                    <label className="text-xs font-semibold whitespace-nowrap">Other:</label>
+                    <input 
+                      name="otherService"
+                      value={formData.otherService}
+                      onChange={handleInputChange}
+                      className="input-field flex-1" 
+                      placeholder="Specify other service" 
+                    />
+                  </div>
                 </div>
               </div>
             </>
@@ -255,186 +307,223 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           {/* STEP 2: Contact Information */}
           {step === 1 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 Contact Information
               </h3>
               
-              <input 
-                name="mobile"
-                value={formData.mobile}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Mobile Number *" 
-                type="tel"
-              />
-              
-              <input 
-                name="alternateMobile"
-                value={formData.alternateMobile}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Alternate Mobile Number" 
-                type="tel"
-              />
-              
-              <input 
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Email ID *" 
-                type="email"
-              />
-              
-              <input 
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Office Address *" 
-              />
-              
-              <div className="grid grid-cols-2 gap-2">
+              <div className="form-group">
+                <label className="form-label">Mobile Number *</label>
                 <input 
-                  name="city"
-                  value={formData.city}
+                  name="mobile"
+                  value={formData.mobile}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="City / District *" 
-                />
-                <input 
-                  name="state"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="State *" 
+                  className="input-field" 
+                  placeholder="Enter mobile number" 
+                  type="tel"
                 />
               </div>
               
-              <input 
-                name="pincode"
-                value={formData.pincode}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="PIN Code *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Alternate Mobile Number</label>
+                <input 
+                  name="alternateMobile"
+                  value={formData.alternateMobile}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter alternate mobile number" 
+                  type="tel"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Email ID *</label>
+                <input 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter email address" 
+                  type="email"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Office Address *</label>
+                <input 
+                  name="address"
+                  value={formData.address}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter office address" 
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-3">
+                <div className="form-group">
+                  <label className="form-label">City / District *</label>
+                  <input 
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    className="input-field" 
+                    placeholder="Enter city" 
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">State *</label>
+                  <input 
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    className="input-field" 
+                    placeholder="Enter state" 
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">PIN Code *</label>
+                <input 
+                  name="pincode"
+                  value={formData.pincode}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter PIN code" 
+                />
+              </div>
             </>
           )}
 
           {/* STEP 3: Business & Legal Details */}
           {step === 2 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 Business & Legal Details
               </h3>
               
-              <p className="text-sm font-semibold text-red-800 mb-2">
-                Business Type: *
-              </p>
-              
-              <div className="grid grid-cols-2 sm:grid-cols-2 gap-2">
-                {businessTypes.map(type => (
-                  <label key={type} className="flex items-center gap-2 text-xs">
-                    <input 
-                      type="radio" 
-                      name="businessType" 
-                      value={type}
-                      checked={formData.businessType === type}
-                      onChange={handleInputChange}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    {type}
-                  </label>
-                ))}
+              <div className="form-group">
+                <label className="form-label">Business Type *</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {businessTypes.map(type => (
+                    <label key={type} className="flex items-center gap-2 text-xs">
+                      <input 
+                        type="radio" 
+                        name="businessType" 
+                        value={type}
+                        checked={formData.businessType === type}
+                        onChange={handleInputChange}
+                        className="w-3.5 h-3.5 accent-red-600" 
+                      /> 
+                      {type}
+                    </label>
+                  ))}
+                </div>
               </div>
               
-              <input 
-                name="gstNumber"
-                value={formData.gstNumber}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="GST Number (if applicable)" 
-              />
+              <div className="form-group">
+                <label className="form-label">GST Number (if applicable)</label>
+                <input 
+                  name="gstNumber"
+                  value={formData.gstNumber}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter GST number" 
+                />
+              </div>
               
-              <input 
-                name="panNumber"
-                value={formData.panNumber}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="PAN Number *" 
-              />
+              <div className="form-group">
+                <label className="form-label">PAN Number *</label>
+                <input 
+                  name="panNumber"
+                  value={formData.panNumber}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter PAN number" 
+                />
+              </div>
               
-              <input 
-                name="experience"
-                value={formData.experience}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Years of Experience *" 
-                type="number"
-              />
+              <div className="form-group">
+                <label className="form-label">Years of Experience *</label>
+                <input 
+                  name="experience"
+                  value={formData.experience}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter years of experience" 
+                  type="number"
+                />
+              </div>
             </>
           )}
 
           {/* STEP 4: Equipment & Team Details */}
           {step === 3 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 <Camera className="inline w-4 h-4 mr-2" />
                 Equipment & Team Details
               </h3>
               
-              <input 
-                name="cameraModels"
-                value={formData.cameraModels}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Camera Models Used *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Camera Models Used *</label>
+                <input 
+                  name="cameraModels"
+                  value={formData.cameraModels}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter camera models" 
+                />
+              </div>
               
-              <input 
-                name="videoEquipment"
-                value={formData.videoEquipment}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Video Equipment / Drone (if any)" 
-              />
+              <div className="form-group">
+                <label className="form-label">Video Equipment / Drone (if any)</label>
+                <input 
+                  name="videoEquipment"
+                  value={formData.videoEquipment}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter video equipment details" 
+                />
+              </div>
               
-              <input 
-                name="teamMembers"
-                value={formData.teamMembers}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Number of Team Members *" 
-                type="number"
-              />
+              <div className="form-group">
+                <label className="form-label">Number of Team Members *</label>
+                <input 
+                  name="teamMembers"
+                  value={formData.teamMembers}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter number of team members" 
+                  type="number"
+                />
+              </div>
               
-              <p className="text-sm font-semibold text-red-800 mt-3 mb-2">
-                Backup Equipment Available: *
-              </p>
-              
-              <div className="flex gap-4 text-sm pl-2">
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="radio" 
-                    name="hasBackup" 
-                    value="yes"
-                    checked={formData.hasBackup === "yes"}
-                    onChange={handleInputChange}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  Yes
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="radio" 
-                    name="hasBackup" 
-                    value="no"
-                    checked={formData.hasBackup === "no"}
-                    onChange={handleInputChange}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  No
-                </label>
+              <div className="form-group">
+                <label className="form-label">Backup Equipment Available *</label>
+                <div className="flex gap-4 text-sm">
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      name="hasBackup" 
+                      value="yes"
+                      checked={formData.hasBackup === "yes"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    Yes
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      name="hasBackup" 
+                      value="no"
+                      checked={formData.hasBackup === "no"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    No
+                  </label>
+                </div>
               </div>
             </>
           )}
@@ -442,55 +531,53 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           {/* STEP 5: Service Coverage */}
           {step === 4 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 Service Coverage
               </h3>
               
-              <p className="text-sm font-semibold text-red-800 mb-2">
-                Preferred Wedding Locations: *
-              </p>
-              
-              <div className="grid grid-cols-2 gap-2 pl-2">
-                {locations.map(location => (
-                  <label key={location} className="flex items-center gap-2 text-xs">
-                    <input 
-                      type="checkbox" 
-                      checked={formData.preferredLocations.includes(location)}
-                      onChange={() => handleLocationToggle(location)}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    {location}
-                  </label>
-                ))}
+              <div className="form-group">
+                <label className="form-label">Preferred Wedding Locations *</label>
+                <div className="grid grid-cols-2 gap-2">
+                  {locations.map(location => (
+                    <label key={location} className="flex items-center gap-2 text-xs">
+                      <input 
+                        type="checkbox" 
+                        checked={formData.preferredLocations.includes(location)}
+                        onChange={() => handleLocationToggle(location)}
+                        className="w-3.5 h-3.5 accent-red-600" 
+                      /> 
+                      {location}
+                    </label>
+                  ))}
+                </div>
               </div>
               
-              <p className="text-sm font-semibold text-red-800 mt-4 mb-2">
-                Travel Charges Applicable: *
-              </p>
-              
-              <div className="flex gap-4 text-sm pl-2">
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="radio" 
-                    name="hasTravelCharges" 
-                    value="yes"
-                    checked={formData.hasTravelCharges === "yes"}
-                    onChange={handleInputChange}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  Yes
-                </label>
-                <label className="flex items-center gap-2">
-                  <input 
-                    type="radio" 
-                    name="hasTravelCharges" 
-                    value="no"
-                    checked={formData.hasTravelCharges === "no"}
-                    onChange={handleInputChange}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  No
-                </label>
+              <div className="form-group">
+                <label className="form-label">Travel Charges Applicable *</label>
+                <div className="flex gap-4 text-sm">
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      name="hasTravelCharges" 
+                      value="yes"
+                      checked={formData.hasTravelCharges === "yes"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    Yes
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <input 
+                      type="radio" 
+                      name="hasTravelCharges" 
+                      value="no"
+                      checked={formData.hasTravelCharges === "no"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    No
+                  </label>
+                </div>
               </div>
             </>
           )}
@@ -498,87 +585,107 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           {/* STEP 6: Packages & Pricing */}
           {step === 5 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 <Banknote className="inline w-4 h-4 mr-2" />
                 Packages & Pricing
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="form-group">
+                <label className="form-label">Basic Wedding Package (₹) *</label>
                 <input 
                   name="basicPackage"
                   value={formData.basicPackage}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Basic Wedding Package (₹) *" 
+                  className="input-field" 
+                  placeholder="Enter basic package price" 
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Full Wedding Package (₹) *</label>
                 <input 
                   name="fullPackage"
                   value={formData.fullPackage}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Full Wedding Package (₹) *" 
+                  className="input-field" 
+                  placeholder="Enter full package price" 
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Candid Photography (₹)</label>
                 <input 
                   name="candidPackage"
                   value={formData.candidPackage}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Candid Photography (₹)" 
+                  className="input-field" 
+                  placeholder="Enter candid photography price" 
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Videography / Cinematic (₹)</label>
                 <input 
                   name="videographyPackage"
                   value={formData.videographyPackage}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Videography / Cinematic (₹)" 
+                  className="input-field" 
+                  placeholder="Enter videography price" 
                 />
               </div>
               
-              <input 
-                name="albumCharges"
-                value={formData.albumCharges}
-                onChange={handleInputChange}
-                className="input-field text-sm mt-3" 
-                placeholder="Album Charges (if separate)" 
-              />
+              <div className="form-group">
+                <label className="form-label">Album Charges (if separate)</label>
+                <input 
+                  name="albumCharges"
+                  value={formData.albumCharges}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter album charges" 
+                />
+              </div>
             </>
           )}
 
           {/* STEP 7: Delivery Timeline */}
           {step === 6 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 Delivery Timeline
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="form-group">
+                <label className="form-label">Photo Delivery (Days) *</label>
                 <input 
                   name="photoDelivery"
                   value={formData.photoDelivery}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Photo Delivery (Days) *" 
+                  className="input-field" 
+                  placeholder="Enter number of days" 
                   type="number"
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Video Delivery (Days)</label>
                 <input 
                   name="videoDelivery"
                   value={formData.videoDelivery}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Video Delivery (Days)" 
+                  className="input-field" 
+                  placeholder="Enter number of days" 
                   type="number"
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Album Delivery (Days)</label>
                 <input 
                   name="albumDelivery"
                   value={formData.albumDelivery}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Album Delivery (Days)" 
+                  className="input-field" 
+                  placeholder="Enter number of days" 
                   type="number"
                 />
               </div>
@@ -588,93 +695,115 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           {/* STEP 8: Portfolio & Online Presence */}
           {step === 7 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 <Globe className="inline w-4 h-4 mr-2" />
                 Portfolio & Online Presence
               </h3>
               
-              <input 
-                name="website"
-                value={formData.website}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Website / Portfolio Link" 
-              />
+              <div className="form-group">
+                <label className="form-label">Website / Portfolio Link</label>
+                <input 
+                  name="website"
+                  value={formData.website}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter website URL" 
+                />
+              </div>
               
-              <input 
-                name="instagram"
-                value={formData.instagram}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Instagram / Facebook Page" 
-              />
+              <div className="form-group">
+                <label className="form-label">Instagram / Facebook Page</label>
+                <input 
+                  name="instagram"
+                  value={formData.instagram}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter social media handle" 
+                />
+              </div>
               
-              <input 
-                name="portfolioLink"
-                value={formData.portfolioLink}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Google Drive / Sample Work Link" 
-              />
+              <div className="form-group">
+                <label className="form-label">Google Drive / Sample Work Link</label>
+                <input 
+                  name="portfolioLink"
+                  value={formData.portfolioLink}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter portfolio link" 
+                />
+              </div>
             </>
           )}
 
           {/* STEP 9: Bank Details */}
           {step === 8 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 <Banknote className="inline w-4 h-4 mr-2" />
                 Bank Details (For Payments)
               </h3>
               
-              <input 
-                name="accountName"
-                value={formData.accountName}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Account Holder Name *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Account Holder Name *</label>
+                <input 
+                  name="accountName"
+                  value={formData.accountName}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter account holder name" 
+                />
+              </div>
               
-              <input 
-                name="bankName"
-                value={formData.bankName}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="Bank Name *" 
-              />
+              <div className="form-group">
+                <label className="form-label">Bank Name *</label>
+                <input 
+                  name="bankName"
+                  value={formData.bankName}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter bank name" 
+                />
+              </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div className="form-group">
+                <label className="form-label">Account Number *</label>
                 <input 
                   name="accountNumber"
                   value={formData.accountNumber}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="Account Number *" 
+                  className="input-field" 
+                  placeholder="Enter account number" 
                 />
-                
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">IFSC Code *</label>
                 <input 
                   name="ifscCode"
                   value={formData.ifscCode}
                   onChange={handleInputChange}
-                  className="input-field text-sm" 
-                  placeholder="IFSC Code *" 
+                  className="input-field" 
+                  placeholder="Enter IFSC code" 
                 />
               </div>
               
-              <input 
-                name="upiId"
-                value={formData.upiId}
-                onChange={handleInputChange}
-                className="input-field text-sm" 
-                placeholder="UPI ID (Optional)" 
-              />
+              <div className="form-group">
+                <label className="form-label">UPI ID (Optional)</label>
+                <input 
+                  name="upiId"
+                  value={formData.upiId}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter UPI ID" 
+                />
+              </div>
             </>
           )}
 
           {/* STEP 10: Declaration */}
           {step === 9 && (
             <>
-              <h3 className="text-red-800 font-bold text-center text-sm mb-2">
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
                 Declaration
               </h3>
               
@@ -697,29 +826,65 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
                     <span className="font-semibold">I accept the terms and conditions *</span>
                   </label>
                   
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div className="form-group">
+                    <label className="form-label flex items-center gap-2">
+                      <Pen className="w-4 h-4" />
+                      Vendor Signature *
+                    </label>
+                    <p className="text-xs text-gray-600 mb-2">Draw your signature in the box below</p>
+                    <div className="relative">
+                      <canvas
+                        ref={canvasRef}
+                        width={400}
+                        height={150}
+                        onMouseDown={startDrawing}
+                        onMouseMove={draw}
+                        onMouseUp={stopDrawing}
+                        onMouseLeave={stopDrawing}
+                        onTouchStart={(e) => {
+                          e.preventDefault();
+                          startDrawing(e);
+                        }}
+                        onTouchMove={(e) => {
+                          e.preventDefault();
+                          draw(e);
+                        }}
+                        onTouchEnd={stopDrawing}
+                        className="signature-canvas"
+                      />
+                      <button
+                        type="button"
+                        onClick={clearSignature}
+                        className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition-colors"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="form-group">
+                    <label className="form-label">Date *</label>
                     <input 
-                      className="input-field text-sm" 
-                      placeholder="Vendor Signature *" 
-                    />
-                    <input 
-                      className="input-field text-sm" 
-                      placeholder="Date *" 
+                      className="input-field" 
+                      placeholder="Select date" 
                       type="date"
                     />
                   </div>
                   
-                  <input 
-                    className="input-field text-sm" 
-                    placeholder="Place *" 
-                  />
+                  <div className="form-group">
+                    <label className="form-label">Place *</label>
+                    <input 
+                      className="input-field" 
+                      placeholder="Enter place" 
+                    />
+                  </div>
                 </div>
               </div>
             </>
           )}
         </div>
 
-        {/* FOOTER - Compact width */}
+        {/* FOOTER */}
         <div className="flex gap-3 p-4 border-t border-red-200 bg-gradient-to-r from-red-50 to-yellow-50 shrink-0 rounded-b-xl">
 
           {step > 0 && (
@@ -743,6 +908,19 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
       </div>
 
       <style jsx>{`
+        .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+        
+        .form-label {
+          font-size: 0.875rem;
+          font-weight: 600;
+          color: #991B1B;
+          padding-left: 0.25rem;
+        }
+        
         .input-field {
           width: 100%;
           padding: 0.75rem 1rem;
@@ -802,6 +980,16 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           background: #FEE2E2;
           transform: translateY(-1px);
           box-shadow: 0 2px 6px rgba(220, 38, 38, 0.2);
+        }
+        
+        .signature-canvas {
+          width: 100%;
+          height: 150px;
+          border: 1.5px solid #DC2626;
+          border-radius: 0.5rem;
+          background: white;
+          cursor: crosshair;
+          touch-action: none;
         }
       `}</style>
     </div>
