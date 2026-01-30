@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -24,39 +23,23 @@ const Home = () => {
     {
       id: 1,
       image: banner1,
-      title: "Find Your Perfect Match",
-      subtitle: "Join thousands of successful matches"
     },
     {
       id: 2,
       image: banner2,
-      title: "Trusted Matrimonial Services",
-      subtitle: "Over 10,000 happy marriages"
     },
     {
       id: 3,
       image: banner3,
-      title: "Secure & Private Profiles",
-      subtitle: "Your privacy is our priority"
     },
     {
       id: 4,
       image: banner4,
-      title: "Premium Membership Benefits",
-      subtitle: "Exclusive features for serious seekers"
     },
     {
       id: 5,
       image: banner5,
-      title: "Premium Membership Benefits",
-      subtitle: "Exclusive features for serious seekers"
     },
-    /*{
-      id: 4,
-      image: banner4,
-      title: "Premium Membership Benefits",
-      subtitle: "Exclusive features for serious seekers"
-    }*/
   ];
 
   // Auto change banner every 3 seconds
@@ -77,269 +60,283 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Banner Section - Clean version without overlay text */}
-      <section className="relative h-[600px] overflow-hidden">
-        {/* Banner Images */}
-        {banners.map((banner, index) => (
-          <div
-            key={banner.id}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentBannerIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={banner.image}
-              alt={banner.title}
-              className="w-full h-full object-fill"
-              onError={(e) => {
-                e.target.onerror = null;
-                // Fallback if image fails to load
-                e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
-              }}
-            />
-            
-            {/* Light gradient overlay for better visibility (optional, can be removed too) */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/10 to-black/5"></div>
-          </div>
-        ))}
-
-        {/* Banner Navigation Dots */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
-          {banners.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToBanner(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentBannerIndex
-                  ? 'bg-yellow-500 w-8'
-                  : 'bg-white/70 hover:bg-white'
+      {/* Banner Section - OPTIMIZED FOR ALL SCREENS */}
+      <section className="relative w-full overflow-hidden">
+        {/* Responsive height - 600px for system view, responsive for mobile */}
+        <div className="relative h-[35vh] min-h-[250px] sm:h-[40vh] md:h-[45vh] lg:h-[600px]">
+          {/* Banner Images - Optimized for mobile quality */}
+          {banners.map((banner, index) => (
+            <div
+              key={banner.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
+                index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
-              aria-label={`Go to banner ${index + 1}`}
-            />
+            >
+              {/* Image Container with optimized rendering */}
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+                <img
+                  src={banner.image}
+                  alt={`Banner ${banner.id}`}
+                  className="w-full h-full object-cover"
+                  style={{
+                    objectPosition: 'center center',
+                    // Optimized for mobile rendering
+                    imageRendering: 'crisp-edges',
+                    WebkitImageRendering: 'crisp-edges',
+                    // Ensure sharp edges on mobile
+                    WebkitFontSmoothing: 'antialiased',
+                    MozOsxFontSmoothing: 'grayscale',
+                    // Force GPU rendering for better quality
+                    transform: 'translateZ(0)',
+                    backfaceVisibility: 'hidden',
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+                  }}
+                />
+              </div>
+            </div>
           ))}
-        </div>
 
-        {/* Previous/Next Buttons */}
-        <button
-          onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-3 rounded-full transition-all duration-300"
-          aria-label="Previous banner"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        
-        <button
-          onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white bg-black/30 hover:bg-black/50 p-3 rounded-full transition-all duration-300"
-          aria-label="Next banner"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          {/* Banner Navigation Dots - Centered and visible */}
+          <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 md:space-x-4 z-20">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToBanner(index)}
+                className={`rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex
+                    ? 'bg-yellow-500 w-6 h-2 sm:w-8 sm:h-2.5 md:w-10 md:h-3'
+                    : 'bg-white/90 hover:bg-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5'
+                }`}
+                aria-label={`Go to banner ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Previous/Next Buttons - Perfectly positioned */}
+          <button
+            onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
+            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            aria-label="Previous banner"
+          >
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
+            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            aria-label="Next banner"
+          >
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
       </section>
 
-      {/* Demo content to show the header in context */}
-      <main className="container mx-auto px-4 py-8 mt-8">
+      {/* Welcome Section - Mobile responsive */}
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-red-800 mb-6">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
             Welcome to Eliteinova Matrimonial Services
           </h2>
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <p className="text-gray-700 text-lg mb-4">
+          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
+            <p className="text-gray-700 text-sm md:text-base lg:text-lg mb-3 md:mb-4">
               This is a demo page to showcase the header component with the requested red and yellow theme, Pacifico font for headings, and all the required menu items.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-6 rounded-lg border border-red-200">
-                <h3 className="font-pacifico text-xl text-red-700 mb-2">Customer Login</h3>
-                <p className="text-gray-600">Access your matrimonial profile</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6 mt-4 md:mt-6 lg:mt-8">
+              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Customer Login</h3>
+                <p className="text-gray-600 text-xs md:text-sm">Access your matrimonial profile</p>
               </div>
-              <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-6 rounded-lg border border-yellow-200">
-                <h3 className="font-pacifico text-xl text-red-700 mb-2">Vendor Login</h3>
-                <p className="text-gray-600">Partner portal access</p>
+              <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-3 md:p-4 lg:p-6 rounded-lg border border-yellow-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Vendor Login</h3>
+                <p className="text-gray-600 text-xs md:text-sm">Partner portal access</p>
               </div>
-              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-6 rounded-lg border border-red-200">
-                <h3 className="font-pacifico text-xl text-red-700 mb-2">Help & Support</h3>
-                <p className="text-gray-600">Get assistance anytime</p>
+              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Help & Support</h3>
+                <p className="text-gray-600 text-xs md:text-sm">Get assistance anytime</p>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-{/* Categories Section */}
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-center text-red-800 mb-12">
+      {/* Categories Section - Mobile responsive */}
+      <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center text-red-800 mb-6 md:mb-8 lg:mb-12">
           Our Categories
         </h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 max-w-6xl mx-auto">
           {/* Photography */}
           <div className="flex flex-col items-center">
             <Link to="/photography" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={photography}
                     alt="Photography" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Photography</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Photography</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Catering & Foods */}
           <div className="flex flex-col items-center">
             <Link to="/catering" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={catering}
                     alt="Catering & Foods" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Catering & Foods</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Catering & Foods</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Mandapam & Wedding Halls */}
           <div className="flex flex-col items-center">
             <Link to="/wedding-halls" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={weddinghalls}
                     alt="Mandapam & Wedding Halls" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Mandapam & Wedding Halls</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Wedding Halls</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Decorations */}
           <div className="flex flex-col items-center">
             <Link to="/decorations" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={decoration}
                     alt="Decorations" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Decorations</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Decorations</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Entertainment & Events */}
           <div className="flex flex-col items-center">
             <Link to="/entertainment" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={entertainment}
                     alt="Entertainment & Events" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Entertainment & Events</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Entertainment</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Invitation & Gifts */}
           <div className="flex flex-col items-center">
             <Link to="/invitation" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={invitation}
                     alt="Invitation & Gifts" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Invitation & Gifts</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Invitation & Gifts</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
 
           {/* Bridal and Groom Styling */}
           <div className="flex flex-col items-center">
             <Link to="/styling" className="block group">
-              <div className="w-44 h-44 rounded-full border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-xl hover:shadow-2xl transition-all duration-300 p-1">
+              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
                 <div className="w-full h-full rounded-full overflow-hidden">
                   <img 
                     src={makeup} 
                     alt="Bridal & Groom Styling" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>
               </div>
             </Link>
-            <h3 className="mt-4 text-center font-semibold text-gray-800 text-lg">Bridal & Groom Styling</h3>
-            <p className="text-sm text-gray-600">products</p>
+            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Bridal Styling</h3>
+            <p className="text-xs md:text-sm text-gray-600">products</p>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold text-center text-red-800 mb-8">
+      {/* Features Section - Mobile responsive */}
+      <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">
+        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center text-red-800 mb-6 md:mb-8">
           Why Choose Eliteinova?
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-red-100">
-            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
+              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
-            <h3 className="font-bold text-lg text-red-700 mb-2 text-center">Verified Profiles</h3>
-            <p className="text-gray-600 text-center">All profiles are thoroughly verified for authenticity</p>
+            <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Verified Profiles</h3>
+            <p className="text-gray-600 text-xs md:text-sm text-center">All profiles are thoroughly verified for authenticity</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-yellow-100">
-            <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
+              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h3 className="font-bold text-lg text-red-700 mb-2 text-center">Privacy Protected</h3>
-            <p className="text-gray-600 text-center">Your data is secure with advanced encryption</p>
+            <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Privacy Protected</h3>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Your data is secure with advanced encryption</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-red-100">
-            <div className="w-12 h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
+              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <h3 className="font-bold text-lg text-red-700 mb-2 text-center">Expert Matchmaking</h3>
-            <p className="text-gray-600 text-center">Professional assistance for perfect matches</p>
+            <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Expert Matchmaking</h3>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Professional assistance for perfect matches</p>
           </div>
           
-          <div className="bg-white p-6 rounded-xl shadow-lg border border-yellow-100">
-            <div className="w-12 h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-4 mx-auto">
-              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
+              <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h3 className="font-bold text-lg text-red-700 mb-2 text-center">24/7 Support</h3>
-            <p className="text-gray-600 text-center">Round-the-clock customer support</p>
+            <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">24/7 Support</h3>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Round-the-clock customer support</p>
           </div>
         </div>
       </section>
