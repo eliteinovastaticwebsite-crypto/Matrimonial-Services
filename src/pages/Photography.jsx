@@ -381,11 +381,10 @@ const Photography = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Banner Section - FULL WIDTH ON MOBILE */}
+      {/* Banner Section */}
       <section className="relative w-full overflow-hidden">
-        {/* INCREASED banner height to 600px */}
-        <div className="relative h-[35vh] min-h-[250px] sm:h-[45vh] md:h-[55vh] lg:h-[600px] w-full">
-          {/* Banner Images - Optimized for mobile quality */}
+        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[600px] w-full">
+          {/* Banner Images */}
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -393,64 +392,58 @@ const Photography = () => {
                 index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              {/* Image Container with optimized rendering - FULL WIDTH ON MOBILE */}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
                 <img
                   src={banner.image}
                   alt={banner.title}
-                  className="w-full h-full object-cover md:object-cover object-contain"
+                  className="w-full h-full object-cover"
                   style={{
                     objectPosition: 'center center',
-                    // Optimized for mobile rendering
                     imageRendering: 'crisp-edges',
                     WebkitImageRendering: 'crisp-edges',
-                    // Ensure sharp edges on mobile
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
                   }}
                 />
               </div>
             </div>
           ))}
 
-          {/* Previous/Next Buttons */}
+          {/* Navigation Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
             aria-label="Previous banner"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
             aria-label="Next banner"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
       </section>
 
-      {/* Main Categories Navigation - REMOVED STICKY POSITION to prevent freezing */}
-      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 sm:py-3 md:py-4">
-        <div className="container mx-auto px-3 md:px-4">
-          <h3 className="text-white text-sm sm:text-base md:text-lg font-bold mb-2 sm:mb-3 md:mb-4 text-center">
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-lg font-bold mb-2 md:mb-3 text-center">
             Browse All Wedding Services
           </h3>
-          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 md:pb-2 scrollbar-hide gap-1.5 sm:gap-2 md:gap-3 lg:gap-4">
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1.5 md:gap-3">
             {mainCategories.map((category) => (
               <Link
                 key={category.name}
                 to={category.path}
                 className="flex-shrink-0 transition-all duration-300 group"
               >
-                {/* Reduced button size */}
-                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-1.5 sm:py-2 md:py-2.5 px-3 sm:px-4 md:px-5 rounded-md shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-xs md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-1.5 md:py-2.5 px-2.5 md:px-5 rounded-md shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105 text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
                   {category.name}
                 </button>
               </Link>
@@ -459,30 +452,30 @@ const Photography = () => {
         </div>
       </div>
 
-      {/* Main Content with Filter Sidebar - Reduced padding */}
-      <div className="container mx-auto px-3 md:px-4 py-3 md:py-4 lg:py-6">
-        {/* Mobile Filter Toggle Button - Reduced size */}
-        <div className="lg:hidden mb-3">
+      {/* Main Content with Filter Sidebar */}
+      <div className="container mx-auto px-2 md:px-4 py-2 md:py-4 lg:py-6">
+        {/* Mobile Filter Toggle Button */}
+        <div className="lg:hidden mb-2">
           <button
             onClick={() => setShowMobileFilter(!showMobileFilter)}
-            className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-sm"
+            className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-xs"
           >
-            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4z" />
+            <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
             </svg>
             <span>{showMobileFilter ? 'Hide Filters' : 'Show Filters'}</span>
-            <svg className={`w-4 h-4 ml-2 transition-transform duration-300 ${showMobileFilter ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className={`w-3.5 h-3.5 ml-1.5 transition-transform duration-300 ${showMobileFilter ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
         </div>
 
-        {/* Mobile Filter Overlay - Reduced padding */}
+        {/* Mobile Filter Overlay */}
         {showMobileFilter && (
           <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
             <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-xl sm:rounded-lg shadow-2xl max-h-[80vh] overflow-y-auto">
               <div className="sticky top-0 bg-white z-10 p-3 border-b border-gray-200 flex justify-between items-center rounded-t-xl sm:rounded-t-lg">
-                <h3 className="text-base sm:text-lg font-bold text-red-800">Filter Photographers</h3>
+                <h3 className="text-sm sm:text-base font-bold text-red-800">Filter Photographers</h3>
                 <button
                   onClick={() => setShowMobileFilter(false)}
                   className="text-gray-500 hover:text-red-700 p-1"
@@ -503,14 +496,14 @@ const Photography = () => {
                       placeholder="Min"
                       value={minBudget}
                       onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                     />
                     <input
                       type="number"
                       placeholder="Max"
                       value={maxBudget}
                       onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                     />
                   </div>
                 </div>
@@ -521,7 +514,7 @@ const Photography = () => {
                   <select
                     value={selectedEvent}
                     onChange={(e) => setSelectedEvent(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   >
                     <option value="">All Event Types</option>
                     {eventTypes.map((event) => (
@@ -536,7 +529,7 @@ const Photography = () => {
                   <select
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   >
                     <option value="">All States</option>
                     {states.map((state) => (
@@ -551,7 +544,7 @@ const Photography = () => {
                   <select
                     value={selectedDistrict}
                     onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   >
                     <option value="">All Districts</option>
                     {districts.map((district) => (
@@ -561,19 +554,19 @@ const Photography = () => {
                 </div>
 
                 {/* Location */}
-                <div className="mb-4">
+                <div className="mb-3">
                   <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
                   <input
                     type="text"
                     placeholder="Enter location"
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   />
                 </div>
 
-                {/* Filter Buttons - Reduced size */}
-                <div className="flex gap-2 pb-1">
+                {/* Filter Buttons */}
+                <div className="flex gap-2">
                   <button
                     onClick={handleFilter}
                     className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
@@ -592,20 +585,20 @@ const Photography = () => {
           </div>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-3 md:gap-4 lg:gap-6">
+        <div className="flex flex-col lg:flex-row gap-2 md:gap-4 lg:gap-6">
           {/* Main Content Area */}
           <div className="lg:flex-1">
-            {/* Photography Categories Grid - Reduced padding */}
-            <section className="py-2 md:py-3 lg:py-4">
-              <h2 className="text-base md:text-lg lg:text-xl font-bold text-center text-red-800 mb-3 md:mb-4 lg:mb-6">
+            {/* Photography Categories Grid */}
+            <section className="py-2 md:py-4">
+              <h2 className="text-sm md:text-xl font-bold text-center text-red-800 mb-2 md:mb-5">
                 Our Photography Categories
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
+              <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-2 md:gap-4">
                 {photographyCategories.map((category) => (
                   <div key={category.name} className="flex flex-col items-center group">
                     <Link 
                       to={category.path}
-                      className="relative block w-full aspect-square max-w-[80px] sm:max-w-[90px] md:max-w-[100px] lg:max-w-[120px] mx-auto"
+                      className="relative block w-full aspect-square max-w-[70px] sm:max-w-[85px] md:max-w-[120px] mx-auto"
                     >
                       <div className="w-full h-full rounded-full border-2 border-amber-700 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow-md transition-all duration-300">
                         <img 
@@ -615,7 +608,7 @@ const Photography = () => {
                         />
                       </div>
                     </Link>
-                    <h3 className="mt-1 md:mt-1.5 text-center font-medium text-gray-800 text-[10px] sm:text-xs md:text-sm px-1 leading-tight">
+                    <h3 className="mt-1 md:mt-2 text-center font-medium text-gray-800 text-[9px] sm:text-[10px] md:text-sm px-0.5 leading-tight">
                       {category.name}
                     </h3>
                   </div>
@@ -623,36 +616,36 @@ const Photography = () => {
               </div>
             </section>
 
-            {/* Vendor Count and Filter Results Section - Reduced padding */}
-            <section className="py-3 md:py-4 lg:py-6">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md md:rounded-lg shadow-sm md:shadow-md p-2 sm:p-3 md:p-4 mb-3 md:mb-4 lg:mb-5">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
+            {/* Vendor Count and Filter Results Section */}
+            <section className="py-2 md:py-6">
+              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow-md p-2 md:p-4 mb-2 md:mb-5">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-1.5 md:gap-2">
                   <div className="text-center sm:text-left">
-                    <h3 className="text-sm sm:text-base md:text-lg font-bold text-white">
+                    <h3 className="text-xs sm:text-sm md:text-lg font-bold text-white">
                       {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors Available` : '16 Photography Vendors Available'}
                     </h3>
-                    <p className="text-yellow-200 mt-0.5 md:mt-1 text-xs">
+                    <p className="text-yellow-200 mt-0.5 text-[9px] md:text-xs">
                       {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
                     </p>
                   </div>
                   <div className="flex items-center">
-                    <div className="bg-white/20 px-2 sm:px-3 py-0.5 sm:py-1 rounded-md">
-                      <span className="text-white font-medium text-[9px] sm:text-xs">Price Range:</span>
-                      <span className="text-yellow-300 ml-1 sm:ml-2 text-[9px] sm:text-xs">₹5,000 - ₹5,00,000</span>
+                    <div className="bg-white/20 px-2 md:px-3 py-0.5 md:py-1 rounded-md">
+                      <span className="text-white font-medium text-[9px] md:text-xs">Price Range:</span>
+                      <span className="text-yellow-300 ml-1 text-[9px] md:text-xs">₹5,000 - ₹5,00,000</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Vendor Profiles - Reduced padding */}
+              {/* Vendor Profiles */}
               {filteredVendors.length > 0 ? (
-                <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-5">
+                <div className="space-y-2 md:space-y-5">
                   {filteredVendors.map((vendor) => (
-                    <div key={vendor.id} className="bg-white rounded-md md:rounded-lg shadow-sm md:shadow-md border border-gray-200 overflow-hidden hover:shadow-md md:hover:shadow-lg transition-shadow duration-300">
+                    <div key={vendor.id} className="bg-white rounded-md shadow-md border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                       <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo - Reduced size */}
-                        <div className="md:w-1/4 p-2 sm:p-3 md:p-3 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full overflow-hidden border-2 border-white shadow-sm md:shadow-md mb-1 md:mb-2">
+                        {/* Left Section - Logo (Desktop Only) */}
+                        <div className="hidden md:flex md:w-1/4 p-4 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
+                          <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-white shadow-md mb-2">
                             <img 
                               src={vendor.logo} 
                               alt={vendor.businessName} 
@@ -660,68 +653,152 @@ const Photography = () => {
                             />
                           </div>
                           <div className="text-center">
-                            <div className="flex items-center justify-center mb-0.5 md:mb-1">
-                              <div className="flex items-center bg-yellow-100 px-1.5 sm:px-2 md:px-2 py-0.5 rounded-full">
+                            <div className="flex items-center justify-center mb-1">
+                              <div className="flex items-center bg-yellow-100 px-2 py-0.5 rounded-full">
                                 <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
-                                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3 md:h-3 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <svg className="w-3 h-3 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs md:text-sm">{vendor.priceRange}</p>
+                            <p className="text-red-700 font-medium text-sm">{vendor.priceRange}</p>
                           </div>
                         </div>
 
-                        {/* Middle Section - Business Details - Reduced padding */}
-                        <div className="md:w-2/4 p-2 sm:p-3 md:p-3 border-t md:border-t-0 md:border-r border-gray-100">
-                          <div className="mb-1 md:mb-2">
-                            <h3 className="text-xs sm:text-sm md:text-base font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1 md:gap-2 mb-1 md:mb-2">
-                              <span className="px-1.5 sm:px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-[9px] sm:text-xs font-medium mb-0.5 sm:mb-0 w-fit">
+                        {/* Middle Section - Business Details & Services (Mobile: Stacked, Desktop: Full Width) */}
+                        <div className="md:w-2/4 md:p-4 md:border-r border-gray-100">
+                          {/* Mobile Layout - Three sections */}
+                          <div className="md:hidden">
+                            {/* Top Section - Logo/Rating/Price LEFT + Services RIGHT */}
+                            <div className="flex border-b border-gray-200">
+                              {/* Left Half - Logo, Rating, Price */}
+                              <div className="w-1/2 p-2.5 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md mb-1.5">
+                                  <img 
+                                    src={vendor.logo} 
+                                    alt={vendor.businessName} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex items-center bg-yellow-100 px-2 py-0.5 rounded-full mb-1">
+                                  <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
+                                  <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                  </svg>
+                                </div>
+                                <p className="text-red-700 font-bold text-[10px] text-center">{vendor.priceRange}</p>
+                              </div>
+
+                              {/* Right Half - Services */}
+                              <div className="w-1/2 p-2.5 bg-white">
+                                <h4 className="font-bold text-red-700 mb-1.5 text-[11px]">Services Offered</h4>
+                                <ul className="space-y-1">
+                                  {vendor.services.map((service, index) => (
+                                    <li key={index} className="flex items-start">
+                                      <svg className="w-2 h-2 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                      <span className="text-gray-700 text-[8px] leading-tight">{service}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+
+                            {/* Middle Section - Business Details (Full Width) */}
+                            <div className="w-full p-2.5 bg-white relative">
+                              {/* Business Name */}
+                              <h3 className="text-xs font-bold text-red-800 mb-1 leading-tight">{vendor.businessName}</h3>
+                              
+                              {/* Category Badge */}
+                              <span className="inline-block px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-[9px] font-medium mb-1.5">
                                 {vendor.businessCategory}
                               </span>
-                              <span className="text-gray-600 flex items-center text-[9px] sm:text-xs">
-                                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              
+                              {/* Location */}
+                              <div className="text-gray-600 flex items-start text-[9px] mb-1.5">
+                                <svg className="w-2.5 h-2.5 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                {vendor.location}
-                              </span>
+                                <span className="leading-tight">{vendor.location}</span>
+                              </div>
+                              
+                              {/* Description */}
+                              <p className="text-gray-700 mb-1.5 text-[9px] leading-relaxed pr-20">{vendor.description}</p>
+                              
+                              {/* Contact Details */}
+                              <div className="space-y-0.5 text-[9px] mb-2">
+                                <div className="flex items-start">
+                                  <span className="text-gray-600 w-20 flex-shrink-0">Contact Person:</span>
+                                  <span className="font-medium text-gray-800 leading-tight">{vendor.personName}</span>
+                                </div>
+                                <div className="flex items-start">
+                                  <span className="text-gray-600 w-20 flex-shrink-0">Role:</span>
+                                  <span className="font-medium text-gray-800 leading-tight">{vendor.designation}</span>
+                                </div>
+                              </div>
+
+                              {/* View Details Button - Bottom Right Corner */}
+                              <button className="absolute bottom-2 right-2 bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-[9px]">
+                                <span>View Details</span>
+                                <svg className="w-2.5 h-2.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                              </button>
                             </div>
                           </div>
-                          
-                          <p className="text-gray-700 mb-1 sm:mb-2 text-xs leading-relaxed">{vendor.description}</p>
-                          
-                          <div className="space-y-0.5 sm:space-y-1">
-                            <div className="flex items-start sm:items-center">
-                              <span className="text-gray-600 w-16 sm:w-20 md:w-24 text-[9px] sm:text-xs flex-shrink-0">Contact Person:</span>
-                              <span className="font-medium text-gray-800 text-[9px] sm:text-xs">{vendor.personName}</span>
+
+                          {/* Desktop Layout - Original */}
+                          <div className="hidden md:block">
+                            <div className="mb-2">
+                              <h3 className="text-base font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 mb-2">
+                                <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
+                                  {vendor.businessCategory}
+                                </span>
+                                <span className="text-gray-600 flex items-center text-xs">
+                                  <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  </svg>
+                                  {vendor.location}
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-start sm:items-center">
-                              <span className="text-gray-600 w-16 sm:w-20 md:w-24 text-[9px] sm:text-xs flex-shrink-0">Designation:</span>
-                              <span className="font-medium text-gray-800 text-[9px] sm:text-xs">{vendor.designation}</span>
+                            
+                            <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
+                            
+                            <div className="space-y-0.5">
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Contact Person:</span>
+                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                              </div>
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Designation:</span>
+                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services - Reduced padding */}
-                        <div className="md:w-1/4 p-2 sm:p-3 md:p-3 border-t md:border-t-0 border-gray-100 bg-gray-50 md:bg-white">
-                          <h4 className="font-bold text-red-700 mb-1 sm:mb-1.5 md:mb-2 text-xs sm:text-sm md:text-base">Services Offered</h4>
-                          <ul className="space-y-0.5 sm:space-y-1 mb-2 sm:mb-3 md:mb-3">
+                        {/* Right Section - Services (Desktop Only) */}
+                        <div className="hidden md:block md:w-1/4 p-4 bg-white">
+                          <h4 className="font-bold text-red-700 mb-2 text-base">Services Offered</h4>
+                          <ul className="space-y-1 mb-3">
                             {vendor.services.map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-green-500 mr-0.5 sm:mr-1 md:mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3 h-3 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                                <span className="text-gray-700 text-[9px] sm:text-xs leading-tight">{service}</span>
+                                <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
                           
-                          {/* Reduced button size */}
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 sm:py-2 md:py-2.5 px-2 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center text-[10px] sm:text-xs">
+                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md flex items-center justify-center text-xs">
                             <span>View Details</span>
-                            <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 ml-0.5 sm:ml-1 md:ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                           </button>
@@ -731,16 +808,15 @@ const Photography = () => {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white rounded-md md:rounded-lg shadow-sm md:shadow-md p-4 md:p-6 lg:p-8 text-center">
+                <div className="bg-white rounded-md shadow-md p-4 md:p-8 text-center">
                   <svg className="w-10 h-10 md:w-12 md:h-12 text-gray-400 mx-auto mb-2 md:mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-base md:text-lg font-bold text-gray-700 mb-0.5 md:mb-1">No Vendors Found</h3>
-                  <p className="text-gray-600 mb-3 md:mb-4 text-xs md:text-sm">Try adjusting your filter criteria to find more vendors</p>
-                  {/* Reduced button size */}
+                  <h3 className="text-sm md:text-lg font-bold text-gray-700 mb-1">No Vendors Found</h3>
+                  <p className="text-gray-600 mb-3 text-xs md:text-sm">Try adjusting your filter criteria to find more vendors</p>
                   <button 
                     onClick={handleReset}
-                    className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 md:py-2 px-3 md:px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm md:shadow-md hover:shadow-md md:hover:shadow-lg text-xs"
+                    className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 md:py-2 px-3 md:px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-xs"
                   >
                     Reset Filters
                   </button>
@@ -748,57 +824,57 @@ const Photography = () => {
               )}
             </section>
 
-            {/* Why Choose Us Section - Reduced padding */}
-            <section className="py-3 sm:py-4 md:py-6 lg:py-8">
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-center text-red-800 mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+            {/* Why Choose Us Section */}
+            <section className="py-2 md:py-8">
+              <h2 className="text-sm md:text-2xl font-bold text-center text-red-800 mb-2 md:mb-6">
                 Why Choose Our Photography Services?
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-3 lg:gap-4">
-                <div className="bg-white p-2 sm:p-3 md:p-3 lg:p-4 rounded-md md:rounded-lg shadow-sm md:shadow-md border border-red-100 hover:shadow-md md:hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 mx-auto">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
+                <div className="bg-white p-2 md:p-4 rounded-md shadow-md border border-red-100 hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-1 md:mb-3 mx-auto">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Professional Equipment</h3>
-                  <p className="text-gray-600 text-[9px] sm:text-xs text-center leading-tight">High-end cameras and latest technology</p>
+                  <h3 className="font-bold text-[10px] md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Professional Equipment</h3>
+                  <p className="text-gray-600 text-[9px] md:text-xs text-center leading-tight">High-end cameras and latest technology</p>
                 </div>
                 
-                <div className="bg-white p-2 sm:p-3 md:p-3 lg:p-4 rounded-md md:rounded-lg shadow-sm md:shadow-md border border-yellow-100 hover:shadow-md md:hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 mx-auto">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-2 md:p-4 rounded-md shadow-md border border-yellow-100 hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-1 md:mb-3 mx-auto">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Timely Delivery</h3>
-                  <p className="text-gray-600 text-[9px] sm:text-xs text-center leading-tight">Quick turnaround without compromising quality</p>
+                  <h3 className="font-bold text-[10px] md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Timely Delivery</h3>
+                  <p className="text-gray-600 text-[9px] md:text-xs text-center leading-tight">Quick turnaround without compromising quality</p>
                 </div>
                 
-                <div className="bg-white p-2 sm:p-3 md:p-3 lg:p-4 rounded-md md:rounded-lg shadow-sm md:shadow-md border border-red-100 hover:shadow-md md:hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 mx-auto">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-2 md:p-4 rounded-md shadow-md border border-red-100 hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-1 md:mb-3 mx-auto">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Experienced Team</h3>
-                  <p className="text-gray-600 text-[9px] sm:text-xs text-center leading-tight">Years of expertise in wedding photography</p>
+                  <h3 className="font-bold text-[10px] md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Experienced Team</h3>
+                  <p className="text-gray-600 text-[9px] md:text-xs text-center leading-tight">Years of expertise in wedding photography</p>
                 </div>
                 
-                <div className="bg-white p-2 sm:p-3 md:p-3 lg:p-4 rounded-md md:rounded-lg shadow-sm md:shadow-md border border-yellow-100 hover:shadow-md md:hover:shadow-lg transition-shadow duration-300">
-                  <div className="w-6 h-6 sm:w-8 sm:h-8 md:w-8 md:h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 mx-auto">
-                    <svg className="w-3 h-3 sm:w-4 sm:h-4 md:w-4 md:h-4 lg:w-5 lg:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-2 md:p-4 rounded-md shadow-md border border-yellow-100 hover:shadow-lg transition-shadow duration-300">
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-1 md:mb-3 mx-auto">
+                    <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Customer Satisfaction</h3>
-                  <p className="text-gray-600 text-[9px] sm:text-xs text-center leading-tight">Dedicated to exceeding expectations</p>
+                  <h3 className="font-bold text-[10px] md:text-base text-red-700 mb-0.5 md:mb-1 text-center">Customer Satisfaction</h3>
+                  <p className="text-gray-600 text-[9px] md:text-xs text-center leading-tight">Dedicated to exceeding expectations</p>
                 </div>
               </div>
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Reduced width and padding */}
+          {/* Right Sidebar - Filter Section - Desktop Only */}
           <div className="hidden lg:block lg:w-72 flex-shrink-0">
             <div className="sticky top-20 bg-white rounded-lg shadow-lg border border-red-200 p-4">
               <h3 className="text-lg font-bold text-red-800 mb-4 text-center border-b border-yellow-500 pb-2">
@@ -883,7 +959,7 @@ const Photography = () => {
                 />
               </div>
 
-              {/* Filter Buttons - Reduced size */}
+              {/* Filter Buttons */}
               <div className="flex gap-2">
                 <button
                   onClick={handleFilter}

@@ -1,54 +1,28 @@
-import React, { useState } from "react";
-import { ArrowLeft, Utensils, ChefHat, Users, Banknote, X, Pen } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { ArrowLeft, Camera, Video, Upload, Globe, Banknote, X, Pen } from "lucide-react";
 
-// Form steps based on catering details
+// Form steps based on the details provided
 const steps = [
   "Vendor Details",
   "Contact Information",
   "Business & Legal",
-  "Cuisine & Menu",
-  "Capacity & Service",
-  "Pricing Details",
-  "Hygiene & Quality",
+  "Equipment & Team",
   "Service Coverage",
-  "Experience",
+  "Packages & Pricing",
+  "Delivery Timeline",
+  "Portfolio & Online",
   "Bank Details",
   "Declaration"
 ];
 
-// Catering types
-const cateringTypes = [
-  "Vegetarian",
-  "Non-Vegetarian",
-  "Both",
-  "Jain Food",
-  "Continental"
-];
-
-// Cuisines offered
-const cuisines = [
-  "South Indian",
-  "North Indian",
-  "Chinese",
-  "Continental",
-  "Arabic"
-];
-
-// Special menus
-const specialMenus = [
-  "Wedding Feast",
-  "Reception",
-  "Engagement",
-  "Sangeet / Mehendi",
-  "Buffet",
-  "Live Counters"
-];
-
-// Service types
+// Photography service types
 const serviceTypes = [
-  "Buffet",
-  "Banana Leaf Service",
-  "Table Service"
+  "Wedding Photography",
+  "Candid Photography",
+  "Videography",
+  "Cinematic Wedding Film",
+  "Pre-Wedding Shoot",
+  "Drone Coverage"
 ];
 
 // Business types
@@ -59,23 +33,24 @@ const businessTypes = [
   "Private Limited"
 ];
 
-// Preferred locations
+// Preferred wedding locations
 const locations = [
   "Local",
-  "Within District",
-  "Outstation"
+  "Within State",
+  "Outstation",
+  "International"
 ];
 
-export default function CateringVendorModal({ isOpen, onClose }) {
+export default function VendorRegistrationModal({ isOpen, onClose }) {
   const [step, setStep] = useState(0);
   const [isDrawing, setIsDrawing] = useState(false);
   const canvasRef = React.useRef(null);
   const [formData, setFormData] = useState({
     // Step 1
     vendorName: "",
-    proprietorName: "",
-    selectedCateringTypes: [],
-    otherCateringType: "",
+    ownerName: "",
+    selectedServices: [],
+    otherService: "",
     
     // Step 2
     mobile: "",
@@ -90,52 +65,53 @@ export default function CateringVendorModal({ isOpen, onClose }) {
     businessType: "",
     gstNumber: "",
     panNumber: "",
-    fssaiNumber: "",
     experience: "",
     
     // Step 4
-    selectedCuisines: [],
-    otherCuisine: "",
-    selectedSpecialMenus: [],
+    cameraModels: "",
+    videoEquipment: "",
+    teamMembers: "",
+    hasBackup: "",
     
     // Step 5
-    minCapacity: "",
-    maxCapacity: "",
-    selectedServiceType: "",
-    hasServingStaff: "",
-    hasUniformedStaff: "",
+    preferredLocations: [],
+    hasTravelCharges: "",
     
     // Step 6
-    minPrice: "",
-    maxPrice: "",
-    hasAdvancePayment: "",
-    advancePercent: "",
-    paymentTerms: "",
+    basicPackage: "",
+    fullPackage: "",
+    candidPackage: "",
+    videographyPackage: "",
+    albumCharges: "",
     
     // Step 7
-    hasFssaiCompliance: "",
-    foodPrepLocation: "",
-    hasWaterSource: "",
-    hasWasteManagement: "",
+    photoDelivery: "",
+    videoDelivery: "",
+    albumDelivery: "",
     
     // Step 8
-    preferredLocations: [],
-    hasTransportCharges: "",
+    website: "",
+    instagram: "",
+    portfolioLink: "",
     
     // Step 9
-    weddingsCatered: "",
-    references: "",
-    
-    // Step 10
     accountName: "",
     bankName: "",
     accountNumber: "",
     ifscCode: "",
     upiId: "",
     
-    // Step 11
+    // Step 10
     declaration: false
   });
+
+  // Handle mobile safe area
+  useEffect(() => {
+    if (isOpen) {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--safe-area-height', `calc(${vh}px * 100)`);
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -147,13 +123,24 @@ export default function CateringVendorModal({ isOpen, onClose }) {
     }));
   };
 
-  const handleArrayToggle = (arrayName, item) => {
+  const handleServiceToggle = (service) => {
     setFormData(prev => {
-      const array = [...prev[arrayName]];
-      if (array.includes(item)) {
-        return { ...prev, [arrayName]: array.filter(i => i !== item) };
+      const services = [...prev.selectedServices];
+      if (services.includes(service)) {
+        return { ...prev, selectedServices: services.filter(s => s !== service) };
       } else {
-        return { ...prev, [arrayName]: [...array, item] };
+        return { ...prev, selectedServices: [...services, service] };
+      }
+    });
+  };
+
+  const handleLocationToggle = (location) => {
+    setFormData(prev => {
+      const locations = [...prev.preferredLocations];
+      if (locations.includes(location)) {
+        return { ...prev, preferredLocations: locations.filter(l => l !== location) };
+      } else {
+        return { ...prev, preferredLocations: [...locations, location] };
       }
     });
   };
@@ -204,42 +191,41 @@ export default function CateringVendorModal({ isOpen, onClose }) {
   };
 
   const handleSubmit = () => {
-    console.log("Catering form submitted:", formData);
-    alert("Catering Registration submitted successfully!");
+    console.log("Form submitted:", formData);
+    alert("Registration submitted successfully!");
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4">
-      {/* Reduced width for desktop */}
-      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-lg rounded-xl shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] lg:max-h-[90vh] border border-red-200">
-
-        {/* Top Bar */}
-        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-xl flex items-center gap-3 px-4 py-3 sm:py-3 shrink-0">
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-md rounded-2xl shadow-2xl flex flex-col h-[90vh] max-h-[calc(var(--safe-area-height)-80px)] sm:h-auto sm:max-h-[85vh] border-2 border-red-200 mx-2 sm:mx-0">
+        
+        {/* Top Bar - Consistent with original photography form */}
+        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-2xl flex items-center gap-3 px-4 py-3 shrink-0">
           <button 
             onClick={onClose} 
             className="shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200"
           >
-            <ArrowLeft className="w-5 h-5 sm:w-5 sm:h-5" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
           <h2 className="font-pacifico font-semibold text-sm sm:text-base text-yellow-50 truncate">
-            Catering Vendor Registration
+            Photography Vendor Registration
           </h2>
           <button 
             onClick={onClose} 
-            className="ml-auto shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200 lg:hidden"
+            className="ml-auto shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200"
           >
-            <X className="w-5 h-5 sm:w-5 sm:h-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Steps */}
-        <div className="bg-gradient-to-r from-red-600/90 to-red-700/90 px-3 py-2 sm:py-2 shrink-0 overflow-x-auto">
-          <div className="flex items-start justify-between">
+        {/* Steps - Original photography form styling */}
+        <div className="bg-gradient-to-r from-red-600/90 to-red-700/90 px-3 py-2 shrink-0 overflow-x-auto">
+          <div className="flex items-start justify-between min-w-max">
             {steps.map((s, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center min-w-[50px] sm:min-w-0">
+              <div key={i} className="flex-1 flex flex-col items-center min-w-[60px] sm:min-w-0">
                 <div
-                  className={`w-6 h-6 sm:w-6 sm:h-6 rounded-full text-xs flex items-center justify-center font-bold ${
+                  className={`w-7 h-7 rounded-full text-xs flex items-center justify-center font-bold ${
                     i <= step
                       ? "bg-gradient-to-br from-yellow-400 to-yellow-600 text-red-900 shadow-lg"
                       : "bg-red-800/50 text-yellow-100"
@@ -248,7 +234,7 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                   {i + 1}
                 </div>
                 <p
-                  className={`text-[9px] sm:text-[10px] mt-1 text-center font-medium ${
+                  className={`text-[9px] sm:text-[10px] mt-1 text-center font-medium truncate w-full px-0.5 ${
                     i === step
                       ? "text-yellow-300 font-semibold"
                       : "text-yellow-100/80"
@@ -261,80 +247,77 @@ export default function CateringVendorModal({ isOpen, onClose }) {
           </div>
         </div>
 
-        {/* SCROLLABLE CONTENT - Improved layout */}
-        <div className="px-4 py-4 sm:py-5 space-y-4 overflow-y-auto flex-1">
+        {/* SCROLLABLE CONTENT - Maintaining original layout */}
+        <div className="px-3 sm:px-4 py-3 sm:py-4 space-y-4 overflow-y-auto flex-1">
+          
           {/* STEP 1: Vendor Details */}
           {step === 0 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm flex items-center justify-center">
-                  <Utensils className="inline w-4 h-4 mr-2" />
-                  Vendor Basic Details
-                </h3>
-              </div>
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                <Camera className="inline w-4 h-4 mr-2" />
+                Vendor Basic Details
+              </h3>
               
               <div className="form-group">
-                <label className="form-label">Catering Company / Vendor Name *</label>
+                <label className="form-label">Vendor / Studio Name *</label>
                 <input 
                   name="vendorName"
                   value={formData.vendorName}
                   onChange={handleInputChange}
                   className="input-field" 
-                  placeholder="Enter catering company or vendor name" 
+                  placeholder="Enter vendor or studio name" 
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Proprietor / Contact Person Name *</label>
+                <label className="form-label">Owner / Photographer Name *</label>
                 <input 
-                  name="proprietorName"
-                  value={formData.proprietorName}
+                  name="ownerName"
+                  value={formData.ownerName}
                   onChange={handleInputChange}
                   className="input-field" 
-                  placeholder="Enter proprietor or contact person name" 
+                  placeholder="Enter owner or photographer name" 
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Type of Catering *</label>
+                <label className="form-label">Type of Service *</label>
                 <div className="space-y-2">
-                  <div className="grid grid-cols-2 gap-2">
-                    {cateringTypes.map(type => (
-                      <label key={type} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {serviceTypes.map(service => (
+                      <label key={service} className="flex items-center gap-2 text-xs">
                         <input 
                           type="checkbox" 
-                          checked={formData.selectedCateringTypes.includes(type)}
-                          onChange={() => handleArrayToggle('selectedCateringTypes', type)}
+                          checked={formData.selectedServices.includes(service)}
+                          onChange={() => handleServiceToggle(service)}
                           className="w-3.5 h-3.5 accent-red-600" 
                         /> 
-                        <span className="text-gray-700">{type}</span>
+                        <span className="text-gray-700">{service}</span>
                       </label>
                     ))}
                   </div>
                   
                   <div className="flex items-center gap-2 mt-3">
-                    <label className="text-xs font-semibold text-red-700 whitespace-nowrap">Other:</label>
+                    <label className="text-xs font-semibold whitespace-nowrap text-red-700">Other:</label>
                     <input 
-                      name="otherCateringType"
-                      value={formData.otherCateringType}
+                      name="otherService"
+                      value={formData.otherService}
                       onChange={handleInputChange}
-                      className="input-field flex-1 text-sm" 
-                      placeholder="Specify other catering type" 
+                      className="input-field flex-1" 
+                      placeholder="Specify other service" 
                     />
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
 
           {/* STEP 2: Contact Information */}
           {step === 1 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Contact Information
-                </h3>
-              </div>
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                Contact Information
+              </h3>
               
               <div className="form-group">
                 <label className="form-label">Mobile Number *</label>
@@ -416,23 +399,21 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                   placeholder="Enter PIN code" 
                 />
               </div>
-            </div>
+            </>
           )}
 
           {/* STEP 3: Business & Legal Details */}
           {step === 2 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Business & Legal Details
-                </h3>
-              </div>
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                Business & Legal Details
+              </h3>
               
               <div className="form-group">
                 <label className="form-label">Business Type *</label>
                 <div className="grid grid-cols-2 gap-2">
                   {businessTypes.map(type => (
-                    <label key={type} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
+                    <label key={type} className="flex items-center gap-2 text-xs">
                       <input 
                         type="radio" 
                         name="businessType" 
@@ -470,17 +451,6 @@ export default function CateringVendorModal({ isOpen, onClose }) {
               </div>
               
               <div className="form-group">
-                <label className="form-label">FSSAI License Number *</label>
-                <input 
-                  name="fssaiNumber"
-                  value={formData.fssaiNumber}
-                  onChange={handleInputChange}
-                  className="input-field" 
-                  placeholder="Enter FSSAI license number" 
-                />
-              </div>
-              
-              <div className="form-group">
                 <label className="form-label">Years of Experience *</label>
                 <input 
                   name="experience"
@@ -491,393 +461,97 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                   type="number"
                 />
               </div>
-            </div>
+            </>
           )}
 
-          {/* STEP 4: Cuisine & Menu Details */}
+          {/* STEP 4: Equipment & Team Details */}
           {step === 3 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm flex items-center justify-center">
-                  <ChefHat className="inline w-4 h-4 mr-2" />
-                  Cuisine & Menu Details
-                </h3>
-              </div>
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                <Camera className="inline w-4 h-4 mr-2" />
+                Equipment & Team Details
+              </h3>
               
               <div className="form-group">
-                <label className="form-label">Cuisines Offered *</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {cuisines.map(cuisine => (
-                    <label key={cuisine} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="checkbox" 
-                        checked={formData.selectedCuisines.includes(cuisine)}
-                        onChange={() => handleArrayToggle('selectedCuisines', cuisine)}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">{cuisine}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Other Cuisine</label>
+                <label className="form-label">Camera Models Used *</label>
                 <input 
-                  name="otherCuisine"
-                  value={formData.otherCuisine}
+                  name="cameraModels"
+                  value={formData.cameraModels}
                   onChange={handleInputChange}
                   className="input-field" 
-                  placeholder="Specify other cuisine" 
+                  placeholder="Enter camera models" 
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Special Menus Available *</label>
-                <div className="grid grid-cols-2 gap-2">
-                  {specialMenus.map(menu => (
-                    <label key={menu} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="checkbox" 
-                        checked={formData.selectedSpecialMenus.includes(menu)}
-                        onChange={() => handleArrayToggle('selectedSpecialMenus', menu)}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">{menu}</span>
-                    </label>
-                  ))}
+                <label className="form-label">Video Equipment / Drone (if any)</label>
+                <input 
+                  name="videoEquipment"
+                  value={formData.videoEquipment}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter video equipment details" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Number of Team Members *</label>
+                <input 
+                  name="teamMembers"
+                  value={formData.teamMembers}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter number of team members" 
+                  type="number"
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Backup Equipment Available *</label>
+                <div className="flex gap-4 text-sm">
+                  <label className="flex items-center gap-2 text-gray-700">
+                    <input 
+                      type="radio" 
+                      name="hasBackup" 
+                      value="yes"
+                      checked={formData.hasBackup === "yes"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    Yes
+                  </label>
+                  <label className="flex items-center gap-2 text-gray-700">
+                    <input 
+                      type="radio" 
+                      name="hasBackup" 
+                      value="no"
+                      checked={formData.hasBackup === "no"}
+                      onChange={handleInputChange}
+                      className="w-3.5 h-3.5 accent-red-600" 
+                    /> 
+                    No
+                  </label>
                 </div>
               </div>
-            </div>
+            </>
           )}
 
-          {/* STEP 5: Capacity & Service Details */}
+          {/* STEP 5: Service Coverage */}
           {step === 4 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm flex items-center justify-center">
-                  <Users className="inline w-4 h-4 mr-2" />
-                  Capacity & Service Details
-                </h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label className="form-label">Minimum Plate Capacity *</label>
-                  <input 
-                    name="minCapacity"
-                    value={formData.minCapacity}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter minimum capacity" 
-                    type="number"
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Maximum Plate Capacity *</label>
-                  <input 
-                    name="maxCapacity"
-                    value={formData.maxCapacity}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter maximum capacity" 
-                    type="number"
-                  />
-                </div>
-              </div>
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                Service Coverage
+              </h3>
               
               <div className="form-group">
-                <label className="form-label">Service Type *</label>
-                <div className="flex flex-wrap gap-3">
-                  {serviceTypes.map(type => (
-                    <label key={type} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="selectedServiceType" 
-                        value={type}
-                        checked={formData.selectedServiceType === type}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">{type}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label className="form-label">Serving Staff Provided *</label>
-                  <div className="flex gap-3">
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasServingStaff" 
-                        value="yes"
-                        checked={formData.hasServingStaff === "yes"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">Yes</span>
-                    </label>
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasServingStaff" 
-                        value="no"
-                        checked={formData.hasServingStaff === "no"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">No</span>
-                    </label>
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">Uniformed Staff *</label>
-                  <div className="flex gap-3">
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasUniformedStaff" 
-                        value="yes"
-                        checked={formData.hasUniformedStaff === "yes"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">Yes</span>
-                    </label>
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasUniformedStaff" 
-                        value="no"
-                        checked={formData.hasUniformedStaff === "no"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">No</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 6: Pricing Details */}
-          {step === 5 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm flex items-center justify-center">
-                  <Banknote className="inline w-4 h-4 mr-2" />
-                  Pricing Details
-                </h3>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label className="form-label">Min Price per Plate (₹)</label>
-                  <input 
-                    name="minPrice"
-                    value={formData.minPrice}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter minimum price" 
-                  />
-                </div>
-                <div className="form-group">
-                  <label className="form-label">Max Price per Plate (₹)</label>
-                  <input 
-                    name="maxPrice"
-                    value={formData.maxPrice}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter maximum price" 
-                  />
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Advance Payment Required *</label>
-                <div className="flex gap-3">
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                    <input 
-                      type="radio" 
-                      name="hasAdvancePayment" 
-                      value="yes"
-                      checked={formData.hasAdvancePayment === "yes"}
-                      onChange={handleInputChange}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    <span className="text-gray-700">Yes</span>
-                  </label>
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                    <input 
-                      type="radio" 
-                      name="hasAdvancePayment" 
-                      value="no"
-                      checked={formData.hasAdvancePayment === "no"}
-                      onChange={handleInputChange}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    <span className="text-gray-700">No</span>
-                  </label>
-                </div>
-                
-                {formData.hasAdvancePayment === "yes" && (
-                  <div className="form-group mt-3">
-                    <label className="form-label">Advance Percentage</label>
-                    <input 
-                      name="advancePercent"
-                      value={formData.advancePercent}
-                      onChange={handleInputChange}
-                      className="input-field" 
-                      placeholder="Enter advance percentage" 
-                    />
-                  </div>
-                )}
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Balance Payment Terms</label>
-                <input 
-                  name="paymentTerms"
-                  value={formData.paymentTerms}
-                  onChange={handleInputChange}
-                  className="input-field" 
-                  placeholder="Enter payment terms" 
-                />
-              </div>
-            </div>
-          )}
-
-          {/* STEP 7: Hygiene & Quality Assurance */}
-          {step === 6 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Hygiene & Quality Assurance
-                </h3>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">FSSAI Compliance *</label>
-                <div className="flex gap-3">
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                    <input 
-                      type="radio" 
-                      name="hasFssaiCompliance" 
-                      value="yes"
-                      checked={formData.hasFssaiCompliance === "yes"}
-                      onChange={handleInputChange}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    <span className="text-gray-700">Yes</span>
-                  </label>
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                    <input 
-                      type="radio" 
-                      name="hasFssaiCompliance" 
-                      value="no"
-                      checked={formData.hasFssaiCompliance === "no"}
-                      onChange={handleInputChange}
-                      className="w-3.5 h-3.5 accent-red-600" 
-                    /> 
-                    <span className="text-gray-700">No</span>
-                  </label>
-                </div>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Food Preparation Location *</label>
-                <input 
-                  name="foodPrepLocation"
-                  value={formData.foodPrepLocation}
-                  onChange={handleInputChange}
-                  className="input-field" 
-                  placeholder="Enter food preparation location" 
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label className="form-label">Water Source (RO/Mineral) *</label>
-                  <div className="flex gap-3">
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasWaterSource" 
-                        value="yes"
-                        checked={formData.hasWaterSource === "yes"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">Yes</span>
-                    </label>
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasWaterSource" 
-                        value="no"
-                        checked={formData.hasWaterSource === "no"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">No</span>
-                    </label>
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">Waste Management Arranged *</label>
-                  <div className="flex gap-3">
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasWasteManagement" 
-                        value="yes"
-                        checked={formData.hasWasteManagement === "yes"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">Yes</span>
-                    </label>
-                    <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
-                      <input 
-                        type="radio" 
-                        name="hasWasteManagement" 
-                        value="no"
-                        checked={formData.hasWasteManagement === "no"}
-                        onChange={handleInputChange}
-                        className="w-3.5 h-3.5 accent-red-600" 
-                      /> 
-                      <span className="text-gray-700">No</span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* STEP 8: Service Coverage */}
-          {step === 7 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Service Coverage
-                </h3>
-              </div>
-              
-              <div className="form-group">
-                <label className="form-label">Preferred Locations *</label>
+                <label className="form-label">Preferred Wedding Locations *</label>
                 <div className="grid grid-cols-2 gap-2">
                   {locations.map(location => (
-                    <label key={location} className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
+                    <label key={location} className="flex items-center gap-2 text-xs">
                       <input 
                         type="checkbox" 
                         checked={formData.preferredLocations.includes(location)}
-                        onChange={() => handleArrayToggle('preferredLocations', location)}
+                        onChange={() => handleLocationToggle(location)}
                         className="w-3.5 h-3.5 accent-red-600" 
                       /> 
                       <span className="text-gray-700">{location}</span>
@@ -887,78 +561,195 @@ export default function CateringVendorModal({ isOpen, onClose }) {
               </div>
               
               <div className="form-group">
-                <label className="form-label">Transportation Charges Applicable *</label>
-                <div className="flex gap-3">
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
+                <label className="form-label">Travel Charges Applicable *</label>
+                <div className="flex gap-4 text-sm">
+                  <label className="flex items-center gap-2 text-gray-700">
                     <input 
                       type="radio" 
-                      name="hasTransportCharges" 
+                      name="hasTravelCharges" 
                       value="yes"
-                      checked={formData.hasTransportCharges === "yes"}
+                      checked={formData.hasTravelCharges === "yes"}
                       onChange={handleInputChange}
                       className="w-3.5 h-3.5 accent-red-600" 
                     /> 
-                    <span className="text-gray-700">Yes</span>
+                    Yes
                   </label>
-                  <label className="flex items-center gap-2 text-xs bg-red-50 p-2 rounded border border-red-100 hover:bg-red-100 cursor-pointer transition-colors">
+                  <label className="flex items-center gap-2 text-gray-700">
                     <input 
                       type="radio" 
-                      name="hasTransportCharges" 
+                      name="hasTravelCharges" 
                       value="no"
-                      checked={formData.hasTransportCharges === "no"}
+                      checked={formData.hasTravelCharges === "no"}
                       onChange={handleInputChange}
                       className="w-3.5 h-3.5 accent-red-600" 
                     /> 
-                    <span className="text-gray-700">No</span>
+                    No
                   </label>
                 </div>
               </div>
-            </div>
+            </>
           )}
 
-          {/* STEP 9: Previous Experience */}
-          {step === 8 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Previous Experience & References
-                </h3>
+          {/* STEP 6: Packages & Pricing */}
+          {step === 5 && (
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                <Banknote className="inline w-4 h-4 mr-2" />
+                Packages & Pricing
+              </h3>
+              
+              <div className="form-group">
+                <label className="form-label">Basic Wedding Package (₹) *</label>
+                <input 
+                  name="basicPackage"
+                  value={formData.basicPackage}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter basic package price" 
+                />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Number of Weddings Catered</label>
+                <label className="form-label">Full Wedding Package (₹) *</label>
                 <input 
-                  name="weddingsCatered"
-                  value={formData.weddingsCatered}
+                  name="fullPackage"
+                  value={formData.fullPackage}
                   onChange={handleInputChange}
                   className="input-field" 
-                  placeholder="Enter number of weddings catered" 
+                  placeholder="Enter full package price" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Candid Photography (₹)</label>
+                <input 
+                  name="candidPackage"
+                  value={formData.candidPackage}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter candid photography price" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Videography / Cinematic (₹)</label>
+                <input 
+                  name="videographyPackage"
+                  value={formData.videographyPackage}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter videography price" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Album Charges (if separate)</label>
+                <input 
+                  name="albumCharges"
+                  value={formData.albumCharges}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter album charges" 
+                />
+              </div>
+            </>
+          )}
+
+          {/* STEP 7: Delivery Timeline */}
+          {step === 6 && (
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                Delivery Timeline
+              </h3>
+              
+              <div className="form-group">
+                <label className="form-label">Photo Delivery (Days) *</label>
+                <input 
+                  name="photoDelivery"
+                  value={formData.photoDelivery}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter number of days" 
                   type="number"
                 />
               </div>
               
               <div className="form-group">
-                <label className="form-label">Major Clients / References (if any)</label>
-                <textarea 
-                  name="references"
-                  value={formData.references}
+                <label className="form-label">Video Delivery (Days)</label>
+                <input 
+                  name="videoDelivery"
+                  value={formData.videoDelivery}
                   onChange={handleInputChange}
-                  className="input-field min-h-[100px]" 
-                  placeholder="Enter references" 
+                  className="input-field" 
+                  placeholder="Enter number of days" 
+                  type="number"
                 />
               </div>
-            </div>
+              
+              <div className="form-group">
+                <label className="form-label">Album Delivery (Days)</label>
+                <input 
+                  name="albumDelivery"
+                  value={formData.albumDelivery}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter number of days" 
+                  type="number"
+                />
+              </div>
+            </>
           )}
 
-          {/* STEP 10: Bank Details */}
-          {step === 9 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm flex items-center justify-center">
-                  <Banknote className="inline w-4 h-4 mr-2" />
-                  Bank Details (For Payments)
-                </h3>
+          {/* STEP 8: Portfolio & Online Presence */}
+          {step === 7 && (
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                <Globe className="inline w-4 h-4 mr-2" />
+                Portfolio & Online Presence
+              </h3>
+              
+              <div className="form-group">
+                <label className="form-label">Website / Portfolio Link</label>
+                <input 
+                  name="website"
+                  value={formData.website}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter website URL" 
+                />
               </div>
+              
+              <div className="form-group">
+                <label className="form-label">Instagram / Facebook Page</label>
+                <input 
+                  name="instagram"
+                  value={formData.instagram}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter social media handle" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">Google Drive / Sample Work Link</label>
+                <input 
+                  name="portfolioLink"
+                  value={formData.portfolioLink}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter portfolio link" 
+                />
+              </div>
+            </>
+          )}
+
+          {/* STEP 9: Bank Details */}
+          {step === 8 && (
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                <Banknote className="inline w-4 h-4 mr-2" />
+                Bank Details (For Payments)
+              </h3>
               
               <div className="form-group">
                 <label className="form-label">Account Holder Name *</label>
@@ -982,28 +773,26 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                 />
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="form-group">
-                  <label className="form-label">Account Number *</label>
-                  <input 
-                    name="accountNumber"
-                    value={formData.accountNumber}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter account number" 
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">IFSC Code *</label>
-                  <input 
-                    name="ifscCode"
-                    value={formData.ifscCode}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter IFSC code" 
-                  />
-                </div>
+              <div className="form-group">
+                <label className="form-label">Account Number *</label>
+                <input 
+                  name="accountNumber"
+                  value={formData.accountNumber}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter account number" 
+                />
+              </div>
+              
+              <div className="form-group">
+                <label className="form-label">IFSC Code *</label>
+                <input 
+                  name="ifscCode"
+                  value={formData.ifscCode}
+                  onChange={handleInputChange}
+                  className="input-field" 
+                  placeholder="Enter IFSC code" 
+                />
               </div>
               
               <div className="form-group">
@@ -1016,27 +805,25 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                   placeholder="Enter UPI ID" 
                 />
               </div>
-            </div>
+            </>
           )}
 
-          {/* STEP 11: Declaration */}
-          {step === 10 && (
-            <div className="space-y-4">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg p-3">
-                <h3 className="text-white font-bold text-center text-sm">
-                  Declaration
-                </h3>
-              </div>
+          {/* STEP 10: Declaration */}
+          {step === 9 && (
+            <>
+              <h3 className="text-red-800 font-bold text-center text-sm mb-3">
+                Declaration
+              </h3>
               
               <div className="bg-gradient-to-r from-red-100 to-yellow-50 rounded-lg p-4 border border-red-200">
                 <p className="text-sm text-gray-700 mb-4 leading-relaxed">
                   I hereby declare that the above information is true and correct. 
-                  I agree to provide catering services for marriage functions as per 
-                  agreed menu, quality, hygiene standards, and terms.
+                  I agree to provide photography services professionally for marriage events 
+                  as per agreed terms and conditions.
                 </p>
                 
-                <div className="space-y-4">
-                  <label className="flex items-center gap-2 text-sm bg-red-50 p-3 rounded border border-red-100">
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2 text-sm text-gray-700">
                     <input 
                       type="checkbox" 
                       name="declaration"
@@ -1044,15 +831,15 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                       onChange={handleInputChange}
                       className="w-4 h-4 accent-red-600" 
                     />
-                    <span className="font-semibold text-red-700">I accept the terms and conditions *</span>
+                    <span className="font-semibold">I accept the terms and conditions *</span>
                   </label>
                   
                   <div className="form-group">
                     <label className="form-label flex items-center gap-2">
-                      <Pen className="w-4 h-4 text-red-600" />
+                      <Pen className="w-4 h-4" />
                       Vendor Signature *
                     </label>
-                    <p className="text-xs text-gray-600 mb-2">Draw your signature in the white space below</p>
+                    <p className="text-xs text-gray-600 mb-2">Draw your signature in the box below</p>
                     <div className="relative">
                       <canvas
                         ref={canvasRef}
@@ -1076,42 +863,40 @@ export default function CateringVendorModal({ isOpen, onClose }) {
                       <button
                         type="button"
                         onClick={clearSignature}
-                        className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition-colors flex items-center gap-1"
+                        className="absolute top-2 right-2 bg-red-600 text-white px-3 py-1 rounded text-xs hover:bg-red-700 transition-colors"
                       >
-                        <Pen className="w-3 h-3" />
-                        Clear Signature
+                        Clear
                       </button>
                     </div>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="form-group">
-                      <label className="form-label">Date *</label>
-                      <input 
-                        className="input-field" 
-                        placeholder="Select date" 
-                        type="date"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label className="form-label">Place *</label>
-                      <input 
-                        className="input-field" 
-                        placeholder="Enter place" 
-                      />
-                    </div>
+                  <div className="form-group">
+                    <label className="form-label">Date *</label>
+                    <input 
+                      className="input-field" 
+                      placeholder="Select date" 
+                      type="date"
+                    />
+                  </div>
+                  
+                  <div className="form-group">
+                    <label className="form-label">Place *</label>
+                    <input 
+                      className="input-field" 
+                      placeholder="Enter place" 
+                    />
                   </div>
                 </div>
               </div>
-            </div>
+            </>
           )}
         </div>
 
-        {/* FOOTER */}
-        <div className="flex gap-3 p-4 border-t border-red-200 bg-gradient-to-r from-red-50 to-yellow-50 shrink-0 rounded-b-xl">
+        {/* FOOTER - Original photography form styling */}
+        <div className="flex gap-3 p-4 border-t border-red-200 bg-gradient-to-r from-red-50 to-yellow-50 shrink-0 rounded-b-2xl">
           {step > 0 && (
             <button 
-              className="btn-outline-red text-sm px-3 py-2" 
+              className="btn-outline-red text-sm px-4 py-2.5" 
               onClick={() => setStep(step - 1)}
             >
               Back
@@ -1119,11 +904,11 @@ export default function CateringVendorModal({ isOpen, onClose }) {
           )}
           
           <button
-            className="btn-primary-red ml-auto text-sm px-3 py-2"
-            onClick={() => (step === 10 ? handleSubmit() : setStep(step + 1))}
-            disabled={step === 10 && !formData.declaration}
+            className="btn-primary-red ml-auto text-sm px-4 py-2.5"
+            onClick={() => (step === 9 ? handleSubmit() : setStep(step + 1))}
+            disabled={step === 9 && !formData.declaration}
           >
-            {step === 10 ? "Submit Registration" : "Continue"}
+            {step === 9 ? "Submit Registration" : "Continue"}
           </button>
         </div>
 
@@ -1152,11 +937,6 @@ export default function CateringVendorModal({ isOpen, onClose }) {
           background: white;
           transition: all 0.3s ease;
           box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        textarea.input-field {
-          min-height: 80px;
-          resize: vertical;
         }
         
         .input-field:focus {

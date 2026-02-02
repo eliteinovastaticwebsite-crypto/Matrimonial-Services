@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, Camera, Video, Upload, Globe, Banknote, X, Pen } from "lucide-react";
 
 // Form steps based on the details provided
@@ -105,6 +105,14 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
     declaration: false
   });
 
+  // Handle mobile safe area
+  useEffect(() => {
+    if (isOpen) {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--safe-area-height', `calc(${vh}px * 100)`);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const handleInputChange = (e) => {
@@ -189,11 +197,11 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-md rounded-xl shadow-2xl flex flex-col max-h-[95vh] sm:max-h-[90vh] border border-red-200">
-
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="bg-gradient-to-b from-red-50 to-yellow-50 w-full max-w-md rounded-2xl shadow-2xl flex flex-col h-[90vh] max-h-[calc(var(--safe-area-height)-80px)] sm:h-auto sm:max-h-[85vh] border-2 border-red-200 mx-2 sm:mx-0">
+        
         {/* Top Bar */}
-        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-xl flex items-center gap-3 px-4 py-3 shrink-0">
+        <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 rounded-t-2xl flex items-center gap-3 px-4 py-3 shrink-0">
           <button 
             onClick={onClose} 
             className="shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200"
@@ -205,7 +213,7 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           </h2>
           <button 
             onClick={onClose} 
-            className="ml-auto shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200 lg:hidden"
+            className="ml-auto shrink-0 text-yellow-200 hover:text-yellow-300 hover:scale-110 transition-transform duration-200"
           >
             <X className="w-5 h-5" />
           </button>
@@ -213,11 +221,11 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
 
         {/* Steps */}
         <div className="bg-gradient-to-r from-red-600/90 to-red-700/90 px-3 py-2 shrink-0 overflow-x-auto">
-          <div className="flex items-start justify-between">
+          <div className="flex items-start justify-between min-w-max">
             {steps.map((s, i) => (
-              <div key={i} className="flex-1 flex flex-col items-center min-w-[55px] sm:min-w-0">
+              <div key={i} className="flex-1 flex flex-col items-center min-w-[60px] sm:min-w-0">
                 <div
-                  className={`w-6 h-6 rounded-full text-xs flex items-center justify-center font-bold ${
+                  className={`w-7 h-7 rounded-full text-xs flex items-center justify-center font-bold ${
                     i <= step
                       ? "bg-gradient-to-br from-yellow-400 to-yellow-600 text-red-900 shadow-lg"
                       : "bg-red-800/50 text-yellow-100"
@@ -226,7 +234,7 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
                   {i + 1}
                 </div>
                 <p
-                  className={`text-[9px] sm:text-[10px] mt-1 text-center font-medium ${
+                  className={`text-[9px] sm:text-[10px] mt-1 text-center font-medium truncate w-full px-0.5 ${
                     i === step
                       ? "text-yellow-300 font-semibold"
                       : "text-yellow-100/80"
@@ -240,8 +248,8 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
         </div>
 
         {/* SCROLLABLE CONTENT */}
-        <div className="px-4 py-3 sm:py-4 space-y-4 overflow-y-auto flex-1">
-
+        <div className="px-3 sm:px-4 py-3 sm:py-4 space-y-4 overflow-y-auto flex-1">
+          
           {/* STEP 1: Vendor Details */}
           {step === 0 && (
             <>
@@ -885,11 +893,11 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
         </div>
 
         {/* FOOTER */}
-        <div className="flex gap-3 p-4 border-t border-red-200 bg-gradient-to-r from-red-50 to-yellow-50 shrink-0 rounded-b-xl">
+        <div className="flex gap-3 p-4 border-t border-red-200 bg-gradient-to-r from-red-50 to-yellow-50 shrink-0 rounded-b-2xl">
 
           {step > 0 && (
             <button 
-              className="btn-outline-red text-sm px-3 py-2" 
+              className="btn-outline-red text-sm px-4 py-2.5" 
               onClick={() => setStep(step - 1)}
             >
               Back
@@ -897,7 +905,7 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
           )}
           
           <button
-            className="btn-primary-red ml-auto text-sm px-3 py-2"
+            className="btn-primary-red ml-auto text-sm px-4 py-2.5"
             onClick={() => (step === 9 ? handleSubmit() : setStep(step + 1))}
             disabled={step === 9 && !formData.declaration}
           >
