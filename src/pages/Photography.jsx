@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import album from '../assets/album.jpg';
 import kids from '../assets/kids.jpg';
 import videography from '../assets/videography.jpg';
@@ -19,6 +19,7 @@ import makeup from '../assets/makeup.jpg';
 import entertainment from '../assets/entertainment.jpg';
 
 const Photography = () => {
+  const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
@@ -27,6 +28,26 @@ const Photography = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+
+  // Check if there's a filter parameter in the URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const openFilter = urlParams.get('openFilter');
+    
+    if (openFilter === 'true') {
+      // Scroll to filter section
+      setTimeout(() => {
+        const filterSection = document.getElementById('filter-section');
+        if (filterSection) {
+          filterSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        // Show mobile filter on mobile devices
+        if (window.innerWidth < 1024) {
+          setShowMobileFilter(true);
+        }
+      }, 500);
+    }
+  }, []);
 
   const banners = [
     {
@@ -379,8 +400,38 @@ const Photography = () => {
     setShowMobileFilter(false);
   };
 
+  // Function to handle filter button click from other pages
+  const handleFilterButtonClick = () => {
+    // If we're already on the photography page, just scroll to filter section
+    if (window.location.pathname === '/photography') {
+      const filterSection = document.getElementById('filter-section');
+      if (filterSection) {
+        filterSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      // Show mobile filter on mobile devices
+      if (window.innerWidth < 1024) {
+        setShowMobileFilter(true);
+      }
+    } else {
+      // Navigate to photography page with filter parameter
+      navigate('/photography?openFilter=true');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
+      {/* Floating Filter Button - Bottom Right */}
+      <button
+        onClick={handleFilterButtonClick}
+        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
+        aria-label="Open Filters"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+        </svg>
+        <span className="ml-2 font-bold text-sm">Filter</span>
+      </button>
+
       {/* Banner Section */}
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[600px] w-full">
@@ -514,186 +565,241 @@ const Photography = () => {
               </div>
             </section>
 
-{/* Mobile: Show Filters Button and Vendor Count Section */}
-<div className="lg:hidden">
-  {/* Vendor Count Section - MOBILE: 2 COLUMNS */}
-  <section className="py-2 md:py-6">
-    <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow-md p-3 mb-3">
-      <div className="flex items-center justify-between">
-        {/* Left Column - Vendor Count (Bigger) */}
-        <div className="flex-1 pr-2">
-          <h3 className="text-sm font-bold text-white leading-tight">
-            {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
-          </h3>
-          <p className="text-yellow-200 mt-0.5 text-[10px] leading-tight">
-            {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
-          </p>
-        </div>
-        
-        {/* Right Column - Price Range and Filter Icon */}
-        <div className="flex flex-col items-end">
-          <div className="bg-white/20 px-2 py-1 rounded-md mb-1">
-            <span className="text-white font-medium text-[9px]">Price Range:</span>
-            <span className="text-yellow-300 ml-1 text-[9px]">₹5,000 - ₹5,00,000</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    {/* Applied Filters Tags */}
-    <div className="flex flex-wrap gap-1 mb-3">
-      {selectedEvent && (
-        <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
-          Event: {selectedEvent}
-          <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
-            ×
-          </button>
-        </span>
-      )}
-      {selectedState && (
-        <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
-          State: {selectedState}
-          <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
-            ×
-          </button>
-        </span>
-      )}
-      {(minBudget || maxBudget) && (
-        <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
-          Budget: {minBudget || '0'} - {maxBudget || '∞'}
-          <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
-            ×
-          </button>
-        </span>
-      )}
-    </div>
-  </section>
+            {/* Mobile: Vendor Count Section */}
+            <div className="lg:hidden">
+              {/* Vendor Count Section - MOBILE: 2 COLUMNS */}
+              <section className="py-2 md:py-6">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow-md p-3 mb-3">
+                  <div className="flex items-center justify-between">
+                    {/* Left Column - Vendor Count (Bigger) */}
+                    <div className="flex-1 pr-2">
+                      <h3 className="text-sm font-bold text-white leading-tight">
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
+                      </h3>
+                      <p className="text-yellow-200 mt-0.5 text-[10px] leading-tight">
+                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
+                      </p>
+                    </div>
+                    
+                    {/* Right Column - Price Range and Filter Icon */}
+                    <div className="flex flex-col items-end">
+                      <div className="bg-white/20 px-2 py-1 rounded-md mb-1">
+                        <span className="text-white font-medium text-[9px]">Price Range:</span>
+                        <span className="text-yellow-300 ml-1 text-[9px]">₹5,000 - ₹5,00,000</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Applied Filters Tags */}
+                <div className="flex flex-wrap gap-1 mb-3">
+                  {selectedEvent && (
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                      Event: {selectedEvent}
+                      <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {selectedState && (
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                      State: {selectedState}
+                      <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {(minBudget || maxBudget) && (
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                      Budget: {minBudget || '0'} - {maxBudget || '∞'}
+                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                </div>
+              </section>
 
-  {/* NEW: Mobile Filters Section - Always Visible */}
-  <section className="py-2 mb-4">
-    <div className="bg-white rounded-md shadow-md border border-red-200 p-3">
-      {/* Filters Header */}
-      <div className="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
-        <h3 className="text-sm font-bold text-red-800 flex items-center">
-          <svg className="w-4 h-4 mr-1.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-          </svg>
-          Filter Options
-        </h3>
-        <button 
-          onClick={handleReset}
-          className="text-xs font-medium text-red-600 hover:text-red-800 flex items-center"
-        >
-          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-          Reset
-        </button>
-      </div>
+              {/* NEW: Mobile Filters Section - Always Visible */}
+              <section className="py-2 mb-4">
+                <div className="bg-white rounded-md shadow-md border border-red-200 p-3">
+                  {/* Filters Header */}
+                  <div className="flex items-center justify-between mb-3 border-b border-gray-100 pb-2">
+                    <h3 className="text-sm font-bold text-red-800 flex items-center">
+                      <svg className="w-4 h-4 mr-1.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Filter Options
+                    </h3>
+                    <button 
+                      onClick={handleReset}
+                      className="text-xs font-medium text-red-600 hover:text-red-800 flex items-center"
+                    >
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Reset
+                    </button>
+                  </div>
 
-      {/* Filter Options in Grid Layout */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* Budget Range */}
-        <div className="col-span-2">
-          <label className="block text-xs font-bold text-gray-700 mb-1">Budget (₹)</label>
-          <div className="flex gap-2">
-            <input
-              type="number"
-              placeholder="Min"
-              value={minBudget}
-              onChange={(e) => setMinBudget(e.target.value)}
-              className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-            <input
-              type="number"
-              placeholder="Max"
-              value={maxBudget}
-              onChange={(e) => setMaxBudget(e.target.value)}
-              className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-        </div>
+                  {/* Filter Options in Grid Layout */}
+                  <div className="grid grid-cols-2 gap-3">
+                    {/* Budget Range */}
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-gray-700 mb-1">Budget (₹)</label>
+                      <div className="flex gap-2">
+                        <input
+                          type="number"
+                          placeholder="Min"
+                          value={minBudget}
+                          onChange={(e) => setMinBudget(e.target.value)}
+                          className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Max"
+                          value={maxBudget}
+                          onChange={(e) => setMaxBudget(e.target.value)}
+                          className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                        />
+                      </div>
+                    </div>
 
-        {/* Event Type */}
-        <div className="col-span-2">
-          <label className="block text-xs font-bold text-gray-700 mb-1">Event Type</label>
-          <select
-            value={selectedEvent}
-            onChange={(e) => setSelectedEvent(e.target.value)}
-            className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-          >
-            <option value="">All Events</option>
-            {eventTypes.map((event) => (
-              <option key={event} value={event}>{event}</option>
-            ))}
-          </select>
-        </div>
+                    {/* Event Type */}
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-gray-700 mb-1">Event Type</label>
+                      <select
+                        value={selectedEvent}
+                        onChange={(e) => setSelectedEvent(e.target.value)}
+                        className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All Events</option>
+                        {eventTypes.map((event) => (
+                          <option key={event} value={event}>{event}</option>
+                        ))}
+                      </select>
+                    </div>
 
-        {/* State */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
-          <select
-            value={selectedState}
-            onChange={(e) => setSelectedState(e.target.value)}
-            className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-          >
-            <option value="">All States</option>
-            {states.map((state) => (
-              <option key={state} value={state}>{state}</option>
-            ))}
-          </select>
-        </div>
+                    {/* State */}
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
+                      <select
+                        value={selectedState}
+                        onChange={(e) => setSelectedState(e.target.value)}
+                        className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All States</option>
+                        {states.map((state) => (
+                          <option key={state} value={state}>{state}</option>
+                        ))}
+                      </select>
+                    </div>
 
-        {/* District */}
-        <div>
-          <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-          <select
-            value={selectedDistrict}
-            onChange={(e) => setSelectedDistrict(e.target.value)}
-            className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-          >
-            <option value="">All Districts</option>
-            {districts.map((district) => (
-              <option key={district} value={district}>{district}</option>
-            ))}
-          </select>
-        </div>
+                    {/* District */}
+                    <div>
+                      <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+                      <select
+                        value={selectedDistrict}
+                        onChange={(e) => setSelectedDistrict(e.target.value)}
+                        className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All Districts</option>
+                        {districts.map((district) => (
+                          <option key={district} value={district}>{district}</option>
+                        ))}
+                      </select>
+                    </div>
 
-        {/* Location */}
-        <div className="col-span-2">
-          <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="City or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full pl-8 pr-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-            <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
-          </div>
-        </div>
-      </div>
+                    {/* Location */}
+                    <div className="col-span-2">
+                      <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="City or area"
+                          value={selectedLocation}
+                          onChange={(e) => setSelectedLocation(e.target.value)}
+                          className="w-full pl-8 pr-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                        />
+                        <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
 
-      {/* Apply Filter Button */}
-      <button
-        onClick={handleFilter}
-        className="w-full mt-4 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-sm"
-      >
-        <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-        </svg>
-        Apply Filters
-        <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
-          ({filteredVendors.length} found)
-        </span>
-      </button>
-    </div>
-  </section>
-</div>
+                  {/* Apply Filter Button */}
+                  <button
+                    onClick={handleFilter}
+                    className="w-full mt-4 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-sm"
+                  >
+                    <svg className="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Apply Filters
+                    <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
+                      ({filteredVendors.length} found)
+                    </span>
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            {/* Desktop: Vendor Count Section */}
+            <div className="hidden lg:block mb-6">
+              <section className="py-4">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow-lg p-4">
+                  <div className="flex items-center justify-between">
+                    {/* Left Column - Vendor Count */}
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold text-white leading-tight">
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
+                      </h3>
+                      <p className="text-yellow-200 mt-1 text-sm">
+                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
+                      </p>
+                    </div>
+                    
+                    {/* Right Column - Price Range */}
+                    <div className="flex flex-col items-end">
+                      <div className="bg-white/20 px-3 py-2 rounded-lg">
+                        <span className="text-white font-medium text-sm">Price Range:</span>
+                        <span className="text-yellow-300 ml-2 font-bold text-sm">₹5,000 - ₹5,00,000</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Applied Filters Tags - Desktop */}
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {selectedEvent && (
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-sm px-3 py-1.5 rounded-full">
+                        Event: {selectedEvent}
+                        <button onClick={() => setSelectedEvent('')} className="ml-2 text-red-500 hover:text-red-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {selectedState && (
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-sm px-3 py-1.5 rounded-full">
+                        State: {selectedState}
+                        <button onClick={() => setSelectedState('')} className="ml-2 text-yellow-500 hover:text-yellow-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {(minBudget || maxBudget) && (
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-sm px-3 py-1.5 rounded-full">
+                        Budget: {minBudget || '0'} - {maxBudget || '∞'}
+                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-2 text-green-500 hover:text-green-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </section>
+            </div>
 
             {/* Vendor Profiles */}
             <section className="py-2 md:py-6">
@@ -934,7 +1040,7 @@ const Photography = () => {
           </div>
 
           {/* Right Sidebar - Filter Section - Desktop Only - FIXED/POSITION STICKY */}
-          <div className="hidden lg:block lg:w-72 flex-shrink-0">
+          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
             <div className="sticky top-24 bg-white rounded-lg shadow-lg border border-red-200 p-4 h-fit max-h-[calc(100vh-8rem)] overflow-y-auto">
               <h3 className="text-lg font-bold text-red-800 mb-4 text-center border-b border-yellow-500 pb-2">
                 Filter Photographers
@@ -1038,7 +1144,7 @@ const Photography = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay - Keep existing mobile filter overlay */}
+      {/* Mobile Filter Overlay */}
       {showMobileFilter && (
         <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
           <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-xl sm:rounded-lg shadow-2xl max-h-[80vh] overflow-y-auto">
