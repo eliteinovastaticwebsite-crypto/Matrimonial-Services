@@ -18,3 +18,8 @@ body {
   min-width: 320px;
   min-height: 100vh;
 }
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  will-change: transform; /* Helps with performance */
+}
