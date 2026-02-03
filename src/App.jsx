@@ -12,7 +12,7 @@ import Entertainment from './pages/Entertainment';
 import Invitation from './pages/Invitation';
 import Styling from './pages/Styling';
 import VendorLogin from './pages/VendorLogin';
-import VendorProfile from './pages/VendorProfile'; // ADD THIS IMPORT
+import VendorProfile from './pages/VendorProfile'; 
 
 // Import all vendor form components
 import PhotographyVendorForm from './Components/PhotographyForm';

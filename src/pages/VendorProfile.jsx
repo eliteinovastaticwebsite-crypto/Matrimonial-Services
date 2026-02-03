@@ -426,7 +426,7 @@ const VendorProfile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
 
-      {/* ══════════════ EDIT MODAL ══════════════ */}
+      {/*  EDIT MODAL ══════════════ */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
