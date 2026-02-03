@@ -478,66 +478,80 @@ export default function VendorRegistrationModal({ isOpen, onClose }) {
             )}
 
             {/* STEP 3: Business & Legal Details */}
-            {step === 2 && (
-              <div className="space-y-4">
-                <h3 className="text-red-800 font-bold text-center text-xs sm:text-sm mb-3">
-                  Business & Legal Details
-                </h3>
-                
-                <div className="form-group">
-                  <label className="form-label">Business Type *</label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {businessTypes.map(type => (
-                      <label key={type} className="flex items-center gap-2 text-xs sm:text-sm">
-                        <input 
-                          type="radio" 
-                          name="businessType" 
-                          value={type}
-                          checked={formData.businessType === type}
-                          onChange={handleInputChange}
-                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 accent-red-600" 
-                        /> 
-                        {type}
-                      </label>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">GST Number (if applicable)</label>
-                  <input 
-                    name="gstNumber"
-                    value={formData.gstNumber}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter GST number" 
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">PAN Number *</label>
-                  <input 
-                    name="panNumber"
-                    value={formData.panNumber}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter PAN number" 
-                  />
-                </div>
-                
-                <div className="form-group">
-                  <label className="form-label">Years of Experience *</label>
-                  <input 
-                    name="experience"
-                    value={formData.experience}
-                    onChange={handleInputChange}
-                    className="input-field" 
-                    placeholder="Enter years of experience" 
-                    type="number"
-                  />
-                </div>
-              </div>
-            )}
+{step === 2 && (
+  <div className="space-y-4">
+    <h3 className="text-red-800 font-bold text-center text-xs sm:text-sm mb-3">
+      Business & Legal Details
+    </h3>
+    
+    <div className="form-group">
+      <label className="form-label">Business Type *</label>
+      <div className="grid grid-cols-2 gap-2">
+        {businessTypes.map(type => (
+          <label key={type} className="flex items-center gap-2 text-xs sm:text-sm">
+            <input 
+              type="radio" 
+              name="businessType" 
+              value={type}
+              checked={formData.businessType === type}
+              onChange={handleInputChange}
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 accent-red-600" 
+            /> 
+            {type}
+          </label>
+        ))}
+      </div>
+    </div>
+    
+    <div className="form-group">
+      <label className="form-label">GST Number (if applicable)</label>
+      <input 
+        name="gstNumber"
+        value={formData.gstNumber}
+        onChange={handleInputChange}
+        className="input-field" 
+        placeholder="Enter GST number" 
+      />
+    </div>
+    
+    <div className="form-group">
+      <label className="form-label">PAN Number *</label>
+      <input 
+        name="panNumber"
+        value={formData.panNumber}
+        onChange={handleInputChange}
+        className="input-field" 
+        placeholder="Enter PAN number" 
+      />
+    </div>
+    
+    <div className="form-group">
+      <label className="form-label">Years of Experience *</label>
+      <input 
+        name="experience"
+        value={formData.experience}
+        onChange={handleInputChange}
+        className="input-field" 
+        placeholder="Enter years of experience" 
+        type="number"
+      />
+    </div>
+
+    {/* New Mandatory Upload Section */}
+    <div className="form-group">
+      <label className="form-label">Upload Aadhaar or PAN Card *</label>
+      <input 
+        type="file" 
+        name="idProof" 
+        accept=".jpg,.jpeg,.png,.pdf"
+        onChange={handleInputChange}
+        className="input-field"
+        required
+      />
+    </div>
+  </div>
+)}
+
 
             {/* STEP 4: Equipment & Team Details */}
             {step === 3 && (

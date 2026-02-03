@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import traditional from '../assets/traditional.jpg';
 import specialcatering from '../assets/specialcatering.jpg';
 import snackscatering from '../assets/snackscatering.jpg';
@@ -21,6 +21,7 @@ import caterbanner1 from '../assets/multicuisine.jpg';
 import caterbanner2 from '../assets/multicuisine.jpg';
 
 const Catering = () => {
+  const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
@@ -29,6 +30,24 @@ const Catering = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+
+  // Check if there's a filter parameter in the URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const openFilter = urlParams.get('openFilter');
+    
+    if (openFilter === 'true') {
+      setTimeout(() => {
+        const filterSection = document.getElementById('filter-section');
+        if (filterSection) {
+          filterSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        if (window.innerWidth < 1024) {
+          setShowMobileFilter(true);
+        }
+      }, 500);
+    }
+  }, []);
 
   const banners = [
     {
@@ -46,26 +65,26 @@ const Catering = () => {
   ];
 
   const mainCategories = [
-    { name: 'Photography', path: '/photography', image: photography },
-    { name: 'Catering & Foods', path: '/catering', image: catering },
-    { name: 'Wedding Halls', path: '/wedding-halls', image: weddinghalls },
-    { name: 'Decorations', path: '/decorations', image: decoration },
-    { name: 'Entertainment', path: '/entertainment', image: entertainment },
-    { name: 'Invitation & Gifts', path: '/invitation', image: invitation },
-    { name: 'Bridal Styling', path: '/styling', image: makeup },
+    { name: 'Photography', path: '/photography' },
+    { name: 'Catering & Foods', path: '/catering' },
+    { name: 'Wedding Halls', path: '/wedding-halls' },
+    { name: 'Decorations', path: '/decorations' },
+    { name: 'Entertainment', path: '/entertainment' },
+    { name: 'Invitation & Gifts', path: '/invitation' },
+    { name: 'Bridal Styling', path: '/styling' },
   ];
 
   const cateringCategories = [
-    { name: 'Traditional Catering', path: '/catering/traditional-catering', image: traditional },
-    { name: 'Vegetarian Catering', path: '/catering/vegetarian-catering', image: veg },
-    { name: 'Non-Vegetarian Catering', path: '/catering/non-vegetarian-catering', image: nonveg },
-    { name: 'Multi-Cuisine Catering', path: '/catering/multi-cuisine-catering', image: multicuisine },
-    { name: 'Buffet Catering', path: '/catering/buffet-catering', image: buffet },
-    { name: 'Live Counter Catering', path: '/catering/live-counter-catering', image: livecounter },
-    { name: 'Theme-Based Catering', path: '/catering/theme-based-catering', image: themebased },
-    { name: 'Event-Based Catering', path: '/catering/event-based-catering', image: eventbased },
-    { name: 'Snack & Beverage Catering', path: '/catering/snack-beverage-catering', image: snackscatering },
-    { name: 'Special Service Catering', path: '/catering/special-service-catering', image: specialcatering },
+    { name: 'Traditional Catering', image: traditional },
+    { name: 'Vegetarian Catering', image: veg },
+    { name: 'Non-Vegetarian Catering', image: nonveg },
+    { name: 'Multi-Cuisine Catering', image: multicuisine },
+    { name: 'Buffet Catering', image: buffet },
+    { name: 'Live Counter Catering', image: livecounter },
+    { name: 'Theme-Based Catering', image: themebased },
+    { name: 'Event-Based Catering', image: eventbased },
+    { name: 'Snack & Beverage Catering', image: snackscatering },
+    { name: 'Special Service Catering', image: specialcatering },
   ];
 
   const eventTypes = [
@@ -83,6 +102,56 @@ const Catering = () => {
 
   const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
   const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
+
+  const handleCategoryClick = (categoryName) => {
+    let eventType = categoryName;
+    
+    switch(categoryName) {
+      case 'Traditional Catering':
+        eventType = 'Traditional Catering';
+        break;
+      case 'Vegetarian Catering':
+        eventType = 'Vegetarian Catering';
+        break;
+      case 'Non-Vegetarian Catering':
+        eventType = 'Non-Vegetarian Catering';
+        break;
+      case 'Multi-Cuisine Catering':
+        eventType = 'Multi-Cuisine Catering';
+        break;
+      case 'Buffet Catering':
+        eventType = 'Buffet Catering';
+        break;
+      case 'Live Counter Catering':
+        eventType = 'Live Counter Catering';
+        break;
+      case 'Theme-Based Catering':
+        eventType = 'Theme-Based Catering';
+        break;
+      case 'Event-Based Catering':
+        eventType = 'Event-Based Catering';
+        break;
+      case 'Snack & Beverage Catering':
+        eventType = 'Snack & Beverage Catering';
+        break;
+      case 'Special Service Catering':
+        eventType = 'Special Service Catering';
+        break;
+      default:
+        eventType = categoryName;
+    }
+    
+    setSelectedEvent(eventType);
+    
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        const vendorSection = document.querySelector('.vendor-profiles');
+        if (vendorSection) {
+          vendorSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
 
   // Sample vendor data - 2 vendors for each catering type
   const vendors = [
@@ -405,7 +474,6 @@ const Catering = () => {
     if (selectedDistrict && !vendor.location.includes(selectedDistrict)) return false;
     if (selectedLocation && !vendor.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
     
-    // Budget filter logic
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
@@ -446,13 +514,37 @@ const Catering = () => {
     setShowMobileFilter(false);
   };
 
+  const handleFilterButtonClick = () => {
+    if (window.location.pathname === '/catering') {
+      const filterSection = document.getElementById('filter-section');
+      if (filterSection) {
+        filterSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      if (window.innerWidth < 1024) {
+        setShowMobileFilter(true);
+      }
+    } else {
+      navigate('/catering?openFilter=true');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Banner Section - FULL WIDTH ON MOBILE */}
+      {/* Floating Filter Button */}
+      <button
+        onClick={handleFilterButtonClick}
+        className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
+        aria-label="Open Filters"
+      >
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+        </svg>
+        <span className="ml-2 font-bold text-sm">Filter</span>
+      </button>
+
+      {/* Banner Section */}
       <section className="relative w-full overflow-hidden">
-        {/* Responsive height - Full width on mobile, matches home page on desktop */}
-        <div className="relative h-[35vh] min-h-[250px] sm:h-[40vh] md:h-[45vh] lg:h-[600px] w-full">
-          {/* Banner Images - Optimized for mobile quality */}
+        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full">
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -460,75 +552,59 @@ const Catering = () => {
                 index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              {/* Image Container with optimized rendering - FULL WIDTH ON MOBILE */}
               <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
                 <img
                   src={banner.image}
                   alt={banner.title}
-                  className="w-full h-full object-cover md:object-cover object-contain"
+                  className="w-full h-full object-cover"
                   style={{
                     objectPosition: 'center center',
-                    // Optimized for mobile rendering
                     imageRendering: 'crisp-edges',
                     WebkitImageRendering: 'crisp-edges',
-                    // Ensure sharp edges on mobile
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
                   }}
                 />
               </div>
             </div>
           ))}
 
-          {/* Previous/Next Buttons - Perfectly positioned */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
             aria-label="Previous banner"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
+            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
             aria-label="Next banner"
           >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
       </section>
 
-      {/* Main Categories Navigation - Mobile Responsive */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-xl py-3 sm:py-4 md:py-6 lg:py-8">
-        <div className="container mx-auto px-3 md:px-4">
-          <h3 className="text-white text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-3 sm:mb-4 md:mb-5 lg:mb-6 text-center">
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-base font-bold mb-1 md:mb-2 text-center">
             Browse All Wedding Services
           </h3>
-          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-2 md:pb-3 scrollbar-hide space-x-3 sm:space-x-4 md:space-x-6 lg:space-x-10">
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
             {mainCategories.map((category) => (
               <Link
                 key={category.name}
                 to={category.path}
-                className="flex flex-col items-center transition-all duration-300 flex-shrink-0 min-w-[70px] sm:min-w-[80px] md:min-w-[100px] lg:min-w-[120px] group"
+                className="flex-shrink-0 transition-all duration-300"
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-full border-2 md:border-3 lg:border-4 border-white p-0.5 md:p-1 shadow-lg md:shadow-xl lg:shadow-xl mb-1.5 sm:mb-2 md:mb-3 lg:mb-4 transition-all duration-300 group-hover:border-yellow-300 group-hover:shadow-2xl">
-                  <div className="w-full h-full rounded-full overflow-hidden">
-                    <img 
-                      src={category.image}
-                      alt={category.name} 
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105 md:group-hover:scale-110"
-                    />
-                  </div>
-                </div>
-                
-                <span className="text-[10px] sm:text-xs md:text-sm lg:text-base font-bold text-white text-center leading-tight px-1 transition-all duration-300 group-hover:text-yellow-300 group-hover:font-extrabold">
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-xs whitespace-nowrap border border-white/20 hover:border-yellow-300">
                   {category.name}
-                </span>
+                </button>
               </Link>
             ))}
           </div>
@@ -536,199 +612,314 @@ const Catering = () => {
       </div>
 
       {/* Main Content with Filter Sidebar */}
-      <div className="container mx-auto px-3 md:px-4 py-4 md:py-6 lg:py-8">
-        {/* Mobile Filter Toggle Button - Only shows on mobile */}
-        <div className="lg:hidden mb-4">
-          <button
-            onClick={() => setShowMobileFilter(!showMobileFilter)}
-            className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4z" />
-            </svg>
-            <span>{showMobileFilter ? 'Hide Filters' : 'Show Filters'}</span>
-            <svg className={`w-5 h-5 ml-2 transition-transform duration-300 ${showMobileFilter ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
-          </button>
-        </div>
-
-        {/* Mobile Filter Overlay - Shows when toggle button is clicked */}
-        {showMobileFilter && (
-          <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
-            <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-2xl sm:rounded-xl shadow-2xl max-h-[85vh] overflow-y-auto">
-              <div className="sticky top-0 bg-white z-10 p-4 border-b border-gray-200 flex justify-between items-center rounded-t-2xl sm:rounded-t-xl">
-                <h3 className="text-lg sm:text-xl font-bold text-red-800">Filter Catering Services</h3>
-                <button
-                  onClick={() => setShowMobileFilter(false)}
-                  className="text-gray-500 hover:text-red-700 p-1"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="p-4">
-                {/* Budget Range */}
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Budget Range (₹ per plate)</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minBudget}
-                      onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxBudget}
-                      onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                    />
-                  </div>
-                </div>
-
-                {/* Type of Catering */}
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Type of Catering</label>
-                  <select
-                    value={selectedEvent}
-                    onChange={(e) => setSelectedEvent(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Catering Types</option>
-                    {eventTypes.map((event) => (
-                      <option key={event} value={event}>{event}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Preferred State */}
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Preferred State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* District */}
-                <div className="mb-4">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">District</label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Districts</option>
-                    {districts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Location */}
-                <div className="mb-6">
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Location</label>
-                  <input
-                    type="text"
-                    placeholder="Enter location"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
-                  />
-                </div>
-
-                {/* Filter Buttons */}
-                <div className="flex gap-3 pb-2">
-                  <button
-                    onClick={handleFilter}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
-                  >
-                    Apply Filter
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-3 px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="flex flex-col lg:flex-row gap-4 md:gap-6 lg:gap-8">
+      <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
+        <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
-          <div className="lg:flex-1">
-            {/* Catering Categories Grid - Mobile Responsive */}
-            <section className="py-3 md:py-4 lg:py-4">
-              <h2 className="text-lg md:text-xl lg:text-2xl font-bold text-center text-red-800 mb-4 md:mb-6 lg:mb-8">
+          <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
+            {/* Catering Categories */}
+            <section className="py-2 md:py-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
                 Our Catering Categories
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4 lg:gap-5">
+              
+              {/* Mobile: Horizontal Scroll */}
+              <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
+                <div className="flex space-x-1 px-1 min-w-max">
+                  {cateringCategories.map((category) => (
+                    <div key={category.name} className="flex flex-col items-center group flex-shrink-0 w-14">
+                      <button 
+                        onClick={() => handleCategoryClick(category.name)}
+                        className="relative block w-12 h-12 mx-auto focus:outline-none"
+                      >
+                        <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                          <img 
+                            src={category.image}
+                            alt={category.name} 
+                            className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
+                      </button>
+                      <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
+                        {category.name}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Desktop: Grid */}
+              <div className="hidden md:grid grid-cols-4 md:grid-cols-10 gap-1 md:gap-1.5 px-1">
                 {cateringCategories.map((category) => (
                   <div key={category.name} className="flex flex-col items-center group">
-                    <Link 
-                      to={category.path}
-                      className="relative block w-full aspect-square max-w-[90px] sm:max-w-[100px] md:max-w-[120px] lg:max-w-[140px] mx-auto"
+                    <button 
+                      onClick={() => handleCategoryClick(category.name)}
+                      className="relative block w-full aspect-square max-w-[60px] md:max-w-[65px] mx-auto focus:outline-none"
                     >
-                      <div className="w-full h-full rounded-full border-2 md:border-3 border-amber-700 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-md hover:shadow-lg transition-all duration-300">
+                      <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                         <img 
                           src={category.image}
                           alt={category.name} 
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
-                    </Link>
-                    <h3 className="mt-1.5 md:mt-2 text-center font-medium text-gray-800 text-[11px] sm:text-xs md:text-sm px-1 leading-tight">
+                      <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
+                    </button>
+                    <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[9px] md:text-[10px] px-0.5 leading-tight line-clamp-2">
                       {category.name}
                     </h3>
                   </div>
                 ))}
               </div>
+
+              {selectedEvent && (
+                <div className="text-center mt-1 md:mt-2">
+                  <button
+                    onClick={() => setSelectedEvent('')}
+                    className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
+                  >
+                    <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Clear "{selectedEvent}" filter
+                  </button>
+                </div>
+              )}
             </section>
 
-            {/* Vendor Count and Filter Results Section - Mobile Responsive */}
-            <section className="py-4 md:py-6 lg:py-8">
-              <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg md:rounded-xl shadow-md md:shadow-lg p-3 sm:p-4 md:p-4 lg:p-6 mb-4 md:mb-5 lg:mb-6">
-                <div className="flex flex-col sm:flex-row justify-between items-center gap-3">
-                  <div className="text-center sm:text-left">
-                    <h3 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold text-white">
-                      {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors Available` : '20 Catering Vendors Available'}
-                    </h3>
-                    <p className="text-yellow-200 mt-1 md:mt-2 text-xs sm:text-sm md:text-base">
-                      {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional catering vendors'}
-                    </p>
-                  </div>
-                  <div className="flex items-center">
-                    <div className="bg-white/20 px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 md:py-2 rounded-lg">
-                      <span className="text-white font-semibold text-[10px] sm:text-xs md:text-sm">Price Range:</span>
-                      <span className="text-yellow-300 ml-1 md:ml-2 text-[10px] sm:text-xs md:text-sm">₹250 - ₹6,000 per plate</span>
+            {/* Mobile: Vendor Count & Filters */}
+            <div className="lg:hidden">
+              {/* Vendor Count */}
+              <section className="py-1 md:py-2">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1 pr-2">
+                      <h3 className="text-xs font-bold text-white leading-tight">
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '20 Catering Vendors'}
+                      </h3>
+                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
+                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional catering vendors'}
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-col items-end">
+                      <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
+                        <span className="text-white font-medium text-[8px]">Price Range:</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹250 - ₹6,000 per plate</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+                
+                {/* Applied Filters Tags */}
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {selectedEvent && (
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                      Event: {selectedEvent}
+                      <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {selectedState && (
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                      State: {selectedState}
+                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {(minBudget || maxBudget) && (
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                      Budget: {minBudget || '0'} - {maxBudget || '∞'}
+                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                </div>
+              </section>
 
-              {/* Vendor Profiles - Mobile Responsive */}
+              {/* Mobile Filters */}
+              <section className="py-1 mb-2">
+                <div className="bg-white rounded-md shadow border border-red-200 p-2">
+                  <div className="flex items-center justify-between mb-2 border-b border-gray-100 pb-1.5">
+                    <h3 className="text-xs font-bold text-red-800 flex items-center">
+                      <svg className="w-3.5 h-3.5 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Filter Options
+                    </h3>
+                    <button 
+                      onClick={handleReset}
+                      className="text-[10px] font-medium text-red-600 hover:text-red-800 flex items-center"
+                    >
+                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                      </svg>
+                      Reset
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="col-span-2">
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Budget (₹ per plate)</label>
+                      <div className="flex gap-1.5">
+                        <input
+                          type="number"
+                          placeholder="Min"
+                          value={minBudget}
+                          onChange={(e) => setMinBudget(e.target.value)}
+                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Max"
+                          value={maxBudget}
+                          onChange={(e) => setMaxBudget(e.target.value)}
+                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Catering Type</label>
+                      <select
+                        value={selectedEvent}
+                        onChange={(e) => setSelectedEvent(e.target.value)}
+                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All Types</option>
+                        {eventTypes.map((event) => (
+                          <option key={event} value={event}>{event}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">State</label>
+                      <select
+                        value={selectedState}
+                        onChange={(e) => setSelectedState(e.target.value)}
+                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All States</option>
+                        {states.map((state) => (
+                          <option key={state} value={state}>{state}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">District</label>
+                      <select
+                        value={selectedDistrict}
+                        onChange={(e) => setSelectedDistrict(e.target.value)}
+                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                      >
+                        <option value="">All Districts</option>
+                        {districts.map((district) => (
+                          <option key={district} value={district}>{district}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="col-span-2">
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Location</label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="City or area"
+                          value={selectedLocation}
+                          onChange={(e) => setSelectedLocation(e.target.value)}
+                          className="w-full pl-7 pr-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        />
+                        <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={handleFilter}
+                    className="w-full mt-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                  >
+                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Apply Filters
+                    <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[10px]">
+                      ({filteredVendors.length} found)
+                    </span>
+                  </button>
+                </div>
+              </section>
+            </div>
+
+            {/* Desktop: Vendor Count */}
+            <div className="hidden lg:block mb-4">
+              <section className="py-2">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-white leading-tight">
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '20 Catering Vendors'}
+                      </h3>
+                      <p className="text-yellow-200 mt-0.5 text-sm">
+                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional catering vendors'}
+                      </p>
+                    </div>
+                    
+                    <div className="flex flex-col items-end">
+                      <div className="bg-white/20 px-2.5 py-1.5 rounded">
+                        <span className="text-white font-medium text-sm">Price Range:</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹250 - ₹6,000 per plate</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-1.5 mt-2">
+                    {selectedEvent && (
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                        Event: {selectedEvent}
+                        <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {selectedState && (
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                        State: {selectedState}
+                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {(minBudget || maxBudget) && (
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                        Budget: {minBudget || '0'} - {maxBudget || '∞'}
+                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            {/* Vendor Profiles */}
+            <section className="py-1 md:py-2 vendor-profiles">
               {filteredVendors.length > 0 ? (
-                <div className="space-y-3 sm:space-y-4 md:space-y-5 lg:space-y-6">
+                <div className="space-y-1.5 md:space-y-3">
                   {filteredVendors.map((vendor) => (
-                    <div key={vendor.id} className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-gray-200 overflow-hidden hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300">
+                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
                       <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo - Mobile Responsive */}
-                        <div className="md:w-1/4 p-3 sm:p-4 md:p-4 lg:p-6 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-full overflow-hidden border-2 md:border-3 lg:border-4 border-white shadow-md md:shadow-lg mb-2 md:mb-3 lg:mb-4">
+                        {/* Left Section - Logo (Desktop Only) */}
+                        <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
+                          <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
                             <img 
                               src={vendor.logo} 
                               alt={vendor.businessName} 
@@ -736,67 +927,146 @@ const Catering = () => {
                             />
                           </div>
                           <div className="text-center">
-                            <div className="flex items-center justify-center mb-1 md:mb-2">
-                              <div className="flex items-center bg-yellow-100 px-2 sm:px-2.5 md:px-3 py-0.5 md:py-1 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-1 text-xs sm:text-sm">{vendor.rating}</span>
-                                <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                            <div className="flex items-center justify-center mb-0.5">
+                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
+                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
+                                <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-bold text-xs sm:text-sm md:text-sm lg:text-base">{vendor.priceRange}</p>
+                            <p className="text-red-700 font-medium text-xs">{vendor.priceRange}</p>
                           </div>
                         </div>
 
-                        {/* Middle Section - Business Details - Mobile Responsive */}
-                        <div className="md:w-2/4 p-3 sm:p-4 md:p-4 lg:p-6 border-t md:border-t-0 md:border-r border-gray-100">
-                          <div className="mb-2 md:mb-3 lg:mb-4">
-                            <h3 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-red-800 mb-1">{vendor.businessName}</h3>
-                            <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2 md:gap-3 mb-2 md:mb-3">
-                              <span className="px-2 sm:px-2.5 md:px-3 py-0.5 sm:py-1 bg-red-100 text-red-700 rounded-full text-[10px] sm:text-xs md:text-sm font-medium mb-1 sm:mb-0 w-fit">
+                        {/* Middle Section - Business Details & Services */}
+                        <div className="md:w-2/4 md:p-3 md:border-r border-gray-100">
+                          {/* Mobile Layout */}
+                          <div className="md:hidden">
+                            {/* Top Section */}
+                            <div className="flex border-b border-gray-200">
+                              {/* Left Half - Logo, Rating, Price */}
+                              <div className="w-1/2 p-2 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                                <div className="w-14 h-14 rounded-full overflow-hidden border border-white shadow mb-1">
+                                  <img 
+                                    src={vendor.logo} 
+                                    alt={vendor.businessName} 
+                                    className="w-full h-full object-cover"
+                                  />
+                                </div>
+                                <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full mb-0.5">
+                                  <span className="text-yellow-700 font-bold mr-0.5 text-[9px]">{vendor.rating}</span>
+                                  <svg className="w-2 h-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                  </svg>
+                                </div>
+                                <p className="text-red-700 font-bold text-[9px] text-center">{vendor.priceRange}</p>
+                              </div>
+
+                              {/* Right Half - Services */}
+                              <div className="w-1/2 p-2 bg-white">
+                                <h4 className="font-bold text-red-700 mb-1 text-[10px]">Services Offered</h4>
+                                <ul className="space-y-0.5">
+                                  {vendor.services.map((service, index) => (
+                                    <li key={index} className="flex items-start">
+                                      <svg className="w-1.5 h-1.5 text-green-500 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                      <span className="text-gray-700 text-[7px] leading-tight">{service}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+
+                            {/* Middle Section */}
+                            <div className="w-full p-2 bg-white relative">
+                              <h3 className="text-[10px] font-bold text-red-800 mb-0.5 leading-tight">{vendor.businessName}</h3>
+                              
+                              <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[8px] font-medium mb-1">
                                 {vendor.businessCategory}
                               </span>
-                              <span className="text-gray-600 flex items-center text-[10px] sm:text-xs md:text-sm">
-                                <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              
+                              <div className="text-gray-600 flex items-start text-[8px] mb-1">
+                                <svg className="w-2 h-2 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
-                                {vendor.location}
-                              </span>
+                                <span className="leading-tight">{vendor.location}</span>
+                              </div>
+                              
+                              <p className="text-gray-700 mb-1 text-[8px] leading-relaxed pr-16">{vendor.description}</p>
+                              
+                              <div className="space-y-0.5 text-[8px] mb-1.5">
+                                <div className="flex items-start">
+                                  <span className="text-gray-600 w-16 flex-shrink-0">Contact Person:</span>
+                                  <span className="font-medium text-gray-800 leading-tight">{vendor.personName}</span>
+                                </div>
+                                <div className="flex items-start">
+                                  <span className="text-gray-600 w-16 flex-shrink-0">Role:</span>
+                                  <span className="font-medium text-gray-800 leading-tight">{vendor.designation}</span>
+                                </div>
+                              </div>
+
+                              <button className="absolute bottom-1.5 right-1.5 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-2 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-[8px]">
+                                <span>View Details</span>
+                                <svg className="w-2 h-2 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                              </button>
                             </div>
                           </div>
-                          
-                          <p className="text-gray-700 mb-2 sm:mb-3 md:mb-3 lg:mb-4 text-xs sm:text-sm md:text-sm leading-relaxed">{vendor.description}</p>
-                          
-                          <div className="space-y-1 sm:space-y-1.5 md:space-y-2">
-                            <div className="flex items-start sm:items-center">
-                              <span className="text-gray-600 w-20 sm:w-24 md:w-32 text-[10px] sm:text-xs md:text-sm flex-shrink-0">Contact Person:</span>
-                              <span className="font-medium text-gray-800 text-[10px] sm:text-xs md:text-sm">{vendor.personName}</span>
+
+                          {/* Desktop Layout */}
+                          <div className="hidden md:block">
+                            <div className="mb-1.5">
+                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
+                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
+                                <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
+                                  {vendor.businessCategory}
+                                </span>
+                                <span className="text-gray-600 flex items-center text-xs">
+                                  <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                  </svg>
+                                  {vendor.location}
+                                </span>
+                              </div>
                             </div>
-                            <div className="flex items-start sm:items-center">
-                              <span className="text-gray-600 w-20 sm:w-24 md:w-32 text-[10px] sm:text-xs md:text-sm flex-shrink-0">Designation:</span>
-                              <span className="font-medium text-gray-800 text-[10px] sm:text-xs md:text-sm">{vendor.designation}</span>
+                            
+                            <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{vendor.description}</p>
+                            
+                            <div className="space-y-0.5">
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Contact Person:</span>
+                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                              </div>
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Designation:</span>
+                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                              </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services - Mobile Responsive */}
-                        <div className="md:w-1/4 p-3 sm:p-4 md:p-4 lg:p-6 border-t md:border-t-0 border-gray-100 bg-gray-50 md:bg-white">
-                          <h4 className="font-bold text-red-700 mb-2 sm:mb-2.5 md:mb-3 lg:mb-4 text-xs sm:text-sm md:text-base lg:text-lg">Services Offered</h4>
-                          <ul className="space-y-1 sm:space-y-1.5 md:space-y-2 mb-3 sm:mb-4 md:mb-4 lg:mb-6">
+                        {/* Right Section - Services (Desktop Only) */}
+                        <div className="hidden md:block md:w-1/4 p-3 bg-white">
+                          <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
+                          <ul className="space-y-0.5 mb-2">
                             {vendor.services.map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-green-500 mr-1 sm:mr-1.5 md:mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                                <span className="text-gray-700 text-[10px] sm:text-xs md:text-sm leading-tight">{service}</span>
+                                <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
                           
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 sm:py-2.5 md:py-3 px-3 md:px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center text-[11px] sm:text-xs md:text-sm">
+                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs">
                             <span>View Details</span>
-                            <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 ml-1 sm:ml-1.5 md:ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
                           </button>
@@ -806,15 +1076,15 @@ const Catering = () => {
                   ))}
                 </div>
               ) : (
-                <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-6 md:p-8 lg:p-12 text-center">
-                  <svg className="w-12 h-12 md:w-16 md:h-16 text-gray-400 mx-auto mb-3 md:mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white rounded-md shadow p-3 md:p-4 text-center">
+                  <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-700 mb-1 md:mb-2">No Catering Vendors Found</h3>
-                  <p className="text-gray-600 mb-4 md:mb-5 lg:mb-6 text-sm md:text-base">Try adjusting your filter criteria to find more vendors</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Vendors Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more vendors</p>
                   <button 
                     onClick={handleReset}
-                    className="bg-gradient-to-r from-red-600 to-red-700 text-white py-2 md:py-3 px-4 md:px-6 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md md:shadow-lg hover:shadow-lg md:hover:shadow-xl text-xs md:text-sm"
+                    className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
                   >
                     Reset Filters
                   </button>
@@ -822,90 +1092,245 @@ const Catering = () => {
               )}
             </section>
 
-            {/* Why Choose Us Section - Mobile Responsive */}
-            <section className="py-4 sm:py-6 md:py-8 lg:py-12">
-              <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center text-red-800 mb-4 sm:mb-5 md:mb-6 lg:mb-8">
+            {/* Why Choose Us Section */}
+            <section className="py-2 md:py-4">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
                 Why Choose Our Catering Services?
               </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
-                <div className="bg-white p-3 sm:p-4 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3 lg:mb-4 mx-auto">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
+                <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base lg:text-lg text-red-700 mb-1 md:mb-2 text-center">Fresh Ingredients</h3>
-                  <p className="text-gray-600 text-[10px] sm:text-xs md:text-sm text-center leading-tight">Daily sourced fresh and quality ingredients</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Fresh Ingredients</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Daily sourced fresh and quality ingredients</p>
                 </div>
                 
-                <div className="bg-white p-3 sm:p-4 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3 lg:mb-4 mx-auto">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base lg:text-lg text-red-700 mb-1 md:mb-2 text-center">Timely Service</h3>
-                  <p className="text-gray-600 text-[10px] sm:text-xs md:text-sm text-center leading-tight">Punctual delivery and setup for your event</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Timely Service</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Punctual delivery and setup for your event</p>
                 </div>
                 
-                <div className="bg-white p-3 sm:p-4 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3 lg:mb-4 mx-auto">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base lg:text-lg text-red-700 mb-1 md:mb-2 text-center">Expert Chefs</h3>
-                  <p className="text-gray-600 text-[10px] sm:text-xs md:text-sm text-center leading-tight">Experienced culinary team with diverse expertise</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Expert Chefs</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Experienced culinary team with diverse expertise</p>
                 </div>
                 
-                <div className="bg-white p-3 sm:p-4 md:p-4 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100 hover:shadow-lg md:hover:shadow-xl transition-shadow duration-300">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 md:w-10 md:h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-2 sm:mb-2.5 md:mb-3 lg:mb-4 mx-auto">
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
+                  <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-xs sm:text-sm md:text-base lg:text-lg text-red-700 mb-1 md:mb-2 text-center">Customer Satisfaction</h3>
-                  <p className="text-gray-600 text-[10px] sm:text-xs md:text-sm text-center leading-tight">Committed to exceeding your expectations</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Customer Satisfaction</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Committed to exceeding your expectations</p>
                 </div>
               </div>
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Hidden on mobile, shown on desktop */}
-          <div className="hidden lg:block lg:w-80 flex-shrink-0">
-            <div className="sticky top-24 bg-white rounded-xl shadow-2xl border-2 border-red-200 p-6">
-              <h3 className="text-xl lg:text-2xl font-bold text-red-800 mb-6 text-center border-b-2 border-yellow-500 pb-3">
-                Filter Catering Services
-              </h3>
+          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
+          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
+            {/* This wrapper will be sticky and contain both sections */}
+            <div className="sticky top-4 space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto pr-1">
+              {/* Filter Box Section */}
+              <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
+                <div className="flex items-start mb-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-red-800 mb-0.5">Refine Your Search</h3>
+                    <p className="text-gray-600 text-xs">
+                      Use filters to find the perfect catering vendor for your special occasion
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-gray-700">Filter by budget per plate</span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-gray-700">Select specific catering type</span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-gray-700">Choose preferred location</span>
+                  </div>
+                  <div className="flex items-center">
+                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-sm text-gray-700">Find vendors by state & district</span>
+                  </div>
+                </div>
+              </div>
 
-              {/* Budget Range */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-2">Budget Range (₹ per plate)</label>
+              {/* Filter Container */}
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
+                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
+                  Filter Catering Services
+                </h3>
+
+                <div className="mb-3">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹ per plate)</label>
+                  <div className="flex gap-2">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minBudget}
+                      onChange={(e) => setMinBudget(e.target.value)}
+                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    />
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxBudget}
+                      onChange={(e) => setMaxBudget(e.target.value)}
+                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Catering</label>
+                  <select
+                    value={selectedEvent}
+                    onChange={(e) => setSelectedEvent(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  >
+                    <option value="">All Catering Types</option>
+                    {eventTypes.map((event) => (
+                      <option key={event} value={event}>{event}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
+                  <select
+                    value={selectedState}
+                    onChange={(e) => setSelectedState(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  >
+                    <option value="">All States</option>
+                    {states.map((state) => (
+                      <option key={state} value={state}>{state}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-3">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+                  <select
+                    value={selectedDistrict}
+                    onChange={(e) => setSelectedDistrict(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  >
+                    <option value="">All Districts</option>
+                    {districts.map((district) => (
+                      <option key={district} value={district}>{district}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="mb-4">
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
+                  <input
+                    type="text"
+                    placeholder="Enter location"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  />
+                </div>
+
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleFilter}
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  >
+                    Apply Filter
+                  </button>
+                  <button
+                    onClick={handleReset}
+                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Filter Overlay */}
+      {showMobileFilter && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
+          <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-xl sm:rounded-lg shadow-2xl max-h-[80vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white z-10 p-3 border-b border-gray-200 flex justify-between items-center rounded-t-xl sm:rounded-t-lg">
+              <h3 className="text-sm sm:text-base font-bold text-red-800">Filter Catering Services</h3>
+              <button
+                onClick={() => setShowMobileFilter(false)}
+                className="text-gray-500 hover:text-red-700 p-1"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="p-3">
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹ per plate)</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="Min"
                     value={minBudget}
                     onChange={(e) => setMinBudget(e.target.value)}
-                    className="w-1/2 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   />
                   <input
                     type="number"
                     placeholder="Max"
                     value={maxBudget}
                     onChange={(e) => setMaxBudget(e.target.value)}
-                    className="w-1/2 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                   />
                 </div>
               </div>
 
-              {/* Type of Catering */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-2">Type of Catering</label>
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-700 mb-1">Type of Catering</label>
                 <select
                   value={selectedEvent}
                   onChange={(e) => setSelectedEvent(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                 >
                   <option value="">All Catering Types</option>
                   {eventTypes.map((event) => (
@@ -914,13 +1339,12 @@ const Catering = () => {
                 </select>
               </div>
 
-              {/* Preferred State */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-2">Preferred State</label>
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                 >
                   <option value="">All States</option>
                   {states.map((state) => (
@@ -929,13 +1353,12 @@ const Catering = () => {
                 </select>
               </div>
 
-              {/* District */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-2">District</label>
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                 >
                   <option value="">All Districts</option>
                   {districts.map((district) => (
@@ -944,29 +1367,27 @@ const Catering = () => {
                 </select>
               </div>
 
-              {/* Location */}
-              <div className="mb-6">
-                <label className="block text-sm font-bold text-gray-700 mb-2">Location</label>
+              <div className="mb-3">
+                <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
                 <input
                   type="text"
                   placeholder="Enter location"
                   value={selectedLocation}
                   onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
                 />
               </div>
 
-              {/* Filter Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-2">
                 <button
                   onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl text-sm"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
                 >
                   Apply Filter
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-3 px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl text-sm"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
                 >
                   Reset
                 </button>
@@ -974,7 +1395,7 @@ const Catering = () => {
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

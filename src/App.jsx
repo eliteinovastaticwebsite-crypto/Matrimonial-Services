@@ -12,7 +12,7 @@ import Entertainment from './pages/Entertainment';
 import Invitation from './pages/Invitation';
 import Styling from './pages/Styling';
 import VendorLogin from './pages/VendorLogin';
-/*import CustomerLogin from './pages/CustomerLogin';*/
+import VendorProfile from './pages/VendorProfile'; // ADD THIS IMPORT
 
 // Import all vendor form components
 import PhotographyVendorForm from './Components/PhotographyForm';
@@ -89,9 +89,12 @@ function App() {
           <Route path="/invitation-vendor" element={<Invitation />} />
           <Route path="/styling-vendor" element={<Styling />} />
           
-          {/* Login Pages 
-          <Route path="/customer-login" element={<CustomerLogin />} />*/}
+          {/* Login Pages */}
           <Route path="/vendor-login" element={<VendorLogin onOpenVendorForm={openVendorForm} />} />
+          
+          {/* VENDOR PROFILE ROUTES - ADD THESE */}
+          <Route path="/vendor-profile" element={<VendorProfile />} />
+          <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           
           {/* Other pages */}
           <Route path="/office-panel" element={<Home />} />

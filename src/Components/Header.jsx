@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import profileIcon from '../assets/profile-icon.svg'; // You can add this icon or use an SVG
 
 const Header = ({ onOpenVendorForm }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +13,19 @@ const Header = ({ onOpenVendorForm }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const activeMenu = location.pathname.substring(1) || 'HOME';
+
+  // Check if user is logged in (you can replace this with actual auth logic)
+  // For now, we'll set it to false to test the login flow
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
+
+  // Check for stored login status on component mount
+  useEffect(() => {
+    // In a real app, you would check localStorage, cookies, or an auth token
+    const storedLoginStatus = localStorage.getItem('vendorLoggedIn');
+    if (storedLoginStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const menuItems = [
     { name: 'HOME', path: '/' },
@@ -233,6 +247,41 @@ const Header = ({ onOpenVendorForm }) => {
     }
   }, [activeDropdown]);
 
+  const handleProfileClick = () => {
+    // Check if user is logged in
+    if (isLoggedIn) {
+      // If logged in, navigate to vendor profile page
+      // In real app, you might need to pass vendor ID: `/vendor-profile/${vendorId}`
+      navigate('/vendor-profile/VEN-2024-00123'); // Example vendor ID
+    } else {
+      // If not logged in, navigate to vendor login page
+      navigate('/vendor-login');
+    }
+    
+    setIsMenuOpen(false);
+    setActiveDropdown(null);
+    setMobileDropdownOpen(null);
+  };
+
+  // Function to handle successful login (to be called from login page)
+  const handleLoginSuccess = (vendorId) => {
+    setIsLoggedIn(true);
+    localStorage.setItem('vendorLoggedIn', 'true');
+    // Optionally store vendor ID for future use
+    if (vendorId) {
+      localStorage.setItem('vendorId', vendorId);
+    }
+  };
+
+  // Function to handle logout
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('vendorLoggedIn');
+    localStorage.removeItem('vendorId');
+    // Redirect to home or login page
+    navigate('/');
+  };
+
   return (
     <header className="sticky top-0 z-50 shadow-lg w-full">
       {/* Top decorative strip */}
@@ -240,7 +289,7 @@ const Header = ({ onOpenVendorForm }) => {
       
       <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Top Row: Logo, Heading, and Register Now Button */}
+          {/* Top Row: Logo, Heading, Profile and Register Now Buttons */}
           <div className="flex items-center justify-between py-3 border-b border-yellow-500/30">
             {/* Logo and Heading - LEFT */}
             <div className="flex items-center space-x-3">
@@ -278,8 +327,54 @@ const Header = ({ onOpenVendorForm }) => {
               </Link>
             </div>
 
-            {/* Register Now Button - RIGHT */}
-            <div className="hidden lg:block">
+            {/* Profile Icon and Register Now Button - RIGHT */}
+            <div className="hidden lg:flex items-center space-x-4">
+              {/* Profile Icon - Showing all the time */}
+              <div className="relative group">
+                <button
+                  onClick={handleProfileClick}
+                  className="p-2 rounded-full hover:bg-red-800 transition-all duration-300"
+                  title={isLoggedIn ? "My Profile" : "Vendor Login"}
+                >
+                  {/* Profile Icon SVG */}
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 shadow-md">
+                    <svg className="w-5 h-5 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  
+                  {/* Logged in indicator */}
+                  {isLoggedIn && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                  )}
+                </button>
+                
+                {/* Tooltip on hover */}
+                <div className="absolute right-0 top-full mt-2 w-32 bg-red-900 text-yellow-50 text-xs rounded-md py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 shadow-lg">
+                  <div className="text-center font-medium">
+                    {isLoggedIn ? "My Profile" : "Vendor Login"}
+                  </div>
+                  {isLoggedIn && (
+                    <div className="text-center text-yellow-200 text-[10px] mt-0.5">
+                      Click to view profile
+                    </div>
+                  )}
+                </div>
+
+                {/* Logout button when logged in (optional dropdown) */}
+                {isLoggedIn && (
+                  <div className="absolute right-0 top-full mt-8 w-40 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-300 rounded-t-md"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Register Now Button */}
               <Link 
                 to="/register" 
                 onClick={() => {
@@ -417,6 +512,39 @@ const Header = ({ onOpenVendorForm }) => {
             {isMenuOpen && (
               <div ref={menuRef} className="lg:hidden bg-gradient-to-b from-red-700 to-red-800 rounded-lg shadow-xl border border-yellow-500/30 p-4">
                 <div className="flex flex-col space-y-2">
+                  {/* Mobile Profile Section */}
+                  <div className="pb-3 border-b border-yellow-500/20">
+                    <button
+                      onClick={handleProfileClick}
+                      className="w-full flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-lg hover:from-yellow-500/30 hover:to-yellow-600/30 transition-all duration-300"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 relative">
+                        <svg className="w-6 h-6 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        {isLoggedIn && (
+                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                        )}
+                      </div>
+                      <div className="text-left">
+                        <div className="font-bold text-yellow-50">
+                          {isLoggedIn ? "My Profile" : "Vendor Login"}
+                        </div>
+                        <div className="text-xs text-yellow-200">
+                          {isLoggedIn ? "View vendor profile" : "Login to access profile"}
+                        </div>
+                      </div>
+                    </button>
+                    {isLoggedIn && (
+                      <button
+                        onClick={handleLogout}
+                        className="w-full mt-2 px-4 py-2 text-sm text-yellow-100 hover:text-white hover:bg-red-600 rounded-md transition-all duration-300"
+                      >
+                        Logout
+                      </button>
+                    )}
+                  </div>
+
                   {menuItems.map((item) => (
                     <div key={item.name}>
                       {item.hasDropdown ? (
