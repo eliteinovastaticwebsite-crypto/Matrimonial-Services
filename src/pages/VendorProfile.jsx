@@ -423,7 +423,6 @@ const VendorProfile = () => {
     }
   };
 
-  // ─────────────────────────── RENDER ───────────────────────────
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
 
