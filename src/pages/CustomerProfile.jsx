@@ -108,11 +108,14 @@ const CustomerProfile = () => {
   ];
 
   const Field = ({ label, children }) => (
-    <div>
+    <div className="mb-4">
       <h4 className="text-xs font-bold text-gray-600 mb-1">{label}</h4>
-      {children}
+      <div className="min-h-[20px]">
+        {children}
+      </div>
     </div>
   );
+
   const Val = ({ children }) => (
     <p className="text-sm font-medium text-gray-800">{children}</p>
   );
@@ -121,58 +124,62 @@ const CustomerProfile = () => {
     switch (activeSection) {
       case 'personal':
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Full Name">
                 <Val>{customerData.personalDetails.fullName}</Val>
               </Field>
               <Field label="Date of Birth">
                 <Val>{customerData.personalDetails.dateOfBirth}</Val>
               </Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Age">
+                  <Val>{customerData.personalDetails.age}</Val>
+                </Field>
+                <Field label="Gender">
+                  <Val>{customerData.personalDetails.gender}</Val>
+                </Field>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Field label="Age">
-                <Val>{customerData.personalDetails.age}</Val>
-              </Field>
-              <Field label="Gender">
-                <Val>{customerData.personalDetails.gender}</Val>
-              </Field>
+            <div className="space-y-4">
               <Field label="Marital Status">
                 <Val>{customerData.personalDetails.maritalStatus}</Val>
               </Field>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Field label="Religion">
-                <Val>{customerData.personalDetails.religion}</Val>
-              </Field>
-              <Field label="Caste">
-                <Val>{customerData.personalDetails.caste}</Val>
-              </Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Religion">
+                  <Val>{customerData.personalDetails.religion}</Val>
+                </Field>
+                <Field label="Caste">
+                  <Val>{customerData.personalDetails.caste}</Val>
+                </Field>
+              </div>
               <Field label="Mother Tongue">
                 <Val>{customerData.personalDetails.motherTongue}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Field label="Height">
-                <Val>{customerData.personalDetails.height}</Val>
-              </Field>
-              <Field label="Weight">
-                <Val>{customerData.personalDetails.weight}</Val>
-              </Field>
-              <Field label="Body Type">
-                <Val>{customerData.personalDetails.bodyType}</Val>
-              </Field>
-              <Field label="Complexion">
-                <Val>{customerData.personalDetails.complexion}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Height">
+                  <Val>{customerData.personalDetails.height}</Val>
+                </Field>
+                <Field label="Weight">
+                  <Val>{customerData.personalDetails.weight}</Val>
+                </Field>
+                <Field label="Body Type">
+                  <Val>{customerData.personalDetails.bodyType}</Val>
+                </Field>
+                <Field label="Complexion">
+                  <Val>{customerData.personalDetails.complexion}</Val>
+                </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'contact':
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Mobile Number">
                 <Val>{customerData.contactInfo.mobile}</Val>
               </Field>
@@ -180,39 +187,45 @@ const CustomerProfile = () => {
                 <Val>{customerData.contactInfo.alternateMobile}</Val>
               </Field>
             </div>
-            <Field label="Email ID">
-              <Val>{customerData.contactInfo.email}</Val>
-            </Field>
-            <Field label="Address">
-              <Val>{customerData.contactInfo.address}</Val>
-            </Field>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Field label="City / District">
-                <Val>{customerData.contactInfo.cityDistrict}</Val>
+            <div className="space-y-4">
+              <Field label="Email ID">
+                <Val>{customerData.contactInfo.email}</Val>
               </Field>
-              <Field label="State">
-                <Val>{customerData.contactInfo.state}</Val>
-              </Field>
-              <Field label="PIN Code">
-                <Val>{customerData.contactInfo.pinCode}</Val>
+              <Field label="Address">
+                <Val className="break-words">{customerData.contactInfo.address}</Val>
               </Field>
             </div>
-            <Field label="Current Location">
-              <p className="text-sm font-medium text-gray-800 flex items-center">
-                <svg className="w-3.5 h-3.5 mr-1.5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                {customerData.contactInfo.currentLocation}
-              </p>
-            </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
+                <Field label="City / District">
+                  <Val>{customerData.contactInfo.cityDistrict}</Val>
+                </Field>
+                <Field label="State">
+                  <Val>{customerData.contactInfo.state}</Val>
+                </Field>
+                <Field label="PIN Code">
+                  <Val>{customerData.contactInfo.pinCode}</Val>
+                </Field>
+              </div>
+              <div className="pt-4">
+                <Field label="Current Location">
+                  <p className="text-sm font-medium text-gray-800 flex items-center">
+                    <svg className="w-3.5 h-3.5 mr-1.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {customerData.contactInfo.currentLocation}
+                  </p>
+                </Field>
+              </div>
+            </div>
           </div>
         );
 
       case 'family':
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Father's Name">
                 <Val>{customerData.familyDetails.fatherName}</Val>
               </Field>
@@ -220,7 +233,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.familyDetails.fatherOccupation}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Mother's Name">
                 <Val>{customerData.familyDetails.motherName}</Val>
               </Field>
@@ -228,29 +241,29 @@ const CustomerProfile = () => {
                 <Val>{customerData.familyDetails.motherOccupation}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Siblings">
-                <Val>{customerData.familyDetails.siblings}</Val>
-              </Field>
-              <Field label="Family Type">
-                <Val>{customerData.familyDetails.familyType}</Val>
-              </Field>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Family Status">
-                <Val>{customerData.familyDetails.familyStatus}</Val>
-              </Field>
-              <Field label="Family Values">
-                <Val>{customerData.familyDetails.familyValues}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Siblings">
+                  <Val>{customerData.familyDetails.siblings}</Val>
+                </Field>
+                <Field label="Family Type">
+                  <Val>{customerData.familyDetails.familyType}</Val>
+                </Field>
+                <Field label="Family Status">
+                  <Val>{customerData.familyDetails.familyStatus}</Val>
+                </Field>
+                <Field label="Family Values">
+                  <Val>{customerData.familyDetails.familyValues}</Val>
+                </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'education':
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Highest Education">
                 <Val>{customerData.educationCareer.highestEducation}</Val>
               </Field>
@@ -258,7 +271,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.educationCareer.college}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Occupation">
                 <Val>{customerData.educationCareer.occupation}</Val>
               </Field>
@@ -266,21 +279,23 @@ const CustomerProfile = () => {
                 <Val>{customerData.educationCareer.company}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Annual Income">
-                <p className="text-sm font-bold text-green-700">{customerData.educationCareer.annualIncome}</p>
-              </Field>
-              <Field label="Work Location">
-                <Val>{customerData.educationCareer.workLocation}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Annual Income">
+                  <p className="text-sm font-bold text-green-700">{customerData.educationCareer.annualIncome}</p>
+                </Field>
+                <Field label="Work Location">
+                  <Val>{customerData.educationCareer.workLocation}</Val>
+                </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'partner':
         return (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Preferred Age Range">
                 <Val>{customerData.partnerPreferences.ageRange}</Val>
               </Field>
@@ -288,7 +303,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.partnerPreferences.heightRange}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Marital Status">
                 <Val>{customerData.partnerPreferences.maritalStatus}</Val>
               </Field>
@@ -296,61 +311,67 @@ const CustomerProfile = () => {
                 <Val>{customerData.partnerPreferences.religion}</Val>
               </Field>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Caste">
-                <Val>{customerData.partnerPreferences.caste}</Val>
-              </Field>
-              <Field label="Education">
-                <Val>{customerData.partnerPreferences.education}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Caste">
+                  <Val>{customerData.partnerPreferences.caste}</Val>
+                </Field>
+                <Field label="Education">
+                  <Val>{customerData.partnerPreferences.education}</Val>
+                </Field>
+                <Field label="Occupation">
+                  <Val>{customerData.partnerPreferences.occupation}</Val>
+                </Field>
+                <Field label="Annual Income">
+                  <Val>{customerData.partnerPreferences.annualIncome}</Val>
+                </Field>
+              </div>
+              <div className="pt-4 border-t border-gray-200">
+                <Field label="Preferred Location">
+                  <Val>{customerData.partnerPreferences.location}</Val>
+                </Field>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label="Occupation">
-                <Val>{customerData.partnerPreferences.occupation}</Val>
-              </Field>
-              <Field label="Annual Income">
-                <Val>{customerData.partnerPreferences.annualIncome}</Val>
-              </Field>
-            </div>
-            <Field label="Preferred Location">
-              <Val>{customerData.partnerPreferences.location}</Val>
-            </Field>
           </div>
         );
 
       case 'hobbies':
         return (
-          <div className="space-y-4">
-            <Field label="Hobbies">
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
-                  <span key={i} className="inline-flex items-center bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full">
-                    <svg className="w-2.5 h-2.5 mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {hobby}
-                  </span>
-                ))}
-              </div>
-            </Field>
-            <Field label="Interests">
-              <div className="flex flex-wrap gap-1.5 mt-1">
-                {customerData.hobbiesInterests.interests.map((interest, i) => (
-                  <span key={i} className="inline-flex items-center bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full">
-                    <svg className="w-2.5 h-2.5 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {interest}
-                  </span>
-                ))}
-              </div>
-            </Field>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <Field label="Hobbies">
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
+                    <span key={i} className="inline-flex items-center bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full">
+                      <svg className="w-2.5 h-2.5 mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {hobby}
+                    </span>
+                  ))}
+                </div>
+              </Field>
+            </div>
+            <div className="space-y-4">
+              <Field label="Interests">
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {customerData.hobbiesInterests.interests.map((interest, i) => (
+                    <span key={i} className="inline-flex items-center bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full">
+                      <svg className="w-2.5 h-2.5 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </Field>
+            </div>
           </div>
         );
 
       case 'services':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(customerData.servicesInterested).map(([service, interested]) => (
               <div key={service} className={`p-4 rounded-lg border-2 ${interested ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
                 <div className="flex items-center justify-between">
@@ -414,8 +435,10 @@ const CustomerProfile = () => {
                 { name: 'state', label: 'State' },
                 { name: 'pinCode', label: 'PIN Code' },
               ].map((field) => (
-                <div key={field.name}>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">{field.label}</label>
+                <div key={field.name} className="space-y-1">
+                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">
+                    {field.label}
+                  </label>
                   <input
                     type={field.type || 'text'}
                     name={field.name}
@@ -428,10 +451,16 @@ const CustomerProfile = () => {
             </div>
 
             <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
-              <button onClick={() => setShowEditModal(false)} className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => setShowEditModal(false)} 
+                className="px-5 py-2 rounded-lg border border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-100 transition-colors"
+              >
                 Cancel
               </button>
-              <button onClick={handleSave} className="px-5 py-2 rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white text-sm font-bold hover:from-red-700 hover:to-red-800 transition-all shadow">
+              <button 
+                onClick={handleSave} 
+                className="px-5 py-2 rounded-lg bg-gradient-to-r from-red-600 to-red-700 text-white text-sm font-bold hover:from-red-700 hover:to-red-800 transition-all shadow"
+              >
                 Save Changes
               </button>
             </div>
@@ -569,7 +598,7 @@ const CustomerProfile = () => {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 ${
+                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSection === section.id
                         ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow'
                         : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
@@ -583,7 +612,20 @@ const CustomerProfile = () => {
 
             {/* Desktop tabs */}
             <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 border-b border-gray-200">
-              {sections.map((section) => (
+              {sections.slice(0, 4).map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 last:border-r-0 ${
+                    activeSection === section.id
+                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {section.title}
+                </button>
+              ))}
+              {sections.slice(4, 7).map((section) => (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id)}

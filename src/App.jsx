@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
+import VendorLoginForm from './pages/VendorLoginForm'; // Import VendorLoginForm
 
 // Import existing page components
 import Home from './pages/Home';
@@ -33,6 +34,7 @@ import StylingVendorForm from './Components/StylingForm';
 function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [activeFormType, setActiveFormType] = useState(null);
+  const [showVendorLoginModal, setShowVendorLoginModal] = useState(false); // State for vendor login modal
 
   const openVendorForm = (formType) => {
     console.log(`Opening ${formType} form`);
@@ -43,6 +45,14 @@ function App() {
   const closeVendorForm = () => {
     setIsFormOpen(false);
     setActiveFormType(null);
+  };
+
+  const openVendorLoginModal = () => {
+    setShowVendorLoginModal(true);
+  };
+
+  const closeVendorLoginModal = () => {
+    setShowVendorLoginModal(false);
   };
 
   // Function to render the correct form based on type
@@ -70,10 +80,22 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen">
-        <Header onOpenVendorForm={openVendorForm} />
+        {/* Pass both openVendorForm and openVendorLoginModal to Header */}
+        <Header 
+          onOpenVendorForm={openVendorForm} 
+          onOpenVendorLoginModal={openVendorLoginModal}
+        />
         
         {/* Render the active vendor form modal */}
         {isFormOpen && renderVendorForm()}
+
+        {/* Render the Vendor Login Modal */}
+        {showVendorLoginModal && (
+          <VendorLoginForm 
+            onClose={closeVendorLoginModal}
+            showRegisterOptions={true}
+          />
+        )}
 
         <Routes>
           <Route path="/" element={<Home />} />

@@ -432,6 +432,47 @@ const VendorLogin = ({ onOpenVendorForm }) => {
         </div>
       </section>
 
+      {/* Welcome Section */}
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
+            <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
+              Register Your Wedding Business
+            </h2>
+            <p className="text-gray-700 text-sm md:text-base lg:text-lg mb-6 md:mb-8">
+              Join our elite network of wedding service providers. Register your business in one of the categories below to start receiving booking requests.
+            </p>
+            
+            {/* Benefits Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-12">
+              {benefits.map((benefit, index) => (
+                <div key={index} className="bg-gradient-to-br from-red-50 to-yellow-50 p-4 md:p-5 lg:p-6 rounded-lg border border-red-200 flex items-start space-x-4">
+                  <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center">
+                    <div className="text-white">
+                      {benefit.icon}
+                    </div>
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-bold text-red-700 text-base md:text-lg mb-1">{benefit.title}</h3>
+                    <p className="text-gray-600 text-xs md:text-sm">{benefit.text}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Category Selection Heading */}
+            <div className="mb-6 md:mb-8">
+              <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-red-800 mb-2">
+                Select Your Service Category
+              </h3>
+              <p className="text-gray-600 text-sm md:text-base">
+                Click on your service category to register
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+
       {/* Features Section */}
       <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">
         <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-center text-red-800 mb-6 md:mb-8">
