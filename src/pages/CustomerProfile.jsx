@@ -104,12 +104,11 @@ const CustomerProfile = () => {
     { id: 'education', title: 'Education & Career' },
     { id: 'partner', title: 'Partner Preferences' },
     { id: 'hobbies', title: 'Hobbies & Interests' },
-    { id: 'services', title: 'Wedding Services' },
+    { id: 'services', title: 'Wedding Services Interested' },
   ];
 
-  // Field and Value components for consistent styling
-  const Field = ({ label, children, className = '' }) => (
-    <div className={`mb-4 ${className}`}>
+  const Field = ({ label, children }) => (
+    <div className="mb-4">
       <h4 className="text-xs font-bold text-gray-600 mb-1">{label}</h4>
       <div className="min-h-[20px]">
         {children}
@@ -117,55 +116,49 @@ const CustomerProfile = () => {
     </div>
   );
 
-  const Val = ({ children, className = '' }) => (
-    <p className={`text-sm font-medium text-gray-800 ${className}`}>{children}</p>
+  const Val = ({ children }) => (
+    <p className="text-sm font-medium text-gray-800">{children}</p>
   );
 
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'personal':
         return (
-          <div className="space-y-6">
-            {/* Row 1: Name and DOB */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Full Name">
                 <Val>{customerData.personalDetails.fullName}</Val>
               </Field>
               <Field label="Date of Birth">
                 <Val>{customerData.personalDetails.dateOfBirth}</Val>
               </Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Age">
+                  <Val>{customerData.personalDetails.age}</Val>
+                </Field>
+                <Field label="Gender">
+                  <Val>{customerData.personalDetails.gender}</Val>
+                </Field>
+              </div>
             </div>
-            
-            {/* Row 2: Age, Gender, Marital Status */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Field label="Age">
-                <Val>{customerData.personalDetails.age}</Val>
-              </Field>
-              <Field label="Gender">
-                <Val>{customerData.personalDetails.gender}</Val>
-              </Field>
+            <div className="space-y-4">
               <Field label="Marital Status">
                 <Val>{customerData.personalDetails.maritalStatus}</Val>
               </Field>
-            </div>
-            
-            {/* Row 3: Religion, Caste, Mother Tongue */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Field label="Religion">
-                <Val>{customerData.personalDetails.religion}</Val>
-              </Field>
-              <Field label="Caste">
-                <Val>{customerData.personalDetails.caste}</Val>
-              </Field>
+              <div className="grid grid-cols-2 gap-4">
+                <Field label="Religion">
+                  <Val>{customerData.personalDetails.religion}</Val>
+                </Field>
+                <Field label="Caste">
+                  <Val>{customerData.personalDetails.caste}</Val>
+                </Field>
+              </div>
               <Field label="Mother Tongue">
                 <Val>{customerData.personalDetails.motherTongue}</Val>
               </Field>
             </div>
-            
-            {/* Row 4: Physical Details */}
-            <div className="pt-4 border-t border-gray-200">
-              <h4 className="text-xs font-bold text-gray-600 mb-3">Physical Details</h4>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200">
                 <Field label="Height">
                   <Val>{customerData.personalDetails.height}</Val>
                 </Field>
@@ -185,46 +178,25 @@ const CustomerProfile = () => {
 
       case 'contact':
         return (
-          <div className="space-y-6">
-            {/* Row 1: Contact Numbers */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Mobile Number">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <Val>{customerData.contactInfo.mobile}</Val>
-                </div>
+                <Val>{customerData.contactInfo.mobile}</Val>
               </Field>
               <Field label="Alternate Mobile">
-                <div className="flex items-center gap-2">
-                  <svg className="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <Val>{customerData.contactInfo.alternateMobile}</Val>
-                </div>
+                <Val>{customerData.contactInfo.alternateMobile}</Val>
               </Field>
             </div>
-            
-            {/* Row 2: Email */}
-            <Field label="Email ID">
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
+            <div className="space-y-4">
+              <Field label="Email ID">
                 <Val>{customerData.contactInfo.email}</Val>
-              </div>
-            </Field>
-            
-            {/* Row 3: Address */}
-            <Field label="Address">
-              <Val className="break-words">{customerData.contactInfo.address}</Val>
-            </Field>
-            
-            {/* Row 4: Location Details */}
-            <div className="pt-4 border-t border-gray-200">
-              <h4 className="text-xs font-bold text-gray-600 mb-3">Location Details</h4>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              </Field>
+              <Field label="Address">
+                <Val className="break-words">{customerData.contactInfo.address}</Val>
+              </Field>
+            </div>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
                 <Field label="City / District">
                   <Val>{customerData.contactInfo.cityDistrict}</Val>
                 </Field>
@@ -235,26 +207,25 @@ const CustomerProfile = () => {
                   <Val>{customerData.contactInfo.pinCode}</Val>
                 </Field>
               </div>
-            </div>
-            
-            {/* Row 5: Current Location */}
-            <Field label="Current Location">
-              <div className="flex items-center gap-2">
-                <svg className="w-4 h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <Val>{customerData.contactInfo.currentLocation}</Val>
+              <div className="pt-4">
+                <Field label="Current Location">
+                  <p className="text-sm font-medium text-gray-800 flex items-center">
+                    <svg className="w-3.5 h-3.5 mr-1.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    {customerData.contactInfo.currentLocation}
+                  </p>
+                </Field>
               </div>
-            </Field>
+            </div>
           </div>
         );
 
       case 'family':
         return (
-          <div className="space-y-6">
-            {/* Row 1: Father's Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Father's Name">
                 <Val>{customerData.familyDetails.fatherName}</Val>
               </Field>
@@ -262,9 +233,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.familyDetails.fatherOccupation}</Val>
               </Field>
             </div>
-            
-            {/* Row 2: Mother's Details */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <Field label="Mother's Name">
                 <Val>{customerData.familyDetails.motherName}</Val>
               </Field>
@@ -272,34 +241,29 @@ const CustomerProfile = () => {
                 <Val>{customerData.familyDetails.motherOccupation}</Val>
               </Field>
             </div>
-            
-            {/* Row 3: Siblings & Family Type */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Siblings">
-                <Val>{customerData.familyDetails.siblings}</Val>
-              </Field>
-              <Field label="Family Type">
-                <Val>{customerData.familyDetails.familyType}</Val>
-              </Field>
-            </div>
-            
-            {/* Row 4: Family Status & Values */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Family Status">
-                <Val>{customerData.familyDetails.familyStatus}</Val>
-              </Field>
-              <Field label="Family Values">
-                <Val>{customerData.familyDetails.familyValues}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Siblings">
+                  <Val>{customerData.familyDetails.siblings}</Val>
+                </Field>
+                <Field label="Family Type">
+                  <Val>{customerData.familyDetails.familyType}</Val>
+                </Field>
+                <Field label="Family Status">
+                  <Val>{customerData.familyDetails.familyStatus}</Val>
+                </Field>
+                <Field label="Family Values">
+                  <Val>{customerData.familyDetails.familyValues}</Val>
+                </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'education':
         return (
-          <div className="space-y-6">
-            {/* Row 1: Education */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Highest Education">
                 <Val>{customerData.educationCareer.highestEducation}</Val>
               </Field>
@@ -307,9 +271,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.educationCareer.college}</Val>
               </Field>
             </div>
-            
-            {/* Row 2: Career */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <Field label="Occupation">
                 <Val>{customerData.educationCareer.occupation}</Val>
               </Field>
@@ -317,24 +279,23 @@ const CustomerProfile = () => {
                 <Val>{customerData.educationCareer.company}</Val>
               </Field>
             </div>
-            
-            {/* Row 3: Income & Work Location */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Annual Income">
-                <p className="text-sm font-bold text-green-700">{customerData.educationCareer.annualIncome}</p>
-              </Field>
-              <Field label="Work Location">
-                <Val>{customerData.educationCareer.workLocation}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Annual Income">
+                  <p className="text-sm font-bold text-green-700">{customerData.educationCareer.annualIncome}</p>
+                </Field>
+                <Field label="Work Location">
+                  <Val>{customerData.educationCareer.workLocation}</Val>
+                </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'partner':
         return (
-          <div className="space-y-6">
-            {/* Row 1: Basic Preferences */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <Field label="Preferred Age Range">
                 <Val>{customerData.partnerPreferences.ageRange}</Val>
               </Field>
@@ -342,9 +303,7 @@ const CustomerProfile = () => {
                 <Val>{customerData.partnerPreferences.heightRange}</Val>
               </Field>
             </div>
-            
-            {/* Row 2: Marital & Religious Preferences */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-4">
               <Field label="Marital Status">
                 <Val>{customerData.partnerPreferences.maritalStatus}</Val>
               </Field>
@@ -352,72 +311,69 @@ const CustomerProfile = () => {
                 <Val>{customerData.partnerPreferences.religion}</Val>
               </Field>
             </div>
-            
-            {/* Row 3: Education & Caste */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Caste">
-                <Val>{customerData.partnerPreferences.caste}</Val>
-              </Field>
-              <Field label="Education">
-                <Val>{customerData.partnerPreferences.education}</Val>
-              </Field>
+            <div className="col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
+                <Field label="Caste">
+                  <Val>{customerData.partnerPreferences.caste}</Val>
+                </Field>
+                <Field label="Education">
+                  <Val>{customerData.partnerPreferences.education}</Val>
+                </Field>
+                <Field label="Occupation">
+                  <Val>{customerData.partnerPreferences.occupation}</Val>
+                </Field>
+                <Field label="Annual Income">
+                  <Val>{customerData.partnerPreferences.annualIncome}</Val>
+                </Field>
+              </div>
+              <div className="pt-4 border-t border-gray-200">
+                <Field label="Preferred Location">
+                  <Val>{customerData.partnerPreferences.location}</Val>
+                </Field>
+              </div>
             </div>
-            
-            {/* Row 4: Occupation & Income */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Field label="Occupation">
-                <Val>{customerData.partnerPreferences.occupation}</Val>
-              </Field>
-              <Field label="Annual Income">
-                <Val>{customerData.partnerPreferences.annualIncome}</Val>
-              </Field>
-            </div>
-            
-            {/* Row 5: Location */}
-            <Field label="Preferred Location">
-              <Val>{customerData.partnerPreferences.location}</Val>
-            </Field>
           </div>
         );
 
       case 'hobbies':
         return (
-          <div className="space-y-6">
-            {/* Hobbies */}
-            <Field label="Hobbies">
-              <div className="flex flex-wrap gap-2">
-                {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
-                  <span key={i} className="inline-flex items-center bg-purple-50 text-purple-700 text-xs md:text-sm px-3 py-1.5 rounded-full">
-                    <svg className="w-3 h-3 md:w-4 md:h-4 mr-1.5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {hobby}
-                  </span>
-                ))}
-              </div>
-            </Field>
-            
-            {/* Interests */}
-            <Field label="Interests">
-              <div className="flex flex-wrap gap-2">
-                {customerData.hobbiesInterests.interests.map((interest, i) => (
-                  <span key={i} className="inline-flex items-center bg-blue-50 text-blue-700 text-xs md:text-sm px-3 py-1.5 rounded-full">
-                    <svg className="w-3 h-3 md:w-4 md:h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    {interest}
-                  </span>
-                ))}
-              </div>
-            </Field>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
+              <Field label="Hobbies">
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
+                    <span key={i} className="inline-flex items-center bg-purple-50 text-purple-700 text-xs px-2.5 py-1 rounded-full">
+                      <svg className="w-2.5 h-2.5 mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {hobby}
+                    </span>
+                  ))}
+                </div>
+              </Field>
+            </div>
+            <div className="space-y-4">
+              <Field label="Interests">
+                <div className="flex flex-wrap gap-1.5 mt-1">
+                  {customerData.hobbiesInterests.interests.map((interest, i) => (
+                    <span key={i} className="inline-flex items-center bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full">
+                      <svg className="w-2.5 h-2.5 mr-1 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              </Field>
+            </div>
           </div>
         );
 
       case 'services':
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {Object.entries(customerData.servicesInterested).map(([service, interested]) => (
-              <div key={service} className={`p-4 rounded-lg border-2 ${interested ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'} transition-all duration-300 hover:scale-105`}>
+              <div key={service} className={`p-4 rounded-lg border-2 ${interested ? 'bg-green-50 border-green-300' : 'bg-gray-50 border-gray-200'}`}>
                 <div className="flex items-center justify-between">
                   <h4 className="text-sm font-bold text-gray-800 capitalize">
                     {service.replace(/([A-Z])/g, ' $1').trim()}
@@ -432,7 +388,7 @@ const CustomerProfile = () => {
                     </svg>
                   )}
                 </div>
-                <p className={`text-xs mt-1 ${interested ? 'text-green-600' : 'text-gray-600'}`}>
+                <p className="text-xs text-gray-600 mt-1">
                   {interested ? 'Interested' : 'Not Interested'}
                 </p>
               </div>
@@ -449,8 +405,8 @@ const CustomerProfile = () => {
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* EDIT MODAL */}
       {showEditModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
             <div className="bg-gradient-to-r from-red-600 to-red-700 px-6 py-4 flex items-center justify-between">
               <h2 className="text-white text-lg font-bold flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -542,7 +498,6 @@ const CustomerProfile = () => {
 
             {/* Profile Photo + Info */}
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-              {/* Profile Photo */}
               <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gradient-to-br from-red-50 to-yellow-50 flex-shrink-0">
                 {customerData.profilePhoto ? (
                   <img src={customerData.profilePhoto} alt={customerData.personalDetails.fullName} className="w-full h-full object-cover" />
@@ -555,22 +510,20 @@ const CustomerProfile = () => {
                 )}
               </div>
 
-              {/* Profile Info */}
               <div className="flex-1 min-w-0">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                  <h1 className="text-lg md:text-2xl font-bold text-white">
-                    {customerData.personalDetails.fullName}
-                  </h1>
-                  <span className="inline-flex items-center gap-1.5 bg-yellow-400 text-red-800 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm w-fit">
-                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth={2} />
-                      <path d="M3 10h18" strokeWidth={2} strokeLinecap="round" />
-                    </svg>
-                    Customer ID: {customerData.id}
-                  </span>
-                </div>
+                <h1 className="text-lg md:text-2xl font-bold text-white">
+                  {customerData.personalDetails.fullName}
+                </h1>
 
-                <div className="text-white/90 text-sm md:text-base space-y-1 mt-3">
+                <span className="inline-flex items-center gap-1.5 mt-1.5 mb-2 bg-yellow-400 text-red-800 px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm">
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth={2} />
+                    <path d="M3 10h18" strokeWidth={2} strokeLinecap="round" />
+                  </svg>
+                  Customer ID: {customerData.id}
+                </span>
+
+                <div className="text-white/90 text-sm md:text-base space-y-1">
                   <div className="flex items-center">
                     <svg className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -610,14 +563,14 @@ const CustomerProfile = () => {
             </div>
           </div>
 
-          {/* Contact Information Card */}
-          <div className="p-4 md:p-6 bg-gradient-to-r from-yellow-50 to-red-50 border-b border-gray-200">
+          {/* Contact Section */}
+          <div className="p-3 md:p-6 bg-gradient-to-r from-yellow-50 to-red-50 border-b border-gray-200">
             <div className="bg-white p-4 rounded-lg shadow border border-yellow-200">
               <h3 className="text-sm md:text-base font-bold text-red-700 mb-3 flex items-center">
                 <svg className="w-4 h-4 md:w-5 md:h-5 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                Quick Contact
+                Contact Information
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div className="flex items-center gap-2">
@@ -639,60 +592,52 @@ const CustomerProfile = () => {
           {/* Section Navigation + Content */}
           <div className="border-t border-gray-200">
             {/* Mobile tabs */}
-            <div className="md:hidden">
-              <div className="flex overflow-x-auto px-3 py-2 border-b border-gray-200 bg-gray-50 no-scrollbar">
-                <div className="flex space-x-1">
-                  {sections.map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 whitespace-nowrap min-w-max ${
-                        activeSection === section.id
-                          ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow'
-                          : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
-                      }`}
-                    >
-                      {section.title}
-                    </button>
-                  ))}
-                </div>
+            <div className="md:hidden overflow-x-auto">
+              <div className="flex space-x-1 px-3 py-2 border-b border-gray-200 bg-gray-50">
+                {sections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 whitespace-nowrap ${
+                      activeSection === section.id
+                        ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow'
+                        : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                    }`}
+                  >
+                    {section.title}
+                  </button>
+                ))}
               </div>
             </div>
 
             {/* Desktop tabs */}
-            <div className="hidden md:flex border-b border-gray-200">
-              <div className="w-full">
-                <div className="grid grid-cols-4">
-                  {sections.slice(0, 4).map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 ${
-                        activeSection === section.id
-                          ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
-                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      {section.title}
-                    </button>
-                  ))}
-                </div>
-                <div className="grid grid-cols-3">
-                  {sections.slice(4, 7).map((section) => (
-                    <button
-                      key={section.id}
-                      onClick={() => setActiveSection(section.id)}
-                      className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 last:border-r-0 ${
-                        activeSection === section.id
-                          ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
-                          : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                      }`}
-                    >
-                      {section.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 border-b border-gray-200">
+              {sections.slice(0, 4).map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 last:border-r-0 ${
+                    activeSection === section.id
+                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {section.title}
+                </button>
+              ))}
+              {sections.slice(4, 7).map((section) => (
+                <button
+                  key={section.id}
+                  onClick={() => setActiveSection(section.id)}
+                  className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 last:border-r-0 ${
+                    activeSection === section.id
+                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
+                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }`}
+                >
+                  {section.title}
+                </button>
+              ))}
             </div>
 
             {/* Active section content */}
