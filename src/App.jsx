@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './Components/Header';
 
-// Import page components
+// Import existing page components
 import Home from './pages/Home';
 import Photography from './pages/Photography'; 
 import Catering from './pages/Catering';
@@ -13,6 +13,13 @@ import Invitation from './pages/Invitation';
 import Styling from './pages/Styling';
 import VendorLogin from './pages/VendorLogin';
 import VendorProfile from './pages/VendorProfile'; 
+
+// Import NEW customer authentication pages
+import CustomerProfile from './pages/CustomerProfile';
+import CustomerRegistration from './pages/CustomerRegistration';
+import CustomerLogin from './pages/CustomerLogin';
+import RegisterChoice from './pages/RegisterChoice';
+import LoginChoice from './pages/LoginChoice';
 
 // Import all vendor form components
 import PhotographyVendorForm from './Components/PhotographyForm';
@@ -71,7 +78,18 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           
-          {/* Customer Service Pages */}
+          {/* ============================================ */}
+          {/* CUSTOMER AUTHENTICATION ROUTES (NEW) */}
+          {/* ============================================ */}
+          <Route path="/register-choice" element={<RegisterChoice />} />
+          <Route path="/login-choice" element={<LoginChoice />} />
+          <Route path="/customer-registration" element={<CustomerRegistration />} />
+          <Route path="/customer-login" element={<CustomerLogin />} />
+          <Route path="/customer-profile" element={<CustomerProfile />} />
+          
+          {/* ============================================ */}
+          {/* CUSTOMER SERVICE PAGES (existing) */}
+          {/* ============================================ */}
           <Route path="/photography" element={<Photography />} />
           <Route path="/catering" element={<Catering />} />
           <Route path="/wedding-halls" element={<WeddingHalls />} />
@@ -80,7 +98,9 @@ function App() {
           <Route path="/invitation" element={<Invitation />} />
           <Route path="/styling" element={<Styling />} />
           
-          {/* Vendor Service Pages (can be same as customer or different) */}
+          {/* ============================================ */}
+          {/* VENDOR SERVICE PAGES (existing) */}
+          {/* ============================================ */}
           <Route path="/photography-vendor" element={<Photography />} />
           <Route path="/catering-vendor" element={<Catering />} />
           <Route path="/wedding-halls-vendor" element={<WeddingHalls />} />
@@ -89,20 +109,25 @@ function App() {
           <Route path="/invitation-vendor" element={<Invitation />} />
           <Route path="/styling-vendor" element={<Styling />} />
           
-          {/* Login Pages */}
+          {/* ============================================ */}
+          {/* VENDOR LOGIN & PROFILE ROUTES (existing) */}
+          {/* ============================================ */}
           <Route path="/vendor-login" element={<VendorLogin onOpenVendorForm={openVendorForm} />} />
-          
-          {/* VENDOR PROFILE ROUTES - ADD THESE */}
           <Route path="/vendor-profile" element={<VendorProfile />} />
           <Route path="/vendor-profile/:vendorId" element={<VendorProfile />} />
           
-          {/* Other pages */}
+          {/* ============================================ */}
+          {/* OTHER PAGES (existing) */}
+          {/* ============================================ 
           <Route path="/office-panel" element={<Home />} />
           <Route path="/admin-panel" element={<Home />} />
           <Route path="/help-support" element={<Home />} />
-          <Route path="/about-us" element={<Home />} />
-          <Route path="/register" element={<Home />} />
+          <Route path="/about-us" element={<Home />} />*/}
           
+          {/* Redirect old /register to new choice page */}
+          <Route path="/register" element={<RegisterChoice />} />
+          
+          {/* Fallback route */}
           <Route path="*" element={<Home />} />
         </Routes>
       </div>

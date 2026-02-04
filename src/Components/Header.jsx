@@ -1,29 +1,40 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import profileIcon from '../assets/profile-icon.svg'; // You can add this icon or use an SVG
 
 const Header = ({ onOpenVendorForm }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const vendorDropdownRef = useRef(null);
   const menuRef = useRef(null);
+  const profileDropdownRef = useRef(null);
   const location = useLocation();
   const navigate = useNavigate();
   const activeMenu = location.pathname.substring(1) || 'HOME';
 
-  // Check if user is logged in (you can replace this with actual auth logic)
-  // For now, we'll set it to false to test the login flow
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Set to false initially
+  // Authentication states - check both customer and vendor login
+  const [userType, setUserType] = useState(null); // 'customer' or 'vendor'
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   // Check for stored login status on component mount
   useEffect(() => {
-    // In a real app, you would check localStorage, cookies, or an auth token
-    const storedLoginStatus = localStorage.getItem('vendorLoggedIn');
-    if (storedLoginStatus === 'true') {
+    const customerLoggedIn = localStorage.getItem('customerLoggedIn');
+    const vendorLoggedIn = localStorage.getItem('vendorLoggedIn');
+    
+    if (customerLoggedIn === 'true') {
       setIsLoggedIn(true);
+      setUserType('customer');
+      const customerData = JSON.parse(localStorage.getItem('customerData') || '{}');
+      setUserData(customerData);
+    } else if (vendorLoggedIn === 'true') {
+      setIsLoggedIn(true);
+      setUserType('vendor');
+      const vendorData = JSON.parse(localStorage.getItem('vendorData') || '{}');
+      setUserData(vendorData);
     }
   }, []);
 
@@ -68,9 +79,9 @@ const Header = ({ onOpenVendorForm }) => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Check if click is inside dropdowns
       const isInsideCustomerDropdown = dropdownRef.current?.contains(event.target);
       const isInsideVendorDropdown = vendorDropdownRef.current?.contains(event.target);
+      const isInsideProfileDropdown = profileDropdownRef.current?.contains(event.target);
       const isCustomerDropdownButton = event.target.closest('button')?.textContent?.includes('CUSTOMER LOGIN');
       const isVendorDropdownButton = event.target.closest('button')?.textContent?.includes('VENDOR LOGIN');
       
@@ -81,8 +92,11 @@ const Header = ({ onOpenVendorForm }) => {
       if (!isInsideVendorDropdown && !isVendorDropdownButton && activeDropdown === 'VENDOR LOGIN') {
         setActiveDropdown(null);
       }
+
+      if (!isInsideProfileDropdown && !event.target.closest('.profile-icon-button')) {
+        setShowProfileDropdown(false);
+      }
       
-      // Close mobile menu if clicking outside
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
         setMobileDropdownOpen(null);
@@ -100,7 +114,6 @@ const Header = ({ onOpenVendorForm }) => {
 
   const handleMenuClick = (item) => {
     if (item.hasDropdown) {
-      // Toggle dropdown for login items
       if (activeDropdown === item.name) {
         setActiveDropdown(null);
       } else {
@@ -115,7 +128,6 @@ const Header = ({ onOpenVendorForm }) => {
         }
       }
     } else {
-      // Close dropdowns and navigate for other items
       setActiveDropdown(null);
       setMobileDropdownOpen(null);
       setIsMenuOpen(false);
@@ -125,13 +137,11 @@ const Header = ({ onOpenVendorForm }) => {
 
   const handleSubmenuClick = (item) => {
     if (item.type === 'form' && item.formType && onOpenVendorForm) {
-      // Open vendor form modal
       onOpenVendorForm(item.formType);
       setActiveDropdown(null);
       setMobileDropdownOpen(null);
       setIsMenuOpen(false);
     } else {
-      // Navigate to page
       navigate(item.path);
       setActiveDropdown(null);
       setMobileDropdownOpen(null);
@@ -146,6 +156,13 @@ const Header = ({ onOpenVendorForm }) => {
     setIsMenuOpen(false);
   };
 
+  const handleCustomerLoginClick = () => {
+    navigate('/customer-login');
+    setActiveDropdown(null);
+    setMobileDropdownOpen(null);
+    setIsMenuOpen(false);
+  };
+
   const handleMouseEnter = (itemName) => {
     if (window.innerWidth >= 1024) {
       setActiveDropdown(itemName);
@@ -154,7 +171,6 @@ const Header = ({ onOpenVendorForm }) => {
 
   const handleMouseLeave = (itemName) => {
     if (window.innerWidth >= 1024) {
-      // Only hide if not hovering over dropdown
       setTimeout(() => {
         if (activeDropdown === itemName) {
           const dropdownElement = itemName === 'CUSTOMER LOGIN' ? dropdownRef.current : vendorDropdownRef.current;
@@ -163,7 +179,7 @@ const Header = ({ onOpenVendorForm }) => {
             setActiveDropdown(null);
           }
         }
-      }, 300); // Increased delay for better UX
+      }, 300);
     }
   };
 
@@ -185,7 +201,7 @@ const Header = ({ onOpenVendorForm }) => {
             !(dropdownType === 'customer' ? dropdownRef.current : vendorDropdownRef.current)?.matches(':hover')) {
           setActiveDropdown(null);
         }
-      }, 300); // Increased delay for better UX
+      }, 300);
     }
   };
 
@@ -214,72 +230,52 @@ const Header = ({ onOpenVendorForm }) => {
     return dropdownType === 'customer' ? dropdownRef : vendorDropdownRef;
   };
 
-  // Custom hover detection
-  useEffect(() => {
-    const handleGlobalMouseMove = (event) => {
-      if (window.innerWidth >= 1024) {
-        if (activeDropdown) {
-          const dropdownElement = activeDropdown === 'CUSTOMER LOGIN' ? dropdownRef.current : vendorDropdownRef.current;
-          const mainButton = document.querySelector(`button:contains("${activeDropdown}")`);
-          
-          // Check if mouse is over dropdown or main button
-          const isOverDropdown = dropdownElement?.contains(event.target);
-          const isOverButton = mainButton?.contains(event.target);
-          
-          // If mouse is not over either, close dropdown after delay
-          if (!isOverDropdown && !isOverButton) {
-            setTimeout(() => {
-              if (!dropdownElement?.contains(document.activeElement) && 
-                  !mainButton?.contains(document.activeElement)) {
-                setActiveDropdown(null);
-              }
-            }, 300);
-          }
-        }
-      }
-    };
-
-    if (window.innerWidth >= 1024) {
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      return () => {
-        document.removeEventListener('mousemove', handleGlobalMouseMove);
-      };
-    }
-  }, [activeDropdown]);
-
+  // Handle profile icon click
   const handleProfileClick = () => {
-    // Check if user is logged in
-    if (isLoggedIn) {
-      // If logged in, navigate to vendor profile page
-      // In real app, you might need to pass vendor ID: `/vendor-profile/${vendorId}`
-      navigate('/vendor-profile/VEN-2024-00123'); // Example vendor ID
-    } else {
-      // If not logged in, navigate to vendor login page
-      navigate('/vendor-login');
+    setShowProfileDropdown(!showProfileDropdown);
+  };
+
+  // Navigate to appropriate profile
+  const handleViewProfile = () => {
+    if (userType === 'customer') {
+      navigate('/customer-profile');
+    } else if (userType === 'vendor') {
+      navigate(`/vendor-profile/${userData?.id || 'VEN-2024-00123'}`);
     }
-    
+    setShowProfileDropdown(false);
     setIsMenuOpen(false);
+  };
+
+  // Handle logout
+  const handleLogout = () => {
+    if (userType === 'customer') {
+      localStorage.removeItem('customerLoggedIn');
+      localStorage.removeItem('customerData');
+    } else if (userType === 'vendor') {
+      localStorage.removeItem('vendorLoggedIn');
+      localStorage.removeItem('vendorData');
+    }
+    setIsLoggedIn(false);
+    setUserType(null);
+    setUserData(null);
+    setShowProfileDropdown(false);
+    navigate('/');
+  };
+
+  // Handle login button click
+  const handleLoginClick = () => {
+    navigate('/login-choice');
     setActiveDropdown(null);
     setMobileDropdownOpen(null);
+    setIsMenuOpen(false);
   };
 
-  // Function to handle successful login (to be called from login page)
-  const handleLoginSuccess = (vendorId) => {
-    setIsLoggedIn(true);
-    localStorage.setItem('vendorLoggedIn', 'true');
-    // Optionally store vendor ID for future use
-    if (vendorId) {
-      localStorage.setItem('vendorId', vendorId);
-    }
-  };
-
-  // Function to handle logout
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    localStorage.removeItem('vendorLoggedIn');
-    localStorage.removeItem('vendorId');
-    // Redirect to home or login page
-    navigate('/');
+  // Handle register button click
+  const handleRegisterClick = () => {
+    navigate('/register-choice');
+    setActiveDropdown(null);
+    setMobileDropdownOpen(null);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -289,11 +285,10 @@ const Header = ({ onOpenVendorForm }) => {
       
       <div className="bg-gradient-to-r from-red-700 via-red-600 to-red-700 w-full">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Top Row: Logo, Heading, Profile and Register Now Buttons */}
+          {/* Top Row: Logo, Heading, and Auth Buttons */}
           <div className="flex items-center justify-between py-3 border-b border-yellow-500/30">
             {/* Logo and Heading - LEFT */}
             <div className="flex items-center space-x-3">
-              {/* Logo with Link to Home */}
               <Link 
                 to="/" 
                 className="flex items-center space-x-3" 
@@ -315,7 +310,6 @@ const Header = ({ onOpenVendorForm }) => {
                   />
                 </div>
                 
-                {/* Heading and Subheading */}
                 <div className="text-yellow-50">
                   <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Matrimonial Services
@@ -327,68 +321,89 @@ const Header = ({ onOpenVendorForm }) => {
               </Link>
             </div>
 
-            {/* Profile Icon and Register Now Button - RIGHT */}
+            {/* Auth Buttons - RIGHT (Conditional based on login status) */}
             <div className="hidden lg:flex items-center space-x-4">
-              {/* Profile Icon - Showing all the time */}
-              <div className="relative group">
-                <button
-                  onClick={handleProfileClick}
-                  className="p-2 rounded-full hover:bg-red-800 transition-all duration-300"
-                  title={isLoggedIn ? "My Profile" : "Vendor Login"}
-                >
-                  {/* Profile Icon SVG */}
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 shadow-md">
-                    <svg className="w-5 h-5 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                  </div>
+              {!isLoggedIn ? (
+                <>
+                  {/* Login Button */}
+                  <button
+                    onClick={handleLoginClick}
+                    className="px-5 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold text-sm rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105"
+                  >
+                    LOGIN
+                  </button>
                   
-                  {/* Logged in indicator */}
-                  {isLoggedIn && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                  )}
-                </button>
-                
-                {/* Tooltip on hover */}
-                <div className="absolute right-0 top-full mt-2 w-32 bg-red-900 text-yellow-50 text-xs rounded-md py-1 px-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-50 shadow-lg">
-                  <div className="text-center font-medium">
-                    {isLoggedIn ? "My Profile" : "Vendor Login"}
-                  </div>
-                  {isLoggedIn && (
-                    <div className="text-center text-yellow-200 text-[10px] mt-0.5">
-                      Click to view profile
+                  {/* Register Button */}
+                  <button
+                    onClick={handleRegisterClick}
+                    className="px-5 py-2 bg-gradient-to-r from-white to-gray-100 text-red-700 font-bold text-sm rounded-lg shadow-lg hover:from-gray-100 hover:to-gray-200 transition-all duration-300 transform hover:scale-105 border border-yellow-500"
+                  >
+                    REGISTER
+                  </button>
+                </>
+              ) : (
+                /* Profile Icon with Dropdown (Only show when logged in) */
+                <div className="relative" ref={profileDropdownRef}>
+                  <button
+                    onClick={handleProfileClick}
+                    className="profile-icon-button p-2 rounded-full hover:bg-red-800 transition-all duration-300"
+                    title="My Profile"
+                  >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 shadow-md relative">
+                      <svg className="w-5 h-5 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                    </div>
+                  </button>
+                  
+                  {/* Profile Dropdown */}
+                  {showProfileDropdown && (
+                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-2xl border border-gray-200 py-2 z-50">
+                      {/* User Info */}
+                      <div className="px-4 py-3 border-b border-gray-200">
+                        <p className="text-sm font-bold text-gray-800">
+                          {userData?.name || (userType === 'customer' ? 'Customer' : 'Vendor')}
+                        </p>
+                        <p className="text-xs text-gray-600 mt-1">
+                          {userData?.email || 'user@example.com'}
+                        </p>
+                        <span className="inline-flex items-center gap-1 mt-2 bg-red-50 text-red-700 px-2 py-1 rounded-full text-xs font-semibold">
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          {userType === 'customer' ? 'Customer Account' : 'Vendor Account'}
+                        </span>
+                      </div>
+                      
+                      {/* Menu Items */}
+                      <div className="py-1">
+                        <button
+                          onClick={handleViewProfile}
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-300 flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                          </svg>
+                          View Profile
+                        </button>
+                        <button
+                          onClick={handleLogout}
+                          className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-300 flex items-center gap-2"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                          </svg>
+                          Logout
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
-
-                {/* Logout button when logged in (optional dropdown) */}
-                {isLoggedIn && (
-                  <div className="absolute right-0 top-full mt-8 w-40 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-50">
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-300 rounded-t-md"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {/* Register Now Button */}
-              <Link 
-                to="/register" 
-                onClick={() => {
-                  setActiveDropdown(null);
-                  setMobileDropdownOpen(null);
-                }}
-              >
-                <button className="px-5 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold text-base rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 transform hover:scale-105">
-                  REGISTER NOW
-                </button>
-              </Link>
+              )}
             </div>
 
-            {/* Mobile Menu Button - RIGHT (for mobile) */}
+            {/* Mobile Menu Button */}
             <button
               className="lg:hidden text-yellow-50 p-2 rounded-lg hover:bg-red-800 flex-shrink-0"
               onClick={() => {
@@ -409,7 +424,7 @@ const Header = ({ onOpenVendorForm }) => {
 
           {/* Navigation Menu Row */}
           <div className="py-1">
-            {/* Desktop Navigation - Full Width */}
+            {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center justify-center space-x-1">
               {menuItems.map((item) => (
                 <div 
@@ -425,7 +440,6 @@ const Header = ({ onOpenVendorForm }) => {
                       onMouseEnter={() => handleDropdownMouseEnter(item.dropdownType)}
                       onMouseLeave={() => handleDropdownMouseLeave(item.dropdownType)}
                     >
-                      {/* Main Menu Button for Dropdown */}
                       <button
                         onClick={() => handleMenuClick(item)}
                         className={`px-3 py-1.5 rounded transition-all duration-300 font-medium text-sm whitespace-nowrap text-center flex items-center gap-1 min-w-[140px] h-full ${
@@ -446,18 +460,18 @@ const Header = ({ onOpenVendorForm }) => {
                         </svg>
                       </button>
                       
-                      {/* Dropdown Menu - Properly aligned */}
                       {activeDropdown === item.name && (
                         <div 
                           className="absolute top-full left-0 mt-0 w-72 bg-white rounded-b-lg shadow-2xl border border-gray-200 py-2 z-50 animate-dropdown-slide"
                           onMouseEnter={() => handleDropdownMouseEnter(item.dropdownType)}
                           onMouseLeave={() => handleDropdownMouseLeave(item.dropdownType)}
                         >
-                          {/* Also link to main login page */}
                           <button
                             onClick={() => {
                               if (item.dropdownType === 'vendor') {
                                 handleVendorLoginClick();
+                              } else if (item.dropdownType === 'customer') {
+                                handleCustomerLoginClick();
                               } else {
                                 navigate(item.path);
                                 setActiveDropdown(null);
@@ -470,11 +484,10 @@ const Header = ({ onOpenVendorForm }) => {
                             }`}
                           >
                             <span className="font-bold">
-                              {item.dropdownType === 'customer' ? 'All Customer Services' : 'Vendor Login Page'}
+                              {item.dropdownType === 'customer' ? 'Customer Login Page' : 'Vendor Login Page'}
                             </span>
                           </button>
                           
-                          {/* Submenu Items */}
                           {item.submenus.map((submenu) => (
                             <button
                               key={submenu.name}
@@ -512,36 +525,71 @@ const Header = ({ onOpenVendorForm }) => {
             {isMenuOpen && (
               <div ref={menuRef} className="lg:hidden bg-gradient-to-b from-red-700 to-red-800 rounded-lg shadow-xl border border-yellow-500/30 p-4">
                 <div className="flex flex-col space-y-2">
-                  {/* Mobile Profile Section */}
+                  {/* Mobile Auth Section */}
                   <div className="pb-3 border-b border-yellow-500/20">
-                    <button
-                      onClick={handleProfileClick}
-                      className="w-full flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-lg hover:from-yellow-500/30 hover:to-yellow-600/30 transition-all duration-300"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 relative">
-                        <svg className="w-6 h-6 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                        {isLoggedIn && (
-                          <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
-                        )}
+                    {!isLoggedIn ? (
+                      <div className="flex flex-col space-y-3">
+                        {/* Mobile Login Button */}
+                        <button
+                          onClick={handleLoginClick}
+                          className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300"
+                        >
+                          LOGIN
+                        </button>
+                        
+                        {/* Mobile Register Button */}
+                        <button
+                          onClick={handleRegisterClick}
+                          className="w-full px-4 py-3 bg-gradient-to-r from-white to-gray-100 text-red-700 font-bold rounded-lg shadow-lg hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-yellow-500"
+                        >
+                          REGISTER
+                        </button>
                       </div>
-                      <div className="text-left">
-                        <div className="font-bold text-yellow-50">
-                          {isLoggedIn ? "My Profile" : "Vendor Login"}
+                    ) : (
+                      <>
+                        {/* Mobile Profile Info */}
+                        <button
+                          onClick={handleProfileClick}
+                          className="w-full flex items-center space-x-3 px-4 py-3 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-lg hover:from-yellow-500/30 hover:to-yellow-600/30 transition-all duration-300"
+                        >
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center border-2 border-yellow-300 relative">
+                            <svg className="w-6 h-6 text-red-900" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-white"></div>
+                          </div>
+                          <div className="text-left">
+                            <div className="font-bold text-yellow-50">
+                              {userData?.name || 'My Profile'}
+                            </div>
+                            <div className="text-xs text-yellow-200">
+                              {userType === 'customer' ? 'Customer Account' : 'Vendor Account'}
+                            </div>
+                          </div>
+                        </button>
+                        
+                        {/* Mobile Profile Actions */}
+                        <div className="mt-2 space-y-1">
+                          <button
+                            onClick={handleViewProfile}
+                            className="w-full px-4 py-2 text-sm text-yellow-100 hover:text-white hover:bg-red-600 rounded-md transition-all duration-300 text-left flex items-center gap-2"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                            View Profile
+                          </button>
+                          <button
+                            onClick={handleLogout}
+                            className="w-full px-4 py-2 text-sm text-yellow-100 hover:text-white hover:bg-red-600 rounded-md transition-all duration-300 text-left flex items-center gap-2"
+                          >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                            Logout
+                          </button>
                         </div>
-                        <div className="text-xs text-yellow-200">
-                          {isLoggedIn ? "View vendor profile" : "Login to access profile"}
-                        </div>
-                      </div>
-                    </button>
-                    {isLoggedIn && (
-                      <button
-                        onClick={handleLogout}
-                        className="w-full mt-2 px-4 py-2 text-sm text-yellow-100 hover:text-white hover:bg-red-600 rounded-md transition-all duration-300"
-                      >
-                        Logout
-                      </button>
+                      </>
                     )}
                   </div>
 
@@ -549,7 +597,6 @@ const Header = ({ onOpenVendorForm }) => {
                     <div key={item.name}>
                       {item.hasDropdown ? (
                         <div className="border-b border-yellow-500/20 pb-2">
-                          {/* Mobile dropdown button */}
                           <button
                             onClick={() => {
                               if (window.innerWidth < 1024) {
@@ -574,14 +621,14 @@ const Header = ({ onOpenVendorForm }) => {
                             </svg>
                           </button>
                           
-                          {/* Mobile Dropdown Content */}
                           {mobileDropdownOpen === item.dropdownType && (
                             <div className="mt-2 space-y-1 bg-white rounded-lg p-2 shadow-lg">
-                              {/* Main login link in dropdown */}
                               <button
                                 onClick={() => {
                                   if (item.dropdownType === 'vendor') {
                                     handleVendorLoginClick();
+                                  } else if (item.dropdownType === 'customer') {
+                                    handleCustomerLoginClick();
                                   } else {
                                     navigate(item.path);
                                     setMobileDropdownOpen(null);
@@ -595,11 +642,10 @@ const Header = ({ onOpenVendorForm }) => {
                                 }`}
                               >
                                 <span className="font-bold">
-                                  {item.dropdownType === 'customer' ? 'All Customer Services' : 'Vendor Login Page'}
+                                  {item.dropdownType === 'customer' ? 'Customer Login Page' : 'Vendor Login Page'}
                                 </span>
                               </button>
                               
-                              {/* Submenu items */}
                               {item.submenus.map((submenu) => (
                                 <button
                                   key={submenu.name}
@@ -631,22 +677,6 @@ const Header = ({ onOpenVendorForm }) => {
                       )}
                     </div>
                   ))}
-                  
-                  {/* Mobile Register Now Button */}
-                  <div className="pt-4 border-t border-yellow-500/20">
-                    <Link 
-                      to="/register" 
-                      onClick={() => {
-                        setActiveDropdown(null);
-                        setMobileDropdownOpen(null);
-                        setIsMenuOpen(false);
-                      }}
-                    >
-                      <button className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold rounded-lg shadow-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300">
-                        REGISTER NOW
-                      </button>
-                    </Link>
-                  </div>
                 </div>
               </div>
             )}
@@ -657,7 +687,6 @@ const Header = ({ onOpenVendorForm }) => {
       {/* Bottom decorative strip */}
       <div className="h-1 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 w-full"></div>
 
-      {/* Custom Animation */}
       <style jsx>{`
         @keyframes dropdown-slide {
           from {
@@ -671,11 +700,6 @@ const Header = ({ onOpenVendorForm }) => {
         }
         .animate-dropdown-slide {
           animation: dropdown-slide 0.2s ease-out forwards;
-        }
-        
-        /* Ensure dropdown stays open when hovering over it */
-        .group:hover .dropdown-content {
-          display: block;
         }
       `}</style>
     </header>
