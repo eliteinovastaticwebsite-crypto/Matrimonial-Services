@@ -1076,150 +1076,189 @@ const Photography = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
-          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky and contain both sections */}
-            <div className="sticky top-4 space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto pr-1">
-              {/* Filter Box Section */}
-              <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
-                <div className="flex items-start mb-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-red-800 mb-0.5">Refine Your Search</h3>
-                    <p className="text-gray-600 text-xs">
-                      Use filters to find the perfect photography vendor for your special occasion
-                    </p>
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Filter by budget range</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Select specific event type</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Choose preferred location</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Find vendors by state & district</span>
-                  </div>
-                </div>
-              </div>
+         {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
+<div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
+  {/* This wrapper will be sticky - REMOVED overflow-y-auto */}
+  <div className="sticky top-4 space-y-4">
+    {/* Filter Box Section */}
+    <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
+      <div className="flex items-start mb-3">
+        <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+        </div>
+        <div>
+          <h3 className="text-base font-bold text-red-800 mb-0.5">Refine Your Search</h3>
+          <p className="text-gray-600 text-xs">
+            Use filters to find the perfect photography vendor for your special occasion
+          </p>
+        </div>
+      </div>
+      
+      <div className="space-y-2">
+        <div className="flex items-center">
+          <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm text-gray-700">Filter by budget range</span>
+        </div>
+        <div className="flex items-center">
+          <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm text-gray-700">Select specific event type</span>
+        </div>
+        <div className="flex items-center">
+          <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm text-gray-700">Choose preferred location</span>
+        </div>
+        <div className="flex items-center">
+          <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <span className="text-sm text-gray-700">Find vendors by state & district</span>
+        </div>
+      </div>
+    </div>
 
-              {/* Filter Container */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
-                  Filter Photographers
-                </h3>
+    {/* Filter Container */}
+    <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
+      <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
+        Filter Photographers
+      </h3>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minBudget}
-                      onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxBudget}
-                      onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                  </div>
-                </div>
+      <div className="mb-3">
+        <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+        <div className="flex gap-2">
+          <input
+            type="number"
+            placeholder="Min"
+            value={minBudget}
+            onChange={(e) => setMinBudget(e.target.value)}
+            className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+          />
+          <input
+            type="number"
+            placeholder="Max"
+            value={maxBudget}
+            onChange={(e) => setMaxBudget(e.target.value)}
+            className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+          />
+        </div>
+      </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Event</label>
-                  <select
-                    value={selectedEvent}
-                    onChange={(e) => setSelectedEvent(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Event Types</option>
-                    {eventTypes.map((event) => (
-                      <option key={event} value={event}>{event}</option>
-                    ))}
-                  </select>
-                </div>
+      <div className="mb-3">
+        <label className="block text-xs font-bold text-gray-700 mb-1">Type of Event</label>
+        <select
+          value={selectedEvent}
+          onChange={(e) => setSelectedEvent(e.target.value)}
+          className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+        >
+          <option value="">All Event Types</option>
+          {eventTypes.map((event) => (
+            <option key={event} value={event}>{event}</option>
+          ))}
+        </select>
+      </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
-                </div>
+      <div className="mb-3">
+        <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
+        <select
+          value={selectedState}
+          onChange={(e) => setSelectedState(e.target.value)}
+          className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+        >
+          <option value="">All States</option>
+          {states.map((state) => (
+            <option key={state} value={state}>{state}</option>
+          ))}
+        </select>
+      </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Districts</option>
-                    {districts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
-                    ))}
-                  </select>
-                </div>
+      <div className="mb-3">
+        <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+        <select
+          value={selectedDistrict}
+          onChange={(e) => setSelectedDistrict(e.target.value)}
+          className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+        >
+          <option value="">All Districts</option>
+          {districts.map((district) => (
+            <option key={district} value={district}>{district}</option>
+          ))}
+        </select>
+      </div>
 
-                <div className="mb-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-                  <input
-                    type="text"
-                    placeholder="Enter location"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
+      <div className="mb-4">
+        <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
+        <input
+          type="text"
+          placeholder="Enter location"
+          value={selectedLocation}
+          onChange={(e) => setSelectedLocation(e.target.value)}
+          className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+        />
+      </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={handleFilter}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
-                  >
-                    Apply Filter
-                  </button>
-                  <button
-                    onClick={handleReset}
-                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
-                  >
-                    Reset
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="flex gap-2">
+        <button
+          onClick={handleFilter}
+          className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+        >
+          Apply Filter
+        </button>
+        <button
+          onClick={handleReset}
+          className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+
+    {/* NEW: Matrimony Registration Box - UPDATED TO MATCH PHOTOGRAPHY PAGE STYLE */}
+    <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
+      <div className="flex flex-col items-center text-center">
+        {/* Heart Icon - Updated to match photography theme */}
+        <div className="w-12 h-12 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full flex items-center justify-center mb-3">
+          <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+          </svg>
+        </div>
+        
+        {/* Slogan - Updated colors to match */}
+        <h3 className="text-base font-bold text-red-800 mb-2">
+          Find Your Perfect Partner
+        </h3>
+        
+        <p className="text-gray-600 text-xs mb-4">
+       Find your soulmate and create beautiful memories together.Join our matrimony service and find your life partner.
+        </p>
+        
+        {/* Register Now Button - Updated to match photography button style */}
+        <a 
+          href="https://eliteinovamatrimony.com/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
+        >
+          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+          Register Now
+        </a>
+        
+        {/* Small note - Updated color to match */}
+        <p className="text-gray-500 text-[10px] mt-3">
+          Redirects to eliteinovamatrimony.com
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
       </div>
 

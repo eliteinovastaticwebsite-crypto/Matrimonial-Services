@@ -10,13 +10,6 @@ import veg from '../assets/veg.jpg';
 import multicuisine from '../assets/multicuisine.jpg';
 import themebased from '../assets/themebased.jpg';
 import eventbased from '../assets/eventbased.jpg';
-import photography from '../assets/photography.jpg';
-import catering from '../assets/catering.jpg';
-import weddinghalls from '../assets/weddinghalls.jpg';
-import decoration from '../assets/decoration.jpg';
-import invitation from '../assets/invitation.jpg';
-import makeup from '../assets/makeup.jpg';
-import entertainment from '../assets/entertainment.jpg';
 import caterbanner1 from '../assets/multicuisine.jpg';
 import caterbanner2 from '../assets/multicuisine.jpg';
 
