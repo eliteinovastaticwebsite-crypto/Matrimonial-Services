@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import VendorLoginForm from './VendorLoginForm'; // Import the component
 
 const RegisterChoice = () => {
   const navigate = useNavigate();
+  const [showVendorLogin, setShowVendorLogin] = useState(false);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-red-50 flex items-center justify-center px-4 py-12">
@@ -103,8 +105,9 @@ const RegisterChoice = () => {
                 ))}
               </div>
 
+              {/* Register Button - Navigates to existing vendor-login page */}
               <button
-                onClick={() => navigate('/vendor-registration')}
+                onClick={() => navigate('/vendor-login')}
                 className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-4 px-6 rounded-xl font-bold text-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Register as Vendor
@@ -113,7 +116,7 @@ const RegisterChoice = () => {
               <p className="text-center text-sm text-gray-600 mt-4">
                 Already have an account?{' '}
                 <button
-                  onClick={() => navigate('/vendor-login')}
+                  onClick={() => setShowVendorLogin(true)}
                   className="text-yellow-700 font-semibold hover:text-yellow-900"
                 >
                   Login here
@@ -135,6 +138,14 @@ const RegisterChoice = () => {
             Back to Home
           </button>
         </div>
+
+        {/* Vendor Login Modal */}
+        {showVendorLogin && (
+          <VendorLoginForm 
+            onClose={() => setShowVendorLogin(false)}
+            showRegisterOptions={true}
+          />
+        )}
       </div>
     </div>
   );

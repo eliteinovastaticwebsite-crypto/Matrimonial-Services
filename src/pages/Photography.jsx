@@ -453,9 +453,11 @@ const Photography = () => {
         <span className="ml-2 font-bold text-sm">Filter</span>
       </button>
 
-      {/* Banner Section */}
-      <section className="relative w-full overflow-hidden">
-        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full">
+            {/* Banner Section - SAME AS HOME PAGE */}
+      <section className="relative w-full overflow-hidden bg-gray-100">
+        {/* Responsive height - matches Home page: 40vh mobile, 50vh small, 60vh medium, 700px large */}
+        <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
+          {/* Banner Images - Contain to fit on mobile, cover on desktop */}
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -463,37 +465,58 @@ const Photography = () => {
                 index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+              {/* Image Container */}
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
                 <img
                   src={banner.image}
-                  alt={banner.title}
-                  className="w-full h-full object-cover"
+                  alt={`Banner ${banner.id}`}
+                  className="w-full h-full object-contain md:object-cover"
                   style={{
-                    objectPosition: 'center center',
-                    imageRendering: 'crisp-edges',
-                    WebkitImageRendering: 'crisp-edges',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
                   }}
                 />
               </div>
             </div>
           ))}
 
+          {/* Banner Navigation Dots - Centered and visible */}
+          <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 md:space-x-4 z-20">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToBanner(index)}
+                className={`rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex
+                    ? 'bg-yellow-500 w-6 h-2 sm:w-8 sm:h-2.5 md:w-10 md:h-3'
+                    : 'bg-white/90 hover:bg-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5'
+                }`}
+                aria-label={`Go to banner ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Previous/Next Buttons - Perfectly positioned */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
             aria-label="Previous banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
             aria-label="Next banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>

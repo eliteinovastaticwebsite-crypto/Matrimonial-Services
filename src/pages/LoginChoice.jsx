@@ -75,10 +75,7 @@ const LoginChoice = () => {
           </div>
 
           {/* Vendor Login Card */}
-          <div 
-            className="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-transparent hover:border-yellow-400 transition-all duration-300 transform hover:scale-105 cursor-pointer"
-            onClick={() => setShowVendorLogin(true)} // Open modal instead of navigating
-          >
+          <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border-2 border-transparent hover:border-yellow-400 transition-all duration-300 transform hover:scale-105">
             <div className="bg-gradient-to-r from-yellow-500 to-yellow-600 p-8 text-red-900">
               <div className="flex items-center justify-center mb-4">
                 <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-lg">
@@ -108,17 +105,18 @@ const LoginChoice = () => {
                 ))}
               </div>
 
-              <button className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-4 px-6 rounded-xl font-bold text-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+              {/* Login Button - Opens modal */}
+              <button 
+                onClick={() => setShowVendorLogin(true)}
+                className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-4 px-6 rounded-xl font-bold text-lg hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
                 Login as Vendor
               </button>
 
               <p className="text-center text-sm text-gray-600 mt-4">
                 Don't have an account?{' '}
                 <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate('/vendor-registration');
-                  }}
+                  onClick={() => navigate('/vendor-login')}
                   className="text-yellow-700 font-semibold hover:text-yellow-900"
                 >
                   Register here

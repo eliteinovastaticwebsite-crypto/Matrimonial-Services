@@ -58,13 +58,57 @@ const Home = () => {
     setCurrentBannerIndex(index);
   };
 
+  // Categories data - includes all 8 categories with Matchproof Investigations
+  const categories = [
+    {
+      name: 'Photography',
+      path: '/photography',
+      image: photography,
+    },
+    {
+      name: 'Catering & Foods',
+      path: '/catering',
+      image: catering,
+    },
+    {
+      name: 'Wedding Halls',
+      path: '/wedding-halls',
+      image: weddinghalls,
+    },
+    {
+      name: 'Decorations',
+      path: '/decorations',
+      image: decoration,
+    },
+    {
+      name: 'Entertainment',
+      path: '/entertainment',
+      image: entertainment,
+    },
+    {
+      name: 'Invitation & Gifts',
+      path: '/invitation',
+      image: invitation,
+    },
+    {
+      name: 'Bridal Styling',
+      path: '/styling',
+      image: makeup,
+    },
+    {
+      name: 'Matchproof Investigations',
+      path: '/matchproof',
+      image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', // Online image as fallback
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Banner Section - OPTIMIZED FOR ALL SCREENS */}
-      <section className="relative w-full overflow-hidden">
-        {/* Responsive height - 600px for system view, responsive for mobile */}
-        <div className="relative h-[35vh] min-h-[250px] sm:h-[40vh] md:h-[45vh] lg:h-[600px]">
-          {/* Banner Images - Optimized for mobile quality */}
+      {/* Banner Section - FULLY FITTED FOR ALL SCREENS */}
+      <section className="relative w-full overflow-hidden bg-gray-100">
+        {/* Responsive height - 600px only in desktop view */}
+        <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
+          {/* Banner Images - Contain to fit on mobile, cover on desktop */}
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -72,23 +116,15 @@ const Home = () => {
                 index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              {/* Image Container with optimized rendering */}
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+              {/* Image Container */}
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
                 <img
                   src={banner.image}
                   alt={`Banner ${banner.id}`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain md:object-cover"
                   style={{
-                    objectPosition: 'center center',
-                    // Optimized for mobile rendering
-                    imageRendering: 'crisp-edges',
-                    WebkitImageRendering: 'crisp-edges',
-                    // Ensure sharp edges on mobile
-                    WebkitFontSmoothing: 'antialiased',
-                    MozOsxFontSmoothing: 'grayscale',
-                    // Force GPU rendering for better quality
-                    transform: 'translateZ(0)',
-                    backfaceVisibility: 'hidden',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
                   }}
                   onError={(e) => {
                     e.target.onerror = null;
@@ -139,32 +175,46 @@ const Home = () => {
       </section>
 
       {/* Welcome Section - Mobile responsive */}
-      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
-            Welcome to Eliteinova Matrimonial Services
-          </h2>
-          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
-            <p className="text-gray-700 text-sm md:text-base lg:text-lg mb-3 md:mb-4">
-              This is a demo page to showcase the header component with the requested red and yellow theme, Pacifico font for headings, and all the required menu items.
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6 mt-4 md:mt-6 lg:mt-8">
-              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Customer Login</h3>
-                <p className="text-gray-600 text-xs md:text-sm">Access your matrimonial profile</p>
-              </div>
-              <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-3 md:p-4 lg:p-6 rounded-lg border border-yellow-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Vendor Login</h3>
-                <p className="text-gray-600 text-xs md:text-sm">Partner portal access</p>
-              </div>
-              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Help & Support</h3>
-                <p className="text-gray-600 text-xs md:text-sm">Get assistance anytime</p>
-              </div>
-            </div>
-          </div>
+<main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+  <div className="max-w-4xl mx-auto text-center">
+    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
+      Welcome to Eliteinova Matrimonial Services
+    </h2>
+    <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
+      <p className="text-gray-700 text-sm md:text-base lg:text-lg mb-3 md:mb-4">
+        Your trusted partner for finding perfect matches and wedding services. We combine traditional values with modern technology to help you find your life partner and plan your dream wedding.
+      </p>
+      
+      {/* Registration Buttons Section */}
+      <div className="flex flex-col md:flex-row justify-center gap-3 md:gap-4 mt-6 md:mt-8 mb-6 md:mb-8">
+        <Link to="/customer-registration" className="bg-gradient-to-r from-red-600 to-yellow-600 text-white px-6 py-3 rounded-lg font-medium hover:from-red-700 hover:to-yellow-700 transition-all shadow-sm">
+          Customer Registration
+        </Link>
+        <Link to="/vendor-registration" className="bg-gradient-to-r from-yellow-600 to-red-600 text-white px-6 py-3 rounded-lg font-medium hover:from-yellow-700 hover:to-red-700 transition-all shadow-sm">
+          Vendor Registration
+        </Link>
+      </div>
+      
+      {/* Login Cards Section - Now only 2 cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-6 mt-4 md:mt-6 lg:mt-8">
+        <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
+          <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Customer Login</h3>
+          <p className="text-gray-600 text-xs md:text-sm">Access your matrimonial profile</p>
+          <Link to="/login-choice" className="inline-block mt-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors">
+            Login Here
+          </Link>
         </div>
-      </main>
+        <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-3 md:p-4 lg:p-6 rounded-lg border border-yellow-200">
+          <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Vendor Login</h3>
+          <p className="text-gray-600 text-xs md:text-sm">Partner portal access</p>
+          <Link to="/vendor-login" className="inline-block mt-2 bg-yellow-600 text-red-900 px-4 py-2 rounded-lg text-sm hover:bg-yellow-700 transition-colors">
+            Vendor Login
+          </Link>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 
       {/* Categories Section - Mobile responsive */}
       <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">
@@ -172,124 +222,30 @@ const Home = () => {
           Our Categories
         </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 xl:gap-10 max-w-6xl mx-auto">
-          {/* Photography */}
-          <div className="flex flex-col items-center">
-            <Link to="/photography" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={photography}
-                    alt="Photography" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
+          {categories.map((category, index) => (
+            <div key={index} className="flex flex-col items-center">
+              <Link to={category.path} className="block group">
+                <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
+                  <div className="w-full h-full rounded-full overflow-hidden">
+                    <img 
+                      src={category.image}
+                      alt={category.name} 
+                      className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        // Fallback image
+                        e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80";
+                      }}
+                    />
+                  </div>
                 </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Photography</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Catering & Foods */}
-          <div className="flex flex-col items-center">
-            <Link to="/catering" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={catering}
-                    alt="Catering & Foods" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Catering & Foods</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Mandapam & Wedding Halls */}
-          <div className="flex flex-col items-center">
-            <Link to="/wedding-halls" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={weddinghalls}
-                    alt="Mandapam & Wedding Halls" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Wedding Halls</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Decorations */}
-          <div className="flex flex-col items-center">
-            <Link to="/decorations" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={decoration}
-                    alt="Decorations" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Decorations</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Entertainment & Events */}
-          <div className="flex flex-col items-center">
-            <Link to="/entertainment" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={entertainment}
-                    alt="Entertainment & Events" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Entertainment</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Invitation & Gifts */}
-          <div className="flex flex-col items-center">
-            <Link to="/invitation" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={invitation}
-                    alt="Invitation & Gifts" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Invitation & Gifts</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
-
-          {/* Bridal and Groom Styling */}
-          <div className="flex flex-col items-center">
-            <Link to="/styling" className="block group">
-              <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                <div className="w-full h-full rounded-full overflow-hidden">
-                  <img 
-                    src={makeup} 
-                    alt="Bridal & Groom Styling" 
-                    className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-              </div>
-            </Link>
-            <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">Bridal Styling</h3>
-            <p className="text-xs md:text-sm text-gray-600">products</p>
-          </div>
+              </Link>
+              <h3 className="mt-2 md:mt-3 lg:mt-4 text-center font-semibold text-gray-800 text-sm md:text-base lg:text-lg">
+                {category.name}
+              </h3>
+              <p className="text-xs md:text-sm text-gray-600">{category.description}</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -299,44 +255,44 @@ const Home = () => {
           Why Choose Eliteinova?
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
               <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
             </div>
             <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Verified Profiles</h3>
-            <p className="text-gray-600 text-xs md:text-sm text-center">All profiles are thoroughly verified for authenticity</p>
+            <p className="text-gray-600 text-xs md:text-sm text-center">All profiles are thoroughly verified for authenticity and reliability</p>
           </div>
           
-          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
               <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
             <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Privacy Protected</h3>
-            <p className="text-gray-600 text-xs md:text-sm text-center">Your data is secure with advanced encryption</p>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Your personal data is secure with advanced encryption technology</p>
           </div>
           
-          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-red-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
               <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
+            </svg>
             </div>
             <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">Expert Matchmaking</h3>
-            <p className="text-gray-600 text-xs md:text-sm text-center">Professional assistance for perfect matches</p>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Professional assistance using advanced algorithms for perfect matches</p>
           </div>
           
-          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100">
+          <div className="bg-white p-4 md:p-5 lg:p-6 rounded-lg md:rounded-xl shadow-md md:shadow-lg border border-yellow-100 hover:shadow-xl transition-shadow duration-300">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-3 md:mb-4 mx-auto">
               <svg className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
             <h3 className="font-bold text-base md:text-lg text-red-700 mb-1 md:mb-2 text-center">24/7 Support</h3>
-            <p className="text-gray-600 text-xs md:text-sm text-center">Round-the-clock customer support</p>
+            <p className="text-gray-600 text-xs md:text-sm text-center">Round-the-clock customer support for all your queries and concerns</p>
           </div>
         </div>
       </section>
