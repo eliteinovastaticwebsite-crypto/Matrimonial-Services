@@ -112,17 +112,25 @@ const VendorProfile = () => {
   };
 
   const sections = [
-    { id: 'basic', title: 'Basic Details' },
-    { id: 'contact', title: 'Contact Information' },
-    { id: 'legal', title: 'Business & Legal Details' },
-    { id: 'equipment', title: 'Equipment & Team Details' },
-    { id: 'coverage', title: 'Service Coverage' },
-    { id: 'pricing', title: 'Packages & Pricing' },
-    { id: 'delivery', title: 'Delivery Timeline' },
-    { id: 'portfolio', title: 'Portfolio & Online Presence' },
-    { id: 'bank', title: 'Bank Details' },
-    { id: 'declaration', title: 'Declaration' },
+    { id: 'basic', title: 'Basic Details', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+    { id: 'contact', title: 'Contact Information', icon: 'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z' },
+    { id: 'legal', title: 'Business & Legal Details', icon: 'M9 12l2 2 4-4m6-2a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'equipment', title: 'Equipment & Team Details', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10' },
+    { id: 'coverage', title: 'Service Coverage', icon: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z' },
+    { id: 'pricing', title: 'Packages & Pricing', icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'delivery', title: 'Delivery Timeline', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
+    { id: 'portfolio', title: 'Portfolio & Online Presence', icon: 'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z' },
+    { id: 'bank', title: 'Bank Details', icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
+    { id: 'declaration', title: 'Declaration', icon: 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z' },
   ];
+
+  // Function to go to next section
+  const goToNextSection = () => {
+    const currentIndex = sections.findIndex(s => s.id === activeSection);
+    if (currentIndex < sections.length - 1) {
+      setActiveSection(sections[currentIndex + 1].id);
+    }
+  };
 
   // ── shared label / value pair ──
   const Field = ({ label, children }) => (
@@ -673,40 +681,26 @@ const VendorProfile = () => {
 
           {/* ── 10-Section Navigation + Content ── */}
           <div className="border-t border-gray-200">
-            {/* Mobile tabs – horizontal scroll */}
-            <div className="md:hidden overflow-x-auto">
-              <div className="flex space-x-1 px-3 py-2 border-b border-gray-200 bg-gray-50">
+            {/* Section Navigation - Now with icons and one line */}
+            <div className="overflow-x-auto">
+              <div className="flex w-full min-w-max border-b border-gray-200">
                 {sections.map((section) => (
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`flex-shrink-0 px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-300 ${
+                    className={`flex-shrink-0 flex items-center gap-2 px-4 py-3 border-r border-gray-200 last:border-r-0 transition-all duration-300 ${
                       activeSection === section.id
-                        ? 'bg-gradient-to-r from-red-600 to-red-700 text-white shadow'
-                        : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
+                        ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
+                        : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                     }`}
                   >
-                    {section.title}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={section.icon} />
+                    </svg>
+                    <span className="text-xs font-medium whitespace-nowrap">{section.title}</span>
                   </button>
                 ))}
               </div>
-            </div>
-
-            {/* Desktop tabs – grid */}
-            <div className="hidden md:grid grid-cols-2 lg:grid-cols-5 border-b border-gray-200">
-              {sections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`p-3 text-sm font-medium transition-all duration-300 border-r border-gray-200 last:border-r-0 ${
-                    activeSection === section.id
-                      ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
-                      : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {section.title}
-                </button>
-              ))}
             </div>
 
             {/* Active section content */}
@@ -719,6 +713,24 @@ const VendorProfile = () => {
               </div>
               <div className="bg-gradient-to-br from-red-50 to-yellow-50 p-4 md:p-6 rounded-lg border border-red-100">
                 {renderSectionContent()}
+                
+                {/* Next Button at bottom of each section */}
+                <div className="mt-6 pt-4 border-t border-red-200 flex justify-end">
+                  <button
+                    onClick={goToNextSection}
+                    disabled={activeSection === sections[sections.length - 1].id}
+                    className={`flex items-center gap-2 px-5 py-2 rounded-lg font-medium transition-all duration-300 ${
+                      activeSection === sections[sections.length - 1].id
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 shadow hover:shadow-md'
+                    }`}
+                  >
+                    <span>Next</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
