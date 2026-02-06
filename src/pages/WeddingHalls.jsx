@@ -8,13 +8,6 @@ import eventhall from '../assets/eventhall.jpg';
 import conventionhall from '../assets/conventionhall.jpg';
 import partyhall from '../assets/partyhall.jpg';
 import outdoorvenue from '../assets/outdoorvenue.jpg';
-import photography from '../assets/photography.jpg';
-import catering from '../assets/catering.jpg';
-import weddinghalls from '../assets/weddinghalls.jpg';
-import decoration from '../assets/decoration.jpg';
-import invitation from '../assets/invitation.jpg';
-import makeup from '../assets/makeup.jpg';
-import entertainment from '../assets/entertainment.jpg';
 import hallbanner1 from '../assets/luxuryhall.jpg';
 import hallbanner2 from '../assets/achall.jpg';
 
@@ -438,51 +431,82 @@ const WeddingHalls = () => {
       </button>
 
       {/* Banner Section */}
-      <section className="relative w-full overflow-hidden">
-        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full">
-          {banners.map((banner, index) => (
-            <div
-              key={banner.id}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-              }`}
-            >
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
-                <img
-                  src={banner.image}
-                  alt={banner.title}
-                  className="w-full h-full object-cover"
-                  style={{
-                    objectPosition: 'center center',
-                    imageRendering: 'crisp-edges',
-                    WebkitImageRendering: 'crisp-edges',
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-
-          <button
-            onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
-            aria-label="Previous banner"
-          >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
-            aria-label="Next banner"
-          >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+<section className="relative w-full overflow-hidden">
+  <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
+    {banners.map((banner, index) => (
+      <div
+        key={banner.id}
+        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+          index === currentBannerIndex 
+            ? 'opacity-100 z-10 pointer-events-auto' 
+            : 'opacity-0 z-0 pointer-events-none'
+        }`}
+      >
+        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+          <img
+            src={banner.image}
+            alt={banner.title}
+            className="w-full h-full object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            style={{
+              objectPosition: 'center center',
+            }}
+          />
         </div>
-      </section>
+      </div>
+    ))}
+
+    {/* Navigation Buttons - Mobile Optimized */}
+    <button
+      onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
+      className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
+      aria-label="Previous banner"
+    >
+      <svg 
+        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+        strokeWidth={2.5}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <button
+      onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
+      className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
+      aria-label="Next banner"
+    >
+      <svg 
+        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+        strokeWidth={2.5}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    {/* Dot Indicators - Mobile Friendly */}
+    <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+      {banners.map((_, index) => (
+        <button
+          key={index}
+          onClick={() => goToBanner(index)}
+          className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+            index === currentBannerIndex 
+              ? 'bg-white scale-110' 
+              : 'bg-white/60 hover:bg-white/80'
+          }`}
+          aria-label={`Go to slide ${index + 1}`}
+        />
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Main Categories Navigation */}
       <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
