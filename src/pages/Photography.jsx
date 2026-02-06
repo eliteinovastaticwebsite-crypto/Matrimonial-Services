@@ -453,75 +453,89 @@ const Photography = () => {
         <span className="ml-2 font-bold text-sm">Filter</span>
       </button>
 
-            {/* Banner Section - SAME AS HOME PAGE */}
-      <section className="relative w-full overflow-hidden bg-gray-100">
-        {/* Responsive height - matches Home page: 40vh mobile, 50vh small, 60vh medium, 700px large */}
-        <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
-          {/* Banner Images - Contain to fit on mobile, cover on desktop */}
-          {banners.map((banner, index) => (
-            <div
-              key={banner.id}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
-              }`}
-            >
-              {/* Image Container */}
-              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
-                <img
-                  src={banner.image}
-                  alt={`Banner ${banner.id}`}
-                  className="w-full h-full object-contain md:object-cover"
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                  }}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
-                  }}
-                />
-              </div>
-            </div>
-          ))}
-
-          {/* Banner Navigation Dots - Centered and visible */}
-          <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 md:space-x-4 z-20">
-            {banners.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToBanner(index)}
-                className={`rounded-full transition-all duration-300 ${
-                  index === currentBannerIndex
-                    ? 'bg-yellow-500 w-6 h-2 sm:w-8 sm:h-2.5 md:w-10 md:h-3'
-                    : 'bg-white/90 hover:bg-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5'
-                }`}
-                aria-label={`Go to banner ${index + 1}`}
-              />
-            ))}
-          </div>
-
-          {/* Previous/Next Buttons - Perfectly positioned */}
-          <button
-            onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
-            aria-label="Previous banner"
-          >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
-            aria-label="Next banner"
-          >
-            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+            {/* Banner Section - Optimized Mobile View */}
+<section className="relative w-full overflow-hidden bg-gray-100">
+  <div className="relative h-[40vh] xs:h-[45vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
+    {banners.map((banner, index) => (
+      <div
+        key={banner.id}
+        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+          index === currentBannerIndex 
+            ? 'opacity-100 z-10 pointer-events-auto' 
+            : 'opacity-0 z-0 pointer-events-none'
+        }`}
+      >
+        {/* Image Container */}
+        <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+          <img
+            src={banner.image}
+            alt={`Banner ${banner.id}`}
+            className="w-full h-full object-contain md:object-cover"
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+            }}
+            loading={index === 0 ? "eager" : "lazy"}
+            decoding="async"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+            }}
+          />
         </div>
-      </section>
+      </div>
+    ))}
+
+    {/* Navigation Buttons - Mobile Optimized */}
+    <button
+      onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
+      className="absolute left-1 xs:left-2 sm:left-3 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 lg:p-4 rounded-full transition-all duration-300 z-20 touch-manipulation"
+      aria-label="Previous banner"
+    >
+      <svg 
+        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+        strokeWidth={2.5}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+    
+    <button
+      onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
+      className="absolute right-1 xs:right-2 sm:right-3 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 lg:p-4 rounded-full transition-all duration-300 z-20 touch-manipulation"
+      aria-label="Next banner"
+    >
+      <svg 
+        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" 
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24"
+        strokeWidth={2.5}
+      >
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+      </svg>
+    </button>
+
+    {/* Dot Indicators - Mobile Friendly */}
+    <div className="absolute bottom-3 xs:bottom-3.5 sm:bottom-4 md:bottom-5 lg:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1.5 xs:space-x-2 sm:space-x-2.5 md:space-x-3 lg:space-x-4 z-20">
+      {banners.map((_, index) => (
+        <button
+          key={index}
+          onClick={() => goToBanner(index)}
+          className={`rounded-full transition-all duration-300 ${
+            index === currentBannerIndex
+              ? 'bg-yellow-500 w-4 h-1.5 xs:w-5 xs:h-2 sm:w-6 sm:h-2.5 md:w-7 md:h-3 lg:w-8 lg:h-3'
+              : 'bg-white/90 hover:bg-white w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4'
+          }`}
+          aria-label={`Go to banner ${index + 1}`}
+        />
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Main Categories Navigation */}
       <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">

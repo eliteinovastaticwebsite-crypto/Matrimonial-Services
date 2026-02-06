@@ -8,15 +8,8 @@ import eventdecor from '../assets/eventdecor.jpg';
 import floraldecor from '../assets/floraldecor.jpg';
 import themedecor from '../assets/themedecor.jpg';
 import lightingdecor from '../assets/lightingdecor.jpg';
-import photography from '../assets/photography.jpg';
-import catering from '../assets/catering.jpg';
-import weddinghalls from '../assets/weddinghalls.jpg';
-import decoration from '../assets/decoration.jpg';
-import invitation from '../assets/invitation.jpg';
-import makeup from '../assets/makeup.jpg';
-import entertainment from '../assets/entertainment.jpg';
 import decorationbanner1 from '../assets/mandapdecor.jpg';
-import decorationbanner2 from '../assets/mandapdecor.jpg';
+import decorationbanner2 from '../assets/receptiondecor.jpg';
 
 const Decoration = () => {
   const navigate = useNavigate();
@@ -470,12 +463,14 @@ const Decoration = () => {
 
       {/* Banner Section */}
       <section className="relative w-full overflow-hidden">
-        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full">
+        <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
           {banners.map((banner, index) => (
             <div
               key={banner.id}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                index === currentBannerIndex 
+                  ? 'opacity-100 z-10 pointer-events-auto' 
+                  : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
               <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
@@ -483,35 +478,64 @@ const Decoration = () => {
                   src={banner.image}
                   alt={banner.title}
                   className="w-full h-full object-cover"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
                   style={{
                     objectPosition: 'center center',
-                    imageRendering: 'crisp-edges',
-                    WebkitImageRendering: 'crisp-edges',
                   }}
                 />
               </div>
             </div>
           ))}
 
+          {/* Navigation Buttons - Mobile Optimized */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Previous banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Next banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
+
+          {/* Dot Indicators - Mobile Friendly */}
+          <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToBanner(index)}
+                className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex 
+                    ? 'bg-white scale-110' 
+                    : 'bg-white/60 hover:bg-white/80'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -1069,8 +1093,8 @@ const Decoration = () => {
 
           {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky and contain both sections */}
-            <div className="sticky top-4 space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto pr-1">
+            {/* This wrapper will be sticky - REMOVED overflow-y-auto */}
+            <div className="sticky top-4 space-y-4">
               {/* Filter Box Section */}
               <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
                 <div className="flex items-start mb-3">
@@ -1207,6 +1231,45 @@ const Decoration = () => {
                   >
                     Reset
                   </button>
+                </div>
+              </div>
+
+              {/* NEW: Matrimony Registration Box - UPDATED TO MATCH PHOTOGRAPHY PAGE STYLE */}
+              <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
+                <div className="flex flex-col items-center text-center">
+                  {/* Heart Icon - Updated to match photography theme */}
+                  <div className="w-12 h-12 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full flex items-center justify-center mb-3">
+                    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  
+                  {/* Slogan - Updated colors to match */}
+                  <h3 className="text-base font-bold text-red-800 mb-2">
+                    Find Your Perfect Partner
+                  </h3>
+                  
+                  <p className="text-gray-600 text-xs mb-4">
+                    Find your soulmate and create beautiful memories together. Join our matrimony service and find your life partner.
+                  </p>
+                  
+                  {/* Register Now Button - Updated to match photography button style */}
+                  <a 
+                    href="https://eliteinovamatrimony.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Register Now
+                  </a>
+                  
+                  {/* Small note - Updated color to match */}
+                  <p className="text-gray-500 text-[10px] mt-3">
+                    Redirects to eliteinovamatrimony.com
+                  </p>
                 </div>
               </div>
             </div>
