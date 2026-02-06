@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bridalmakeup from '../assets/bridalmakeup.jpg';
-import groomstyling from '../assets/groomstyling.jpg';
+import bridalaccessories from '../assets/bridalaccessories.jpg'; // Using groomstyling as placeholder
 import hairstyling from '../assets/hairstyling.jpg';
 import mehendiart from '../assets/mehendiart.jpg';
-import preweddingstyling from '../assets/mehendiart.jpg';
-import traditionalstyling from '../assets/mehendiart.jpg';
-import luxurystyling from '../assets/mehendiart.jpg';
-import stylingservice from '../assets/mehendiart.jpg';
+import traditionalattire from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
+import groommakeup from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
+import accessoriesfinishing from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
 import stylingbanner1 from '../assets/mehendiart.jpg';
 import stylingbanner2 from '../assets/mehendiart.jpg';
 
@@ -65,64 +64,34 @@ const Styling = () => {
     { name: 'Bridal Styling', path: '/styling' },
   ];
 
+  // UPDATED: 7 specific categories as requested
   const stylingCategories = [
     { name: 'Bridal Makeup', image: bridalmakeup },
-    { name: 'Groom Styling', image: groomstyling },
+    { name: 'Bridal Accessories', image: bridalaccessories },
     { name: 'Hair Styling', image: hairstyling },
     { name: 'Mehendi Art', image: mehendiart },
-    { name: 'Pre-Wedding Styling', image: preweddingstyling },
-    { name: 'Traditional Styling', image: traditionalstyling },
-    { name: 'Luxury Styling', image: luxurystyling },
-    { name: 'Complete Styling', image: stylingservice },
+    { name: 'Traditional Attire Styling', image: traditionalattire },
+    { name: 'Groom Makeup', image: groommakeup },
+    { name: 'Accessories & Finishing', image: accessoriesfinishing },
   ];
 
+  // UPDATED: 7 service types matching the categories
   const serviceTypes = [
     'Bridal Makeup',
-    'Groom Styling',
+    'Bridal Accessories',
     'Hair Styling',
     'Mehendi Art',
-    'Pre-Wedding Styling',
-    'Traditional Styling',
-    'Luxury Styling',
-    'Complete Styling Package'
+    'Traditional Attire Styling',
+    'Groom Makeup',
+    'Accessories & Finishing'
   ];
 
   const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
   const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
 
   const handleCategoryClick = (categoryName) => {
-    let serviceType = categoryName;
-    
-    switch(categoryName) {
-      case 'Bridal Makeup':
-        serviceType = 'Bridal Makeup';
-        break;
-      case 'Groom Styling':
-        serviceType = 'Groom Styling';
-        break;
-      case 'Hair Styling':
-        serviceType = 'Hair Styling';
-        break;
-      case 'Mehendi Art':
-        serviceType = 'Mehendi Art';
-        break;
-      case 'Pre-Wedding Styling':
-        serviceType = 'Pre-Wedding Styling';
-        break;
-      case 'Traditional Styling':
-        serviceType = 'Traditional Styling';
-        break;
-      case 'Luxury Styling':
-        serviceType = 'Luxury Styling';
-        break;
-      case 'Complete Styling':
-        serviceType = 'Complete Styling Package';
-        break;
-      default:
-        serviceType = categoryName;
-    }
-    
-    setSelectedService(serviceType);
+    // Since category names exactly match service types, we can use them directly
+    setSelectedService(categoryName);
     
     if (window.innerWidth < 1024) {
       setTimeout(() => {
@@ -134,7 +103,7 @@ const Styling = () => {
     }
   };
 
-  // Sample vendor data for styling services
+  // Sample vendor data for styling services - UPDATED to match the 7 categories
   const vendors = [
     // Bridal Makeup Vendors
     {
@@ -146,7 +115,7 @@ const Styling = () => {
       personName: 'Priya Sharma',
       designation: 'Lead Makeup Artist',
       description: 'Specializing in bridal makeup with 8+ years of experience, creating flawless looks for your big day',
-      services: ['Bridal Makeup', 'Engagement Makeup', 'Reception Look', 'Trial Sessions'],
+      services: ['Airbrush Makeup', 'Traditional Bridal Look', 'Contemporary Styles', 'Makeup for Events'],
       logo: bridalmakeup,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
@@ -161,42 +130,42 @@ const Styling = () => {
       personName: 'Anjali Mehta',
       designation: 'Creative Director',
       description: 'Creating timeless bridal looks with international quality products and techniques',
-      services: ['Airbrush Makeup', 'Traditional Bridal Look', 'Contemporary Styles', 'Makeup for Events'],
+      services: ['Bridal Makeup', 'Engagement Makeup', 'Reception Look', 'Trial Sessions'],
       logo: bridalmakeup,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.8,
       priceRange: '₹30,000 - ₹2,00,000'
     },
-    // Groom Styling Vendors
+    // Bridal Accessories Vendors
     {
       id: 3,
-      name: 'Gentleman Grooming',
-      businessName: 'Gentleman Grooming Studio',
-      businessCategory: 'Groom Styling',
-      serviceType: 'Groom Styling',
-      personName: 'Rahul Verma',
-      designation: 'Groom Stylist',
-      description: 'Professional grooming services for grooms with attention to detail and style',
-      services: ['Groom Makeup', 'Beard Styling', 'Hair Grooming', 'Traditional Attire Styling'],
-      logo: groomstyling,
-      location: 'Bangalore, Karnataka',
+      name: 'Queen Accessories',
+      businessName: 'Queen Bridal Accessories',
+      businessCategory: 'Bridal Accessories',
+      serviceType: 'Bridal Accessories',
+      personName: 'Meera Reddy',
+      designation: 'Accessories Designer',
+      description: 'Exquisite bridal accessories including jewelry, hair pieces, and traditional ornaments',
+      services: ['Bridal Jewelry Sets', 'Hair Accessories', 'Maang Tikka', 'Traditional Ornaments'],
+      logo: bridalaccessories,
+      location: 'Chennai, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹15,000 - ₹80,000'
+      priceRange: '₹15,000 - ₹2,00,000'
     },
     {
       id: 4,
-      name: 'Dapper Grooms',
-      businessName: 'Dapper Groom Styling',
-      businessCategory: 'Groom Styling',
-      serviceType: 'Groom Styling',
-      personName: 'Arun Kumar',
-      designation: 'Style Consultant',
-      description: 'Transforming grooms into stylish gentlemen for their wedding day',
-      services: ['Complete Groom Package', 'Suit Styling', 'Traditional Look', 'Accessory Consultation'],
-      logo: groomstyling,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000'
+      name: 'Royal Ornaments',
+      businessName: 'Royal Bridal Ornaments',
+      businessCategory: 'Bridal Accessories',
+      serviceType: 'Bridal Accessories',
+      personName: 'Sneha Nair',
+      designation: 'Jewelry Consultant',
+      description: 'Premium bridal accessories with traditional and contemporary designs',
+      services: ['Temple Jewelry', 'Kundan Sets', 'Pearl Accessories', 'Custom Designs'],
+      logo: bridalaccessories,
+      location: 'Madurai, Tamil Nadu',
+      rating: 4.8,
+      priceRange: '₹20,000 - ₹3,00,000'
     },
     // Hair Styling Vendors
     {
@@ -205,12 +174,12 @@ const Styling = () => {
       businessName: 'Locks & Curls Hair Studio',
       businessCategory: 'Hair Styling',
       serviceType: 'Hair Styling',
-      personName: 'Meera Reddy',
+      personName: 'Aisha Kapoor',
       designation: 'Lead Hair Stylist',
       description: 'Creating beautiful bridal hairstyles with floral decorations and accessories',
       services: ['Bridal Hairstyles', 'Hair Extensions', 'Flower Decorations', 'Traditional Plaits'],
       logo: hairstyling,
-      location: 'Chennai, Tamil Nadu',
+      location: 'Bangalore, Karnataka',
       rating: 4.9,
       priceRange: '₹10,000 - ₹50,000'
     },
@@ -220,12 +189,12 @@ const Styling = () => {
       businessName: 'Crown Glory Hair Design',
       businessCategory: 'Hair Styling',
       serviceType: 'Hair Styling',
-      personName: 'Sneha Nair',
+      personName: 'Fatima Khan',
       designation: 'Hair Designer',
       description: 'Specialized in traditional and contemporary wedding hairstyles',
       services: ['Modern Hairstyles', 'Traditional Buns', 'Hair Accessories', 'Pre-wedding Hair Care'],
       logo: hairstyling,
-      location: 'Kochi, Kerala',
+      location: 'Hyderabad, Telangana',
       rating: 4.8,
       priceRange: '₹12,000 - ₹60,000'
     },
@@ -236,12 +205,12 @@ const Styling = () => {
       businessName: 'Henna Expressions Studio',
       businessCategory: 'Mehendi Art',
       serviceType: 'Mehendi Art',
-      personName: 'Fatima Khan',
+      personName: 'Zara Ahmed',
       designation: 'Mehendi Artist',
       description: 'Traditional and contemporary mehendi designs for brides and guests',
       services: ['Bridal Mehendi', 'Arabic Designs', 'Rajasthani Patterns', 'Custom Designs'],
       logo: mehendiart,
-      location: 'Madurai, Tamil Nadu',
+      location: 'Chennai, Tamil Nadu',
       rating: 4.7,
       priceRange: '₹5,000 - ₹30,000'
     },
@@ -251,138 +220,138 @@ const Styling = () => {
       businessName: 'Bridal Henna Artists',
       businessCategory: 'Mehendi Art',
       serviceType: 'Mehendi Art',
-      personName: 'Zara Ahmed',
+      personName: 'Kabir Singh',
       designation: 'Lead Artist',
       description: 'Creating intricate mehendi designs that tell your love story',
       services: ['Full Hand Designs', 'Feet Mehendi', 'Groom Design', 'Guest Mehendi'],
       logo: mehendiart,
-      location: 'Chennai, Tamil Nadu',
+      location: 'Coimbatore, Tamil Nadu',
       rating: 4.8,
       priceRange: '₹8,000 - ₹40,000'
     },
-    // Pre-Wedding Styling Vendors
+    // Traditional Attire Styling Vendors
     {
       id: 9,
-      name: 'Pre-Wedding Glam',
-      businessName: 'Pre-Wedding Glam Studio',
-      businessCategory: 'Pre-Wedding Styling',
-      serviceType: 'Pre-Wedding Styling',
-      personName: 'Aisha Kapoor',
-      designation: 'Style Director',
-      description: 'Complete pre-wedding styling for engagement and pre-wedding shoots',
-      services: ['Engagement Styling', 'Outdoor Shoot Looks', 'Theme-based Styling', 'Couple Styling'],
-      logo: preweddingstyling,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹30,000 - ₹2,00,000'
-    },
-    {
-      id: 10,
-      name: 'Shoot Ready',
-      businessName: 'Shoot Ready Styling',
-      businessCategory: 'Pre-Wedding Styling',
-      serviceType: 'Pre-Wedding Styling',
-      personName: 'Kabir Singh',
-      designation: 'Creative Stylist',
-      description: 'Making you camera-ready for pre-wedding photography sessions',
-      services: ['Photoshoot Makeup', 'Wardrobe Styling', 'Location-based Looks', 'Natural Makeup'],
-      logo: preweddingstyling,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹25,000 - ₹1,50,000'
-    },
-    // Traditional Styling Vendors
-    {
-      id: 11,
       name: 'Traditional Elegance',
       businessName: 'Traditional Elegance Styling',
-      businessCategory: 'Traditional Styling',
-      serviceType: 'Traditional Styling',
+      businessCategory: 'Traditional Attire Styling',
+      serviceType: 'Traditional Attire Styling',
       personName: 'Lakshmi Iyer',
       designation: 'Traditional Stylist',
       description: 'Specializing in South Indian traditional wedding looks and jewelry styling',
       services: ['Traditional Attire Draping', 'Temple Jewelry', 'Classic Makeup', 'Traditional Hairstyles'],
-      logo: traditionalstyling,
+      logo: traditionalattire,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
       priceRange: '₹35,000 - ₹2,50,000'
     },
     {
-      id: 12,
+      id: 10,
       name: 'Heritage Looks',
       businessName: 'Heritage Wedding Styling',
-      businessCategory: 'Traditional Styling',
-      serviceType: 'Traditional Styling',
+      businessCategory: 'Traditional Attire Styling',
+      serviceType: 'Traditional Attire Styling',
       personName: 'Radha Krishnan',
       designation: 'Traditional Consultant',
       description: 'Preserving and presenting traditional wedding styles with modern comfort',
       services: ['Regional Traditional Styles', 'Antique Jewelry', 'Cultural Attire', 'Traditional Accessories'],
-      logo: traditionalstyling,
+      logo: traditionalattire,
       location: 'Kanyakumari, Tamil Nadu',
       rating: 4.8,
       priceRange: '₹40,000 - ₹3,00,000'
     },
-    // Luxury Styling Vendors
+    // Groom Makeup Vendors
+    {
+      id: 11,
+      name: 'Gentleman Grooming',
+      businessName: 'Gentleman Grooming Studio',
+      businessCategory: 'Groom Makeup',
+      serviceType: 'Groom Makeup',
+      personName: 'Rahul Verma',
+      designation: 'Groom Stylist',
+      description: 'Professional grooming services for grooms with attention to detail and style',
+      services: ['Groom Makeup', 'Beard Styling', 'Hair Grooming', 'Traditional Attire Styling'],
+      logo: groommakeup,
+      location: 'Bangalore, Karnataka',
+      rating: 4.7,
+      priceRange: '₹15,000 - ₹80,000'
+    },
+    {
+      id: 12,
+      name: 'Dapper Grooms',
+      businessName: 'Dapper Groom Styling',
+      businessCategory: 'Groom Makeup',
+      serviceType: 'Groom Makeup',
+      personName: 'Arun Kumar',
+      designation: 'Style Consultant',
+      description: 'Transforming grooms into stylish gentlemen for their wedding day',
+      services: ['Complete Groom Package', 'Suit Styling', 'Traditional Look', 'Accessory Consultation'],
+      logo: groommakeup,
+      location: 'Hyderabad, Telangana',
+      rating: 4.6,
+      priceRange: '₹20,000 - ₹1,00,000'
+    },
+    // Accessories & Finishing Vendors
     {
       id: 13,
-      name: 'Luxe Bridal',
-      businessName: 'Luxe Bridal Styling',
-      businessCategory: 'Luxury Styling',
-      serviceType: 'Luxury Styling',
+      name: 'Perfect Finishing',
+      businessName: 'Perfect Finishing Touches',
+      businessCategory: 'Accessories & Finishing',
+      serviceType: 'Accessories & Finishing',
       personName: 'Neha Malhotra',
-      designation: 'Luxury Stylist',
-      description: 'Premium luxury styling with international designers and exclusive products',
-      services: ['International Brands', 'Designer Coordination', 'Luxury Beauty Products', 'VIP Service'],
-      logo: luxurystyling,
-      location: 'Bangalore, Karnataka',
-      rating: 5.0,
-      priceRange: '₹1,00,000 - ₹10,00,000'
+      designation: 'Finishing Specialist',
+      description: 'Complete accessory and finishing services for the perfect wedding look',
+      services: ['Final Touches', 'Accessory Coordination', 'Last-minute Fixes', 'Complete Look Review'],
+      logo: accessoriesfinishing,
+      location: 'Chennai, Tamil Nadu',
+      rating: 4.9,
+      priceRange: '₹10,000 - ₹50,000'
     },
     {
       id: 14,
-      name: 'Royal Treatment',
-      businessName: 'Royal Treatment Styling',
-      businessCategory: 'Luxury Styling',
-      serviceType: 'Luxury Styling',
+      name: 'Ultimate Accessories',
+      businessName: 'Ultimate Accessories Studio',
+      businessCategory: 'Accessories & Finishing',
+      serviceType: 'Accessories & Finishing',
       personName: 'Rohan Mehra',
-      designation: 'Luxury Director',
-      description: 'Complete luxury experience for royal wedding celebrations',
-      services: ['Personal Stylist', 'International Artists', 'Custom Creations', 'Exclusive Packages'],
-      logo: luxurystyling,
-      location: 'Hyderabad, Telangana',
-      rating: 4.9,
-      priceRange: '₹80,000 - ₹8,00,000'
+      designation: 'Accessory Director',
+      description: 'Premium accessories and finishing services to complete your wedding ensemble',
+      services: ['Accessory Selection', 'Finishing Touches', 'Look Coordination', 'Emergency Services'],
+      logo: accessoriesfinishing,
+      location: 'Coimbatore, Tamil Nadu',
+      rating: 4.8,
+      priceRange: '₹15,000 - ₹75,000'
     },
-    // Complete Styling Package Vendors
+    // Additional vendors to make 16 total
     {
       id: 15,
-      name: 'Complete Wedding Styling',
-      businessName: 'Complete Wedding Styling Services',
-      businessCategory: 'Complete Styling',
-      serviceType: 'Complete Styling Package',
+      name: 'Bridal Glamour',
+      businessName: 'Bridal Glamour Makeup',
+      businessCategory: 'Bridal Makeup',
+      serviceType: 'Bridal Makeup',
       personName: 'Pooja Gupta',
-      designation: 'Wedding Stylist',
-      description: 'End-to-end wedding styling solutions for bride, groom, and family',
-      services: ['Bridal Package', 'Groom Package', 'Family Styling', 'Complete Wedding Coordination'],
-      logo: stylingservice,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹75,000 - ₹5,00,000'
+      designation: 'Makeup Artist',
+      description: 'Creating glamorous bridal looks with modern techniques',
+      services: ['Glam Makeup', 'Smokey Eyes', 'Bold Lips', 'Contouring'],
+      logo: bridalmakeup,
+      location: 'Mumbai, Maharashtra',
+      rating: 4.7,
+      priceRange: '₹35,000 - ₹1,80,000'
     },
     {
       id: 16,
-      name: 'Wedding Perfection',
-      businessName: 'Wedding Perfection Stylists',
-      businessCategory: 'Complete Styling',
-      serviceType: 'Complete Styling Package',
+      name: 'Classic Henna',
+      businessName: 'Classic Henna Artists',
+      businessCategory: 'Mehendi Art',
+      serviceType: 'Mehendi Art',
       personName: 'David Wilson',
-      designation: 'Styling Director',
-      description: 'Comprehensive styling services ensuring perfect looks for all wedding events',
-      services: ['All Events Coverage', 'Theme Consistency', 'Multiple Look Changes', 'On-site Styling'],
-      logo: stylingservice,
-      location: 'Coimbatore, Tamil Nadu',
+      designation: 'Henna Specialist',
+      description: 'Traditional henna art with intricate patterns and designs',
+      services: ['Traditional Designs', 'Modern Patterns', 'Bridal Henna', 'Family Packages'],
+      logo: mehendiart,
+      location: 'Delhi, Delhi',
       rating: 4.8,
-      priceRange: '₹1,00,000 - ₹6,00,000'
+      priceRange: '₹6,000 - ₹35,000'
     }
   ];
 
@@ -461,9 +430,11 @@ const Styling = () => {
         <span className="ml-2 font-bold text-sm">Filter</span>
       </button>
 
-      {/* Banner Section */}
-      <section className="relative w-full overflow-hidden">
-        <div className="relative h-[250px] sm:h-[350px] md:h-[450px] lg:h-[500px] w-full">
+      {/* Banner Section - EXACTLY SAME AS PHOTOGRAPHY PAGE */}
+      <section className="relative w-full overflow-hidden bg-gray-100">
+        {/* Responsive height - matches Photography page: 40vh mobile, 50vh small, 60vh medium, 700px large */}
+        <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
+          {/* Banner Images - Contain to fit on mobile, cover on desktop */}
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -471,37 +442,58 @@ const Styling = () => {
                 index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
               }`}
             >
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+              {/* Image Container */}
+              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
                 <img
                   src={banner.image}
-                  alt={banner.title}
-                  className="w-full h-full object-cover"
+                  alt={`Banner ${banner.id}`}
+                  className="w-full h-full object-contain md:object-cover"
                   style={{
-                    objectPosition: 'center center',
-                    imageRendering: 'crisp-edges',
-                    WebkitImageRendering: 'crisp-edges',
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                  }}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
                   }}
                 />
               </div>
             </div>
           ))}
 
+          {/* Banner Navigation Dots - Centered and visible */}
+          <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 md:space-x-4 z-20">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToBanner(index)}
+                className={`rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex
+                    ? 'bg-yellow-500 w-6 h-2 sm:w-8 sm:h-2.5 md:w-10 md:h-3'
+                    : 'bg-white/90 hover:bg-white w-3 h-3 sm:w-4 sm:h-4 md:w-5 md:h-5'
+                }`}
+                aria-label={`Go to banner ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Previous/Next Buttons - Perfectly positioned */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
             aria-label="Previous banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 md:p-3 rounded-full transition-all duration-300 z-20"
+            className="absolute right-3 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
             aria-label="Next banner"
           >
-            <svg className="w-4 h-4 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -541,7 +533,7 @@ const Styling = () => {
                 Our Styling Categories
               </h2>
               
-              {/* Mobile: Horizontal Scroll */}
+              {/* Mobile: Horizontal Scroll for 7 categories */}
               <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
                 <div className="flex space-x-1 px-1 min-w-max">
                   {stylingCategories.map((category) => (
@@ -567,8 +559,8 @@ const Styling = () => {
                 </div>
               </div>
               
-              {/* Desktop: Grid */}
-              <div className="hidden md:grid grid-cols-4 md:grid-cols-8 gap-1 md:gap-1.5 px-1">
+              {/* Desktop: Grid for 7 categories - adjusted for 7 items */}
+              <div className="hidden md:grid grid-cols-4 md:grid-cols-7 gap-1 md:gap-1.5 px-1">
                 {stylingCategories.map((category) => (
                   <div key={category.name} className="flex flex-col items-center group">
                     <button 
@@ -624,7 +616,7 @@ const Styling = () => {
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
                         <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹5,000 - ₹10,00,000</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹5,000 - ₹3,00,000</span>
                       </div>
                     </div>
                   </div>
@@ -794,7 +786,7 @@ const Styling = () => {
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-2.5 py-1.5 rounded">
                         <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹5,000 - ₹10,00,000</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹5,000 - ₹3,00,000</span>
                       </div>
                     </div>
                   </div>
