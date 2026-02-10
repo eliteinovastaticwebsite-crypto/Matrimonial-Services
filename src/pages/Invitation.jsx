@@ -8,8 +8,8 @@ import returngifts from '../assets/returngifts.jpg';
 import gifthampers from '../assets/gifthampers.jpg';
 import ecogifts from '../assets/ecogifts.jpg';
 import luxuryhampers from '../assets/luxuryhampers.jpg';
-import invitationbanner1 from '../assets/ib1.jpg';
-import invitationbanner2 from '../assets/luxuryhampers.jpg';
+import invitationbanner1 from '../assets/inbanner1.jpg';
+import invitationbanner2 from '../assets/inbanner2.jpg';
 
 const Invitation = () => {
   const navigate = useNavigate();

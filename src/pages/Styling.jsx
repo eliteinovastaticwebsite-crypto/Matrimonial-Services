@@ -7,8 +7,8 @@ import mehendiart from '../assets/mehendiart.jpg';
 import traditionalattire from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
 import groommakeup from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
 import accessoriesfinishing from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
-import stylingbanner1 from '../assets/mehendiart.jpg';
-import stylingbanner2 from '../assets/mehendiart.jpg';
+import stylingbanner1 from '../assets/stylbanner1.jpg';
+import stylingbanner2 from '../assets/stylbanner2.jpg';
 
 const Styling = () => {
   const navigate = useNavigate();

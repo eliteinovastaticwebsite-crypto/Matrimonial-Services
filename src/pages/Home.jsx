@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import VendorLoginForm from './VendorLoginForm'; // Import the VendorLoginForm component
 
 // Import banner images from assets
 import banner1 from '../assets/banner1.png';
@@ -17,6 +18,7 @@ import entertainment from '../assets/entertainment.jpg';
 
 const Home = () => {
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [showVendorLogin, setShowVendorLogin] = useState(false); // Add state for vendor login modal
 
   // Banner images data - using local assets
   const banners = [
@@ -175,46 +177,68 @@ const Home = () => {
       </section>
 
       {/* Welcome Section - Mobile responsive */}
-<main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
-  <div className="max-w-4xl mx-auto text-center">
-    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
-      Welcome to Eliteinova Matrimonial Services
-    </h2>
-    <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
-      <p className="text-gray-700 text-sm md:text-base lg:text-lg mb-3 md:mb-4">
-        Your trusted partner for finding perfect matches and wedding services. We combine traditional values with modern technology to help you find your life partner and plan your dream wedding.
-      </p>
-      
-      {/* Registration Buttons Section */}
-      <div className="flex flex-col md:flex-row justify-center gap-3 md:gap-4 mt-6 md:mt-8 mb-6 md:mb-8">
-        <Link to="/customer-registration" className="bg-gradient-to-r from-red-600 to-yellow-600 text-white px-6 py-3 rounded-lg font-medium hover:from-red-700 hover:to-yellow-700 transition-all shadow-sm">
-          Customer Registration
-        </Link>
-        <Link to="/vendor-registration" className="bg-gradient-to-r from-yellow-600 to-red-600 text-white px-6 py-3 rounded-lg font-medium hover:from-yellow-700 hover:to-red-700 transition-all shadow-sm">
-          Vendor Registration
-        </Link>
-      </div>
-      
-      {/* Login Cards Section - Now only 2 cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4 lg:gap-6 mt-4 md:mt-6 lg:mt-8">
-        <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-3 md:p-4 lg:p-6 rounded-lg border border-red-200">
-          <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Customer Login</h3>
-          <p className="text-gray-600 text-xs md:text-sm">Access your matrimonial profile</p>
-          <Link to="/login-choice" className="inline-block mt-2 bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors">
-            Login Here
-          </Link>
+      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
+            Welcome to Eliteinova Matrimonial Services
+          </h2>
+          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
+            
+            {/* Three Login/Registration Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
+              
+              {/* Vendor Box */}
+              <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-4 md:p-5 lg:p-6 rounded-lg border border-yellow-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Vendor Portal</h3>
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Partner services access</p>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={() => setShowVendorLogin(true)}
+                    className="flex-1 bg-yellow-600 text-red-900 px-3 py-2 rounded-lg text-sm hover:bg-yellow-700 transition-colors text-center"
+                  >
+                    Login
+                  </button>
+                  <Link to="/vendor-login" className="flex-1 bg-yellow-500 text-red-900 px-3 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors text-center">
+                    Register
+                  </Link>
+                </div>
+              </div>
+
+              {/* Customer Box */}
+              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-4 md:p-5 lg:p-6 rounded-lg border border-red-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Customer Portal</h3>
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Access your profile</p>
+                <div className="flex gap-2">
+                  <Link to="/customer-login" className="flex-1 bg-red-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors text-center">
+                    Login
+                  </Link>
+                  <Link to="/customer-registration" className="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg text-sm hover:bg-red-600 transition-colors text-center">
+                    Register
+                  </Link>
+                </div>
+              </div>
+
+              {/* Matrimony Box */}
+              <div className="bg-gradient-to-br from-pink-100 to-red-100 p-4 md:p-5 lg:p-6 rounded-lg border border-pink-200">
+                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Matrimony Portal</h3>
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Find your life partner</p>
+                <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-red-600 to-pink-600 text-white px-4 py-2 rounded-lg text-sm hover:from-red-700 hover:to-pink-700 transition-all text-center">
+                  Matrimony Registration
+                </a>
+              </div>
+
+            </div>
+          </div>
         </div>
-        <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-3 md:p-4 lg:p-6 rounded-lg border border-yellow-200">
-          <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-1 md:mb-2">Vendor Login</h3>
-          <p className="text-gray-600 text-xs md:text-sm">Partner portal access</p>
-          <Link to="/vendor-login" className="inline-block mt-2 bg-yellow-600 text-red-900 px-4 py-2 rounded-lg text-sm hover:bg-yellow-700 transition-colors">
-            Vendor Login
-          </Link>
-        </div>
-      </div>
-    </div>
-  </div>
-</main>
+
+        {/* Vendor Login Modal */}
+        {showVendorLogin && (
+          <VendorLoginForm 
+            onClose={() => setShowVendorLogin(false)}
+            showRegisterOptions={true}
+          />
+        )}
+      </main>
 
       {/* Categories Section - Mobile responsive */}
       <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">
