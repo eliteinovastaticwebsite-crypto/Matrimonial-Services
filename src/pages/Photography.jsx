@@ -415,6 +415,14 @@ const Photography = () => {
   const handleFilter = () => {
     console.log('Filtering...', filteredVendors.length);
     setShowMobileFilter(false);
+    
+    // Scroll to vendor section after applying filters
+    setTimeout(() => {
+      const vendorSection = document.querySelector('.vendor-profiles');
+      if (vendorSection) {
+        vendorSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleReset = () => {
@@ -637,10 +645,10 @@ const Photography = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Added below Photography Categories */}
+            {/* Mobile Matrimony Card - Added below Photography Categories - SMALLER SIZE */}
             <div className="md:hidden mb-3 mt-2">
-              <div className="bg-white rounded-md shadow-lg border border-red-200 overflow-hidden">
-                <div className="flex">
+              <div className="bg-white rounded-md shadow-lg border border-red-200 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-20">
                   {/* Left Side: Image */}
                   <div className="w-2/5 relative">
                     <img
@@ -654,19 +662,19 @@ const Photography = () => {
                   
                   {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h3 className="text-xs font-bold text-red-800 mb-0.5 leading-tight">
+                    <h3 className="text-xs font-bold text-red-800 mb-0.5 leading-tight line-clamp-1">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[9px] mb-2 leading-tight">
+                    <p className="text-gray-600 text-[9px] mb-1 leading-tight line-clamp-2">
                       Join our matrimony service and find your life partner
                     </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[10px] font-medium flex items-center justify-center"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-medium flex items-center justify-center"
                     >
-                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                       </svg>
                       Register Now
@@ -1302,49 +1310,54 @@ const Photography = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay */}
+      {/* Mobile Filter Overlay - FIXED VERSION */}
       {showMobileFilter && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
-          <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-xl sm:rounded-lg shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white z-10 p-3 border-b border-gray-200 flex justify-between items-center rounded-t-xl sm:rounded-t-lg">
-              <h3 className="text-sm sm:text-base font-bold text-red-800">Filter Photographers</h3>
+        <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
+          <div className="bg-white w-full rounded-t-xl max-h-[85vh] overflow-y-auto animate-slideUp">
+            <div className="sticky top-0 bg-white z-10 p-4 border-b border-gray-200 flex justify-between items-center rounded-t-xl">
+              <h3 className="text-lg font-bold text-red-800">Filter Photographers</h3>
               <button
                 onClick={() => setShowMobileFilter(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
+                aria-label="Close filter"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
-            <div className="p-3">
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={minBudget}
-                    onChange={(e) => setMinBudget(e.target.value)}
-                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={maxBudget}
-                    onChange={(e) => setMaxBudget(e.target.value)}
-                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-                  />
+            <div className="p-4">
+              <div className="mb-4">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Budget Range (₹)</label>
+                <div className="flex gap-3">
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      placeholder="Min"
+                      value={minBudget}
+                      onChange={(e) => setMinBudget(e.target.value)}
+                      className="w-full px-4 py-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <input
+                      type="number"
+                      placeholder="Max"
+                      value={maxBudget}
+                      onChange={(e) => setMaxBudget(e.target.value)}
+                      className="w-full px-4 py-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
+                    />
+                  </div>
                 </div>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Type of Event</label>
+              <div className="mb-4">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Type of Event</label>
                 <select
                   value={selectedEvent}
                   onChange={(e) => setSelectedEvent(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-4 py-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
                 >
                   <option value="">All Event Types</option>
                   {eventTypes.map((event) => (
@@ -1353,12 +1366,12 @@ const Photography = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
+              <div className="mb-4">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Preferred State</label>
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-4 py-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
                 >
                   <option value="">All States</option>
                   {states.map((state) => (
@@ -1367,12 +1380,12 @@ const Photography = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-0.5">District</label>
+              <div className="mb-4">
+                <label className="block text-sm font-bold text-gray-700 mb-2">District</label>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-4 py-3 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
                 >
                   <option value="">All Districts</option>
                   {districts.map((district) => (
@@ -1381,29 +1394,38 @@ const Photography = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-0.5">Location</label>
-                <input
-                  type="text"
-                  placeholder="Enter location"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-                />
+              <div className="mb-6">
+                <label className="block text-sm font-bold text-gray-700 mb-2">Location</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Enter city or area"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    className="w-full px-4 py-3 pl-12 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-base"
+                  />
+                  <svg className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <button
                   onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl text-base"
                 >
                   Apply Filter
+                  <span className="ml-2 bg-white/30 px-2 py-1 rounded text-sm">
+                    ({filteredVendors.length})
+                  </span>
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-4 px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-lg hover:shadow-xl text-base"
                 >
-                  Reset
+                  Reset All
                 </button>
               </div>
             </div>

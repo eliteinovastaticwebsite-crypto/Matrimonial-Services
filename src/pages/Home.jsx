@@ -221,7 +221,7 @@ const Home = () => {
               {/* Matrimony Box */}
               <div className="bg-gradient-to-br from-pink-100 to-red-100 p-4 md:p-5 lg:p-6 rounded-lg border border-pink-200">
                 <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Matrimony Portal</h3>
-                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Find your life partner</p>
+                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Find your perfect partner</p>
                 <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-red-600 to-pink-600 text-white px-4 py-2 rounded-lg text-sm hover:from-red-700 hover:to-pink-700 transition-all text-center">
                   Matrimony Registration
                 </a>
