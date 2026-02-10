@@ -7,8 +7,8 @@ import livemusic from '../assets/livemusic.jpg';
 import photobooth from '../assets/photobooth.jpg';
 import ledeffects from '../assets/ledeffects.jpg';
 import kidsentertainment from '../assets/kidsentertainment.jpg';
-import photobanner1 from '../assets/photobanner1.png';
-import photobanner2 from '../assets/photobanner2.png';
+import photobanner1 from '../assets/enbanner.jpg';
+import photobanner2 from '../assets/enbanner2.jpg';
 
 const Entertainment = () => {
   const navigate = useNavigate();
