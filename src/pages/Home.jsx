@@ -98,8 +98,8 @@ const Home = () => {
       image: makeup,
     },
     {
-      name: 'Matchproof Investigations',
-      path: '/matchproof',
+      name: 'Bride & Groom Background Investigations',
+      path: '/background-investigations',
       image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', // Online image as fallback
     }
   ];

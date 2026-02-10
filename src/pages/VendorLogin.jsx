@@ -8,32 +8,26 @@ import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
 import banner5 from '../assets/banner5.png';
 
-// Import category images
-import photography from '../assets/photography.jpg';
-import catering from '../assets/catering.jpg';
-import weddinghalls from '../assets/weddinghalls.jpg';
-import decoration from '../assets/decoration.jpg';
-import invitation from '../assets/invitation.jpg';
-import makeup from '../assets/makeup.jpg';
-import entertainment from '../assets/entertainment.jpg';
+// Import category images - make sure these images exist in your assets folder
+import photographyImage from '../assets/photography.jpg';
+import cateringImage from '../assets/catering.jpg';
+import weddinghallsImage from '../assets/weddinghalls.jpg';
+import decorationImage from '../assets/decoration.jpg';
+import invitationImage from '../assets/invitation.jpg';
+import makeupImage from '../assets/makeup.jpg';
+import entertainmentImage from '../assets/entertainment.jpg';
 
-// Import icons
+// Import icons for benefits section
 import { 
-  Camera, 
-  Utensils, 
-  Home, 
-  Flower2, 
-  Music, 
-  Gift, 
-  Palette,
-  User,
+  Users,
   Shield,
   Star,
-  CheckCircle,
-  Users,
   TrendingUp,
   CreditCard,
-  Headphones
+  Headphones,
+  CheckCircle,
+  User,
+  ArrowRight
 } from 'lucide-react';
 
 const VendorLogin = ({ onOpenVendorForm }) => {
@@ -85,78 +79,78 @@ const VendorLogin = ({ onOpenVendorForm }) => {
       id: 'photography',
       name: 'Photography',
       description: 'Wedding Photography & Videography Services',
-      icon: <Camera className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: photography,
+      image: photographyImage,
       color: 'from-red-500 to-red-700',
       bgColor: 'bg-red-50',
       borderColor: 'border-red-200',
-      textColor: 'text-red-800'
+      textColor: 'text-red-800',
+      gradientOverlay: 'from-red-600/20 to-transparent'
     },
     {
       id: 'catering',
       name: 'Catering & Foods',
       description: 'Food Catering & Banquet Services',
-      icon: <Utensils className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: catering,
+      image: cateringImage,
       color: 'from-orange-500 to-orange-700',
       bgColor: 'bg-orange-50',
       borderColor: 'border-orange-200',
-      textColor: 'text-orange-800'
+      textColor: 'text-orange-800',
+      gradientOverlay: 'from-orange-600/20 to-transparent'
     },
     {
       id: 'wedding-halls',
       name: 'Mandapam & Wedding Halls',
       description: 'Venue & Mandapam Services',
-      icon: <Home className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: weddinghalls,
+      image: weddinghallsImage,
       color: 'from-amber-500 to-amber-700',
       bgColor: 'bg-amber-50',
       borderColor: 'border-amber-200',
-      textColor: 'text-amber-800'
+      textColor: 'text-amber-800',
+      gradientOverlay: 'from-amber-600/20 to-transparent'
     },
     {
       id: 'decorations',
       name: 'Decorations',
       description: 'Wedding Decoration & Floral Services',
-      icon: <Flower2 className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: decoration,
+      image: decorationImage,
       color: 'from-green-500 to-green-700',
       bgColor: 'bg-green-50',
       borderColor: 'border-green-200',
-      textColor: 'text-green-800'
+      textColor: 'text-green-800',
+      gradientOverlay: 'from-green-600/20 to-transparent'
     },
     {
       id: 'entertainment',
       name: 'Entertainment & Events',
       description: 'DJ, Music & Entertainment Services',
-      icon: <Music className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: entertainment,
+      image: entertainmentImage,
       color: 'from-purple-500 to-purple-700',
       bgColor: 'bg-purple-50',
       borderColor: 'border-purple-200',
-      textColor: 'text-purple-800'
+      textColor: 'text-purple-800',
+      gradientOverlay: 'from-purple-600/20 to-transparent'
     },
     {
       id: 'invitation',
       name: 'Invitation & Gifts',
       description: 'Invitation Cards & Gift Services',
-      icon: <Gift className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: invitation,
+      image: invitationImage,
       color: 'from-teal-500 to-teal-700',
       bgColor: 'bg-teal-50',
       borderColor: 'border-teal-200',
-      textColor: 'text-teal-800'
+      textColor: 'text-teal-800',
+      gradientOverlay: 'from-teal-600/20 to-transparent'
     },
     {
       id: 'styling',
       name: 'Bridal & Groom Styling',
       description: 'Makeup & Styling Services',
-      icon: <Palette className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8" />,
-      image: makeup,
+      image: makeupImage,
       color: 'from-pink-500 to-pink-700',
       bgColor: 'bg-pink-50',
       borderColor: 'border-pink-200',
-      textColor: 'text-pink-800'
+      textColor: 'text-pink-800',
+      gradientOverlay: 'from-pink-600/20 to-transparent'
     }
   ];
 
@@ -298,15 +292,26 @@ const VendorLogin = ({ onOpenVendorForm }) => {
                     activeButton === category.id ? 'ring-2 ring-offset-2 ring-yellow-500 scale-[1.02]' : ''
                   } ${category.bgColor} border ${category.borderColor}`}
                 >
+                  {/* Category Image Container */}
+                  <div className="relative h-48 md:h-52 lg:h-56 w-full overflow-hidden">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        // Fallback colors if image fails to load
+                        e.target.style.display = 'none';
+                        e.target.parentElement.style.backgroundColor = category.bgColor.replace('bg-', '');
+                      }}
+                    />
+                    {/* Gradient Overlay */}
+                    <div className={`absolute inset-0 bg-gradient-to-t ${category.gradientOverlay}`}></div>
+                  </div>
+                  
+                  {/* Content */}
                   <div className="p-5 md:p-6 lg:p-8">
                     <div className="flex flex-col items-center text-center">
-                      {/* Icon Container */}
-                      <div className={`w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full bg-gradient-to-br ${category.color} flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                        <div className="text-white">
-                          {category.icon}
-                        </div>
-                      </div>
-                      
                       {/* Category Name */}
                       <h3 className={`font-bold text-lg md:text-xl lg:text-2xl mb-2 ${category.textColor}`}>
                         {category.name}
@@ -317,11 +322,12 @@ const VendorLogin = ({ onOpenVendorForm }) => {
                         {category.description}
                       </p>
                       
-                      {/* Click to Register Text */}
-                      <div className={`mt-2 px-4 py-2 rounded-full ${category.bgColor} border ${category.borderColor} group-hover:bg-white transition-colors duration-300`}>
+                      {/* Click to Register Button */}
+                      <div className={`mt-2 px-4 py-2 rounded-full ${category.bgColor} border ${category.borderColor} group-hover:bg-white transition-all duration-300 flex items-center gap-2`}>
                         <span className={`text-sm md:text-base font-medium ${category.textColor}`}>
-                          Click to Register →
+                          Click to Register
                         </span>
+                        <ArrowRight className={`w-4 h-4 ${category.textColor}`} />
                       </div>
                     </div>
                   </div>
@@ -330,37 +336,6 @@ const VendorLogin = ({ onOpenVendorForm }) => {
                   <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
                 </button>
               ))}
-            </div>
-
-            {/* Additional Categories Section - Rounded Images */}
-            <div className="mt-12 md:mt-16">
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-center text-red-800 mb-8 md:mb-12">
-                Browse All Service Categories
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 xl:gap-10 max-w-6xl mx-auto">
-                {vendorCategories.map((category) => (
-                  <div key={category.id} className="flex flex-col items-center">
-                    <button
-                      onClick={() => handleCategoryClick(category)}
-                      className="block group"
-                    >
-                      <div className="w-28 h-28 md:w-36 md:h-36 lg:w-40 lg:h-40 xl:w-44 xl:h-44 rounded-full border-3 md:border-4 lg:border-[5px] border-amber-800 overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-lg hover:shadow-xl md:hover:shadow-2xl transition-all duration-300 p-0.5 md:p-1">
-                        <div className="w-full h-full rounded-full overflow-hidden">
-                          <img 
-                            src={category.image}
-                            alt={category.name} 
-                            className="w-full h-full object-cover group-hover:scale-105 md:group-hover:scale-110 transition-transform duration-300"
-                          />
-                        </div>
-                      </div>
-                    </button>
-                    <h3 className="mt-3 md:mt-4 lg:mt-5 text-center font-semibold text-gray-800 text-base md:text-lg lg:text-xl">
-                      {category.name}
-                    </h3>
-                    <p className="text-sm md:text-base text-gray-600">Register Now</p>
-                  </div>
-                ))}
-              </div>
             </div>
           </div>
         </div>

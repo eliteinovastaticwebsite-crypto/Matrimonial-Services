@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -53,6 +55,7 @@ const Header = ({ onOpenVendorForm }) => {
         { name: 'Entertainment & Events', path: '/entertainment', type: 'page' },
         { name: 'Invitation & Gifts', path: '/invitation', type: 'page' },
         { name: 'Bridal & Groom Styling', path: '/styling', type: 'page' },
+        { name: 'Bride & Groom Background Investigations', path: '/background-investigations', type: 'page' },
       ]
     },
     { 
@@ -68,6 +71,7 @@ const Header = ({ onOpenVendorForm }) => {
         { name: 'Entertainment Vendor Form', path: '/entertainment-vendor', formType: 'entertainment', type: 'form' },
         { name: 'Invitation & Gifts Vendor Form', path: '/invitation-vendor', formType: 'invitation', type: 'form' },
         { name: 'Styling Vendor Form', path: '/styling-vendor', formType: 'styling', type: 'form' },
+        { name: 'Background Investigations Form', path: '/background-investigations-vendor', formType: 'background-investigations', type: 'form' },
       ]
     },
     { name: 'OFFICE PANNEL', path: '/office-panel' },

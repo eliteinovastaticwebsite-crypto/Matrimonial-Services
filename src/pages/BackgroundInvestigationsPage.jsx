@@ -1,28 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import album from '../assets/album.jpg';
-import kids from '../assets/kids.jpg';
-import videography from '../assets/videography.jpg';
-import event from '../assets/event.jpg';
-import weddingphoto from '../assets/weddingphoto.jpg';
-import fashion from '../assets/fashion.jpg';
-import commercial from '../assets/commercial.jpg';
-import religious from '../assets/religious.jpg';
-import photobanner1 from '../assets/photobanner1.png';
-import photobanner2 from '../assets/photobanner2.png';
-// Add a matrimony banner image - you can add your own image or use a placeholder
-import matrimonyBanner from '../assets/kids.jpg'; // You'll need to add this image
 
-const Photography = () => {
+// Import images - add these to your assets folder
+const detective1 = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const detective2 = "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+const verification = "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2011&q=80";
+const criminalCheck = "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const educationVerification = "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const employmentCheck = "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80";
+const financialCheck = "https://images.unsplash.com/photo-1579621970588-a35d0e7ab9b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const socialMediaCheck = "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+const familyBackground = "https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const maritalStatus = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+const banner1 = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
+const banner2 = "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+// Add a matrimony banner image - same as photography page
+const matrimonyBanner = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+
+const BackgroundInvestigationsPage = () => {
   const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
-  const [selectedEvent, setSelectedEvent] = useState('');
+  const [selectedService, setSelectedService] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -45,15 +50,15 @@ const Photography = () => {
   const banners = [
     {
       id: 1,
-      image: photobanner1,
-      title: "Photography Services",
-      subtitle: "Capture Your Special Moments"
+      image: banner1,
+      title: "Background Verification Services",
+      subtitle: "Ensure Trust and Safety in Matrimony"
     },
     {
       id: 2,
-      image: photobanner2,
-      title: "Professional Photography",
-      subtitle: "Timeless Memories Forever"
+      image: banner2,
+      title: "Professional Detective Agencies",
+      subtitle: "Comprehensive Background Checks"
     }
   ];
 
@@ -65,66 +70,280 @@ const Photography = () => {
     { name: 'Entertainment', path: '/entertainment' },
     { name: 'Invitation & Gifts', path: '/invitation' },
     { name: 'Bridal Styling', path: '/styling' },
+    { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
-  const photographyCategories = [
-    { name: 'Wedding Photography', image: weddingphoto },
-    { name: 'Event Photography', image: event },
-    { name: 'Videography', image: videography },
-    { name: 'Editing & Album Services', image: album },
-    { name: 'Fashion & Lifestyle', image: fashion },
-    { name: 'Commercial Photography', image: commercial },
-    { name: 'Religious & Cultural', image: religious },
-    { name: 'Kids & Special Shoots', image: kids },
+  const investigationServices = [
+    { 
+      name: 'Identity Verification', 
+      image: verification,
+      description: 'Verify identity documents and personal details'
+    },
+    { 
+      name: 'Marital Status Check', 
+      image: maritalStatus,
+      description: 'Verify current marital status and history'
+    },
+    { 
+      name: 'Criminal Record Check', 
+      image: criminalCheck,
+      description: 'Check criminal records and legal history'
+    },
+    { 
+      name: 'Education Verification', 
+      image: educationVerification,
+      description: 'Verify educational qualifications and certificates'
+    },
+    { 
+      name: 'Employment Verification', 
+      image: employmentCheck,
+      description: 'Verify employment history and current job status'
+    },
+    { 
+      name: 'Financial Background', 
+      image: financialCheck,
+      description: 'Check financial history and stability'
+    },
+    { 
+      name: 'Family Background', 
+      image: familyBackground,
+      description: 'Investigate family history and reputation'
+    },
+    { 
+      name: 'Social Media Screening', 
+      image: socialMediaCheck,
+      description: 'Analyze social media presence and activities'
+    },
   ];
 
-  const eventTypes = [
-    'Wedding Photography',
-    'Event Photography',
-    'Videography',
-    'Editing & Album Services',
-    'Fashion & Lifestyle',
-    'Commercial Photography',
-    'Religious & Cultural Photography',
-    'Kids & Special Shoots'
+  const serviceTypes = [
+    'Identity Verification',
+    'Marital Status Check',
+    'Divorce / Separation Check',
+    'Family Background Check',
+    'Residential Verification',
+    'Education Verification',
+    'Employment / Business Verification',
+    'Financial Background (Non-banking)',
+    'Criminal Record Check',
+    'Court Case / Litigation Check',
+    'Social Reputation Check',
+    'Social Media Screening'
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
+  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Bangalore', 'Hyderabad', 'Mumbai'];
 
-  const handleCategoryClick = (categoryName) => {
-    let eventType = categoryName;
-    
-    switch(categoryName) {
-      case 'Wedding Photography':
-        eventType = 'Wedding Photography';
-        break;
-      case 'Event Photography':
-        eventType = 'Event Photography';
-        break;
-      case 'Videography':
-        eventType = 'Videography';
-        break;
-      case 'Editing & Album Services':
-        eventType = 'Editing & Album Services';
-        break;
-      case 'Fashion & Lifestyle':
-        eventType = 'Fashion & Lifestyle';
-        break;
-      case 'Commercial Photography':
-        eventType = 'Commercial Photography';
-        break;
-      case 'Religious & Cultural':
-        eventType = 'Religious & Cultural Photography';
-        break;
-      case 'Kids & Special Shoots':
-        eventType = 'Kids & Special Shoots';
-        break;
-      default:
-        eventType = categoryName;
-    }
-    
-    setSelectedEvent(eventType);
+  // Sample detective agencies data
+  const agencies = [
+    {
+      id: 1,
+      name: 'SecureVerify Investigations',
+      businessName: 'SecureVerify Private Detectives',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Comprehensive Background Check',
+      personName: 'Rajesh Kumar',
+      designation: 'Chief Investigator',
+      description: 'Professional detective agency with 15+ years experience in matrimonial background verification',
+      services: ['Identity Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification'],
+      logo: detective1,
+      location: 'Chennai, Tamil Nadu',
+      rating: 4.9,
+      priceRange: '₹15,000 - ₹50,000',
+      licenseNumber: 'DET-TN-2023001',
+      yearsExperience: 15
+    },
+    {
+      id: 2,
+      name: 'MatrimonySafe Agency',
+      businessName: 'MatrimonySafe Background Checks',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Marital Status Verification',
+      personName: 'Priya Sharma',
+      designation: 'Lead Investigator',
+      description: 'Specialized in matrimonial background verification with focus on authenticity and confidentiality',
+      services: ['Marital Status Check', 'Family Background', 'Social Media Screening', 'Residential Verification'],
+      logo: detective2,
+      location: 'Bangalore, Karnataka',
+      rating: 4.8,
+      priceRange: '₹12,000 - ₹45,000',
+      licenseNumber: 'DET-KA-2023002',
+      yearsExperience: 12
+    },
+    {
+      id: 3,
+      name: 'TruthFinders Detective Agency',
+      businessName: 'TruthFinders Investigation Services',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Complete Background Verification',
+      personName: 'Arun Mehta',
+      designation: 'Director',
+      description: 'Comprehensive background verification services with nationwide network of investigators',
+      services: ['Employment Verification', 'Financial Background', 'Court Case Check', 'Social Reputation Check'],
+      logo: detective1,
+      location: 'Hyderabad, Telangana',
+      rating: 4.7,
+      priceRange: '₹20,000 - ₹75,000',
+      licenseNumber: 'DET-TG-2023003',
+      yearsExperience: 18
+    },
+    {
+      id: 4,
+      name: 'SafeMatch Investigators',
+      businessName: 'SafeMatch Matrimonial Verification',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Matrimonial Verification',
+      personName: 'Sneha Reddy',
+      designation: 'Verification Specialist',
+      description: 'Dedicated to ensuring safe and verified matrimonial matches through thorough background checks',
+      services: ['Identity Documents', 'Education Certificates', 'Employment Records', 'Family History'],
+      logo: detective2,
+      location: 'Coimbatore, Tamil Nadu',
+      rating: 4.8,
+      priceRange: '₹10,000 - ₹40,000',
+      licenseNumber: 'DET-TN-2023004',
+      yearsExperience: 10
+    },
+    {
+      id: 5,
+      name: 'AuthentiCheck Bureau',
+      businessName: 'AuthentiCheck Verification Bureau',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Document Verification',
+      personName: 'Vikram Singh',
+      designation: 'Verification Head',
+      description: 'Specializing in document authentication and identity verification for matrimonial purposes',
+      services: ['Document Verification', 'Certificate Authentication', 'Address Verification', 'Photo ID Check'],
+      logo: detective1,
+      location: 'Mumbai, Maharashtra',
+      rating: 4.9,
+      priceRange: '₹8,000 - ₹35,000',
+      licenseNumber: 'DET-MH-2023005',
+      yearsExperience: 14
+    },
+    {
+      id: 6,
+      name: 'FamilyTrust Investigators',
+      businessName: 'FamilyTrust Background Services',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Family Background Check',
+      personName: 'Anjali Nair',
+      designation: 'Family Investigation Specialist',
+      description: 'Focus on family background, social standing, and reputation verification for matrimonial matches',
+      services: ['Family History', 'Social Standing', 'Community Reputation', 'Caste Verification'],
+      logo: detective2,
+      location: 'Kochi, Kerala',
+      rating: 4.6,
+      priceRange: '₹15,000 - ₹60,000',
+      licenseNumber: 'DET-KL-2023006',
+      yearsExperience: 8
+    },
+    {
+      id: 7,
+      name: 'LegalEagle Detectives',
+      businessName: 'LegalEagle Investigation Agency',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Legal & Criminal Check',
+      personName: 'Rahul Verma',
+      designation: 'Legal Investigator',
+      description: 'Specialized in legal and criminal background checks with access to legal databases',
+      services: ['Criminal Records', 'Court Cases', 'Litigation History', 'Police Records'],
+      logo: detective1,
+      location: 'Delhi, Delhi',
+      rating: 4.9,
+      priceRange: '₹25,000 - ₹80,000',
+      licenseNumber: 'DET-DL-2023007',
+      yearsExperience: 20
+    },
+    {
+      id: 8,
+      name: 'FinCheck Investigators',
+      businessName: 'FinCheck Financial Verification',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Financial Background Verification',
+      personName: 'Meera Patel',
+      designation: 'Financial Investigator',
+      description: 'Comprehensive financial background verification including assets, liabilities, and income sources',
+      services: ['Income Verification', 'Asset Verification', 'Loan History', 'Financial Stability'],
+      logo: detective2,
+      location: 'Ahmedabad, Gujarat',
+      rating: 4.7,
+      priceRange: '₹18,000 - ₹65,000',
+      licenseNumber: 'DET-GJ-2023008',
+      yearsExperience: 11
+    },
+    {
+      id: 9,
+      name: 'SocialWatch Bureau',
+      businessName: 'SocialWatch Online Screening',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Social Media Screening',
+      personName: 'Aisha Khan',
+      designation: 'Digital Investigator',
+      description: 'Specialized in social media and online presence screening for comprehensive background checks',
+      services: ['Social Media Analysis', 'Online Reputation', 'Digital Footprint', 'Cyber Background'],
+      logo: detective1,
+      location: 'Pune, Maharashtra',
+      rating: 4.8,
+      priceRange: '₹12,000 - ₹45,000',
+      licenseNumber: 'DET-MH-2023009',
+      yearsExperience: 9
+    },
+    {
+      id: 10,
+      name: 'EducationVerify Agency',
+      businessName: 'EducationVerify Certification Bureau',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Education Verification',
+      personName: 'Kabir Malhotra',
+      designation: 'Education Verification Specialist',
+      description: 'Thorough verification of educational qualifications, certificates, and academic records',
+      services: ['Degree Verification', 'Certificate Authentication', 'Academic Records', 'Institute Verification'],
+      logo: detective2,
+      location: 'Kolkata, West Bengal',
+      rating: 4.7,
+      priceRange: '₹7,000 - ₹30,000',
+      licenseNumber: 'DET-WB-2023010',
+      yearsExperience: 13
+    },
+    {
+      id: 11,
+      name: 'EmploymentCheck Bureau',
+      businessName: 'EmploymentCheck Verification Services',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Employment Verification',
+      personName: 'Sanjay Gupta',
+      designation: 'Employment Verification Head',
+      description: 'Detailed employment history and current job status verification with employer contacts',
+      services: ['Employment History', 'Current Employment', 'Salary Verification', 'Job Role Verification'],
+      logo: detective1,
+      location: 'Bengaluru, Karnataka',
+      rating: 4.8,
+      priceRange: '₹10,000 - ₹40,000',
+      licenseNumber: 'DET-KA-2023011',
+      yearsExperience: 12
+    },
+    {
+      id: 12,
+      name: 'ResidentialVerify Agency',
+      businessName: 'ResidentialVerify Location Services',
+      businessCategory: 'Background Investigations',
+      serviceType: 'Residential Verification',
+      personName: 'Neha Joshi',
+      designation: 'Residential Investigation Specialist',
+      description: 'Thorough residential address verification and neighborhood background checks',
+      services: ['Address Verification', 'Residence History', 'Neighborhood Check', 'Property Verification'],
+      logo: detective2,
+      location: 'Chennai, Tamil Nadu',
+      rating: 4.6,
+      priceRange: '₹8,000 - ₹35,000',
+      licenseNumber: 'DET-TN-2023012',
+      yearsExperience: 7
+    },
+  ];
+
+  const handleServiceClick = (serviceName) => {
+    setSelectedService(serviceName);
     
     if (window.innerWidth < 1024) {
       setTimeout(() => {
@@ -136,262 +355,28 @@ const Photography = () => {
     }
   };
 
-  // Sample vendor data
-  const vendors = [
-    {
-      id: 1,
-      name: 'Capture Moments Studio',
-      businessName: 'Capture Moments Wedding Photography',
-      businessCategory: 'Wedding Photography',
-      eventType: 'Wedding Photography',
-      personName: 'Rajesh Kumar',
-      designation: 'Lead Photographer',
-      description: 'Specializing in candid wedding photography with 10+ years of experience',
-      services: ['Pre-wedding Shoots', 'Candid Photography', 'Traditional Wedding Coverage', 'Album Design'],
-      logo: weddingphoto,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹2,00,000'
-    },
-    {
-      id: 2,
-      name: 'Evergreen Memories',
-      businessName: 'Evergreen Wedding Photography',
-      businessCategory: 'Wedding Photography',
-      eventType: 'Wedding Photography',
-      personName: 'Priya Sharma',
-      designation: 'Creative Director',
-      description: 'Documenting love stories with artistic vision and modern techniques',
-      services: ['Destination Weddings', 'Drone Photography', 'Cinematic Videos', 'Photo Booths'],
-      logo: weddingphoto,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹75,000 - ₹3,00,000'
-    },
-    {
-      id: 3,
-      name: 'Event Masters Pro',
-      businessName: 'Event Masters Photography',
-      businessCategory: 'Event Photography',
-      eventType: 'Event Photography',
-      personName: 'Arun Mehta',
-      designation: 'Event Photographer',
-      description: 'Professional event coverage for corporate and social events',
-      services: ['Corporate Events', 'Birthday Parties', 'Product Launches', 'Conferences'],
-      logo: event,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹25,000 - ₹1,50,000'
-    },
-    {
-      id: 4,
-      name: 'Celebration Shots',
-      businessName: 'Celebration Photography Services',
-      businessCategory: 'Event Photography',
-      eventType: 'Event Photography',
-      personName: 'Sneha Reddy',
-      designation: 'Event Manager',
-      description: 'Capturing the essence of every celebration with precision',
-      services: ['Anniversary Events', 'Festival Celebrations', 'Award Functions', 'Social Gatherings'],
-      logo: event,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000'
-    },
-    {
-      id: 5,
-      name: 'Motion Picture Studio',
-      businessName: 'Motion Picture Videography',
-      businessCategory: 'Videography',
-      eventType: 'Videography',
-      personName: 'Vikram Singh',
-      designation: 'Videography Director',
-      description: 'Creating cinematic wedding films and corporate videos',
-      services: ['Wedding Films', 'Corporate Videos', 'Documentaries', 'Promotional Videos'],
-      logo: videography,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹1,00,000 - ₹5,00,000'
-    },
-    {
-      id: 6,
-      name: 'Visual Storytellers',
-      businessName: 'Visual Storytellers Studio',
-      businessCategory: 'Videography',
-      eventType: 'Videography',
-      personName: 'Anjali Nair',
-      designation: 'Creative Producer',
-      description: 'Story-driven video production for memorable occasions',
-      services: ['Short Films', 'Event Coverage', 'Music Videos', 'Animation Videos'],
-      logo: videography,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹80,000 - ₹4,00,000'
-    },
-    {
-      id: 7,
-      name: 'Pixel Perfect Editing',
-      businessName: 'Pixel Perfect Photo Studio',
-      businessCategory: 'Editing & Album Services',
-      eventType: 'Editing & Album Services',
-      personName: 'Rahul Verma',
-      designation: 'Photo Editor',
-      description: 'Professional photo editing and custom album design services',
-      services: ['Photo Retouching', 'Album Design', 'Photo Restoration', 'Digital Artwork'],
-      logo: album,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹10,000 - ₹50,000'
-    },
-    {
-      id: 8,
-      name: 'Memory Albums',
-      businessName: 'Memory Album Creators',
-      businessCategory: 'Editing & Album Services',
-      eventType: 'Editing & Album Services',
-      personName: 'Meera Patel',
-      designation: 'Album Designer',
-      description: 'Creating beautiful photo albums that tell your story',
-      services: ['Custom Albums', 'Photo Books', 'Digital Albums', 'Coffee Table Books'],
-      logo: album,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹15,000 - ₹75,000'
-    },
-    {
-      id: 9,
-      name: 'Style Frame Studio',
-      businessName: 'Style Frame Fashion Photography',
-      businessCategory: 'Fashion & Lifestyle',
-      eventType: 'Fashion & Lifestyle',
-      personName: 'Aisha Khan',
-      designation: 'Fashion Photographer',
-      description: 'Specializing in fashion editorial and lifestyle photography',
-      services: ['Fashion Shoots', 'Portfolio Photography', 'Lookbook Creation', 'Model Portfolios'],
-      logo: fashion,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹50,000 - ₹3,00,000'
-    },
-    {
-      id: 10,
-      name: 'Urban Lifestyle',
-      businessName: 'Urban Lifestyle Photography',
-      businessCategory: 'Fashion & Lifestyle',
-      eventType: 'Fashion & Lifestyle',
-      personName: 'Kabir Malhotra',
-      designation: 'Creative Director',
-      description: 'Contemporary lifestyle and urban photography',
-      services: ['Street Photography', 'Lifestyle Brands', 'E-commerce Photography', 'Personal Branding'],
-      logo: fashion,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹40,000 - ₹2,50,000'
-    },
-    {
-      id: 11,
-      name: 'Business Lens',
-      businessName: 'Business Lens Commercial Photography',
-      businessCategory: 'Commercial Photography',
-      eventType: 'Commercial Photography',
-      personName: 'Sanjay Gupta',
-      designation: 'Commercial Photographer',
-      description: 'Professional commercial photography for businesses',
-      services: ['Product Photography', 'Architecture', 'Food Photography', 'Corporate Headshots'],
-      logo: commercial,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹30,000 - ₹2,00,000'
-    },
-    {
-      id: 12,
-      name: 'Brand Visuals',
-      businessName: 'Brand Visuals Studio',
-      businessCategory: 'Commercial Photography',
-      eventType: 'Commercial Photography',
-      personName: 'Neha Joshi',
-      designation: 'Brand Photographer',
-      description: 'Creating compelling visual content for brands',
-      services: ['Brand Campaigns', 'Advertising Photography', 'Packaging Shots', 'Corporate Events'],
-      logo: commercial,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹3,00,000'
-    },
-    {
-      id: 13,
-      name: 'Cultural Heritage',
-      businessName: 'Cultural Heritage Photography',
-      businessCategory: 'Religious & Cultural',
-      eventType: 'Religious & Cultural Photography',
-      personName: 'Venkatesh Iyer',
-      designation: 'Cultural Photographer',
-      description: 'Documenting religious ceremonies and cultural events',
-      services: ['Temple Festivals', 'Religious Ceremonies', 'Cultural Events', 'Traditional Rituals'],
-      logo: religious,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹1,50,000'
-    },
-    {
-      id: 14,
-      name: 'Divine Moments',
-      businessName: 'Divine Moments Photography',
-      businessCategory: 'Religious & Cultural',
-      eventType: 'Religious & Cultural Photography',
-      personName: 'Radha Krishnan',
-      designation: 'Religious Event Specialist',
-      description: 'Specializing in religious event photography with respect and devotion',
-      services: ['Pujas', 'Religious Processions', 'Temple Events', 'Spiritual Gatherings'],
-      logo: religious,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹20,000 - ₹1,00,000'
-    },
-    {
-      id: 15,
-      name: 'Little Angels',
-      businessName: 'Little Angels Photography',
-      businessCategory: 'Kids & Special Shoots',
-      eventType: 'Kids & Special Shoots',
-      personName: 'Pooja Mehta',
-      designation: 'Children Photographer',
-      description: 'Creating magical memories for children and families',
-      services: ['Newborn Photography', 'Birthday Shoots', 'Family Portraits', 'Baby Showers'],
-      logo: kids,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹15,000 - ₹80,000'
-    },
-    {
-      id: 16,
-      name: 'Special Moments',
-      businessName: 'Special Moments Studio',
-      businessCategory: 'Kids & Special Shoots',
-      eventType: 'Kids & Special Shoots',
-      personName: 'David Wilson',
-      designation: 'Special Shoots Director',
-      description: 'Specialized photography for unique occasions and celebrations',
-      services: ['Maternity Shoots', 'Pet Photography', 'Anniversary Shoots', 'Surprise Events'],
-      logo: kids,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹1,00,000'
+  // Filter agencies based on selections
+  const filteredAgencies = agencies.filter(agency => {
+    if (selectedService && !agency.services.includes(selectedService)) return false;
+    if (selectedState && !agency.location.includes(selectedState)) return false;
+    if (selectedDistrict && !agency.location.includes(selectedDistrict)) return false;
+    if (selectedLocation && !agency.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      return (
+        agency.name.toLowerCase().includes(query) ||
+        agency.businessName.toLowerCase().includes(query) ||
+        agency.description.toLowerCase().includes(query) ||
+        agency.services.some(service => service.toLowerCase().includes(query))
+      );
     }
-  ];
-
-  // Filter vendors based on selections
-  const filteredVendors = vendors.filter(vendor => {
-    if (selectedEvent && vendor.eventType !== selectedEvent) return false;
-    if (selectedState && !vendor.location.includes(selectedState)) return false;
-    if (selectedDistrict && !vendor.location.includes(selectedDistrict)) return false;
-    if (selectedLocation && !vendor.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
     
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
-      const vendorPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
-      return vendorPrice >= minPrice && vendorPrice <= maxPrice;
+      const agencyPrice = parseInt(agency.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
+      return agencyPrice >= minPrice && agencyPrice <= maxPrice;
     }
     
     return true;
@@ -413,10 +398,10 @@ const Photography = () => {
   };
 
   const handleFilter = () => {
-    console.log('Filtering...', filteredVendors.length);
+    console.log('Filtering...', filteredAgencies.length);
     setShowMobileFilter(false);
     
-    // Scroll to vendor section after applying filters
+    // Scroll to agency section after applying filters
     setTimeout(() => {
       const vendorSection = document.querySelector('.vendor-profiles');
       if (vendorSection) {
@@ -428,15 +413,16 @@ const Photography = () => {
   const handleReset = () => {
     setMinBudget('');
     setMaxBudget('');
-    setSelectedEvent('');
+    setSelectedService('');
     setSelectedState('');
     setSelectedDistrict('');
     setSelectedLocation('');
+    setSearchQuery('');
     setShowMobileFilter(false);
   };
 
   const handleFilterButtonClick = () => {
-    if (window.location.pathname === '/photography') {
+    if (window.location.pathname === '/background-investigations') {
       const filterSection = document.getElementById('filter-section');
       if (filterSection) {
         filterSection.scrollIntoView({ behavior: 'smooth' });
@@ -445,8 +431,21 @@ const Photography = () => {
         setShowMobileFilter(true);
       }
     } else {
-      navigate('/photography?openFilter=true');
+      navigate('/background-investigations?openFilter=true');
     }
+  };
+
+  // Function to handle agency registration - This is where the form should open
+  const handleAgencyRegistration = () => {
+    // This should trigger the vendor registration form
+    const event = new CustomEvent('openVendorForm', { 
+      detail: { formType: 'background-investigations' } 
+    });
+    window.dispatchEvent(event);
+    
+    // If the above doesn't work, use localStorage
+    localStorage.setItem('openVendorForm', 'background-investigations');
+    window.location.href = '/?openForm=background-investigations';
   };
 
   return (
@@ -487,10 +486,6 @@ const Photography = () => {
                   }}
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
-                  }}
                 />
               </div>
             </div>
@@ -574,32 +569,32 @@ const Photography = () => {
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
           <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
-            {/* Photography Categories */}
+            {/* Investigation Services */}
             <section className="py-2 md:py-3">
               <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
-                Our Photography Categories
+                Our Background Investigation Services
               </h2>
               
               {/* Mobile: Horizontal Scroll */}
               <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
                 <div className="flex space-x-1 px-1 min-w-max">
-                  {photographyCategories.map((category) => (
-                    <div key={category.name} className="flex flex-col items-center group flex-shrink-0 w-14">
+                  {investigationServices.map((service) => (
+                    <div key={service.name} className="flex flex-col items-center group flex-shrink-0 w-14">
                       <button 
-                        onClick={() => handleCategoryClick(category.name)}
+                        onClick={() => handleServiceClick(service.name)}
                         className="relative block w-12 h-12 mx-auto focus:outline-none"
                       >
-                        <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                        <div className={`w-full h-full rounded-full border ${selectedService === service.name ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                           <img 
-                            src={category.image}
-                            alt={category.name} 
+                            src={service.image}
+                            alt={service.name} 
                             className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                           />
                         </div>
                         <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
                       </button>
                       <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
-                        {category.name}
+                        {service.name}
                       </h3>
                     </div>
                   ))}
@@ -608,51 +603,51 @@ const Photography = () => {
               
               {/* Desktop: Grid */}
               <div className="hidden md:grid grid-cols-4 md:grid-cols-8 gap-1 md:gap-1.5 px-1">
-                {photographyCategories.map((category) => (
-                  <div key={category.name} className="flex flex-col items-center group">
+                {investigationServices.map((service) => (
+                  <div key={service.name} className="flex flex-col items-center group">
                     <button 
-                      onClick={() => handleCategoryClick(category.name)}
+                      onClick={() => handleServiceClick(service.name)}
                       className="relative block w-full aspect-square max-w-[60px] md:max-w-[65px] mx-auto focus:outline-none"
                     >
-                      <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                      <div className={`w-full h-full rounded-full border ${selectedService === service.name ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                         <img 
-                          src={category.image}
-                          alt={category.name} 
+                          src={service.image}
+                          alt={service.name} 
                           className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                       <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
                     </button>
                     <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[9px] md:text-[10px] px-0.5 leading-tight line-clamp-2">
-                      {category.name}
+                      {service.name}
                     </h3>
                   </div>
                 ))}
               </div>
 
-              {selectedEvent && (
+              {selectedService && (
                 <div className="text-center mt-1 md:mt-2">
                   <button
-                    onClick={() => setSelectedEvent('')}
+                    onClick={() => setSelectedService('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Clear "{selectedEvent}" filter
+                    Clear "{selectedService}" filter
                   </button>
                 </div>
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Added below Photography Categories - SMALLER SIZE */}
+            {/* Mobile Matrimony Card - Added below Investigation Services - SMALLER SIZE */}
             <div className="md:hidden mb-3 mt-2">
               <div className="bg-white rounded-md shadow-lg border border-red-200 overflow-hidden max-w-[95%] mx-auto">
                 <div className="flex h-20">
                   {/* Left Side: Image */}
                   <div className="w-2/5 relative">
                     <img
-                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
+                      src={matrimonyBanner}
                       alt="Find Your Perfect Partner"
                       className="w-full h-full object-cover"
                     />
@@ -684,25 +679,51 @@ const Photography = () => {
               </div>
             </div>
 
-            {/* Mobile: Vendor Count & Filters */}
+            {/* Search Bar */}
+            <section className="py-1 md:py-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search detective agencies, services, or locations..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                />
+                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
+              </div>
+            </section>
+
+            {/* Mobile: Agency Count & Filters */}
             <div className="lg:hidden">
-              {/* Vendor Count */}
+              {/* Agency Count */}
               <section className="py-1 md:py-2">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
                       <h3 className="text-xs font-bold text-white leading-tight">
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
+                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : '12 Detective Agencies'}
                       </h3>
                       <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
-                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
+                        {selectedService ? `Showing results for "${selectedService}"` : 'Professional background investigation services'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
                         <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹5,000 - ₹5,00,000</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹7,000 - ₹80,000</span>
                       </div>
                     </div>
                   </div>
@@ -710,10 +731,10 @@ const Photography = () => {
                 
                 {/* Applied Filters Tags */}
                 <div className="flex flex-wrap gap-1 mb-2">
-                  {selectedEvent && (
+                  {selectedService && (
                     <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
-                      Event: {selectedEvent}
-                      <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">
+                      Service: {selectedService}
+                      <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">
                         ×
                       </button>
                     </span>
@@ -730,6 +751,14 @@ const Photography = () => {
                     <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
                       <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {searchQuery && (
+                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                      Search: {searchQuery}
+                      <button onClick={() => setSearchQuery('')} className="ml-0.5 text-purple-500 hover:text-purple-700">
                         ×
                       </button>
                     </span>
@@ -780,15 +809,15 @@ const Photography = () => {
                     </div>
 
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Event Type</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Service Type</label>
                       <select
-                        value={selectedEvent}
-                        onChange={(e) => setSelectedEvent(e.target.value)}
+                        value={selectedService}
+                        onChange={(e) => setSelectedService(e.target.value)}
                         className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
                       >
-                        <option value="">All Events</option>
-                        {eventTypes.map((event) => (
-                          <option key={event} value={event}>{event}</option>
+                        <option value="">All Services</option>
+                        {serviceTypes.map((service) => (
+                          <option key={service} value={service}>{service}</option>
                         ))}
                       </select>
                     </div>
@@ -848,40 +877,40 @@ const Photography = () => {
                     </svg>
                     Apply Filters
                     <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[10px]">
-                      ({filteredVendors.length} found)
+                      ({filteredAgencies.length} found)
                     </span>
                   </button>
                 </div>
               </section>
             </div>
 
-            {/* Desktop: Vendor Count */}
+            {/* Desktop: Agency Count */}
             <div className="hidden lg:block mb-4">
               <section className="py-2">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white leading-tight">
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
+                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : '12 Detective Agencies'}
                       </h3>
                       <p className="text-yellow-200 mt-0.5 text-sm">
-                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
+                        {selectedService ? `Showing results for "${selectedService}"` : 'Professional background investigation services'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-2.5 py-1.5 rounded">
                         <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹5,000 - ₹5,00,000</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹7,000 - ₹80,000</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-1.5 mt-2">
-                    {selectedEvent && (
+                    {selectedService && (
                       <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
-                        Event: {selectedEvent}
-                        <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
+                        Service: {selectedService}
+                        <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">
                           ×
                         </button>
                       </span>
@@ -902,37 +931,46 @@ const Photography = () => {
                         </button>
                       </span>
                     )}
+                    {searchQuery && (
+                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">
+                        Search: {searchQuery}
+                        <button onClick={() => setSearchQuery('')} className="ml-1 text-purple-500 hover:text-purple-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
                   </div>
                 </div>
               </section>
             </div>
 
-            {/* Vendor Profiles */}
+            {/* Agency Profiles */}
             <section className="py-1 md:py-2 vendor-profiles">
-              {filteredVendors.length > 0 ? (
+              {filteredAgencies.length > 0 ? (
                 <div className="space-y-1.5 md:space-y-3">
-                  {filteredVendors.map((vendor) => (
-                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                  {filteredAgencies.map((agency) => (
+                    <div key={agency.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
                       <div className="flex flex-col md:flex-row">
                         {/* Left Section - Logo (Desktop Only) */}
                         <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
                           <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
                             <img 
-                              src={vendor.logo} 
-                              alt={vendor.businessName} 
+                              src={agency.logo} 
+                              alt={agency.businessName} 
                               className="w-full h-full object-cover"
                             />
                           </div>
                           <div className="text-center">
                             <div className="flex items-center justify-center mb-0.5">
                               <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
+                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{agency.rating}</span>
                                 <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs">{vendor.priceRange}</p>
+                            <p className="text-red-700 font-medium text-xs">{agency.priceRange}</p>
+                            <p className="text-gray-600 text-[10px] mt-0.5">License: {agency.licenseNumber}</p>
                           </div>
                         </div>
 
@@ -946,8 +984,8 @@ const Photography = () => {
                               <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
                                 <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
                                   <img 
-                                    src={vendor.logo} 
-                                    alt={vendor.businessName} 
+                                    src={agency.logo} 
+                                    alt={agency.businessName} 
                                     className="w-full h-full object-cover"
                                   />
                                 </div>
@@ -957,9 +995,9 @@ const Photography = () => {
                               <div className="w-3/5 p-1.5 bg-white">
                                 {/* Title with Star Rating */}
                                 <div className="flex items-start justify-between mb-0.5">
-                                  <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{vendor.businessName}</h3>
+                                  <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{agency.businessName}</h3>
                                   <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
-                                    <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
+                                    <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{agency.rating}</span>
                                     <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                     </svg>
@@ -967,11 +1005,11 @@ const Photography = () => {
                                 </div>
 
                                 {/* Budget below title */}
-                                <p className="text-red-700 font-bold text-xs mb-1">{vendor.priceRange}</p>
+                                <p className="text-red-700 font-bold text-xs mb-1">{agency.priceRange}</p>
                                 
                                 {/* Business Category */}
                                 <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
-                                  {vendor.businessCategory}
+                                  {agency.serviceType}
                                 </span>
                                 
                                 {/* Location */}
@@ -980,18 +1018,23 @@ const Photography = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                   </svg>
-                                  <span className="leading-tight">{vendor.location}</span>
+                                  <span className="leading-tight">{agency.location}</span>
+                                </div>
+                                
+                                {/* License Number */}
+                                <div className="text-gray-600 text-[9px] mb-0.5">
+                                  <span className="font-bold">License:</span> {agency.licenseNumber}
                                 </div>
                                 
                                 {/* Contact Details */}
                                 <div className="space-y-0.5 text-[10px]">
                                   <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Contact Person:</span>
-                                    <span className="text-gray-800 leading-tight">{vendor.personName}</span>
+                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Lead Investigator:</span>
+                                    <span className="text-gray-800 leading-tight">{agency.personName}</span>
                                   </div>
                                   <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Role:</span>
-                                    <span className="text-gray-800 leading-tight">{vendor.designation}</span>
+                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Experience:</span>
+                                    <span className="text-gray-800 leading-tight">{agency.yearsExperience} years</span>
                                   </div>
                                 </div>
                               </div>
@@ -1000,12 +1043,12 @@ const Photography = () => {
                             {/* Bottom Section - Full Width Description and Services */}
                             <div className="w-full p-2 bg-white relative pb-10">
                               {/* Description */}
-                              <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
+                              <p className="text-gray-700 mb-2 text-xs leading-relaxed">{agency.description}</p>
                               
                               {/* Services Offered */}
                               <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
                               <ul className="space-y-0.5 mb-1">
-                                {vendor.services.map((service, index) => (
+                                {agency.services.map((service, index) => (
                                   <li key={index} className="flex items-start">
                                     <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1017,7 +1060,10 @@ const Photography = () => {
 
                               {/* Small View Details Button in Right Bottom Corner */}
                               <div className="absolute bottom-2 right-2">
-                                <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                                <button 
+                                  onClick={() => navigate(`/agency-details/${agency.id}`)}
+                                  className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                                >
                                   <span>View Details</span>
                                   <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1030,31 +1076,38 @@ const Photography = () => {
                           {/* Desktop Layout */}
                           <div className="hidden md:block">
                             <div className="mb-1.5">
-                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
+                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{agency.businessName}</h3>
                               <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
                                 <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
-                                  {vendor.businessCategory}
+                                  {agency.serviceType}
                                 </span>
                                 <span className="text-gray-600 flex items-center text-xs">
                                   <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                   </svg>
-                                  {vendor.location}
+                                  {agency.location}
                                 </span>
                               </div>
+                              <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{agency.description}</p>
                             </div>
-                            
-                            <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{vendor.description}</p>
                             
                             <div className="space-y-0.5">
                               <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Contact Person:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Lead Investigator:</span>
+                                <span className="font-medium text-gray-800 text-xs">{agency.personName}</span>
                               </div>
                               <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Designation:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Designation:</span>
+                                <span className="font-medium text-gray-800 text-xs">{agency.designation}</span>
+                              </div>
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">License Number:</span>
+                                <span className="font-medium text-gray-800 text-xs">{agency.licenseNumber}</span>
+                              </div>
+                              <div className="flex items-start sm:items-center">
+                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Experience:</span>
+                                <span className="font-medium text-gray-800 text-xs">{agency.yearsExperience} years</span>
                               </div>
                             </div>
                           </div>
@@ -1064,7 +1117,7 @@ const Photography = () => {
                         <div className="hidden md:block md:w-1/4 p-3 bg-white">
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
                           <ul className="space-y-0.5 mb-2">
-                            {vendor.services.map((service, index) => (
+                            {agency.services.map((service, index) => (
                               <li key={index} className="flex items-start">
                                 <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1074,7 +1127,10 @@ const Photography = () => {
                             ))}
                           </ul>
                           
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs">
+                          <button 
+                            onClick={() => navigate(`/agency-details/${agency.id}`)}
+                            className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs"
+                          >
                             <span>View Details</span>
                             <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1090,8 +1146,8 @@ const Photography = () => {
                   <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Vendors Found</h3>
-                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more vendors</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Agencies Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more agencies</p>
                   <button 
                     onClick={handleReset}
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
@@ -1102,41 +1158,54 @@ const Photography = () => {
               )}
             </section>
 
+            {/* Register Agency Button */}
+            <section className="py-2 md:py-4 text-center">
+              <div className="bg-gradient-to-r from-red-50 to-yellow-50 rounded-lg shadow border border-red-200 p-4 md:p-6">
+                <h2 className="text-sm md:text-lg font-bold text-red-800 mb-2">Are You a Detective Agency?</h2>
+                <p className="text-gray-700 text-xs md:text-sm mb-4">Join our platform and connect with customers looking for background verification services</p>
+                <button
+                  onClick={handleAgencyRegistration}
+                  className="bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-6 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base"
+                >
+                  Register Your Agency
+                </button>
+              </div>
+            </section>
+
             {/* Why Choose Us Section */}
             <section className="py-2 md:py-4">
               <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
-                Why Choose Our Photography Services?
+                Why Choose Our Background Verification Services?
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
                   <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
                     <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Professional Equipment</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">High-end cameras and latest technology</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Confidential</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">100% confidential and secure investigations</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
                   <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
                     <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Timely Delivery</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Quick turnaround without compromising quality</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Fast Turnaround</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Quick and efficient background checks</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
                   <div className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-0.5 md:mb-2 mx-auto">
                     <svg className="w-3 h-3 md:w-4 md:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Experienced Team</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Years of expertise in wedding photography</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Professional Team</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Experienced investigators and verifiers</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -1145,8 +1214,8 @@ const Photography = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Customer Satisfaction</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Dedicated to exceeding expectations</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Verified Agencies</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">All agencies are licensed and verified</p>
                 </div>
               </div>
             </section>
@@ -1164,11 +1233,6 @@ const Photography = () => {
                     src={matrimonyBanner}
                     alt="Find Your Perfect Partner"
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      // Fallback image if the matrimony banner doesn't exist
-                      e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
-                    }}
                   />
                   {/* Dark overlay for better text visibility */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -1211,10 +1275,39 @@ const Photography = () => {
                 </div>
               </div>
 
+              {/* Register Agency Box */}
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 p-4 text-center">
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    Register Your Agency
+                  </h3>
+                  <p className="text-white/90 text-sm">
+                    Join our platform as a background investigation agency
+                  </p>
+                </div>
+                
+                <div className="p-4">
+                  <p className="text-gray-600 text-xs mb-4">
+                    Connect with customers looking for professional background verification services. 
+                    Get verified and start receiving inquiries today.
+                  </p>
+                  
+                  <button
+                    onClick={handleAgencyRegistration}
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Register Agency
+                  </button>
+                </div>
+              </div>
+
               {/* Filter Container - Only this box remains */}
               <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
                 <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
-                  Filter Photographers
+                  Filter Detective Agencies
                 </h3>
 
                 <div className="mb-3">
@@ -1238,15 +1331,15 @@ const Photography = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Event</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Service</label>
                   <select
-                    value={selectedEvent}
-                    onChange={(e) => setSelectedEvent(e.target.value)}
+                    value={selectedService}
+                    onChange={(e) => setSelectedService(e.target.value)}
                     className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                   >
-                    <option value="">All Event Types</option>
-                    {eventTypes.map((event) => (
-                      <option key={event} value={event}>{event}</option>
+                    <option value="">All Services</option>
+                    {serviceTypes.map((service) => (
+                      <option key={service} value={service}>{service}</option>
                     ))}
                   </select>
                 </div>
@@ -1316,7 +1409,7 @@ const Photography = () => {
           <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
             {/* Header */}
             <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
-              <h3 className="text-base font-bold text-red-800">Filter Photographers</h3>
+              <h3 className="text-base font-bold text-red-800">Filter Detective Agencies</h3>
               <button
                 onClick={() => setShowMobileFilter(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
@@ -1351,17 +1444,17 @@ const Photography = () => {
                 </div>
               </div>
 
-              {/* Type of Event */}
+              {/* Type of Service */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Event</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Service</label>
                 <select
-                  value={selectedEvent}
-                  onChange={(e) => setSelectedEvent(e.target.value)}
+                  value={selectedService}
+                  onChange={(e) => setSelectedService(e.target.value)}
                   className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                 >
-                  <option value="">All Event Types</option>
-                  {eventTypes.map((event) => (
-                    <option key={event} value={event}>{event}</option>
+                  <option value="">All Services</option>
+                  {serviceTypes.map((service) => (
+                    <option key={service} value={service}>{service}</option>
                   ))}
                 </select>
               </div>
@@ -1422,7 +1515,7 @@ const Photography = () => {
                 >
                   Apply Filter
                   <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
-                    ({filteredVendors.length})
+                    ({filteredAgencies.length})
                   </span>
                 </button>
                 <button
@@ -1440,4 +1533,4 @@ const Photography = () => {
   );
 };
 
-export default Photography;
+export default BackgroundInvestigationsPage;

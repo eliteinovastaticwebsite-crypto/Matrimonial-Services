@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import Header from './Components/Header';
 import VendorLoginForm from './pages/VendorLoginForm';
@@ -31,11 +31,26 @@ import EntertainmentVendorForm from './Components/EntertainmentForm';
 import InvitationVendorForm from './Components/InvitationForm';
 import StylingVendorForm from './Components/StylingForm';
 
+// Import Background Investigations components
+import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
+import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
+
 // Create a wrapper component for VendorProfile with params
 const VendorProfileWrapper = () => {
   const { vendorId } = useParams();
   return <VendorProfile vendorId={vendorId} />;
 };
+
+// Create wrapper components for each page to pass the openVendorForm prop
+const PhotographyWrapper = ({ openVendorForm }) => <Photography openVendorForm={openVendorForm} />;
+const CateringWrapper = ({ openVendorForm }) => <Catering openVendorForm={openVendorForm} />;
+const WeddingHallsWrapper = ({ openVendorForm }) => <WeddingHalls openVendorForm={openVendorForm} />;
+const DecorationWrapper = ({ openVendorForm }) => <Decoration openVendorForm={openVendorForm} />;
+const EntertainmentWrapper = ({ openVendorForm }) => <Entertainment openVendorForm={openVendorForm} />;
+const InvitationWrapper = ({ openVendorForm }) => <Invitation openVendorForm={openVendorForm} />;
+const StylingWrapper = ({ openVendorForm }) => <Styling openVendorForm={openVendorForm} />;
+const BackgroundInvestigationsWrapper = ({ openVendorForm }) => <BackgroundInvestigationsPage openVendorForm={openVendorForm} />;
+const VendorLoginWrapper = ({ openVendorForm }) => <VendorLogin openVendorForm={openVendorForm} />;
 
 function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -43,7 +58,7 @@ function App() {
   const [showVendorLoginModal, setShowVendorLoginModal] = useState(false);
 
   const openVendorForm = (formType) => {
-    console.log(`Opening ${formType} form`);
+    console.log(`App.jsx: Opening ${formType} form`);
     setActiveFormType(formType);
     setIsFormOpen(true);
   };
@@ -63,6 +78,7 @@ function App() {
 
   // Function to render the correct form based on type
   const renderVendorForm = () => {
+    console.log(`App.jsx: Rendering ${activeFormType} form, isOpen: ${isFormOpen}`);
     switch (activeFormType) {
       case 'photography':
         return <PhotographyVendorForm isOpen={isFormOpen} onClose={closeVendorForm} />;
@@ -78,10 +94,37 @@ function App() {
         return <InvitationVendorForm isOpen={isFormOpen} onClose={closeVendorForm} />;
       case 'styling':
         return <StylingVendorForm isOpen={isFormOpen} onClose={closeVendorForm} />;
+      case 'background-investigations':
+        return <BackgroundInvestigationsForm isOpen={isFormOpen} onClose={closeVendorForm} />;
       default:
         return null;
     }
   };
+
+  // Listen for form opening events from anywhere in the app
+  useEffect(() => {
+    const handleGlobalFormOpen = (event) => {
+      if (event.detail && event.detail.formType) {
+        console.log(`Global event: Opening ${event.detail.formType} form`);
+        openVendorForm(event.detail.formType);
+      }
+    };
+
+    window.addEventListener('openVendorFormGlobal', handleGlobalFormOpen);
+
+    return () => {
+      window.removeEventListener('openVendorFormGlobal', handleGlobalFormOpen);
+    };
+  }, []);
+
+  // Also update the Header to add a global event dispatcher
+  // Add this function to your Header component:
+  // const dispatchFormOpenEvent = (formType) => {
+  //   const event = new CustomEvent('openVendorFormGlobal', {
+  //     detail: { formType }
+  //   });
+  //   window.dispatchEvent(event);
+  // };
 
   return (
     <Router>
@@ -115,18 +158,19 @@ function App() {
           {/* ============================================ */}
           {/* CUSTOMER SERVICE PAGES */}
           {/* ============================================ */}
-          <Route path="/photography" element={<Photography />} />
-          <Route path="/catering" element={<Catering />} />
-          <Route path="/wedding-halls" element={<WeddingHalls />} />
-          <Route path="/decorations" element={<Decoration />} />
-          <Route path="/entertainment" element={<Entertainment />} />
-          <Route path="/invitation" element={<Invitation />} />
-          <Route path="/styling" element={<Styling />} />
+          <Route path="/photography" element={<PhotographyWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/catering" element={<CateringWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/wedding-halls" element={<WeddingHallsWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/decorations" element={<DecorationWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/entertainment" element={<EntertainmentWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/invitation" element={<InvitationWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/styling" element={<StylingWrapper openVendorForm={openVendorForm} />} />
+          <Route path="/background-investigations" element={<BackgroundInvestigationsWrapper openVendorForm={openVendorForm} />} />
           
           {/* ============================================ */}
           {/* VENDOR LOGIN & PROFILE ROUTES - UPDATED */}
           {/* ============================================ */}
-          <Route path="/vendor-login" element={<VendorLogin onOpenVendorForm={openVendorForm} />} />
+          <Route path="/vendor-login" element={<VendorLoginWrapper openVendorForm={openVendorForm} />} />
           
           {/* Vendor Profile Routes - Both with and without ID */}
           <Route path="/vendor-profile" element={<VendorProfileWrapper />} />
@@ -135,31 +179,6 @@ function App() {
           {/* Alternative vendor dashboard route */}
           <Route path="/vendor-dashboard" element={<VendorProfileWrapper />} />
           <Route path="/vendor-dashboard/:vendorId" element={<VendorProfileWrapper />} />
-          
-          {/* ============================================ */}
-          {/* VENDOR REGISTRATION ROUTES */}
-          {/* ============================================ */}
-          <Route path="/vendor-registration" element={
-            <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-red-50 flex items-center justify-center p-4">
-              <div className="max-w-md w-full">
-                <div className="text-center mb-8">
-                  <h1 className="text-3xl font-bold text-yellow-700 mb-2">Vendor Registration</h1>
-                  <p className="text-gray-600">Please use the service forms to register as a vendor</p>
-                </div>
-                <div className="bg-white p-6 rounded-2xl shadow-lg">
-                  <p className="text-center text-gray-700 mb-4">
-                    Click on any service in the navigation bar to register as a vendor for that service.
-                  </p>
-                  <button
-                    onClick={() => navigate('/')}
-                    className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-lg font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all"
-                  >
-                    Go to Home
-                  </button>
-                </div>
-              </div>
-            </div>
-          } />
           
           {/* ============================================ */}
           {/* VENDOR SERVICE FORMS ROUTES */}
@@ -184,6 +203,9 @@ function App() {
           } />
           <Route path="/register/styling" element={
             <StylingVendorForm isOpen={true} onClose={() => window.history.back()} />
+          } />
+          <Route path="/register/background-investigations" element={
+            <BackgroundInvestigationsForm isOpen={true} onClose={() => window.history.back()} />
           } />
           
           {/* Redirect old /register to new choice page */}
