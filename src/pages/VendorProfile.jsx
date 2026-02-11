@@ -472,16 +472,17 @@ const VendorProfile = () => {
 
         {/* Main Profile Card */}
         <div className="bg-white rounded-lg md:rounded-xl shadow-lg border border-red-200 overflow-hidden mb-4 md:mb-8">
-          {/* Profile Header - Compact */}
-          <div className="relative bg-gradient-to-r from-red-600 to-red-700 p-4 md:p-6">
-            <div className="flex items-start gap-4 md:gap-6">
-              {/* Logo */}
-              <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-28 md:h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gradient-to-br from-red-50 to-yellow-50 flex-shrink-0">
+          {/* Profile Header - Logo and Business Name in one line */}
+          <div className="relative bg-gradient-to-r from-red-600 to-red-700 p-3 md:p-6">
+            {/* Mobile Layout: Logo on right, text on left */}
+            <div className="flex flex-row-reverse md:flex-row items-start">
+              {/* Logo - On RIGHT for mobile, LEFT for desktop */}
+              <div className="w-12 h-12 md:w-28 md:h-28 rounded-full border-2 md:border-4 border-white shadow-md md:shadow-lg overflow-hidden bg-gradient-to-br from-red-50 to-yellow-50 flex-shrink-0 ml-3 md:ml-0 md:mr-6">
                 {vendorData.basicDetails.logo ? (
                   <img src={vendorData.basicDetails.logo} alt={vendorData.basicDetails.businessName} className="w-full h-full object-cover" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center bg-red-100">
-                    <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 md:w-12 md:h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
@@ -489,61 +490,101 @@ const VendorProfile = () => {
                 )}
               </div>
 
-              {/* Text info */}
+              {/* Text info - On LEFT for mobile, fills space */}
               <div className="flex-1 min-w-0">
-                <h1 className="text-base sm:text-lg md:text-2xl font-bold text-white">
+                {/* Business Name - Top Line */}
+                <h1 className="text-sm md:text-2xl font-bold text-white leading-tight mb-1.5">
                   {vendorData.basicDetails.businessName}
                 </h1>
 
-                <span className="inline-flex items-center gap-1.5 mt-1.5 bg-yellow-400 text-red-800 px-2.5 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold shadow-sm">
-                  <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth={2} />
-                    <path d="M3 10h18" strokeWidth={2} strokeLinecap="round" />
-                  </svg>
-                  Vendor ID: {vendorData.id}
-                </span>
+                {/* Vendor ID Badge */}
+                <div className="mb-2">
+                  <span className="inline-flex items-center gap-1 bg-yellow-400 text-red-800 px-2 py-0.5 md:px-3 md:py-1 rounded-full text-xs md:text-sm font-bold shadow-sm">
+                    <svg className="w-2.5 h-2.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <rect x="3" y="5" width="18" height="14" rx="2" strokeWidth={2} />
+                      <path d="M3 10h18" strokeWidth={2} strokeLinecap="round" />
+                    </svg>
+                    Vendor ID: {vendorData.id}
+                  </span>
+                </div>
 
-                <div className="text-white text-xs sm:text-sm md:text-base space-y-0.5 md:space-y-1 mt-2 md:mt-3">
-                  <div className="flex items-center font-bold">
-                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span>{vendorData.contactInfo.currentLocation}</span>
+                {/* All details in compact layout - Fills left side */}
+                <div className="space-y-1 text-white">
+                  {/* Location */}
+                  <div className="flex items-start">
+                    <span className="text-xs md:text-sm font-bold inline-block min-w-[90px]"> Location:</span>
+                    <span className="text-xs md:text-sm font-bold ml-1">{vendorData.contactInfo.currentLocation}</span>
                   </div>
-                  <div className="flex items-center font-bold">
-                    <svg className="w-3.5 h-3.5 md:w-4 md:h-4 mr-1.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
-                    <span>{vendorData.basicDetails.ownerName} ({vendorData.basicDetails.designation})</span>
+                  
+                  {/* Owner Name */}
+                  <div className="flex items-start">
+                    <span className="text-xs md:text-sm font-bold inline-block min-w-[90px]"> Owner:</span>
+                    <span className="text-xs md:text-sm font-bold ml-1">
+                      {vendorData.basicDetails.ownerName} ({vendorData.basicDetails.designation})
+                    </span>
+                  </div>
+                  
+                  {/* Phone */}
+                  <div className="flex items-start">
+                    <span className="text-xs md:text-sm font-bold inline-block min-w-[90px]"> Phone:</span>
+                    <a 
+                      href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`}
+                      className="text-xs md:text-sm font-bold ml-1 hover:underline"
+                    >
+                      {vendorData.contactInfo.mobile}
+                    </a>
+                  </div>
+                  
+                  {/* Email */}
+                  <div className="flex items-start">
+                    <span className="text-xs md:text-sm font-bold inline-block min-w-[90px]"> Email:</span>
+                    <a 
+                      href={`mailto:${vendorData.contactInfo.email}`}
+                      className="text-xs md:text-sm font-bold ml-1 hover:underline"
+                    >
+                      {vendorData.contactInfo.email}
+                    </a>
+                  </div>
+                  
+                  {/* Website */}
+                  <div className="flex items-start">
+                    <span className="text-xs md:text-sm font-bold inline-block min-w-[90px]"> Website:</span>
+                    <a 
+                      href={`https://${vendorData.contactInfo.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs md:text-sm font-bold ml-1 hover:underline"
+                    >
+                      {vendorData.contactInfo.website}
+                    </a>
                   </div>
                 </div>
 
-                <div className="flex flex-wrap gap-1.5 md:gap-2 mt-2 md:mt-3">
-                  {[
-                    { icon: 'phone', label: vendorData.contactInfo.mobile },
-                    { icon: 'mail', label: vendorData.contactInfo.email },
-                    { icon: 'globe', label: vendorData.contactInfo.website },
-                  ].map((btn, i) => (
-                    <button key={i} className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300">
-                      {btn.icon === 'phone' && (
-                        <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                        </svg>
-                      )}
-                      {btn.icon === 'mail' && (
-                        <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                      )}
-                      {btn.icon === 'globe' && (
-                        <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3" />
-                        </svg>
-                      )}
-                      <span>{btn.label}</span>
-                    </button>
-                  ))}
+                {/* Contact Buttons - Below all details */}
+                <div className="flex flex-wrap gap-1.5 mt-3">
+                  <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                    <span className="hidden md:inline">Call Now</span>
+                    <span className="md:hidden text-xs">Call</span>
+                  </a>
+                  
+                  <a href={`mailto:${vendorData.contactInfo.email}`} className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span className="hidden md:inline">Send Email</span>
+                    <span className="md:hidden text-xs">Email</span>
+                  </a>
+                  
+                  <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
+                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3" />
+                    </svg>
+                    <span className="hidden md:inline">Visit Website</span>
+                    <span className="md:hidden text-xs">Website</span>
+                  </a>
                 </div>
               </div>
             </div>
@@ -558,13 +599,13 @@ const VendorProfile = () => {
                     <button
                       key={section.id}
                       onClick={() => setActiveSection(section.id)}
-                      className={`flex-shrink-0 flex items-center gap-1.5 md:gap-2 px-3 py-2 md:px-4 md:py-3 border-r border-gray-200 last:border-r-0 transition-all ${
+                      className={`flex-shrink-0 flex items-center gap-1 md:gap-2 px-2 py-1.5 md:px-4 md:py-3 border-r border-gray-200 last:border-r-0 transition-all ${
                         activeSection === section.id
                           ? 'bg-gradient-to-r from-red-600 to-red-700 text-white'
                           : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
                       }`}
                     >
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={section.icon} />
                       </svg>
                       <span className="text-xs md:text-sm font-medium whitespace-nowrap">{section.title}</span>
@@ -574,45 +615,45 @@ const VendorProfile = () => {
               </div>
 
               {/* Active section content - Show when not in full details mode */}
-              <div className="p-4 md:p-6">
-                <div className="flex items-center mb-3 md:mb-4">
+              <div className="p-3 md:p-6">
+                <div className="flex items-center mb-2 md:mb-4">
                   <h3 className="text-sm md:text-lg font-bold text-red-800">
                     {sections.find((s) => s.id === activeSection)?.title}
                   </h3>
                   <div className="ml-2 w-8 md:w-12 h-0.5 md:h-1 bg-gradient-to-r from-red-600 to-yellow-500 rounded-full"></div>
                 </div>
-                <div className="bg-gradient-to-br from-red-50 to-yellow-50 p-4 md:p-6 rounded-lg border border-red-100">
+                <div className="bg-gradient-to-br from-red-50 to-yellow-50 p-3 md:p-6 rounded-lg border border-red-100">
                   {renderSectionContent()}
                   
                   {/* Navigation Buttons with View Full Details */}
-                  <div className="mt-4 md:mt-6 pt-3 md:pt-4 border-t border-red-200 flex flex-col sm:flex-row justify-between items-center gap-3">
-                    <div className="flex items-center gap-2 w-full sm:w-auto">
+                  <div className="mt-3 md:mt-6 pt-2 md:pt-4 border-t border-red-200 flex flex-col sm:flex-row justify-between items-center gap-2">
+                    <div className="flex items-center gap-1.5 w-full sm:w-auto">
                       <button
                         onClick={goToPreviousSection}
                         disabled={activeSection === sections[0].id}
-                        className={`flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                        className={`flex items-center gap-1 px-2 md:px-4 py-1 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
                           activeSection === sections[0].id
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-white text-red-600 hover:bg-red-50 border border-red-300'
                         }`}
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
-                        <span>Back</span>
+                        <span className="hidden sm:inline">Back</span>
                       </button>
 
                       <button
                         onClick={goToNextSection}
                         disabled={activeSection === sections[sections.length - 1].id}
-                        className={`flex items-center gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                        className={`flex items-center gap-1 px-2 md:px-4 py-1 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
                           activeSection === sections[sections.length - 1].id
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800'
                         }`}
                       >
-                        <span>Next</span>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <span className="hidden sm:inline">Next</span>
+                        <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                       </button>
@@ -621,9 +662,9 @@ const VendorProfile = () => {
                     {/* View Full Details Button */}
                     <button
                       onClick={() => setShowFullDetails(true)}
-                      className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all shadow flex items-center justify-center gap-2 text-xs md:text-sm"
+                      className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-1.5 px-3 md:py-2 md:px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all shadow flex items-center justify-center gap-1.5 text-xs md:text-sm"
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                       </svg>
@@ -782,35 +823,35 @@ const VendorProfile = () => {
 
           {/* Primary & Office Address - At the bottom (only show when not in full details) */}
           {!showFullDetails && (
-            <div className="p-4 md:p-6 bg-gradient-to-r from-yellow-50 to-red-50 border-t border-gray-200">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div className="p-3 md:p-6 bg-gradient-to-r from-yellow-50 to-red-50 border-t border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
                 {/* Primary Address */}
-                <div className="bg-white p-4 rounded-lg shadow border border-yellow-200">
-                  <h3 className="text-sm md:text-base font-bold text-red-700 mb-3 flex items-center">
-                    <svg className="w-4 h-4 md:w-5 md:h-5 mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-3 md:p-4 rounded-lg shadow border border-yellow-200">
+                  <h3 className="text-xs md:text-base font-bold text-red-700 mb-2 md:mb-3 flex items-center">
+                    <svg className="w-3 h-3 md:w-5 md:h-5 mr-1.5 md:mr-2 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                     Primary Vendor Address
                   </h3>
-                  <div className="space-y-2 text-xs md:text-sm">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="space-y-1.5 md:space-y-2 text-xs md:text-sm">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span className="font-bold text-gray-800">{vendorData.contactInfo.mobile}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       <span className="font-bold text-gray-800">{vendorData.contactInfo.email}</span>
                     </div>
-                    <div className="flex items-start gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-start gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      <span className="font-bold text-gray-800">
+                      <span className="font-bold text-gray-800 text-xs md:text-sm">
                         {vendorData.contactInfo.officeAddress}, {vendorData.contactInfo.cityDistrict}, {vendorData.contactInfo.state} - {vendorData.contactInfo.pinCode}
                       </span>
                     </div>
@@ -818,32 +859,32 @@ const VendorProfile = () => {
                 </div>
 
                 {/* Office Address */}
-                <div className="bg-white p-4 rounded-lg shadow border border-red-200">
-                  <h3 className="text-sm md:text-base font-bold text-red-700 mb-3 flex items-center">
-                    <svg className="w-4 h-4 md:w-5 md:h-5 mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="bg-white p-3 md:p-4 rounded-lg shadow border border-red-200">
+                  <h3 className="text-xs md:text-base font-bold text-red-700 mb-2 md:mb-3 flex items-center">
+                    <svg className="w-3 h-3 md:w-5 md:h-5 mr-1.5 md:mr-2 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                     Office Address
                   </h3>
-                  <div className="space-y-2 text-xs md:text-sm">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="space-y-1.5 md:space-y-2 text-xs md:text-sm">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span className="font-bold text-gray-800">{vendorData.contactInfo.alternateMobile}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       <span className="font-bold text-gray-800">{vendorData.contactInfo.email}</span>
                     </div>
-                    <div className="flex items-start gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-start gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      <span className="font-bold text-gray-800">
+                      <span className="font-bold text-gray-800 text-xs md:text-sm">
                         Office 2, {vendorData.contactInfo.cityDistrict}, {vendorData.contactInfo.state}
                       </span>
                     </div>
@@ -855,14 +896,14 @@ const VendorProfile = () => {
 
           {/* For Enquiry - Our Address with Logo (only show when not in full details) */}
           {!showFullDetails && (
-            <div className="p-4 md:p-6 bg-gradient-to-r from-red-100 to-yellow-100 border-t border-red-300">
-              <div className="flex items-start gap-3 md:gap-4">
+            <div className="p-3 md:p-6 bg-gradient-to-r from-red-100 to-yellow-100 border-t border-red-300">
+              <div className="flex items-start gap-2 md:gap-4">
                 {/* Logo */}
-                <div className="w-12 h-12 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-md flex-shrink-0">
+                <div className="w-10 h-10 md:w-16 md:h-16 bg-white rounded-full flex items-center justify-center shadow-md flex-shrink-0">
                   {companyLogo ? (
-                    <img src={companyLogo} alt="Eliteinova" className="w-10 h-10 md:w-12 md:h-12 object-contain" />
+                    <img src={companyLogo} alt="Eliteinova" className="w-8 h-8 md:w-12 md:h-12 object-contain" />
                   ) : (
-                    <svg className="w-8 h-8 md:w-10 md:h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 md:w-10 md:h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   )}
@@ -870,32 +911,32 @@ const VendorProfile = () => {
                 
                 {/* Contact Details */}
                 <div className="flex-1">
-                  <h4 className="text-xs md:text-sm font-bold text-red-800 mb-2">For Enquiry - Eliteinova Matrimonial Services</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1.5 md:gap-2 text-xs md:text-sm">
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <h4 className="text-xs md:text-sm font-bold text-red-800 mb-1.5 md:mb-2">For Enquiry - Eliteinova Matrimonial Services</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-1 md:gap-2 text-xs md:text-sm">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                       </svg>
                       <span className="font-bold text-gray-800">+91 99999 88888</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>
                       <span className="font-bold text-gray-800">support@eliteinova.com</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-1.5 md:gap-2">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-red-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <span className="font-bold text-gray-800">Mon-Sat: 9AM-7PM</span>
                     </div>
-                    <div className="flex items-start gap-2 md:col-span-1">
-                      <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-red-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-start gap-1.5 md:gap-2 md:col-span-1">
+                      <svg className="w-3 h-3 md:w-4 md:h-4 text-red-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                      <span className="font-bold text-gray-800">123 Elite Plaza, Wedding Street, Chennai - 600001</span>
+                      <span className="font-bold text-gray-800 text-xs md:text-sm">123 Elite Plaza, Wedding Street, Chennai - 600001</span>
                     </div>
                   </div>
                 </div>

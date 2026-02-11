@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import matrimonyBanner from '../assets/Matrimonybanner.jpg'; 
 
 // Import images - add these to your assets folder
 const detective1 = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
@@ -14,8 +15,6 @@ const familyBackground = "https://images.unsplash.com/photo-1577896851231-70ef18
 const maritalStatus = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
 const banner1 = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
 const banner2 = "https://images.unsplash.com/photo-1559028012-481c04fa702d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
-// Add a matrimony banner image - same as photography page
-const matrimonyBanner = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
 
 const BackgroundInvestigationsPage = () => {
   const navigate = useNavigate();
@@ -450,6 +449,9 @@ const BackgroundInvestigationsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
+      {/* Add Pacifico font */}
+      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      
       {/* Floating Filter Button */}
       <button
         onClick={handleFilterButtonClick}
@@ -462,9 +464,9 @@ const BackgroundInvestigationsPage = () => {
         <span className="ml-2 font-bold text-sm">Filter</span>
       </button>
 
-      {/* Banner Section - Optimized Mobile View */}
-      <section className="relative w-full overflow-hidden bg-gray-100">
-        <div className="relative h-[40vh] xs:h-[45vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
+      {/* Banner Section - Fixed Size */}
+      <section className="relative w-full overflow-hidden">
+        <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
           {banners.map((banner, index) => (
             <div
               key={banner.id}
@@ -474,18 +476,16 @@ const BackgroundInvestigationsPage = () => {
                   : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              {/* Image Container */}
-              <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
                 <img
                   src={banner.image}
-                  alt={`Banner ${banner.id}`}
-                  className="w-full h-full object-contain md:object-cover"
-                  style={{
-                    maxWidth: '100%',
-                    maxHeight: '100%',
-                  }}
+                  alt={banner.title}
+                  className="w-full h-full object-cover"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
+                  style={{
+                    objectPosition: 'center center',
+                  }}
                 />
               </div>
             </div>
@@ -494,11 +494,11 @@ const BackgroundInvestigationsPage = () => {
           {/* Navigation Buttons - Mobile Optimized */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-            className="absolute left-1 xs:left-2 sm:left-3 md:left-4 lg:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 lg:p-4 rounded-full transition-all duration-300 z-20 touch-manipulation"
+            className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Previous banner"
           >
             <svg 
-              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -510,11 +510,11 @@ const BackgroundInvestigationsPage = () => {
           
           <button
             onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-            className="absolute right-1 xs:right-2 sm:right-3 md:right-4 lg:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 lg:p-4 rounded-full transition-all duration-300 z-20 touch-manipulation"
+            className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Next banner"
           >
             <svg 
-              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 lg:w-6 lg:h-6" 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -525,17 +525,17 @@ const BackgroundInvestigationsPage = () => {
           </button>
 
           {/* Dot Indicators - Mobile Friendly */}
-          <div className="absolute bottom-3 xs:bottom-3.5 sm:bottom-4 md:bottom-5 lg:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1.5 xs:space-x-2 sm:space-x-2.5 md:space-x-3 lg:space-x-4 z-20">
+          <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {banners.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToBanner(index)}
-                className={`rounded-full transition-all duration-300 ${
-                  index === currentBannerIndex
-                    ? 'bg-yellow-500 w-4 h-1.5 xs:w-5 xs:h-2 sm:w-6 sm:h-2.5 md:w-7 md:h-3 lg:w-8 lg:h-3'
-                    : 'bg-white/90 hover:bg-white w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5 lg:w-4 lg:h-4'
+                className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex 
+                    ? 'bg-white scale-110' 
+                    : 'bg-white/60 hover:bg-white/80'
                 }`}
-                aria-label={`Go to banner ${index + 1}`}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
@@ -640,10 +640,10 @@ const BackgroundInvestigationsPage = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Added below Investigation Services - SMALLER SIZE */}
+            {/* Mobile Matrimony Card - Enhanced with Pacifico font - MATCHING CATERING PAGE */}
             <div className="md:hidden mb-3 mt-2">
-              <div className="bg-white rounded-md shadow-lg border border-red-200 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-20">
+              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-24">
                   {/* Left Side: Image */}
                   <div className="w-2/5 relative">
                     <img
@@ -651,25 +651,28 @@ const BackgroundInvestigationsPage = () => {
                       alt="Find Your Perfect Partner"
                       className="w-full h-full object-cover"
                     />
-                    {/* Dark overlay for better text visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+                    {/* Darker overlay for better text visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                   </div>
                   
                   {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h3 className="text-xs font-bold text-red-800 mb-0.5 leading-tight line-clamp-1">
+                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[9px] mb-1 leading-tight line-clamp-2">
-                      Join our matrimony service and find your life partner
+                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
+                      Join our matrimony service
                     </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-medium flex items-center justify-center"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
                     >
-                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                       </svg>
                       Register Now
@@ -1223,10 +1226,10 @@ const BackgroundInvestigationsPage = () => {
 
           {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky */}
-            <div className="sticky top-4 space-y-4">
-              {/* NEW: Matrimony Registration Box - UPDATED with image banner */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 overflow-hidden">
+            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
+            <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
+              {/* NEW: Matrimony Registration Box - UPDATED to match Catering page style */}
+              <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
                 {/* Banner Image */}
                 <div className="relative h-32 overflow-hidden">
                   <img
@@ -1234,23 +1237,23 @@ const BackgroundInvestigationsPage = () => {
                     alt="Find Your Perfect Partner"
                     className="w-full h-full object-cover"
                   />
-                  {/* Dark overlay for better text visibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  {/* Darker overlay for better text visibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   
                   {/* Text on image */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <h3 className="text-lg font-bold text-white mb-1">
+                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-base font-bold text-yellow-300">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-white/90 text-xs">
-                      Join our matrimony service today
-                    </p>
                   </div>
                 </div>
                 
                 {/* Content below image */}
                 <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4 text-center">
+                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
                     Find your soulmate and create beautiful memories together. 
                     Join our matrimony service and find your life partner.
                   </p>
@@ -1260,7 +1263,7 @@ const BackgroundInvestigationsPage = () => {
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -1275,36 +1278,7 @@ const BackgroundInvestigationsPage = () => {
                 </div>
               </div>
 
-              {/* Register Agency Box */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-red-600 to-red-700 p-4 text-center">
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    Register Your Agency
-                  </h3>
-                  <p className="text-white/90 text-sm">
-                    Join our platform as a background investigation agency
-                  </p>
-                </div>
-                
-                <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4">
-                    Connect with customers looking for professional background verification services. 
-                    Get verified and start receiving inquiries today.
-                  </p>
-                  
-                  <button
-                    onClick={handleAgencyRegistration}
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
-                  >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Register Agency
-                  </button>
-                </div>
-              </div>
-
-              {/* Filter Container - Only this box remains */}
+              {/* Filter Container */}
               <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
                 <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
                   Filter Detective Agencies

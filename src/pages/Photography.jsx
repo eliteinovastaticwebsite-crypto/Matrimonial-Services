@@ -11,7 +11,7 @@ import religious from '../assets/religious.jpg';
 import photobanner1 from '../assets/photobanner1.png';
 import photobanner2 from '../assets/photobanner2.png';
 // Add a matrimony banner image - you can add your own image or use a placeholder
-import matrimonyBanner from '../assets/kids.jpg'; // You'll need to add this image
+import matrimonyBanner from '../assets/Matrimonybanner.jpg'; // You'll need to add this image
 
 const Photography = () => {
   const navigate = useNavigate();
@@ -65,6 +65,7 @@ const Photography = () => {
     { name: 'Entertainment', path: '/entertainment' },
     { name: 'Invitation & Gifts', path: '/invitation' },
     { name: 'Bridal Styling', path: '/styling' },
+    { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
   const photographyCategories = [
@@ -451,6 +452,9 @@ const Photography = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
+      {/* Add Pacifico font */}
+      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      
       {/* Floating Filter Button */}
       <button
         onClick={handleFilterButtonClick}
@@ -645,10 +649,10 @@ const Photography = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Added below Photography Categories - SMALLER SIZE */}
+            {/* Mobile Matrimony Card - Enhanced with Pacifico font */}
             <div className="md:hidden mb-3 mt-2">
-              <div className="bg-white rounded-md shadow-lg border border-red-200 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-20">
+              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-24">
                   {/* Left Side: Image */}
                   <div className="w-2/5 relative">
                     <img
@@ -656,25 +660,28 @@ const Photography = () => {
                       alt="Find Your Perfect Partner"
                       className="w-full h-full object-cover"
                     />
-                    {/* Dark overlay for better text visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+                    {/* Darker overlay for better text visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                   </div>
                   
                   {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h3 className="text-xs font-bold text-red-800 mb-0.5 leading-tight line-clamp-1">
+                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[9px] mb-1 leading-tight line-clamp-2">
-                      Join our matrimony service and find your life partner
+                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
+                      Join our matrimony service
                     </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-medium flex items-center justify-center"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
                     >
-                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                       </svg>
                       Register Now
@@ -1154,10 +1161,10 @@ const Photography = () => {
 
           {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky */}
-            <div className="sticky top-4 space-y-4">
-              {/* NEW: Matrimony Registration Box - UPDATED with image banner */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 overflow-hidden">
+            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
+            <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
+              {/* NEW: Matrimony Registration Box - UPDATED with Pacifico font */}
+              <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
                 {/* Banner Image */}
                 <div className="relative h-32 overflow-hidden">
                   <img
@@ -1170,23 +1177,23 @@ const Photography = () => {
                       e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
                     }}
                   />
-                  {/* Dark overlay for better text visibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                  {/* Darker overlay for better text visibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   
                   {/* Text on image */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <h3 className="text-lg font-bold text-white mb-1">
+                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-base font-bold text-yellow-300">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-white/90 text-xs">
-                      Join our matrimony service today
-                    </p>
                   </div>
                 </div>
                 
                 {/* Content below image */}
                 <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4 text-center">
+                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
                     Find your soulmate and create beautiful memories together. 
                     Join our matrimony service and find your life partner.
                   </p>
@@ -1196,7 +1203,7 @@ const Photography = () => {
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm flex items-center justify-center"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />

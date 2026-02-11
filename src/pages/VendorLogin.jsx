@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 // Import banner images from assets
 import banner1 from '../assets/banner1.png';
@@ -8,7 +8,7 @@ import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
 import banner5 from '../assets/banner5.png';
 
-// Import category images - make sure these images exist in your assets folder
+// Import category images
 import photographyImage from '../assets/photography.jpg';
 import cateringImage from '../assets/catering.jpg';
 import weddinghallsImage from '../assets/weddinghalls.jpg';
@@ -16,6 +16,7 @@ import decorationImage from '../assets/decoration.jpg';
 import invitationImage from '../assets/invitation.jpg';
 import makeupImage from '../assets/makeup.jpg';
 import entertainmentImage from '../assets/entertainment.jpg';
+import backgroundInvestigationImage from '../assets/entertainment.jpg';
 
 // Import icons for benefits section
 import { 
@@ -31,10 +32,11 @@ import {
 } from 'lucide-react';
 
 const VendorLogin = ({ onOpenVendorForm }) => {
+  const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
   const [activeButton, setActiveButton] = useState(null);
 
-  // Banner images data - using same banners as home
+  // Banner images data
   const banners = [
     {
       id: 1,
@@ -80,77 +82,56 @@ const VendorLogin = ({ onOpenVendorForm }) => {
       name: 'Photography',
       description: 'Wedding Photography & Videography Services',
       image: photographyImage,
-      color: 'from-red-500 to-red-700',
-      bgColor: 'bg-red-50',
-      borderColor: 'border-red-200',
-      textColor: 'text-red-800',
-      gradientOverlay: 'from-red-600/20 to-transparent'
+      formPath: '/register/photography'
     },
     {
       id: 'catering',
       name: 'Catering & Foods',
       description: 'Food Catering & Banquet Services',
       image: cateringImage,
-      color: 'from-orange-500 to-orange-700',
-      bgColor: 'bg-orange-50',
-      borderColor: 'border-orange-200',
-      textColor: 'text-orange-800',
-      gradientOverlay: 'from-orange-600/20 to-transparent'
+      formPath: '/register/catering'
     },
     {
       id: 'wedding-halls',
       name: 'Mandapam & Wedding Halls',
       description: 'Venue & Mandapam Services',
       image: weddinghallsImage,
-      color: 'from-amber-500 to-amber-700',
-      bgColor: 'bg-amber-50',
-      borderColor: 'border-amber-200',
-      textColor: 'text-amber-800',
-      gradientOverlay: 'from-amber-600/20 to-transparent'
+      formPath: '/register/wedding-halls'
     },
     {
       id: 'decorations',
       name: 'Decorations',
       description: 'Wedding Decoration & Floral Services',
       image: decorationImage,
-      color: 'from-green-500 to-green-700',
-      bgColor: 'bg-green-50',
-      borderColor: 'border-green-200',
-      textColor: 'text-green-800',
-      gradientOverlay: 'from-green-600/20 to-transparent'
+      formPath: '/register/decorations'
     },
     {
       id: 'entertainment',
       name: 'Entertainment & Events',
       description: 'DJ, Music & Entertainment Services',
       image: entertainmentImage,
-      color: 'from-purple-500 to-purple-700',
-      bgColor: 'bg-purple-50',
-      borderColor: 'border-purple-200',
-      textColor: 'text-purple-800',
-      gradientOverlay: 'from-purple-600/20 to-transparent'
+      formPath: '/register/entertainment'
     },
     {
       id: 'invitation',
       name: 'Invitation & Gifts',
       description: 'Invitation Cards & Gift Services',
       image: invitationImage,
-      color: 'from-teal-500 to-teal-700',
-      bgColor: 'bg-teal-50',
-      borderColor: 'border-teal-200',
-      textColor: 'text-teal-800',
-      gradientOverlay: 'from-teal-600/20 to-transparent'
+      formPath: '/register/invitation'
     },
     {
       id: 'styling',
       name: 'Bridal & Groom Styling',
       description: 'Makeup & Styling Services',
       image: makeupImage,
-      color: 'from-pink-500 to-pink-700',
-      bgColor: 'bg-pink-50',
-      borderColor: 'border-pink-200',
-      textColor: 'text-pink-800',
-      gradientOverlay: 'from-pink-600/20 to-transparent'
+      formPath: '/register/styling'
+    },
+    {
+      id: 'background-investigations',
+      name: 'Background Investigations',
+      description: 'Pre-wedding Verification Services',
+      image: backgroundInvestigationImage || 'https://images.unsplash.com/photo-1550592704-6c76defa9985?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80',
+      formPath: '/register/background-investigations'
     }
   ];
 
@@ -189,6 +170,13 @@ const VendorLogin = ({ onOpenVendorForm }) => {
 
   const handleCategoryClick = (category) => {
     setActiveButton(category.id);
+    
+    // Navigate to the specific form page
+    if (category.formPath) {
+      navigate(category.formPath);
+    }
+    
+    // If onOpenVendorForm prop is provided (for modal), use it
     if (onOpenVendorForm) {
       onOpenVendorForm(category.id);
     }
@@ -196,19 +184,18 @@ const VendorLogin = ({ onOpenVendorForm }) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Banner Section - SAME AS HOME PAGE */}
+      {/* Banner Section - Same style as photography page */}
       <section className="relative w-full overflow-hidden bg-gray-100">
-        {/* Responsive height - matches Home page: 40vh mobile, 50vh small, 60vh medium, 700px large */}
         <div className="relative h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[700px] w-full">
-          {/* Banner Images - Contain to fit on mobile, cover on desktop */}
           {banners.map((banner, index) => (
             <div
               key={banner.id}
-              className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ${
-                index === currentBannerIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                index === currentBannerIndex 
+                  ? 'opacity-100 z-10 pointer-events-auto' 
+                  : 'opacity-0 z-0 pointer-events-none'
               }`}
             >
-              {/* Image Container */}
               <div className="absolute inset-0 w-full h-full flex items-center justify-center">
                 <img
                   src={banner.image}
@@ -227,7 +214,7 @@ const VendorLogin = ({ onOpenVendorForm }) => {
             </div>
           ))}
 
-          {/* Banner Navigation Dots - Centered and visible */}
+          {/* Banner Navigation Dots */}
           <div className="absolute bottom-4 sm:bottom-5 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 sm:space-x-3 md:space-x-4 z-20">
             {banners.map((_, index) => (
               <button
@@ -243,7 +230,7 @@ const VendorLogin = ({ onOpenVendorForm }) => {
             ))}
           </div>
 
-          {/* Previous/Next Buttons - Perfectly positioned */}
+          {/* Previous/Next Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-3 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/40 hover:bg-black/60 p-2 sm:p-3 md:p-4 rounded-full transition-all duration-300 z-20"
@@ -266,155 +253,175 @@ const VendorLogin = ({ onOpenVendorForm }) => {
         </div>
       </section>
 
-      {/* Category Selection Section - FIRST (as in screenshots) */}
-      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+      {/* Main Content Container - Match photography page layout */}
+      <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8 text-center">
+          {/* Category Selection Section */}
+          <div className="bg-white rounded-md shadow border border-gray-200 p-4 md:p-6 mb-4 md:mb-6">
             {/* Category Selection Heading */}
-            <div className="mb-8 md:mb-10">
-              <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-3">
+            <div className="mb-4 md:mb-6 text-center">
+              <h3 className="text-sm md:text-lg lg:text-xl font-bold text-red-800 mb-1 md:mb-2">
                 Select Your Service Category
               </h3>
-              <p className="text-gray-600 text-base md:text-lg">
-                Click on your service category to register
+              <p className="text-gray-600 text-xs md:text-sm">
+                Click on your service category to register as a vendor
               </p>
             </div>
 
-            {/* Categories Grid - 7 Buttons */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-16">
+            {/* Categories Grid - 8 Categories (2x4 on mobile, 4x2 on desktop) */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
               {vendorCategories.map((category) => (
                 <button
                   key={category.id}
                   onClick={() => handleCategoryClick(category)}
                   onMouseEnter={() => setActiveButton(category.id)}
                   onMouseLeave={() => setActiveButton(null)}
-                  className={`group relative overflow-hidden rounded-xl md:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 ${
-                    activeButton === category.id ? 'ring-2 ring-offset-2 ring-yellow-500 scale-[1.02]' : ''
-                  } ${category.bgColor} border ${category.borderColor}`}
+                  className={`
+                    group relative bg-white rounded-md border border-gray-200 
+                    hover:border-red-300 hover:shadow-md transition-all duration-300 
+                    overflow-hidden h-full flex flex-col
+                    ${activeButton === category.id ? 'ring-1 ring-red-500 border-red-300 shadow-md' : ''}
+                  `}
                 >
-                  {/* Category Image Container */}
-                  <div className="relative h-48 md:h-52 lg:h-56 w-full overflow-hidden">
+                  {/* Image Container */}
+                  <div className="relative h-32 md:h-36 w-full overflow-hidden">
                     <img
                       src={category.image}
                       alt={category.name}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       onError={(e) => {
                         e.target.onerror = null;
-                        // Fallback colors if image fails to load
-                        e.target.style.display = 'none';
-                        e.target.parentElement.style.backgroundColor = category.bgColor.replace('bg-', '');
+                        e.target.src = `https://placehold.co/400x300/ef4444/ffffff?text=${encodeURIComponent(category.name)}`;
                       }}
                     />
-                    {/* Gradient Overlay */}
-                    <div className={`absolute inset-0 bg-gradient-to-t ${category.gradientOverlay}`}></div>
+                    {/* Dark Overlay on Hover */}
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300"></div>
                   </div>
                   
                   {/* Content */}
-                  <div className="p-5 md:p-6 lg:p-8">
-                    <div className="flex flex-col items-center text-center">
-                      {/* Category Name */}
-                      <h3 className={`font-bold text-lg md:text-xl lg:text-2xl mb-2 ${category.textColor}`}>
+                  <div className="p-3 md:p-4 flex-grow flex flex-col">
+                    <div className="mb-2">
+                      <h3 className="font-bold text-xs md:text-sm text-red-800 mb-1 text-center line-clamp-2">
                         {category.name}
                       </h3>
-                      
-                      {/* Description */}
-                      <p className="text-gray-600 text-sm md:text-base mb-4">
+                      <p className="text-gray-600 text-[10px] md:text-xs text-center leading-tight">
                         {category.description}
                       </p>
-                      
-                      {/* Click to Register Button */}
-                      <div className={`mt-2 px-4 py-2 rounded-full ${category.bgColor} border ${category.borderColor} group-hover:bg-white transition-all duration-300 flex items-center gap-2`}>
-                        <span className={`text-sm md:text-base font-medium ${category.textColor}`}>
+                    </div>
+                    
+                    {/* Spacer to push button to bottom */}
+                    <div className="mt-auto">
+                      <div className="flex items-center justify-center mt-2 pt-2 border-t border-gray-100">
+                        <span className="text-red-600 font-medium text-[10px] md:text-xs flex items-center gap-1">
                           Click to Register
+                          <ArrowRight className="w-3 h-3 text-red-600 group-hover:translate-x-0.5 transition-transform duration-300" />
                         </span>
-                        <ArrowRight className={`w-4 h-4 ${category.textColor}`} />
                       </div>
                     </div>
                   </div>
-                  
-                  {/* Hover Effect Overlay */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
                 </button>
               ))}
             </div>
-          </div>
-        </div>
-      </main>
 
-      {/* Vendor Registration Portal Section - SECOND (as in screenshots) */}
-      <section className="container mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-6 md:p-8 lg:p-10 text-center">
-            {/* Vendor Registration Portal Heading */}
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-red-800 mb-6 md:mb-8">
-              Vendor Registration Portal
-            </h2>
-            <p className="text-gray-700 text-lg md:text-xl lg:text-2xl mb-8 md:mb-12 max-w-4xl mx-auto">
-              Join our elite network of wedding service providers. Register your business in one of the categories below to start receiving booking requests.
-            </p>
-            
-            {/* Benefits Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8 md:mb-12">
-              {benefits.map((benefit, index) => (
-                <div key={index} className="bg-gradient-to-br from-red-50 to-yellow-50 p-5 md:p-6 lg:p-8 rounded-xl border border-red-200 flex items-start space-x-5">
-                  <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center">
-                    <div className="text-white">
-                      {benefit.icon}
+            {/* Note */}
+            <div className="mt-4 md:mt-6 pt-3 border-t border-gray-200">
+              <p className="text-center text-gray-500 text-xs">
+                Can't find your category? <button className="text-red-600 font-medium hover:underline">Contact us</button>
+              </p>
+            </div>
+          </div>
+
+          {/* Vendor Registration Portal Section */}
+          <section className="py-2 md:py-3">
+            <div className="bg-white rounded-md shadow border border-red-200 p-4 md:p-6">
+              {/* Vendor Registration Portal Heading */}
+              <h2 className="text-sm md:text-lg lg:text-xl font-bold text-red-800 mb-3 md:mb-4 text-center">
+                Vendor Registration Portal
+              </h2>
+              <p className="text-gray-700 text-xs md:text-sm lg:text-base mb-4 md:mb-6 max-w-4xl mx-auto text-center">
+                Join our network of trusted wedding service providers. Register your business to start receiving booking requests from couples planning their special day.
+              </p>
+              
+              {/* Benefits Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mb-4 md:mb-6">
+                {benefits.map((benefit, index) => (
+                  <div key={index} className="bg-gradient-to-br from-red-50 to-yellow-50 p-3 md:p-4 rounded-md border border-red-200 flex items-start space-x-3 md:space-x-4">
+                    <div className="flex-shrink-0 w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-red-500 to-yellow-500 rounded-md flex items-center justify-center">
+                      <div className="text-white">
+                        {benefit.icon}
+                      </div>
+                    </div>
+                    <div className="text-left">
+                      <h3 className="font-bold text-red-700 text-xs md:text-sm mb-1">{benefit.title}</h3>
+                      <p className="text-gray-600 text-[10px] md:text-xs">{benefit.text}</p>
                     </div>
                   </div>
-                  <div className="text-left">
-                    <h3 className="font-bold text-red-700 text-lg md:text-xl lg:text-2xl mb-2">{benefit.title}</h3>
-                    <p className="text-gray-600 text-sm md:text-base lg:text-lg">{benefit.text}</p>
-                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Why Register Section */}
+          <section className="py-2 md:py-3">
+            <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-3 md:mb-4">
+              Why Register With Us?
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+              <div className="bg-white p-3 md:p-4 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-2 md:mb-3 mx-auto">
+                  <CheckCircle className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
-              ))}
+                <h3 className="font-bold text-xs md:text-sm text-red-700 mb-1 text-center">Quick Registration</h3>
+                <p className="text-gray-600 text-[10px] md:text-xs text-center leading-tight">Simple 10-minute registration process</p>
+              </div>
+              
+              <div className="bg-white p-3 md:p-4 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-2 md:mb-3 mx-auto">
+                  <User className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xs md:text-sm text-red-700 mb-1 text-center">Direct Customers</h3>
+                <p className="text-gray-600 text-[10px] md:text-xs text-center leading-tight">Get direct leads from verified customers</p>
+              </div>
+              
+              <div className="bg-white p-3 md:p-4 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-2 md:mb-3 mx-auto">
+                  <Shield className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xs md:text-sm text-red-700 mb-1 text-center">Secure Platform</h3>
+                <p className="text-gray-600 text-[10px] md:text-xs text-center leading-tight">Safe & secure transaction handling</p>
+              </div>
+              
+              <div className="bg-white p-3 md:p-4 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
+                <div className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-2 md:mb-3 mx-auto">
+                  <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+                <h3 className="font-bold text-xs md:text-sm text-red-700 mb-1 text-center">Business Analytics</h3>
+                <p className="text-gray-600 text-[10px] md:text-xs text-center leading-tight">Track performance & insights dashboard</p>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4 md:px-6 py-8 md:py-12">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center text-red-800 mb-8 md:mb-12">
-            Why Register With Us?
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-red-100">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                <CheckCircle className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" />
+          {/* CTA Section */}
+          <section className="py-3 md:py-4">
+            <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow-lg p-4 md:p-6 text-center">
+              <h2 className="text-sm md:text-lg lg:text-xl font-bold text-white mb-2 md:mb-3">
+                Ready to Grow Your Wedding Business?
+              </h2>
+              <p className="text-yellow-100 text-xs md:text-sm mb-3 md:mb-4">
+                Join thousands of successful vendors who are already part of our platform
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <button className="px-4 py-2 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 font-bold rounded-md hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow hover:shadow-md text-xs md:text-sm">
+                  Start Registration Now
+                </button>
+                <button className="px-4 py-2 bg-white text-red-600 border border-white font-bold rounded-md hover:bg-red-50 transition-all duration-300 shadow hover:shadow-md text-xs md:text-sm">
+                  Learn More
+                </button>
               </div>
-              <h3 className="font-bold text-lg md:text-xl text-red-700 mb-2 md:mb-3 text-center">Quick Registration</h3>
-              <p className="text-gray-600 text-sm md:text-base text-center">Simple 10-minute registration process</p>
             </div>
-            
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-yellow-100">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                <User className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" />
-              </div>
-              <h3 className="font-bold text-lg md:text-xl text-red-700 mb-2 md:mb-3 text-center">Direct Customers</h3>
-              <p className="text-gray-600 text-sm md:text-base text-center">Get direct leads from verified customers</p>
-            </div>
-            
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-red-100">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-red-500 to-yellow-500 rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                <Shield className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" />
-              </div>
-              <h3 className="font-bold text-lg md:text-xl text-red-700 mb-2 md:mb-3 text-center">Secure Platform</h3>
-              <p className="text-gray-600 text-sm md:text-base text-center">Safe & secure transaction handling</p>
-            </div>
-            
-            <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg border border-yellow-100">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-r from-yellow-500 to-red-500 rounded-full flex items-center justify-center mb-4 md:mb-6 mx-auto">
-                <TrendingUp className="w-6 h-6 md:w-7 md:h-7 lg:w-8 lg:h-8 text-white" />
-              </div>
-              <h3 className="font-bold text-lg md:text-xl text-red-700 mb-2 md:mb-3 text-center">Business Analytics</h3>
-              <p className="text-gray-600 text-sm md:text-base text-center">Track performance & insights dashboard</p>
-            </div>
-          </div>
+          </section>
         </div>
-      </section>
-
+      </div>
     </div>
   );
 };

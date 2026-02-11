@@ -10,6 +10,8 @@ import partyhall from '../assets/partyhall.jpg';
 import outdoorvenue from '../assets/outdoorvenue.jpg';
 import hallbanner1 from '../assets/luxuryhall.jpg';
 import hallbanner2 from '../assets/achall.jpg';
+// Add a matrimony banner image
+import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 
 const WeddingHalls = () => {
   const navigate = useNavigate();
@@ -63,6 +65,7 @@ const WeddingHalls = () => {
     { name: 'Entertainment', path: '/entertainment' },
     { name: 'Invitation & Gifts', path: '/invitation' },
     { name: 'Bridal Styling', path: '/styling' },
+    { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
   const weddingHallCategories = [
@@ -390,6 +393,14 @@ const WeddingHalls = () => {
   const handleFilter = () => {
     console.log('Filtering...', filteredVendors.length);
     setShowMobileFilter(false);
+    
+    // Scroll to vendor section after applying filters
+    setTimeout(() => {
+      const vendorSection = document.querySelector('.vendor-profiles');
+      if (vendorSection) {
+        vendorSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
   };
 
   const handleReset = () => {
@@ -418,6 +429,9 @@ const WeddingHalls = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
+      {/* Add Pacifico font */}
+      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      
       {/* Floating Filter Button */}
       <button
         onClick={handleFilterButtonClick}
@@ -431,82 +445,82 @@ const WeddingHalls = () => {
       </button>
 
       {/* Banner Section */}
-<section className="relative w-full overflow-hidden">
-  <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
-    {banners.map((banner, index) => (
-      <div
-        key={banner.id}
-        className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
-          index === currentBannerIndex 
-            ? 'opacity-100 z-10 pointer-events-auto' 
-            : 'opacity-0 z-0 pointer-events-none'
-        }`}
-      >
-        <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
-          <img
-            src={banner.image}
-            alt={banner.title}
-            className="w-full h-full object-cover"
-            loading={index === 0 ? "eager" : "lazy"}
-            decoding="async"
-            style={{
-              objectPosition: 'center center',
-            }}
-          />
+      <section className="relative w-full overflow-hidden">
+        <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
+          {banners.map((banner, index) => (
+            <div
+              key={banner.id}
+              className={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${
+                index === currentBannerIndex 
+                  ? 'opacity-100 z-10 pointer-events-auto' 
+                  : 'opacity-0 z-0 pointer-events-none'
+              }`}
+            >
+              <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-red-500/5 to-yellow-500/5">
+                <img
+                  src={banner.image}
+                  alt={banner.title}
+                  className="w-full h-full object-cover"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  style={{
+                    objectPosition: 'center center',
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+
+          {/* Navigation Buttons - Mobile Optimized */}
+          <button
+            onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
+            className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
+            aria-label="Previous banner"
+          >
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          
+          <button
+            onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
+            className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
+            aria-label="Next banner"
+          >
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Dot Indicators - Mobile Friendly */}
+          <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
+            {banners.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => goToBanner(index)}
+                className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                  index === currentBannerIndex 
+                    ? 'bg-white scale-110' 
+                    : 'bg-white/60 hover:bg-white/80'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
-    ))}
-
-    {/* Navigation Buttons - Mobile Optimized */}
-    <button
-      onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
-      className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
-      aria-label="Previous banner"
-    >
-      <svg 
-        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-        strokeWidth={2.5}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-      </svg>
-    </button>
-    
-    <button
-      onClick={() => goToBanner(currentBannerIndex === banners.length - 1 ? 0 : currentBannerIndex + 1)}
-      className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
-      aria-label="Next banner"
-    >
-      <svg 
-        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-        strokeWidth={2.5}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-      </svg>
-    </button>
-
-    {/* Dot Indicators - Mobile Friendly */}
-    <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
-      {banners.map((_, index) => (
-        <button
-          key={index}
-          onClick={() => goToBanner(index)}
-          className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
-            index === currentBannerIndex 
-              ? 'bg-white scale-110' 
-              : 'bg-white/60 hover:bg-white/80'
-          }`}
-          aria-label={`Go to slide ${index + 1}`}
-        />
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
 
       {/* Main Categories Navigation */}
       <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
@@ -605,6 +619,48 @@ const WeddingHalls = () => {
                 </div>
               )}
             </section>
+
+            {/* Mobile Matrimony Card - Enhanced with Pacifico font */}
+            <div className="md:hidden mb-3 mt-2">
+              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-24">
+                  {/* Left Side: Image */}
+                  <div className="w-2/5 relative">
+                    <img
+                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
+                      alt="Find Your Perfect Partner"
+                      className="w-full h-full object-cover"
+                    />
+                    {/* Darker overlay for better text visibility */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
+                  </div>
+                  
+                  {/* Right Side: Text and Button */}
+                  <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
+                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
+                      Find Your Perfect Partner
+                    </h3>
+                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
+                      Join our matrimony service
+                    </p>
+                    <a 
+                      href="https://eliteinovamatrimony.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                    >
+                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Register Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Mobile: Vendor Count & Filters */}
             <div className="lg:hidden">
@@ -1062,49 +1118,60 @@ const WeddingHalls = () => {
 
           {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky and contain both sections */}
-            <div className="sticky top-4 space-y-4 max-h-[calc(100vh-100px)] overflow-y-auto pr-1">
-              {/* Filter Box Section */}
-              <div className="bg-gradient-to-br from-red-50 to-yellow-50 rounded-lg shadow-lg border border-red-200 p-4">
-                <div className="flex items-start mb-3">
-                  <div className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center flex-shrink-0 mr-3">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-bold text-red-800 mb-0.5">Refine Your Search</h3>
-                    <p className="text-gray-600 text-xs">
-                      Use filters to find the perfect wedding hall for your special occasion
-                    </p>
+            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
+            <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
+              {/* NEW: Matrimony Registration Box - UPDATED to match Catering page style */}
+              <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
+                {/* Banner Image */}
+                <div className="relative h-32 overflow-hidden">
+                  <img
+                    src={matrimonyBanner}
+                    alt="Find Your Perfect Partner"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      // Fallback image if the matrimony banner doesn't exist
+                      e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+                    }}
+                  />
+                  {/* Darker overlay for better text visibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  
+                  {/* Text on image */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
+                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-base font-bold text-yellow-300">
+                      Find Your Perfect Partner
+                    </h3>
                   </div>
                 </div>
                 
-                <div className="space-y-2">
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                {/* Content below image */}
+                <div className="p-4">
+                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
+                    Find your soulmate and create beautiful memories together. 
+                    Join our matrimony service and find your life partner.
+                  </p>
+                  
+                  {/* Register Now Button */}
+                  <a 
+                    href="https://eliteinovamatrimony.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
-                    <span className="text-sm text-gray-700">Filter by budget range</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Select specific hall type</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Choose preferred location</span>
-                  </div>
-                  <div className="flex items-center">
-                    <svg className="w-4 h-4 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span className="text-sm text-gray-700">Find halls by state & district</span>
-                  </div>
+                    Register Now
+                  </a>
+                  
+                  {/* Small note */}
+                  <p className="text-gray-500 text-[10px] text-center mt-3">
+                    Redirects to eliteinovamatrimony.com
+                  </p>
                 </div>
               </div>
 
@@ -1207,15 +1274,17 @@ const WeddingHalls = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay */}
+      {/* Mobile Filter Overlay - COMPACT VERSION */}
       {showMobileFilter && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-black bg-opacity-50 flex items-end sm:items-center justify-center">
-          <div className="bg-white w-full sm:max-w-md sm:mx-4 rounded-t-xl sm:rounded-lg shadow-2xl max-h-[80vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white z-10 p-3 border-b border-gray-200 flex justify-between items-center rounded-t-xl sm:rounded-t-lg">
-              <h3 className="text-sm sm:text-base font-bold text-red-800">Filter Wedding Halls</h3>
+        <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
+          <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
+            {/* Header */}
+            <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
+              <h3 className="text-base font-bold text-red-800">Filter Wedding Halls</h3>
               <button
                 onClick={() => setShowMobileFilter(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
+                aria-label="Close filter"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1223,33 +1292,36 @@ const WeddingHalls = () => {
               </button>
             </div>
             
-            <div className="p-3">
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹ per event)</label>
+            {/* Filter Content */}
+            <div className="px-4 py-3 space-y-3">
+              {/* Budget Range */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Budget Range (₹ per event)</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
                     placeholder="Min"
                     value={minBudget}
                     onChange={(e) => setMinBudget(e.target.value)}
-                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                   />
                   <input
                     type="number"
                     placeholder="Max"
                     value={maxBudget}
                     onChange={(e) => setMaxBudget(e.target.value)}
-                    className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                   />
                 </div>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Type of Hall</label>
+              {/* Type of Hall */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Hall</label>
                 <select
                   value={selectedEvent}
                   onChange={(e) => setSelectedEvent(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                 >
                   <option value="">All Hall Types</option>
                   {eventTypes.map((event) => (
@@ -1258,12 +1330,13 @@ const WeddingHalls = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
+              {/* Preferred State */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Preferred State</label>
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                 >
                   <option value="">All States</option>
                   {states.map((state) => (
@@ -1272,12 +1345,13 @@ const WeddingHalls = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+              {/* District */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">District</label>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
                 >
                   <option value="">All Districts</option>
                   {districts.map((district) => (
@@ -1286,27 +1360,38 @@ const WeddingHalls = () => {
                 </select>
               </div>
 
-              <div className="mb-3">
-                <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-                <input
-                  type="text"
-                  placeholder="Enter location"
-                  value={selectedLocation}
-                  onChange={(e) => setSelectedLocation(e.target.value)}
-                  className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-                />
+              {/* Location */}
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">Location</label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Enter city or area"
+                    value={selectedLocation}
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                    className="w-full px-3 py-2 pl-9 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  />
+                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
               </div>
 
-              <div className="flex gap-2">
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-2 pb-1">
                 <button
                   onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
                 >
                   Apply Filter
+                  <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
+                    ({filteredVendors.length})
+                  </span>
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
                 >
                   Reset
                 </button>
