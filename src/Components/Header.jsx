@@ -303,21 +303,21 @@ const Header = ({ onOpenVendorForm }) => {
                 }}
               >
                 <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg border-3 border-yellow-300 overflow-hidden flex-shrink-0">
-                  <img 
-                    src={logo} 
-                    alt="Eliteinova Logo" 
-                    className="h-full w-full object-contain p-2"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23F59E0B'/%3E%3Cstop offset='100%25' stop-color='%23D97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23grad)'/%3E%3Ctext x='32' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='%23DC2626'%3EE%3C/text%3E%3C/svg%3E";
-                    }}
-                  />
-                </div>
+  <img 
+    src={logo} 
+    alt="Eliteinova Logo" 
+    className="h-full w-full object-cover"
+    onError={(e) => {
+      e.target.onerror = null;
+      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23F59E0B'/%3E%3Cstop offset='100%25' stop-color='%23D97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23grad)'/%3E%3Ctext x='32' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='%23DC2626'%3EE%3C/text%3E%3C/svg%3E";
+    }}
+  />
+</div>
                 
                 <div className="text-yellow-50">
-                  <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight" style={{ fontFamily: 'Pacifico, cursive' }}>
-                    Eliteinova Matrimonial Services
-                  </h1>
+                 <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight text-yellow-300" style={{ fontFamily: 'Pacifico, cursive' }}>
+    Eliteinova Matrimonial Services
+  </h1>
                   <p className="text-yellow-200 text-xs md:text-sm" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Tech Pvt Ltd
                   </p>
