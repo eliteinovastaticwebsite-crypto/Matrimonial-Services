@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bridalmakeup from '../assets/bridalmakeup.jpg';
-import bridalaccessories from '../assets/bridalaccessories.jpg'; // Using groomstyling as placeholder
+import bridalaccessories from '../assets/bridalaccessories.jpg';
 import hairstyling from '../assets/hairstyling.jpg';
 import mehendiart from '../assets/mehendiart.jpg';
-import traditionalattire from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
-import groommakeup from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
-import accessoriesfinishing from '../assets/mehendiart.jpg'; // Using mehendiart as placeholder
+import traditionalattire from '../assets/mehendiart.jpg';
+import groommakeup from '../assets/mehendiart.jpg';
+import accessoriesfinishing from '../assets/mehendiart.jpg';
+import commercial from '../assets/commercial.jpg';
 import stylingbanner1 from '../assets/stylbanner1.jpg';
 import stylingbanner2 from '../assets/stylbanner2.jpg';
-// Add a matrimony banner image - you can add your own image or use a placeholder
-import matrimonyBanner from '../assets/Matrimonybanner.jpg'; // You'll need to add this image
+import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 
 const Styling = () => {
   const navigate = useNavigate();
@@ -23,7 +23,6 @@ const Styling = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
 
-  // Check if there's a filter parameter in the URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const openFilter = urlParams.get('openFilter');
@@ -67,18 +66,23 @@ const Styling = () => {
     { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
-  // UPDATED: 7 specific categories as requested
-  const stylingCategories = [
+  // UPDATED: Separate categories for Bride (5) and Groom (4)
+  const brideStylingCategories = [
     { name: 'Bridal Makeup', image: bridalmakeup },
     { name: 'Bridal Accessories', image: bridalaccessories },
     { name: 'Hair Styling', image: hairstyling },
     { name: 'Mehendi Art', image: mehendiart },
     { name: 'Traditional Attire Styling', image: traditionalattire },
-    { name: 'Groom Makeup', image: groommakeup },
-    { name: 'Accessories & Finishing', image: accessoriesfinishing },
   ];
 
-  // UPDATED: 7 service types matching the categories
+  const groomStylingCategories = [
+    { name: 'Groom Makeup', image: groommakeup },
+    { name: 'Groom Hair Styling', image: hairstyling },
+    { name: 'Groom Accessories', image: accessoriesfinishing },
+    { name: 'Groom Attire Styling', image: commercial },
+  ];
+
+  // UPDATED: Combined service types for filtering
   const serviceTypes = [
     'Bridal Makeup',
     'Bridal Accessories',
@@ -86,14 +90,15 @@ const Styling = () => {
     'Mehendi Art',
     'Traditional Attire Styling',
     'Groom Makeup',
-    'Accessories & Finishing'
+    'Groom Hair Styling',
+    'Groom Accessories',
+    'Groom Attire Styling'
   ];
 
   const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
   const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
 
   const handleCategoryClick = (categoryName) => {
-    // Since category names exactly match service types, we can use them directly
     setSelectedService(categoryName);
     
     if (window.innerWidth < 1024) {
@@ -106,9 +111,9 @@ const Styling = () => {
     }
   };
 
-  // Sample vendor data for styling services - UPDATED to match the 7 categories
+  // Sample vendor data - UPDATED to match new categories
   const vendors = [
-    // Bridal Makeup Vendors
+    // Bridal Makeup
     {
       id: 1,
       name: 'Glow Bridal Studio',
@@ -117,7 +122,7 @@ const Styling = () => {
       serviceType: 'Bridal Makeup',
       personName: 'Priya Sharma',
       designation: 'Lead Makeup Artist',
-      description: 'Specializing in bridal makeup with 8+ years of experience, creating flawless looks for your big day',
+      description: 'Specializing in bridal makeup with 8+ years of experience',
       services: ['Airbrush Makeup', 'Traditional Bridal Look', 'Contemporary Styles', 'Makeup for Events'],
       logo: bridalmakeup,
       location: 'Chennai, Tamil Nadu',
@@ -132,14 +137,14 @@ const Styling = () => {
       serviceType: 'Bridal Makeup',
       personName: 'Anjali Mehta',
       designation: 'Creative Director',
-      description: 'Creating timeless bridal looks with international quality products and techniques',
+      description: 'Creating timeless bridal looks with international quality products',
       services: ['Bridal Makeup', 'Engagement Makeup', 'Reception Look', 'Trial Sessions'],
       logo: bridalmakeup,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.8,
       priceRange: '₹30,000 - ₹2,00,000'
     },
-    // Bridal Accessories Vendors
+    // Bridal Accessories
     {
       id: 3,
       name: 'Queen Accessories',
@@ -148,7 +153,7 @@ const Styling = () => {
       serviceType: 'Bridal Accessories',
       personName: 'Meera Reddy',
       designation: 'Accessories Designer',
-      description: 'Exquisite bridal accessories including jewelry, hair pieces, and traditional ornaments',
+      description: 'Exquisite bridal accessories including jewelry and ornaments',
       services: ['Bridal Jewelry Sets', 'Hair Accessories', 'Maang Tikka', 'Traditional Ornaments'],
       logo: bridalaccessories,
       location: 'Chennai, Tamil Nadu',
@@ -170,7 +175,7 @@ const Styling = () => {
       rating: 4.8,
       priceRange: '₹20,000 - ₹3,00,000'
     },
-    // Hair Styling Vendors
+    // Hair Styling
     {
       id: 5,
       name: 'Locks & Curls',
@@ -179,7 +184,7 @@ const Styling = () => {
       serviceType: 'Hair Styling',
       personName: 'Aisha Kapoor',
       designation: 'Lead Hair Stylist',
-      description: 'Creating beautiful bridal hairstyles with floral decorations and accessories',
+      description: 'Creating beautiful bridal hairstyles',
       services: ['Bridal Hairstyles', 'Hair Extensions', 'Flower Decorations', 'Traditional Plaits'],
       logo: hairstyling,
       location: 'Bangalore, Karnataka',
@@ -201,7 +206,7 @@ const Styling = () => {
       rating: 4.8,
       priceRange: '₹12,000 - ₹60,000'
     },
-    // Mehendi Art Vendors
+    // Mehendi Art
     {
       id: 7,
       name: 'Henna Expressions',
@@ -210,7 +215,7 @@ const Styling = () => {
       serviceType: 'Mehendi Art',
       personName: 'Zara Ahmed',
       designation: 'Mehendi Artist',
-      description: 'Traditional and contemporary mehendi designs for brides and guests',
+      description: 'Traditional and contemporary mehendi designs',
       services: ['Bridal Mehendi', 'Arabic Designs', 'Rajasthani Patterns', 'Custom Designs'],
       logo: mehendiart,
       location: 'Chennai, Tamil Nadu',
@@ -232,7 +237,7 @@ const Styling = () => {
       rating: 4.8,
       priceRange: '₹8,000 - ₹40,000'
     },
-    // Traditional Attire Styling Vendors
+    // Traditional Attire Styling
     {
       id: 9,
       name: 'Traditional Elegance',
@@ -241,7 +246,7 @@ const Styling = () => {
       serviceType: 'Traditional Attire Styling',
       personName: 'Lakshmi Iyer',
       designation: 'Traditional Stylist',
-      description: 'Specializing in South Indian traditional wedding looks and jewelry styling',
+      description: 'Specializing in South Indian traditional wedding looks',
       services: ['Traditional Attire Draping', 'Temple Jewelry', 'Classic Makeup', 'Traditional Hairstyles'],
       logo: traditionalattire,
       location: 'Chennai, Tamil Nadu',
@@ -263,7 +268,7 @@ const Styling = () => {
       rating: 4.8,
       priceRange: '₹40,000 - ₹3,00,000'
     },
-    // Groom Makeup Vendors
+    // Groom Makeup
     {
       id: 11,
       name: 'Gentleman Grooming',
@@ -272,7 +277,7 @@ const Styling = () => {
       serviceType: 'Groom Makeup',
       personName: 'Rahul Verma',
       designation: 'Groom Stylist',
-      description: 'Professional grooming services for grooms with attention to detail and style',
+      description: 'Professional grooming services for grooms',
       services: ['Groom Makeup', 'Beard Styling', 'Hair Grooming', 'Traditional Attire Styling'],
       logo: groommakeup,
       location: 'Bangalore, Karnataka',
@@ -294,71 +299,101 @@ const Styling = () => {
       rating: 4.6,
       priceRange: '₹20,000 - ₹1,00,000'
     },
-    // Accessories & Finishing Vendors
+    // Groom Hair Styling
     {
       id: 13,
-      name: 'Perfect Finishing',
-      businessName: 'Perfect Finishing Touches',
-      businessCategory: 'Accessories & Finishing',
-      serviceType: 'Accessories & Finishing',
-      personName: 'Neha Malhotra',
-      designation: 'Finishing Specialist',
-      description: 'Complete accessory and finishing services for the perfect wedding look',
-      services: ['Final Touches', 'Accessory Coordination', 'Last-minute Fixes', 'Complete Look Review'],
-      logo: accessoriesfinishing,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹10,000 - ₹50,000'
+      name: 'Dapper Hair Studio',
+      businessName: 'Dapper Groom Hair Styling',
+      businessCategory: 'Groom Hair Styling',
+      serviceType: 'Groom Hair Styling',
+      personName: 'Arjun Singh',
+      designation: 'Hair Specialist',
+      description: 'Expert groom hair styling and grooming',
+      services: ['Modern Hairstyles', 'Traditional Looks', 'Hair Color', 'Beard Shaping'],
+      logo: hairstyling,
+      location: 'Hyderabad, Telangana',
+      rating: 4.8,
+      priceRange: '₹8,000 - ₹40,000'
     },
     {
       id: 14,
-      name: 'Ultimate Accessories',
-      businessName: 'Ultimate Accessories Studio',
-      businessCategory: 'Accessories & Finishing',
-      serviceType: 'Accessories & Finishing',
-      personName: 'Rohan Mehra',
-      designation: 'Accessory Director',
-      description: 'Premium accessories and finishing services to complete your wedding ensemble',
-      services: ['Accessory Selection', 'Finishing Touches', 'Look Coordination', 'Emergency Services'],
-      logo: accessoriesfinishing,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹15,000 - ₹75,000'
+      name: 'Style Cuts',
+      businessName: 'Style Cuts Grooming',
+      businessCategory: 'Groom Hair Styling',
+      serviceType: 'Groom Hair Styling',
+      personName: 'Vikram Seth',
+      designation: 'Creative Stylist',
+      description: 'Modern and traditional hairstyles for grooms',
+      services: ['Contemporary Cuts', 'Classic Styles', 'Beard Grooming', 'Hair Treatments'],
+      logo: hairstyling,
+      location: 'Chennai, Tamil Nadu',
+      rating: 4.7,
+      priceRange: '₹7,000 - ₹35,000'
     },
-    // Additional vendors to make 16 total
+    // Groom Accessories
     {
       id: 15,
-      name: 'Bridal Glamour',
-      businessName: 'Bridal Glamour Makeup',
-      businessCategory: 'Bridal Makeup',
-      serviceType: 'Bridal Makeup',
-      personName: 'Pooja Gupta',
-      designation: 'Makeup Artist',
-      description: 'Creating glamorous bridal looks with modern techniques',
-      services: ['Glam Makeup', 'Smokey Eyes', 'Bold Lips', 'Contouring'],
-      logo: bridalmakeup,
+      name: 'Royal Groom Accessories',
+      businessName: 'Royal Accessories for Grooms',
+      businessCategory: 'Groom Accessories',
+      serviceType: 'Groom Accessories',
+      personName: 'Vikram Patel',
+      designation: 'Accessory Consultant',
+      description: 'Premium groom accessories and finishing touches',
+      services: ['Turban & Safa', 'Brooches', 'Cufflinks', 'Traditional Accessories'],
+      logo: accessoriesfinishing,
       location: 'Mumbai, Maharashtra',
-      rating: 4.7,
-      priceRange: '₹35,000 - ₹1,80,000'
+      rating: 4.6,
+      priceRange: '₹10,000 - ₹75,000'
     },
     {
       id: 16,
-      name: 'Classic Henna',
-      businessName: 'Classic Henna Artists',
-      businessCategory: 'Mehendi Art',
-      serviceType: 'Mehendi Art',
-      personName: 'David Wilson',
-      designation: 'Henna Specialist',
-      description: 'Traditional henna art with intricate patterns and designs',
-      services: ['Traditional Designs', 'Modern Patterns', 'Bridal Henna', 'Family Packages'],
-      logo: mehendiart,
+      name: 'Grooming Essentials',
+      businessName: 'Essential Groom Accessories',
+      businessCategory: 'Groom Accessories',
+      serviceType: 'Groom Accessories',
+      personName: 'Rajesh Khanna',
+      designation: 'Style Advisor',
+      description: 'Complete accessory solutions for modern grooms',
+      services: ['Wedding Sets', 'Custom Accessories', 'Matching Sets', 'Rental Options'],
+      logo: accessoriesfinishing,
       location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹6,000 - ₹35,000'
+      rating: 4.7,
+      priceRange: '₹12,000 - ₹80,000'
+    },
+    // Groom Attire Styling
+    {
+      id: 17,
+      name: 'Elite Groom Styling',
+      businessName: 'Elite Groom Attire Styling',
+      businessCategory: 'Groom Attire Styling',
+      serviceType: 'Groom Attire Styling',
+      personName: 'Karan Malhotra',
+      designation: 'Style Consultant',
+      description: 'Complete groom attire styling and coordination',
+      services: ['Sherwani Styling', 'Suit Selection', 'Traditional Attire', 'Color Coordination'],
+      logo: commercial,
+      location: 'Delhi, Delhi',
+      rating: 4.7,
+      priceRange: '₹20,000 - ₹1,50,000'
+    },
+    {
+      id: 18,
+      name: 'Royal Groom Wear',
+      businessName: 'Royal Groom Styling Studio',
+      businessCategory: 'Groom Attire Styling',
+      serviceType: 'Groom Attire Styling',
+      personName: 'Amit Shah',
+      designation: 'Fashion Director',
+      description: 'Luxury grooming and styling for discerning grooms',
+      services: ['Bespoke Sherwanis', 'Designer Suits', 'Indo-Western Fusion', 'Complete Look'],
+      logo: commercial,
+      location: 'Mumbai, Maharashtra',
+      rating: 4.9,
+      priceRange: '₹30,000 - ₹2,50,000'
     }
   ];
 
-  // Filter vendors based on selections
   const filteredVendors = vendors.filter(vendor => {
     if (selectedService && vendor.serviceType !== selectedService) return false;
     if (selectedState && !vendor.location.includes(selectedState)) return false;
@@ -375,7 +410,6 @@ const Styling = () => {
     return true;
   });
 
-  // Auto change banner every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => 
@@ -394,7 +428,6 @@ const Styling = () => {
     console.log('Filtering...', filteredVendors.length);
     setShowMobileFilter(false);
     
-    // Scroll to vendor section after applying filters
     setTimeout(() => {
       const vendorSection = document.querySelector('.vendor-profiles');
       if (vendorSection) {
@@ -429,10 +462,8 @@ const Styling = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Add Pacifico font */}
       <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
       
-      {/* Floating Filter Button */}
       <button
         onClick={handleFilterButtonClick}
         className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
@@ -463,27 +494,18 @@ const Styling = () => {
                   className="w-full h-full object-cover"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  style={{
-                    objectPosition: 'center center',
-                  }}
+                  style={{ objectPosition: 'center center' }}
                 />
               </div>
             </div>
           ))}
 
-          {/* Navigation Buttons - Mobile Optimized */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Previous banner"
           >
-            <svg 
-              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-            >
+            <svg className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -493,27 +515,18 @@ const Styling = () => {
             className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Next banner"
           >
-            <svg 
-              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-              strokeWidth={2.5}
-            >
+            <svg className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
-          {/* Dot Indicators - Mobile Friendly */}
           <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {banners.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToBanner(index)}
                 className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
-                  index === currentBannerIndex 
-                    ? 'bg-white scale-110' 
-                    : 'bg-white/60 hover:bg-white/80'
+                  index === currentBannerIndex ? 'bg-white scale-110' : 'bg-white/60 hover:bg-white/80'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -530,11 +543,7 @@ const Styling = () => {
           </h3>
           <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
             {mainCategories.map((category) => (
-              <Link
-                key={category.name}
-                to={category.path}
-                className="flex-shrink-0 transition-all duration-300"
-              >
+              <Link key={category.name} to={category.path} className="flex-shrink-0 transition-all duration-300">
                 <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-xs whitespace-nowrap border border-white/20 hover:border-yellow-300">
                   {category.name}
                 </button>
@@ -544,69 +553,130 @@ const Styling = () => {
         </div>
       </div>
 
-      {/* Main Content with Filter Sidebar */}
+      {/* Main Content */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
           <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
-            {/* Styling Categories */}
+            
+            {/* Styling Categories - TWO ROWS */}
             <section className="py-2 md:py-3">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-2 md:mb-4">
                 Our Styling Categories
               </h2>
               
-              {/* Mobile: Horizontal Scroll for 7 categories */}
-              <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
-                <div className="flex space-x-1 px-1 min-w-max">
-                  {stylingCategories.map((category) => (
-                    <div key={category.name} className="flex flex-col items-center group flex-shrink-0 w-14">
+              {/* BRIDE CATEGORIES ROW */}
+              <div className="mb-3 md:mb-4">
+                <h3 className="text-xs md:text-base font-bold text-pink-700 mb-1 md:mb-2 text-center md:text-left px-2">
+                  For Bride
+                </h3>
+                
+                {/* Mobile: Horizontal Scroll */}
+                <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
+                  <div className="flex space-x-1 px-1 min-w-max">
+                    {brideStylingCategories.map((category) => (
+                      <div key={category.name} className="flex flex-col items-center group flex-shrink-0 w-14">
+                        <button 
+                          onClick={() => handleCategoryClick(category.name)}
+                          className="relative block w-12 h-12 mx-auto focus:outline-none"
+                        >
+                          <div className={`w-full h-full rounded-full border ${selectedService === category.name ? 'border-pink-500 shadow-lg' : 'border-pink-300'} overflow-hidden bg-gradient-to-br from-pink-50 to-red-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                            <img 
+                              src={category.image}
+                              alt={category.name} 
+                              className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                          </div>
+                        </button>
+                        <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
+                          {category.name}
+                        </h3>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                {/* Desktop: Grid */}
+                <div className="hidden md:grid grid-cols-5 gap-2 px-1">
+                  {brideStylingCategories.map((category) => (
+                    <div key={category.name} className="flex flex-col items-center group">
                       <button 
                         onClick={() => handleCategoryClick(category.name)}
-                        className="relative block w-12 h-12 mx-auto focus:outline-none"
+                        className="relative block w-full aspect-square max-w-[80px] mx-auto focus:outline-none"
                       >
-                        <div className={`w-full h-full rounded-full border ${selectedService && selectedService.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                        <div className={`w-full h-full rounded-full border-2 ${selectedService === category.name ? 'border-pink-500 shadow-lg' : 'border-pink-300'} overflow-hidden bg-gradient-to-br from-pink-50 to-red-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                           <img 
                             src={category.image}
                             alt={category.name} 
                             className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                           />
                         </div>
-                        <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
                       </button>
-                      <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
+                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] px-0.5 leading-tight line-clamp-2">
                         {category.name}
                       </h3>
                     </div>
                   ))}
                 </div>
               </div>
-              
-              {/* Desktop: Grid for 7 categories - adjusted for 7 items */}
-              <div className="hidden md:grid grid-cols-4 md:grid-cols-7 gap-1 md:gap-1.5 px-1">
-                {stylingCategories.map((category) => (
-                  <div key={category.name} className="flex flex-col items-center group">
-                    <button 
-                      onClick={() => handleCategoryClick(category.name)}
-                      className="relative block w-full aspect-square max-w-[60px] md:max-w-[65px] mx-auto focus:outline-none"
-                    >
-                      <div className={`w-full h-full rounded-full border ${selectedService && selectedService.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
-                        <img 
-                          src={category.image}
-                          alt={category.name} 
-                          className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
-                        />
+
+              {/* GROOM CATEGORIES ROW */}
+              <div>
+                <h3 className="text-xs md:text-base font-bold text-blue-700 mb-1 md:mb-2 text-center md:text-left px-2">
+                  For Groom
+                </h3>
+                
+                {/* Mobile: Horizontal Scroll */}
+                <div className="md:hidden overflow-x-auto pb-2 scrollbar-hide">
+                  <div className="flex space-x-1 px-1 min-w-max">
+                    {groomStylingCategories.map((category) => (
+                      <div key={category.name} className="flex flex-col items-center group flex-shrink-0 w-14">
+                        <button 
+                          onClick={() => handleCategoryClick(category.name)}
+                          className="relative block w-12 h-12 mx-auto focus:outline-none"
+                        >
+                          <div className={`w-full h-full rounded-full border ${selectedService === category.name ? 'border-blue-500 shadow-lg' : 'border-blue-300'} overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                            <img 
+                              src={category.image}
+                              alt={category.name} 
+                              className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                            />
+                          </div>
+                        </button>
+                        <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
+                          {category.name}
+                        </h3>
                       </div>
-                      <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
-                    </button>
-                    <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[9px] md:text-[10px] px-0.5 leading-tight line-clamp-2">
-                      {category.name}
-                    </h3>
+                    ))}
                   </div>
-                ))}
+                </div>
+                
+                {/* Desktop: Grid */}
+                <div className="hidden md:grid grid-cols-4 gap-2 px-1">
+                  {groomStylingCategories.map((category) => (
+                    <div key={category.name} className="flex flex-col items-center group">
+                      <button 
+                        onClick={() => handleCategoryClick(category.name)}
+                        className="relative block w-full aspect-square max-w-[80px] mx-auto focus:outline-none"
+                      >
+                        <div className={`w-full h-full rounded-full border-2 ${selectedService === category.name ? 'border-blue-500 shadow-lg' : 'border-blue-300'} overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                          <img 
+                            src={category.image}
+                            alt={category.name} 
+                            className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      </button>
+                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] px-0.5 leading-tight line-clamp-2">
+                        {category.name}
+                      </h3>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {selectedService && (
-                <div className="text-center mt-1 md:mt-2">
+                <div className="text-center mt-2 md:mt-3">
                   <button
                     onClick={() => setSelectedService('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
@@ -620,32 +690,25 @@ const Styling = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Enhanced with Pacifico font */}
+            {/* Mobile Matrimony Card */}
             <div className="md:hidden mb-3 mt-2">
               <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-24">
-                  {/* Left Side: Image */}
-                  <div className="w-2/5 relative">
+                <div className="flex h-28">
+                  <div className="w-2/5 relative overflow-hidden">
                     <img
-                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
-                      alt="Find Your Perfect Partner"
+                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc"}
+                      alt="Eliteinova Matrimony"
                       className="w-full h-full object-cover"
                     />
-                    {/* Darker overlay for better text visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                   </div>
                   
-                  {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
                       Eliteinova Matrimony
                     </h2>
-                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
-                      Join our matrimony service
-                    </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
@@ -670,7 +733,7 @@ const Styling = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
                       <h3 className="text-xs font-bold text-white leading-tight">
-                        {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : '16 Styling Vendors'}
+                        {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : `${filteredVendors.length} Styling Vendors`}
                       </h3>
                       <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
                         {selectedService ? `Showing results for "${selectedService}"` : 'Browse our professional styling vendors'}
@@ -840,7 +903,7 @@ const Styling = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-white leading-tight">
-                        {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : '16 Styling Vendors'}
+                        {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : `${filteredVendors.length} Styling Vendors`}
                       </h3>
                       <p className="text-yellow-200 mt-0.5 text-sm">
                         {selectedService ? `Showing results for "${selectedService}"` : 'Browse our professional styling vendors'}
@@ -1116,46 +1179,28 @@ const Styling = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
+          {/* Right Sidebar - Desktop Filter Section */}
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
-              {/* NEW: Matrimony Registration Box - UPDATED to match Catering page style */}
+              
+              {/* Matrimony Card */}
               <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-                {/* Banner Image */}
-                <div className="relative h-32 overflow-hidden">
+                <div className="relative h-40 overflow-hidden">
                   <img
                     src={matrimonyBanner}
-                    alt="Find Your Perfect Partner"
+                    alt="Eliteinova Matrimony"
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      // Fallback image if the matrimony banner doesn't exist
-                      e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
-                    }}
                   />
-                  {/* Darker overlay for better text visibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  
-                  {/* Text on image */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
-                      Eliteinova Matrimony
-                    </h2>
-                    <h3 className="text-base font-bold text-yellow-300">
-                      Find Your Perfect Partner
-                    </h3>
-                  </div>
                 </div>
                 
-                {/* Content below image */}
                 <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
-                    Find your soulmate and create beautiful memories together. 
-                    Join our matrimony service and find your life partner.
-                  </p>
+                  <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    Eliteinova Matrimony
+                  </h2>
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center">
+                    Find Your Perfect Partner
+                  </h3>
                   
-                  {/* Register Now Button */}
                   <a 
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
@@ -1168,7 +1213,6 @@ const Styling = () => {
                     Register Now
                   </a>
                   
-                  {/* Small note */}
                   <p className="text-gray-500 text-[10px] text-center mt-3">
                     Redirects to eliteinovamatrimony.com
                   </p>
@@ -1274,7 +1318,7 @@ const Styling = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay - COMPACT VERSION */}
+      {/* Mobile Filter Overlay */}
       {showMobileFilter && (
         <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
           <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">

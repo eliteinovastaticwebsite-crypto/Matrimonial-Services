@@ -167,72 +167,71 @@ const VendorProfile = () => {
         );
 
       case 'contact':
-  return (
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-        <Field label="Mobile Number">
-          <Val>{vendorData.contactInfo.mobile}</Val>
-        </Field>
-        <Field label="Alternate Mobile">
-          <Val>{vendorData.contactInfo.alternateMobile}</Val>
-        </Field>
+        return (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+              <Field label="Mobile Number">
+                <Val>{vendorData.contactInfo.mobile}</Val>
+              </Field>
+              <Field label="Alternate Mobile">
+                <Val>{vendorData.contactInfo.alternateMobile}</Val>
+              </Field>
 
-        <Field label="Email ID">
-          <Val>{vendorData.contactInfo.email}</Val>
-        </Field>
-        <Field label="Office Address">
-          <Val>{vendorData.contactInfo.officeAddress}</Val>
-        </Field>
+              <Field label="Email ID">
+                <Val>{vendorData.contactInfo.email}</Val>
+              </Field>
+              <Field label="Office Address">
+                <Val>{vendorData.contactInfo.officeAddress}</Val>
+              </Field>
 
-        <Field label="City / District">
-          <Val>{vendorData.contactInfo.cityDistrict}</Val>
-        </Field>
-        <Field label="State">
-          <Val>{vendorData.contactInfo.state}</Val>
-        </Field>
+              <Field label="City / District">
+                <Val>{vendorData.contactInfo.cityDistrict}</Val>
+              </Field>
+              <Field label="State">
+                <Val>{vendorData.contactInfo.state}</Val>
+              </Field>
 
-        <Field label="PIN Code">
-          <Val>{vendorData.contactInfo.pinCode}</Val>
-        </Field>
-        <Field label="Current Location">
-          <p className="text-sm font-medium text-gray-800 flex items-center">
-            <svg
-              className="w-4 h-4 mr-2 text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-            {vendorData.contactInfo.currentLocation}
-          </p>
-        </Field>
+              <Field label="PIN Code">
+                <Val>{vendorData.contactInfo.pinCode}</Val>
+              </Field>
+              <Field label="Current Location">
+                <p className="text-sm font-medium text-gray-800 flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2 text-gray-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  {vendorData.contactInfo.currentLocation}
+                </p>
+              </Field>
 
-        <Field label="Website">
-          <a
-            href={`https://${vendorData.contactInfo.website}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm font-medium text-blue-600 hover:text-blue-800"
-          >
-            {vendorData.contactInfo.website}
-          </a>
-        </Field>
-      </div>
-    </div>
-  );
-
+              <Field label="Website">
+                <a
+                  href={`https://${vendorData.contactInfo.website}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                >
+                  {vendorData.contactInfo.website}
+                </a>
+              </Field>
+            </div>
+          </div>
+        );
 
       case 'legal':
         return (
@@ -472,9 +471,8 @@ const VendorProfile = () => {
 
         {/* Main Profile Card */}
         <div className="bg-white rounded-lg md:rounded-xl shadow-lg border border-red-200 overflow-hidden mb-4 md:mb-8">
-          {/* Profile Header - Logo and Business Name in one line */}
+          {/* Profile Header - Logo and Business Name */}
           <div className="relative bg-gradient-to-r from-red-600 to-red-700 p-3 md:p-6">
-            {/* Mobile Layout: Logo on right, text on left */}
             <div className="flex flex-row-reverse md:flex-row items-start">
               {/* Logo - On RIGHT for mobile, LEFT for desktop */}
               <div className="w-12 h-12 md:w-28 md:h-28 rounded-full border-2 md:border-4 border-white shadow-md md:shadow-lg overflow-hidden bg-gradient-to-br from-red-50 to-yellow-50 flex-shrink-0 ml-3 md:ml-0 md:mr-6">
@@ -560,34 +558,86 @@ const VendorProfile = () => {
                   </div>
                 </div>
 
-                {/* Contact Buttons - Below all details */}
-                <div className="flex flex-wrap gap-1.5 mt-3">
-                  <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
-                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <span className="hidden md:inline">Call Now</span>
-                    <span className="md:hidden text-xs">Call</span>
-                  </a>
-                  
-                  <a href={`mailto:${vendorData.contactInfo.email}`} className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
-                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <span className="hidden md:inline">Send Email</span>
-                    <span className="md:hidden text-xs">Email</span>
-                  </a>
-                  
-                  <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="bg-white text-red-700 hover:bg-red-50 px-2 py-1 md:px-3 md:py-1.5 rounded text-xs md:text-sm font-bold flex items-center gap-1 md:gap-1.5 transition-all duration-300 no-underline">
-                    <svg className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3" />
-                    </svg>
-                    <span className="hidden md:inline">Visit Website</span>
-                    <span className="md:hidden text-xs">Website</span>
-                  </a>
-                </div>
+                {/* Contact Buttons - All in same row on mobile - 4 column grid layout */}
+<div className="grid grid-cols-4 gap-1 mt-3 md:hidden">
+  <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="bg-white text-red-700 hover:bg-red-50 px-1 py-1 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition-all duration-300 no-underline border border-red-200">
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>
+    <span>Call</span>
+  </a>
+  
+  <a href={`mailto:${vendorData.contactInfo.email}`} className="bg-white text-red-700 hover:bg-red-50 px-1 py-1 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition-all duration-300 no-underline border border-red-200">
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+    <span>Email</span>
+  </a>
+  
+  <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="bg-white text-red-700 hover:bg-red-50 px-1 py-1 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition-all duration-300 no-underline border border-red-200">
+    <svg className="w-3 h-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3" />
+    </svg>
+    <span>Web</span>
+  </a>
+
+  {/* View Full Details Button - Mobile version - Golden color, same row */}
+  {!showFullDetails && (
+    <button
+      onClick={() => setShowFullDetails(true)}
+      className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 px-1 py-1 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition-all duration-300 shadow-sm border-0"
+    >
+      <svg className="w-3 h-3 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
+      <span>Full</span>
+    </button>
+  )}
+</div>
+
+{/* Desktop buttons - unchanged */}
+<div className="hidden md:flex md:flex-wrap items-center gap-1.5 mt-3">
+  <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="bg-white text-red-700 hover:bg-red-50 px-3 py-1.5 rounded text-sm font-bold flex items-center gap-1.5 transition-all duration-300 no-underline">
+    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>
+    <span>Call Now</span>
+  </a>
+  
+  <a href={`mailto:${vendorData.contactInfo.email}`} className="bg-white text-red-700 hover:bg-red-50 px-3 py-1.5 rounded text-sm font-bold flex items-center gap-1.5 transition-all duration-300 no-underline">
+    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+    <span>Send Email</span>
+  </a>
+  
+  <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="bg-white text-red-700 hover:bg-red-50 px-3 py-1.5 rounded text-sm font-bold flex items-center gap-1.5 transition-all duration-300 no-underline">
+    <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3" />
+    </svg>
+    <span>Visit Website</span>
+  </a>
+</div>
               </div>
             </div>
+
+            {/* View Full Details Button - Desktop version only, hidden in mobile */}
+            {!showFullDetails && (
+              <div className="hidden md:flex justify-end mt-4 md:mt-6">
+                <button
+                  onClick={() => setShowFullDetails(true)}
+                  className="bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 px-4 py-2 md:px-6 md:py-3 rounded-lg font-bold transition-all shadow-md flex items-center gap-2 text-sm md:text-base"
+                >
+                  <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                  <span className="hidden md:inline">View Full Details</span>
+                  <span className="md:hidden">Full Details</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Section Navigation - Hide when showing full details */}
@@ -625,51 +675,33 @@ const VendorProfile = () => {
                 <div className="bg-gradient-to-br from-red-50 to-yellow-50 p-3 md:p-6 rounded-lg border border-red-100">
                   {renderSectionContent()}
                   
-                  {/* Navigation Buttons with View Full Details */}
+                  {/* Navigation Buttons */}
                   <div className="mt-3 md:mt-6 pt-2 md:pt-4 border-t border-red-200 flex flex-col sm:flex-row justify-between items-center gap-2">
-                    <div className="flex items-center gap-1.5 w-full sm:w-auto">
+                    <div className="flex items-center gap-3 w-full sm:w-auto">
                       <button
                         onClick={goToPreviousSection}
                         disabled={activeSection === sections[0].id}
-                        className={`flex items-center gap-1 px-2 md:px-4 py-1 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                        className={`px-3 md:px-5 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
                           activeSection === sections[0].id
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-white text-red-600 hover:bg-red-50 border border-red-300'
                         }`}
                       >
-                        <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                        </svg>
-                        <span className="hidden sm:inline">Back</span>
+                        Back
                       </button>
 
                       <button
                         onClick={goToNextSection}
                         disabled={activeSection === sections[sections.length - 1].id}
-                        className={`flex items-center gap-1 px-2 md:px-4 py-1 md:py-2 rounded-lg text-xs md:text-sm font-medium transition-all ${
+                        className={`px-3 md:px-5 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-bold transition-all ${
                           activeSection === sections[sections.length - 1].id
                             ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
                             : 'bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800'
                         }`}
                       >
-                        <span className="hidden sm:inline">Next</span>
-                        <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
+                        Next
                       </button>
                     </div>
-
-                    {/* View Full Details Button */}
-                    <button
-                      onClick={() => setShowFullDetails(true)}
-                      className="w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-1.5 px-3 md:py-2 md:px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all shadow flex items-center justify-center gap-1.5 text-xs md:text-sm"
-                    >
-                      <svg className="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      View Full Details
-                    </button>
                   </div>
                 </div>
               </div>
@@ -684,7 +716,7 @@ const VendorProfile = () => {
                 <h2 className="text-xl md:text-2xl font-bold text-red-800 text-center md:text-left">Complete Vendor Details</h2>
                 <button
                   onClick={() => setShowFullDetails(false)}
-                  className="mt-3 md:mt-0 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-4 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all shadow flex items-center justify-center gap-2 text-sm md:w-auto"
+                  className="mt-3 md:mt-0 bg-gradient-to-r from-amber-500 to-yellow-500 text-white hover:from-amber-600 hover:to-yellow-600 py-2 px-4 rounded-lg font-bold transition-all shadow flex items-center justify-center gap-2 text-sm md:w-auto"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />

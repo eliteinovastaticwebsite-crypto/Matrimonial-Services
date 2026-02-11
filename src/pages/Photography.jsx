@@ -649,32 +649,27 @@ const Photography = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Enhanced with Pacifico font */}
+            {/* Mobile Matrimony Card - Clear image with better branding */}
             <div className="md:hidden mb-3 mt-2">
               <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-24">
-                  {/* Left Side: Image */}
-                  <div className="w-2/5 relative">
+                <div className="flex h-28">
+                  {/* Left Side: Clear Image without overlay */}
+                  <div className="w-2/5 relative overflow-hidden">
                     <img
                       src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
-                      alt="Find Your Perfect Partner"
+                      alt="Eliteinova Matrimony"
                       className="w-full h-full object-cover"
                     />
-                    {/* Darker overlay for better text visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                   </div>
                   
                   {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
                       Eliteinova Matrimony
                     </h2>
-                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
-                      Join our matrimony service
-                    </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
@@ -1163,40 +1158,30 @@ const Photography = () => {
           <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
             {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
-              {/* NEW: Matrimony Registration Box - UPDATED with Pacifico font */}
+              {/* NEW: Matrimony Registration Box - Clear image with branding below */}
               <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-                {/* Banner Image */}
-                <div className="relative h-32 overflow-hidden">
+                {/* Banner Image - Clear without overlay */}
+                <div className="relative h-40 overflow-hidden">
                   <img
                     src={matrimonyBanner}
-                    alt="Find Your Perfect Partner"
+                    alt="Eliteinova Matrimony"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.onerror = null;
-                      // Fallback image if the matrimony banner doesn't exist
                       e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
                     }}
                   />
-                  {/* Darker overlay for better text visibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  
-                  {/* Text on image */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
-                      Eliteinova Matrimony
-                    </h2>
-                    <h3 className="text-base font-bold text-yellow-300">
-                      Find Your Perfect Partner
-                    </h3>
-                  </div>
                 </div>
                 
                 {/* Content below image */}
                 <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
-                    Find your soulmate and create beautiful memories together. 
-                    Join our matrimony service and find your life partner.
-                  </p>
+                  {/* Branding */}
+                  <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    Eliteinova Matrimony
+                  </h2>
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center">
+                    Find Your Perfect Partner
+                  </h3>
                   
                   {/* Register Now Button */}
                   <a 
