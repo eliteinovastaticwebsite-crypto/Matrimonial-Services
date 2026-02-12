@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import VendorLoginForm from './VendorLoginForm'; // Import the component
+import VendorLoginForm from './VendorLoginForm';
+import CustomerRegistrationForm from '../Components/CustomerRegistrationForm'; // ADD THIS IMPORT
 
 const RegisterChoice = () => {
   const navigate = useNavigate();
   const [showVendorLogin, setShowVendorLogin] = useState(false);
+  const [showCustomerRegForm, setShowCustomerRegForm] = useState(false); // ADD THIS STATE
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-red-50 flex items-center justify-center px-4 py-12">
@@ -54,8 +56,9 @@ const RegisterChoice = () => {
                 ))}
               </div>
 
+              {/* UPDATED: Open modal instead of navigate */}
               <button
-                onClick={() => navigate('/customer-registration')}
+                onClick={() => setShowCustomerRegForm(true)}
                 className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-6 rounded-xl font-bold text-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
                 Register as Customer
@@ -144,6 +147,14 @@ const RegisterChoice = () => {
           <VendorLoginForm 
             onClose={() => setShowVendorLogin(false)}
             showRegisterOptions={true}
+          />
+        )}
+
+        {/* ADD CUSTOMER REGISTRATION MODAL HERE */}
+        {showCustomerRegForm && (
+          <CustomerRegistrationForm 
+            isOpen={showCustomerRegForm}
+            onClose={() => setShowCustomerRegForm(false)}
           />
         )}
       </div>

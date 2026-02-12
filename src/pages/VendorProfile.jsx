@@ -166,7 +166,7 @@ const VendorProfile = () => {
           {vendorData.basicDetails.typeOfService.map((service, i) => (
             <span
               key={i}
-              className="inline-flex items-center bg-gradient-to-r from-red-50 to-amber-50 text-red-800 text-xs md:text-base font-semibold px-3 md:px-4 py-1.5 md:py-2 rounded-full border-2 border-red-300 shadow-sm"
+              className="inline-flex items-center bg-gradient-to-r from-red-50 to-white text-red-800 text-xs md:text-base font-semibold px-3 md:px-4 py-1.5 md:py-2 rounded-full border-2 border-red-300 shadow-sm"
             >
               <svg
                 className="w-3 h-3 md:w-4 md:h-4 mr-1.5"
@@ -254,14 +254,14 @@ const VendorProfile = () => {
                 <Val>Proprietorship</Val>
               </Field>
               <Field label="📄 GST Number">
-                <div className="bg-gradient-to-r from-red-50 to-amber-50 px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
+                <div className="bg-gradient-to-r from-red-50 to-white px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
                   <Val>{vendorData.businessLegal.gstNumber}</Val>
                 </div>
               </Field>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <Field label="🆔 PAN Number">
-                <div className="bg-gradient-to-r from-red-50 to-amber-50 px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
+                <div className="bg-gradient-to-r from-red-50 to-white px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
                   <Val>{vendorData.businessLegal.panNumber}</Val>
                 </div>
               </Field>
@@ -278,7 +278,7 @@ const VendorProfile = () => {
             <Field label="📸 Camera Models Used">
               <div className="flex flex-wrap gap-1.5 md:gap-3 mt-1 md:mt-2">
                 {vendorData.equipmentTeam.cameraModels.map((c, i) => (
-                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-amber-50 to-red-50 text-amber-900 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-amber-400 shadow-sm">
+                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-amber-50 to-white text-amber-900 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-amber-400 shadow-sm">
                     📷 {c}
                   </span>
                 ))}
@@ -287,7 +287,7 @@ const VendorProfile = () => {
             <Field label="🎥 Video Equipment / Drone">
               <div className="flex flex-wrap gap-1.5 md:gap-3 mt-1 md:mt-2">
                 {vendorData.equipmentTeam.videoEquipment.map((e, i) => (
-                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-red-50 to-amber-50 text-red-900 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-red-400 shadow-sm">
+                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-red-50 to-white text-red-900 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-red-400 shadow-sm">
                     🎬 {e}
                   </span>
                 ))}
@@ -316,7 +316,7 @@ const VendorProfile = () => {
             <Field label="🗺️ Preferred Wedding Locations">
               <div className="flex flex-wrap gap-1.5 md:gap-3 mt-1 md:mt-2">
                 {vendorData.serviceCoverage.preferredLocations.map((loc, i) => (
-                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-red-50 to-amber-50 text-red-800 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-red-300 shadow-sm">
+                  <span key={i} className="inline-flex items-center bg-gradient-to-r from-red-50 to-white text-red-800 text-[10px] md:text-base font-semibold px-2 md:px-4 py-1 md:py-2 rounded-full border-2 border-red-300 shadow-sm">
                     <svg className="w-2.5 h-2.5 md:w-4 md:h-4 mr-1 md:mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -335,13 +335,13 @@ const VendorProfile = () => {
         return (
           <div className="space-y-4 md:space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-              <div className="relative bg-gradient-to-br from-red-600 to-red-800 p-4 md:p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+              <div className="relative bg-gradient-to-br from-red-600 to-red-700 p-4 md:p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
                 <div className="absolute top-2 right-2 md:top-3 md:right-3 text-xl md:text-4xl">💎</div>
                 <h4 className="text-[10px] md:text-base font-bold text-amber-300 mb-1 md:mb-2 uppercase tracking-wide">Basic Wedding Package</h4>
                 <p className="text-2xl md:text-5xl font-bold text-white">{vendorData.packagesPricing.basicWeddingPackage}</p>
                 <p className="text-[10px] md:text-base text-amber-200 mt-0.5 md:mt-1">Perfect for intimate weddings</p>
               </div>
-              <div className="relative bg-gradient-to-br from-amber-600 to-amber-800 p-4 md:p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
+              <div className="relative bg-gradient-to-br from-amber-600 to-amber-700 p-4 md:p-6 rounded-xl shadow-lg transform hover:scale-105 transition-transform">
                 <div className="absolute top-2 right-2 md:top-3 md:right-3 text-xl md:text-4xl">👑</div>
                 <h4 className="text-[10px] md:text-base font-bold text-red-900 mb-1 md:mb-2 uppercase tracking-wide">Full Wedding Package</h4>
                 <p className="text-2xl md:text-5xl font-bold text-white">{vendorData.packagesPricing.fullWeddingPackage}</p>
@@ -370,8 +370,8 @@ const VendorProfile = () => {
         return (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {[
-              { label: 'Photo Delivery Time', val: vendorData.deliveryTimeline.photoDelivery, emoji: '📸', color: 'from-red-600 to-red-800' },
-              { label: 'Video Delivery Time', val: vendorData.deliveryTimeline.videoDelivery, emoji: '🎥', color: 'from-amber-600 to-amber-800' },
+              { label: 'Photo Delivery Time', val: vendorData.deliveryTimeline.photoDelivery, emoji: '📸', color: 'from-red-600 to-red-700' },
+              { label: 'Video Delivery Time', val: vendorData.deliveryTimeline.videoDelivery, emoji: '🎥', color: 'from-amber-600 to-amber-700' },
               { label: 'Album Delivery Time', val: vendorData.deliveryTimeline.albumDelivery, emoji: '📚', color: 'from-red-700 to-amber-700' },
             ].map((item, i) => (
               <div key={i} className={`bg-gradient-to-br ${item.color} p-4 md:p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform`}>
@@ -421,7 +421,7 @@ const VendorProfile = () => {
               </h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
                 {vendorData.workPhotos.map((photo, i) => (
-                  <div key={i} className="group relative rounded-lg md:rounded-xl overflow-hidden border-2 border-red-300 bg-gradient-to-br from-red-50 to-amber-50 h-24 md:h-40 flex items-center justify-center hover:border-amber-500 transition-all shadow-md hover:shadow-xl">
+                  <div key={i} className="group relative rounded-lg md:rounded-xl overflow-hidden border-2 border-red-300 bg-gradient-to-br from-red-50 to-white h-24 md:h-40 flex items-center justify-center hover:border-amber-500 transition-all shadow-md hover:shadow-xl">
                     {photo ? (
                       <img src={photo} alt={`Sample Work ${i + 1}`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                     ) : (
@@ -452,18 +452,18 @@ const VendorProfile = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <Field label="💳 Account Number">
-                <div className="bg-gradient-to-r from-red-50 to-amber-50 px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
+                <div className="bg-gradient-to-r from-red-50 to-white px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
                   <Val>{vendorData.bankDetails.accountNumber}</Val>
                 </div>
               </Field>
               <Field label="🔢 IFSC Code">
-                <div className="bg-gradient-to-r from-red-50 to-amber-50 px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
+                <div className="bg-gradient-to-r from-red-50 to-white px-2 md:px-4 py-1.5 md:py-3 rounded border-2 border-red-300">
                   <Val>{vendorData.bankDetails.ifscCode}</Val>
                 </div>
               </Field>
             </div>
             <Field label="📱 UPI ID (Optional)">
-              <div className="bg-gradient-to-r from-amber-50 to-red-50 px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-amber-400">
+              <div className="bg-gradient-to-r from-amber-50 to-white px-3 md:px-4 py-2 md:py-3 rounded-lg border-2 border-amber-400">
                 <Val>{vendorData.bankDetails.upiId}</Val>
               </div>
             </Field>
@@ -472,7 +472,7 @@ const VendorProfile = () => {
 
       case 'declaration':
         return (
-          <div className="bg-gradient-to-br from-red-100 via-amber-100 to-red-100 p-4 md:p-6 rounded-xl border-2 border-red-400 shadow-inner">
+          <div className="bg-gradient-to-br from-red-100 via-white to-red-100 p-4 md:p-6 rounded-xl border-2 border-red-400 shadow-inner">
             <div className="flex items-start gap-2 md:gap-3 mb-4 md:mb-6">
               <span className="text-xl md:text-4xl">✍️</span>
               <p className="text-xs md:text-lg text-gray-700 leading-relaxed font-medium">
@@ -507,7 +507,7 @@ const VendorProfile = () => {
           <h3 className="text-base md:text-2xl font-bold text-red-800">{section.title}</h3>
           <div className="ml-2 md:ml-3 flex-1 h-0.5 md:h-1 bg-gradient-to-r from-red-600 via-amber-600 to-red-600 rounded-full"></div>
         </div>
-        <div className="bg-gradient-to-br from-red-50 to-amber-50 p-4 md:p-8 rounded-xl border-2 border-red-300 shadow-md">
+        <div className="bg-gradient-to-br from-red-50 to-white p-4 md:p-8 rounded-xl border-2 border-red-300 shadow-md">
           {renderSectionContent(section.id)}
         </div>
       </div>
@@ -515,7 +515,7 @@ const VendorProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 via-amber-50 to-red-50">
+    <div className="min-h-screen bg-gradient-to-b from-white via-red-50 to-white">
       <div className="container mx-auto px-3 md:px-4 py-3 md:py-8 max-w-7xl">
         {/* Breadcrumb */}
         <nav className="mb-4 md:mb-6">
@@ -531,7 +531,7 @@ const VendorProfile = () => {
         {/* Main Profile Card */}
         <div className="bg-white rounded-xl md:rounded-2xl shadow-2xl border-2 border-red-400 overflow-hidden mb-4 md:mb-8">
           {/* Profile Header */}
-          <div className="relative bg-gradient-to-r from-red-700 via-red-800 to-amber-700 p-4 md:p-5">
+          <div className="relative bg-gradient-to-r from-red-700 via-red-800 to-red-900 p-4 md:p-5">
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-20 md:w-24 bg-amber-400/10 rounded-full -mr-12 md:-mr-14 -mt-12 md:-mt-14"></div>
             <div className="absolute bottom-0 left-0 w-14 md:w-20 bg-amber-400/10 rounded-full -ml-8 md:-ml-10 -mb-8 md:-mb-10"></div>
@@ -540,11 +540,11 @@ const VendorProfile = () => {
             <div className="md:hidden relative">
               {/* Row 1: Logo and Business Name (stacked) */}
               <div className="flex items-start gap-3 mb-2">
-                <div className="w-14 h-14 rounded-xl border-2 border-amber-400 shadow-2xl overflow-hidden bg-gradient-to-br from-amber-50 to-red-50 flex-shrink-0">
+                <div className="w-14 h-14 rounded-xl border-2 border-amber-400 shadow-2xl overflow-hidden bg-gradient-to-br from-amber-50 to-white flex-shrink-0">
                   {vendorData.basicDetails.logo ? (
                     <img src={vendorData.basicDetails.logo} alt={vendorData.basicDetails.businessName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-amber-100">
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-white">
                       <svg className="w-7 h-7 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -626,11 +626,11 @@ const VendorProfile = () => {
               <div className="flex items-start gap-5">
                 {/* Logo - Left side */}
                 <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-xl border-3 border-amber-400 shadow-xl overflow-hidden bg-gradient-to-br from-amber-50 to-red-50">
+                  <div className="w-20 h-20 rounded-xl border-3 border-amber-400 shadow-xl overflow-hidden bg-gradient-to-br from-amber-50 to-white">
                     {vendorData.basicDetails.logo ? (
                       <img src={vendorData.basicDetails.logo} alt={vendorData.basicDetails.businessName} className="w-full h-full object-cover" />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-amber-100">
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-white">
                         <svg className="w-12 h-12 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -734,7 +734,7 @@ const VendorProfile = () => {
                     <button key={section.id} onClick={() => setActiveSection(section.id)} className={`flex-1 flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2 px-3 md:px-6 py-2 md:py-4 border-r border-red-200 last:border-r-0 transition-all font-semibold ${
                         activeSection === section.id
                           ? 'bg-gradient-to-r from-red-700 to-red-800 text-white shadow-lg'
-                          : 'bg-gradient-to-r from-red-50 to-amber-50 text-red-800 hover:bg-gradient-to-r hover:from-red-100 hover:to-amber-100'
+                          : 'bg-white text-red-800 hover:bg-red-100'
                       }`}>
                       <span className="text-base md:text-2xl">{section.emoji}</span>
                       <span className="text-[10px] md:text-base whitespace-nowrap">{section.title}</span>
@@ -752,7 +752,7 @@ const VendorProfile = () => {
                   </h3>
                   <div className="ml-2 md:ml-3 flex-1 h-0.5 md:h-1 bg-gradient-to-r from-red-600 via-amber-600 to-red-600 rounded-full"></div>
                 </div>
-                <div className="bg-gradient-to-br from-red-50 to-amber-50 p-4 md:p-8 rounded-xl border-2 border-red-300 shadow-md">
+                <div className="bg-white p-4 md:p-8 rounded-xl border-2 border-red-300 shadow-md">
                   {renderSectionContent()}
                   
                   {/* Navigation Buttons */}
@@ -814,7 +814,7 @@ const VendorProfile = () => {
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                     {/* Primary Address */}
-                    <div className="bg-gradient-to-br from-amber-100 to-red-100 p-4 md:p-6 rounded-xl border-2 border-amber-400 shadow-lg">
+                    <div className="bg-white p-4 md:p-6 rounded-xl border-2 border-amber-400 shadow-lg">
                       <h4 className="text-sm md:text-xl font-bold text-red-800 mb-3 md:mb-4 flex items-center gap-1.5 md:gap-2">
                         <span className="text-lg md:text-3xl">🏢</span>
                         Primary Vendor Address
@@ -838,7 +838,7 @@ const VendorProfile = () => {
                     </div>
 
                     {/* Office Address */}
-                    <div className="bg-gradient-to-br from-red-100 to-amber-100 p-4 md:p-6 rounded-xl border-2 border-red-400 shadow-lg">
+                    <div className="bg-white p-4 md:p-6 rounded-xl border-2 border-red-400 shadow-lg">
                       <h4 className="text-sm md:text-xl font-bold text-red-800 mb-3 md:mb-4 flex items-center gap-1.5 md:gap-2">
                         <span className="text-lg md:text-3xl">🏛️</span>
                         Office Address (Secondary)
@@ -864,7 +864,7 @@ const VendorProfile = () => {
                 </div>
 
                 {/* For Enquiry - Our Address with Logo */}
-                <div className="bg-gradient-to-r from-red-200 via-amber-200 to-red-200 p-4 md:p-8 rounded-xl border-2 border-red-500 shadow-xl">
+                <div className="bg-gradient-to-r from-red-100 via-amber-100 to-red-100 p-4 md:p-8 rounded-xl border-2 border-red-500 shadow-xl">
                   <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
                     <div className="w-16 h-16 md:w-24 md:h-24 bg-white rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0">
                       {companyLogo ? (
@@ -907,7 +907,7 @@ const VendorProfile = () => {
           {/* Bottom Contact Cards - Only show when not in full details */}
           {!showFullDetails && (
             <>
-              <div className="p-4 md:p-8 bg-gradient-to-r from-amber-50 to-red-50 border-t-2 border-red-300">
+              <div className="p-4 md:p-8 bg-white border-t-2 border-red-300">
                 <div className="flex items-center mb-4 md:mb-6">
                   <span className="text-lg md:text-3xl mr-2 md:mr-3">📇</span>
                   <h3 className="text-sm md:text-2xl font-bold text-red-800">Vendor Contact Details</h3>
@@ -965,7 +965,7 @@ const VendorProfile = () => {
               </div>
 
               {/* For Enquiry Section */}
-              <div className="p-4 md:p-8 bg-gradient-to-r from-red-200 via-amber-200 to-red-200 border-t-2 border-red-500">
+              <div className="p-4 md:p-8 bg-gradient-to-r from-red-100 via-amber-100 to-red-100 border-t-2 border-red-500">
                 <div className="flex items-start gap-3 md:gap-4">
                   <div className="w-14 h-14 md:w-20 md:h-20 bg-white rounded-xl flex items-center justify-center shadow-md flex-shrink-0">
                     {companyLogo ? (

@@ -15,12 +15,15 @@ import Styling from './pages/Styling';
 import VendorLogin from './pages/VendorLogin';
 import VendorProfile from './pages/VendorProfile'; 
 
-// Import NEW customer authentication pages
+// Import customer authentication pages
 import CustomerProfile from './pages/CustomerProfile';
-import CustomerRegistration from './pages/CustomerRegistration';
+// REMOVED: import CustomerRegistration from './pages/CustomerRegistration';
 import CustomerLogin from './pages/CustomerLogin';
 import RegisterChoice from './pages/RegisterChoice';
 import LoginChoice from './pages/LoginChoice';
+
+// ADD THIS IMPORT - New modal component
+import CustomerRegistrationForm from './Components/CustomerRegistrationForm';
 
 // Import all vendor form components
 import PhotographyVendorForm from './Components/PhotographyForm';
@@ -117,15 +120,6 @@ function App() {
     };
   }, []);
 
-  // Also update the Header to add a global event dispatcher
-  // Add this function to your Header component:
-  // const dispatchFormOpenEvent = (formType) => {
-  //   const event = new CustomEvent('openVendorFormGlobal', {
-  //     detail: { formType }
-  //   });
-  //   window.dispatchEvent(event);
-  // };
-
   return (
     <Router>
       <div className="min-h-screen">
@@ -151,7 +145,9 @@ function App() {
           {/* ============================================ */}
           <Route path="/register-choice" element={<RegisterChoice />} />
           <Route path="/login-choice" element={<LoginChoice />} />
-          <Route path="/customer-registration" element={<CustomerRegistration />} />
+          {/* REMOVED: Old customer registration page route */}
+          {/* <Route path="/customer-registration" element={<CustomerRegistration />} /> */}
+          {/* Customer registration is now handled via modal in RegisterChoice and LoginChoice */}
           <Route path="/customer-login" element={<CustomerLogin />} />
           <Route path="/customer-profile" element={<CustomerProfile />} />
           
@@ -168,7 +164,7 @@ function App() {
           <Route path="/background-investigations" element={<BackgroundInvestigationsWrapper openVendorForm={openVendorForm} />} />
           
           {/* ============================================ */}
-          {/* VENDOR LOGIN & PROFILE ROUTES - UPDATED */}
+          {/* VENDOR LOGIN & PROFILE ROUTES */}
           {/* ============================================ */}
           <Route path="/vendor-login" element={<VendorLoginWrapper openVendorForm={openVendorForm} />} />
           

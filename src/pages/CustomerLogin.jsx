@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CustomerRegistrationForm from '../Components/CustomerRegistrationForm'; // ADD THIS IMPORT
 
 const CustomerLogin = () => {
   const navigate = useNavigate();
+  const [showCustomerRegForm, setShowCustomerRegForm] = useState(false); // ADD THIS STATE
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -172,12 +174,12 @@ const CustomerLogin = () => {
             </button>
           </div>
 
-          {/* Register Link */}
+          {/* Register Link - UPDATED */}
           <div className="mt-6 text-center">
             <p className="text-gray-600">
               Don't have an account?{' '}
               <button
-                onClick={() => navigate('/customer-registration')}
+                onClick={() => setShowCustomerRegForm(true)} // CHANGED: Open modal instead of navigate
                 className="text-red-600 font-semibold hover:text-red-800"
               >
                 Register here
@@ -199,6 +201,14 @@ const CustomerLogin = () => {
           </button>
         </div>
       </div>
+
+      {/* ADD CUSTOMER REGISTRATION MODAL HERE */}
+      {showCustomerRegForm && (
+        <CustomerRegistrationForm 
+          isOpen={showCustomerRegForm}
+          onClose={() => setShowCustomerRegForm(false)}
+        />
+      )}
     </div>
   );
 };

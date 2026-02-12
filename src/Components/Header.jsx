@@ -3,12 +3,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
+import CustomerRegistrationForm from '../Components/CustomerRegistrationForm'; // ADD THIS IMPORT
 
 const Header = ({ onOpenVendorForm }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [showCustomerRegForm, setShowCustomerRegForm] = useState(false); // ADD THIS STATE
   const dropdownRef = useRef(null);
   const vendorDropdownRef = useRef(null);
   const menuRef = useRef(null);
@@ -274,9 +276,9 @@ const Header = ({ onOpenVendorForm }) => {
     setIsMenuOpen(false);
   };
 
-  // Handle register button click
+  // Handle register button click - Navigate to register choice page
   const handleRegisterClick = () => {
-    navigate('/register-choice');
+    navigate('/register-choice'); // Navigate to register choice page
     setActiveDropdown(null);
     setMobileDropdownOpen(null);
     setIsMenuOpen(false);
@@ -303,21 +305,21 @@ const Header = ({ onOpenVendorForm }) => {
                 }}
               >
                 <div className="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 shadow-lg border-3 border-yellow-300 overflow-hidden flex-shrink-0">
-  <img 
-    src={logo} 
-    alt="Eliteinova Logo" 
-    className="h-full w-full object-cover"
-    onError={(e) => {
-      e.target.onerror = null;
-      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23F59E0B'/%3E%3Cstop offset='100%25' stop-color='%23D97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23grad)'/%3E%3Ctext x='32' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='%23DC2626'%3EE%3C/text%3E%3C/svg%3E";
-    }}
-  />
-</div>
+                  <img 
+                    src={logo} 
+                    alt="Eliteinova Logo" 
+                    className="h-full w-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23F59E0B'/%3E%3Cstop offset='100%25' stop-color='%23D97706'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='32' cy='32' r='30' fill='url(%23grad)'/%3E%3Ctext x='32' y='38' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='bold' fill='%23DC2626'%3EE%3C/text%3E%3C/svg%3E";
+                    }}
+                  />
+                </div>
                 
                 <div className="text-yellow-50">
-                 <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight text-yellow-300" style={{ fontFamily: 'Pacifico, cursive' }}>
-    Eliteinova Matrimonial Services
-  </h1>
+                  <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight text-yellow-300" style={{ fontFamily: 'Pacifico, cursive' }}>
+                    Eliteinova Matrimonial Services
+                  </h1>
                   <p className="text-yellow-200 text-xs md:text-sm" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Tech Pvt Ltd
                   </p>
@@ -337,7 +339,7 @@ const Header = ({ onOpenVendorForm }) => {
                     LOGIN
                   </button>
                   
-                  {/* Register Button */}
+                  {/* Register Button - UPDATED */}
                   <button
                     onClick={handleRegisterClick}
                     className="px-5 py-2 bg-gradient-to-r from-white to-gray-100 text-red-700 font-bold text-sm rounded-lg shadow-lg hover:from-gray-100 hover:to-gray-200 transition-all duration-300 transform hover:scale-105 border border-yellow-500"
@@ -541,7 +543,7 @@ const Header = ({ onOpenVendorForm }) => {
                           LOGIN
                         </button>
                         
-                        {/* Mobile Register Button */}
+                        {/* Mobile Register Button - UPDATED */}
                         <button
                           onClick={handleRegisterClick}
                           className="w-full px-4 py-3 bg-gradient-to-r from-white to-gray-100 text-red-700 font-bold rounded-lg shadow-lg hover:from-gray-100 hover:to-gray-200 transition-all duration-300 border border-yellow-500"
@@ -690,6 +692,14 @@ const Header = ({ onOpenVendorForm }) => {
 
       {/* Bottom decorative strip */}
       <div className="h-1 bg-gradient-to-r from-yellow-400 via-red-600 to-yellow-400 w-full"></div>
+
+      {/* ADD CUSTOMER REGISTRATION MODAL HERE */}
+      {showCustomerRegForm && (
+        <CustomerRegistrationForm 
+          isOpen={showCustomerRegForm}
+          onClose={() => setShowCustomerRegForm(false)}
+        />
+      )}
 
       <style jsx>{`
         @keyframes dropdown-slide {
