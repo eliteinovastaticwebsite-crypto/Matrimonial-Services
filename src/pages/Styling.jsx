@@ -4,10 +4,11 @@ import bridalmakeup from '../assets/bridalmakeup.jpg';
 import bridalaccessories from '../assets/bridalaccessories.jpg';
 import hairstyling from '../assets/hairstyling.jpg';
 import mehendiart from '../assets/mehendiart.jpg';
-import traditionalattire from '../assets/mehendiart.jpg';
-import groommakeup from '../assets/mehendiart.jpg';
-import accessoriesfinishing from '../assets/mehendiart.jpg';
-import commercial from '../assets/commercial.jpg';
+import traditionalattire from '../assets/traditionalattire.jpg';
+import groommakeup from '../assets/groommakeup.jpg';
+import groomhairstyling from '../assets/groomhairstyling.jpg';
+import accessoriesfinishing from '../assets/accessoriesfinishing.jpg';
+import commercial from '../assets/groomattire.jpg';
 import stylingbanner1 from '../assets/stylbanner1.jpg';
 import stylingbanner2 from '../assets/stylbanner2.jpg';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
@@ -77,7 +78,7 @@ const Styling = () => {
 
   const groomStylingCategories = [
     { name: 'Groom Makeup', image: groommakeup },
-    { name: 'Groom Hair Styling', image: hairstyling },
+    { name: 'Groom Hair Styling', image: groomhairstyling  },
     { name: 'Groom Accessories', image: accessoriesfinishing },
     { name: 'Groom Attire Styling', image: commercial },
   ];
