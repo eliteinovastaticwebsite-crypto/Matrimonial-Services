@@ -452,14 +452,37 @@ const Photography = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Add Pacifico font */}
-      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      {/* Add Google Fonts - SF Pro Display alternative for clean typography */}
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet" />
+      
+      {/* Global font style */}
+      <style jsx>{`
+        .vendor-card {
+          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .vendor-card h3, .vendor-card .vendor-name {
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+        .vendor-card .price-tag {
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+        .vendor-card .service-item {
+          font-weight: 500;
+        }
+        .vendor-card .contact-label {
+          font-weight: 600;
+          color: #4B5563;
+        }
+      `}</style>
       
       {/* Floating Filter Button */}
       <button
         onClick={handleFilterButtonClick}
         className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
         aria-label="Open Filters"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -554,7 +577,7 @@ const Photography = () => {
       {/* Main Categories Navigation */}
       <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
         <div className="container mx-auto px-2 md:px-4">
-          <h3 className="text-white text-xs sm:text-sm md:text-base font-bold mb-1 md:mb-2 text-center">
+          <h3 className="text-white text-xs sm:text-sm md:text-base font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
             Browse All Wedding Services
           </h3>
           <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
@@ -580,7 +603,7 @@ const Photography = () => {
           <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
             {/* Photography Categories */}
             <section className="py-2 md:py-3">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Our Photography Categories
               </h2>
               
@@ -639,6 +662,7 @@ const Photography = () => {
                   <button
                     onClick={() => setSelectedEvent('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -667,7 +691,7 @@ const Photography = () => {
                     <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
                       Eliteinova Matrimony
                     </h2>
-                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Find Your Perfect Partner
                     </h3>
                     <a 
@@ -675,6 +699,7 @@ const Photography = () => {
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -693,18 +718,18 @@ const Photography = () => {
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
-                      <h3 className="text-xs font-bold text-white leading-tight">
+                      <h3 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
+                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
-                        <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹5,000 - ₹5,00,000</span>
+                        <span className="text-white font-medium text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹5,000 - ₹5,00,000</span>
                       </div>
                     </div>
                   </div>
@@ -713,7 +738,7 @@ const Photography = () => {
                 {/* Applied Filters Tags */}
                 <div className="flex flex-wrap gap-1 mb-2">
                   {selectedEvent && (
-                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Event: {selectedEvent}
                       <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">
                         ×
@@ -721,7 +746,7 @@ const Photography = () => {
                     </span>
                   )}
                   {selectedState && (
-                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       State: {selectedState}
                       <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
                         ×
@@ -729,7 +754,7 @@ const Photography = () => {
                     </span>
                   )}
                   {(minBudget || maxBudget) && (
-                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
                       <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
                         ×
@@ -743,7 +768,7 @@ const Photography = () => {
               <section className="py-1 mb-2">
                 <div className="bg-white rounded-md shadow border border-red-200 p-2">
                   <div className="flex items-center justify-between mb-2 border-b border-gray-100 pb-1.5">
-                    <h3 className="text-xs font-bold text-red-800 flex items-center">
+                    <h3 className="text-xs font-bold text-red-800 flex items-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       <svg className="w-3.5 h-3.5 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
                       </svg>
@@ -752,6 +777,7 @@ const Photography = () => {
                     <button 
                       onClick={handleReset}
                       className="text-[10px] font-medium text-red-600 hover:text-red-800 flex items-center"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -762,7 +788,7 @@ const Photography = () => {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget (₹)</label>
                       <div className="flex gap-1.5">
                         <input
                           type="number"
@@ -770,6 +796,7 @@ const Photography = () => {
                           value={minBudget}
                           onChange={(e) => setMinBudget(e.target.value)}
                           className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         />
                         <input
                           type="number"
@@ -777,16 +804,18 @@ const Photography = () => {
                           value={maxBudget}
                           onChange={(e) => setMaxBudget(e.target.value)}
                           className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         />
                       </div>
                     </div>
 
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Event Type</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Event Type</label>
                       <select
                         value={selectedEvent}
                         onChange={(e) => setSelectedEvent(e.target.value)}
                         className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <option value="">All Events</option>
                         {eventTypes.map((event) => (
@@ -796,11 +825,12 @@ const Photography = () => {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">State</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>State</label>
                       <select
                         value={selectedState}
                         onChange={(e) => setSelectedState(e.target.value)}
                         className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <option value="">All States</option>
                         {states.map((state) => (
@@ -810,11 +840,12 @@ const Photography = () => {
                     </div>
 
                     <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">District</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>District</label>
                       <select
                         value={selectedDistrict}
                         onChange={(e) => setSelectedDistrict(e.target.value)}
                         className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                       >
                         <option value="">All Districts</option>
                         {districts.map((district) => (
@@ -824,7 +855,7 @@ const Photography = () => {
                     </div>
 
                     <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Location</label>
+                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Location</label>
                       <div className="relative">
                         <input
                           type="text"
@@ -832,6 +863,7 @@ const Photography = () => {
                           value={selectedLocation}
                           onChange={(e) => setSelectedLocation(e.target.value)}
                           className="w-full pl-7 pr-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
+                          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                         />
                         <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -844,6 +876,7 @@ const Photography = () => {
                   <button
                     onClick={handleFilter}
                     className="w-full mt-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -863,25 +896,25 @@ const Photography = () => {
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white leading-tight">
+                      <h3 className="text-lg font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Photography Vendors'}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-sm">
+                      <p className="text-yellow-200 mt-0.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional photography vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-2.5 py-1.5 rounded">
-                        <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹5,000 - ₹5,00,000</span>
+                        <span className="text-white font-medium text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹5,000 - ₹5,00,000</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {selectedEvent && (
-                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Event: {selectedEvent}
                         <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
                           ×
@@ -889,7 +922,7 @@ const Photography = () => {
                       </span>
                     )}
                     {selectedState && (
-                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         State: {selectedState}
                         <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
                           ×
@@ -897,7 +930,7 @@ const Photography = () => {
                       </span>
                     )}
                     {(minBudget || maxBudget) && (
-                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Budget: {minBudget || '0'} - {maxBudget || '∞'}
                         <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
                           ×
@@ -909,179 +942,199 @@ const Photography = () => {
               </section>
             </div>
 
-            {/* Vendor Profiles */}
-            <section className="py-1 md:py-2 vendor-profiles">
+            {/* Vendor Profiles - Desktop using Mobile Format Horizontally */}
+            <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
                 <div className="space-y-1.5 md:space-y-3">
                   {filteredVendors.map((vendor) => (
                     <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo (Desktop Only) */}
-                        <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
+                      
+                      {/* DESKTOP VIEW - MOBILE FORMAT HORIZONTAL WITH ADJUSTED SIZING */}
+                      <div className="hidden md:flex md:flex-row w-full">
+                        {/* Left Box - Image Full in Box - Reduced Size (20%) */}
+                        <div className="w-1/5 p-0 flex items-stretch">
+                          <div className="w-full h-full overflow-hidden">
                             <img 
                               src={vendor.logo} 
                               alt={vendor.businessName} 
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="text-center">
-                            <div className="flex items-center justify-center mb-0.5">
-                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
+                        </div>
+
+                        {/* Middle Box - Business Details (45%) */}
+                        <div className="w-[45%] p-3 bg-white border-r border-gray-200">
+                          {/* Title with Star Rating */}
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="text-base font-bold text-red-800 pr-2 vendor-name" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
+                              {vendor.businessName}
+                            </h3>
+                            <div className="flex items-center bg-yellow-100 px-2 py-1 rounded-full flex-shrink-0">
+                              <span className="text-yellow-700 font-bold mr-0.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.rating}</span>
+                              <svg className="w-3.5 h-3.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Budget with heading */}
+                          <div className="text-red-700 font-bold text-sm mb-2 price-tag" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            <span className="font-semibold text-gray-600 mr-1.5 text-xs" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
+                            {vendor.priceRange}
+                          </div>
+                          
+                          {/* Business Category */}
+                          <span className="inline-block px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            {vendor.businessCategory}
+                          </span>
+                          
+                          {/* Location */}
+                          <div className="text-gray-600 flex items-start text-xs mb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <svg className="w-3.5 h-3.5 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span className="leading-tight font-medium">{vendor.location}</span>
+                          </div>
+                          
+                          {/* Contact Details */}
+                          <div className="space-y-1 text-xs">
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact Person:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.personName}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Role:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.designation}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Box - Description and Services - More Space (35%) */}
+                        <div className="w-[35%] p-3 bg-white relative">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-3 text-xs leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
+                            {vendor.description}
+                          </p>
+                          
+                          {/* Services Offered */}
+                          <h4 className="font-bold text-red-700 mb-2 text-xs" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            Services Offered
+                          </h4>
+                          <ul className="space-y-1 mb-3">
+                            {vendor.services.map((service, index) => (
+                              <li key={index} className="flex items-start">
+                                <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span className="text-gray-700 text-xs leading-tight service-item" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
+                                  {service}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* View Details Button */}
+                          <div className="mt-2">
+                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              <span>View Details</span>
+                              <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* MOBILE VIEW - COMPLETELY UNCHANGED */}
+                      <div className="md:hidden">
+                        {/* Top Section - Image and Details Side by Side */}
+                        <div className="flex border-b border-gray-200">
+                          {/* Left Box - Image ONLY (no overlay) */}
+                          <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                            <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
+                              <img 
+                                src={vendor.logo} 
+                                alt={vendor.businessName} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right Box - Business Details */}
+                          <div className="w-3/5 p-1.5 bg-white">
+                            {/* Title with Star Rating */}
+                            <div className="flex items-start justify-between mb-0.5">
+                              <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{vendor.businessName}</h3>
+                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
                                 <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs">{vendor.priceRange}</p>
-                          </div>
-                        </div>
 
-                        {/* Middle Section - Business Details & Services */}
-                        <div className="md:w-2/4 md:p-3 md:border-r border-gray-100">
-                          {/* Mobile Layout */}
-                          <div className="md:hidden">
-                            {/* Top Section - Image and Details Side by Side */}
-                            <div className="flex border-b border-gray-200">
-                              {/* Left Box - Image ONLY (no overlay) */}
-                              <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
-                                <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
-                                  <img 
-                                    src={vendor.logo} 
-                                    alt={vendor.businessName} 
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              </div>
-
-                              {/* Right Box - Business Details */}
-                              <div className="w-3/5 p-1.5 bg-white">
-                                {/* Title with Star Rating */}
-                                <div className="flex items-start justify-between mb-0.5">
-                                  <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{vendor.businessName}</h3>
-                                  <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
-                                    <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
-                                    <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                  </div>
-                                </div>
-
-                                {/* Budget below title */}
-                                <p className="text-red-700 font-bold text-xs mb-1">{vendor.priceRange}</p>
-                                
-                                {/* Business Category */}
-                                <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
-                                  {vendor.businessCategory}
-                                </span>
-                                
-                                {/* Location */}
-                                <div className="text-gray-600 flex items-start text-[10px] mb-1">
-                                  <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  <span className="leading-tight">{vendor.location}</span>
-                                </div>
-                                
-                                {/* Contact Details */}
-                                <div className="space-y-0.5 text-[10px]">
-                                  <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Contact Person:</span>
-                                    <span className="text-gray-800 leading-tight">{vendor.personName}</span>
-                                  </div>
-                                  <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Role:</span>
-                                    <span className="text-gray-800 leading-tight">{vendor.designation}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Bottom Section - Full Width Description and Services */}
-                            <div className="w-full p-2 bg-white relative pb-10">
-                              {/* Description */}
-                              <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
-                              
-                              {/* Services Offered */}
-                              <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
-                              <ul className="space-y-0.5 mb-1">
-                                {vendor.services.map((service, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-gray-700 text-xs leading-tight">{service}</span>
-                                  </li>
-                                ))}
-                              </ul>
-
-                              {/* Small View Details Button in Right Bottom Corner */}
-                              <div className="absolute bottom-2 right-2">
-                                <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
-                                  <span>View Details</span>
-                                  <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                  </svg>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Desktop Layout */}
-                          <div className="hidden md:block">
-                            <div className="mb-1.5">
-                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
-                                <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
-                                  {vendor.businessCategory}
-                                </span>
-                                <span className="text-gray-600 flex items-center text-xs">
-                                  <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  {vendor.location}
-                                </span>
-                              </div>
+                            {/* Budget with heading */}
+                            <div className="text-red-700 font-bold text-xs mb-1">
+                              <span className="font-bold text-[9px] text-gray-600 mr-1">Budget:</span>
+                              {vendor.priceRange}
                             </div>
                             
-                            <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{vendor.description}</p>
+                            {/* Business Category */}
+                            <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
+                              {vendor.businessCategory}
+                            </span>
                             
-                            <div className="space-y-0.5">
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Contact Person:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                            {/* Location */}
+                            <div className="text-gray-600 flex items-start text-[10px] mb-1">
+                              <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="leading-tight">{vendor.location}</span>
+                            </div>
+                            
+                            {/* Contact Details */}
+                            <div className="space-y-0.5 text-[10px]">
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Contact Person:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.personName}</span>
                               </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Designation:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Role:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.designation}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services (Desktop Only) */}
-                        <div className="hidden md:block md:w-1/4 p-3 bg-white">
+                        {/* Bottom Section - Full Width Description and Services */}
+                        <div className="w-full p-2 bg-white relative pb-10">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
+                          
+                          {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
-                          <ul className="space-y-0.5 mb-2">
+                          <ul className="space-y-0.5 mb-1">
                             {vendor.services.map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
-                          
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs">
-                            <span>View Details</span>
-                            <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                          </button>
+
+                          {/* Small View Details Button in Right Bottom Corner */}
+                          <div className="absolute bottom-2 right-2">
+                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                              <span>View Details</span>
+                              <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1092,11 +1145,12 @@ const Photography = () => {
                   <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Vendors Found</h3>
-                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more vendors</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No Vendors Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Try adjusting your filter criteria to find more vendors</p>
                   <button 
                     onClick={handleReset}
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset Filters
                   </button>
@@ -1106,7 +1160,7 @@ const Photography = () => {
 
             {/* Why Choose Us Section */}
             <section className="py-2 md:py-4">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Why Choose Our Photography Services?
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
@@ -1117,8 +1171,8 @@ const Photography = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Professional Equipment</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">High-end cameras and latest technology</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Professional Equipment</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>High-end cameras and latest technology</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -1127,8 +1181,8 @@ const Photography = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Timely Delivery</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Quick turnaround without compromising quality</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Timely Delivery</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Quick turnaround without compromising quality</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
@@ -1137,8 +1191,8 @@ const Photography = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Experienced Team</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Years of expertise in wedding photography</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experienced Team</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Years of expertise in wedding photography</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -1147,8 +1201,8 @@ const Photography = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Customer Satisfaction</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Dedicated to exceeding expectations</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Customer Satisfaction</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Dedicated to exceeding expectations</p>
                 </div>
               </div>
             </section>
@@ -1179,7 +1233,7 @@ const Photography = () => {
                   <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
                     Eliteinova Matrimony
                   </h2>
-                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center">
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Find Your Perfect Partner
                   </h3>
                   
@@ -1189,6 +1243,7 @@ const Photography = () => {
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -1197,7 +1252,7 @@ const Photography = () => {
                   </a>
                   
                   {/* Small note */}
-                  <p className="text-gray-500 text-[10px] text-center mt-3">
+                  <p className="text-gray-500 text-[10px] text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Redirects to eliteinovamatrimony.com
                   </p>
                 </div>
@@ -1205,12 +1260,12 @@ const Photography = () => {
 
               {/* Filter Container - Only this box remains */}
               <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
+                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   Filter Photographers
                 </h3>
 
                 <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget Range (₹)</label>
                   <div className="flex gap-2">
                     <input
                       type="number"
@@ -1218,6 +1273,7 @@ const Photography = () => {
                       value={minBudget}
                       onChange={(e) => setMinBudget(e.target.value)}
                       className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     />
                     <input
                       type="number"
@@ -1225,16 +1281,18 @@ const Photography = () => {
                       value={maxBudget}
                       onChange={(e) => setMaxBudget(e.target.value)}
                       className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     />
                   </div>
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Event</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Type of Event</label>
                   <select
                     value={selectedEvent}
                     onChange={(e) => setSelectedEvent(e.target.value)}
                     className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">All Event Types</option>
                     {eventTypes.map((event) => (
@@ -1244,11 +1302,12 @@ const Photography = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Preferred State</label>
                   <select
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
                     className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">All States</option>
                     {states.map((state) => (
@@ -1258,11 +1317,12 @@ const Photography = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>District</label>
                   <select
                     value={selectedDistrict}
                     onChange={(e) => setSelectedDistrict(e.target.value)}
                     className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <option value="">All Districts</option>
                     {districts.map((district) => (
@@ -1272,13 +1332,14 @@ const Photography = () => {
                 </div>
 
                 <div className="mb-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Location</label>
                   <input
                     type="text"
                     placeholder="Enter location"
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
 
@@ -1286,12 +1347,14 @@ const Photography = () => {
                   <button
                     onClick={handleFilter}
                     className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Apply Filter
                   </button>
                   <button
                     onClick={handleReset}
                     className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset
                   </button>
@@ -1308,7 +1371,7 @@ const Photography = () => {
           <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
             {/* Header */}
             <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
-              <h3 className="text-base font-bold text-red-800">Filter Photographers</h3>
+              <h3 className="text-base font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Filter Photographers</h3>
               <button
                 onClick={() => setShowMobileFilter(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
@@ -1324,7 +1387,7 @@ const Photography = () => {
             <div className="px-4 py-3 space-y-3">
               {/* Budget Range */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Budget Range (₹)</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget Range (₹)</label>
                 <div className="flex gap-2">
                   <input
                     type="number"
@@ -1332,6 +1395,7 @@ const Photography = () => {
                     value={minBudget}
                     onChange={(e) => setMinBudget(e.target.value)}
                     className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                   <input
                     type="number"
@@ -1339,17 +1403,19 @@ const Photography = () => {
                     value={maxBudget}
                     onChange={(e) => setMaxBudget(e.target.value)}
                     className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                 </div>
               </div>
 
               {/* Type of Event */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Event</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Type of Event</label>
                 <select
                   value={selectedEvent}
                   onChange={(e) => setSelectedEvent(e.target.value)}
                   className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <option value="">All Event Types</option>
                   {eventTypes.map((event) => (
@@ -1360,11 +1426,12 @@ const Photography = () => {
 
               {/* Preferred State */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Preferred State</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Preferred State</label>
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
                   className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <option value="">All States</option>
                   {states.map((state) => (
@@ -1375,11 +1442,12 @@ const Photography = () => {
 
               {/* District */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">District</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>District</label>
                 <select
                   value={selectedDistrict}
                   onChange={(e) => setSelectedDistrict(e.target.value)}
                   className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   <option value="">All Districts</option>
                   {districts.map((district) => (
@@ -1390,7 +1458,7 @@ const Photography = () => {
 
               {/* Location */}
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Location</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Location</label>
                 <div className="relative">
                   <input
                     type="text"
@@ -1398,6 +1466,7 @@ const Photography = () => {
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="w-full px-3 py-2 pl-9 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   />
                   <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -1411,6 +1480,7 @@ const Photography = () => {
                 <button
                   onClick={handleFilter}
                   className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   Apply Filter
                   <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
@@ -1420,6 +1490,7 @@ const Photography = () => {
                 <button
                   onClick={handleReset}
                   className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   Reset
                 </button>

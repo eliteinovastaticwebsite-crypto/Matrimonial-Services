@@ -622,99 +622,107 @@ const VendorProfile = () => {
             </div>
 
             {/* Desktop view - REDUCED SIZE HEADER with proper spacing */}
-            <div className="hidden md:block relative">
-              <div className="flex items-start gap-5">
-                {/* Logo - Left side - REDUCED SIZE */}
-                <div className="flex-shrink-0">
-                  <div className="w-20 h-20 rounded-xl border-3 border-white shadow-xl overflow-hidden bg-gradient-to-br from-yellow-50 to-orange-50">
-                    {vendorData.basicDetails.logo ? (
-                      <img src={vendorData.basicDetails.logo} alt={vendorData.basicDetails.businessName} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-yellow-100">
-                        <svg className="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                </div>
+<div className="hidden md:block relative">
+  <div className="flex items-start gap-5">
+    {/* Logo - Left side - REDUCED SIZE */}
+    <div className="flex-shrink-0">
+      <div className="w-20 h-20 rounded-xl border-3 border-white shadow-xl overflow-hidden bg-gradient-to-br from-yellow-50 to-orange-50">
+        {vendorData.basicDetails.logo ? (
+          <img src={vendorData.basicDetails.logo} alt={vendorData.basicDetails.businessName} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-100 to-yellow-100">
+            <svg className="w-12 h-12 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+        )}
+      </div>
+    </div>
 
-                {/* Right side content - REDUCED SIZE */}
-                <div className="flex-1">
-                  {/* Business Name - REDUCED SIZE */}
-                  <h1 className="text-2xl font-bold text-white leading-tight flex items-center gap-2 mb-1.5">
-                    {vendorData.basicDetails.businessName}
-                    <span className="text-xl">✨</span>
-                  </h1>
-                  
-                  {/* Vendor ID - REDUCED SIZE */}
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-yellow-400 to-amber-500 text-red-900 px-3 py-1 rounded-full text-sm font-bold shadow-md">
-                      <span className="text-base">📷</span>
-                      Vendor ID: {vendorData.id}
-                    </span>
-                  </div>
+    {/* Right side content - REDUCED SIZE */}
+    <div className="flex-1">
+      {/* Business Name - REDUCED SIZE */}
+      <h1 className="text-2xl font-bold text-white leading-tight flex items-center gap-2 mb-1.5">
+        {vendorData.basicDetails.businessName}
+        <span className="text-xl">✨</span>
+      </h1>
+      
+      {/* Vendor ID - REDUCED SIZE */}
+      <div className="flex items-center gap-3 mb-3">
+        <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-yellow-400 to-amber-500 text-red-900 px-3 py-1 rounded-full text-sm font-bold shadow-md">
+          <span className="text-base">📷</span>
+          Vendor ID: {vendorData.id}
+        </span>
+      </div>
 
-                  {/* Contact Details - 2x2 Grid with ALL CAPS labels - REDUCED SIZE */}
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-white mb-3">
-                    {/* LOCATION */}
-                    <div>
-                      <p className="text-[10px] text-white/70 font-bold uppercase tracking-wider mb-0.5">LOCATION</p>
-                      <p className="text-base font-bold">{vendorData.contactInfo.currentLocation}</p>
-                    </div>
-                    {/* PHONE with icon */}
-                    <div>
-                      <p className="text-[10px] text-white/70 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
-                        <span>📞</span> PHONE
-                      </p>
-                      <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="text-base font-bold text-white hover:underline">
-                        {vendorData.contactInfo.mobile}
-                      </a>
-                    </div>
-                    {/* OWNER */}
-                    <div>
-                      <p className="text-[10px] text-white/70 font-bold uppercase tracking-wider mb-0.5">OWNER</p>
-                      <p className="text-base font-bold">{vendorData.basicDetails.ownerName}</p>
-                    </div>
-                    {/* EMAIL with icon */}
-                    <div>
-                      <p className="text-[10px] text-white/70 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
-                        <span>📧</span> EMAIL
-                      </p>
-                      <a href={`mailto:${vendorData.contactInfo.email}`} className="text-base font-bold text-white hover:underline break-all">
-                        {vendorData.contactInfo.email}
-                      </a>
-                    </div>
-                  </div>
+      {/* Contact Details - 2x2 Grid with ALL CAPS labels - REDUCED SIZE */}
+      <div className="grid grid-cols-2 gap-x-8 gap-y-2 text-white mb-3">
+        {/* LOCATION with emoji */}
+        <div>
+          <p className="text-[10px] text-yellow-300 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
+            <span className="text-sm">📍</span> LOCATION
+          </p>
+          <p className="text-base font-bold flex items-center gap-1">
+            {vendorData.contactInfo.currentLocation}
+          </p>
+        </div>
+        {/* PHONE with emoji */}
+        <div>
+          <p className="text-[10px] text-yellow-300 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
+            <span className="text-sm">📞</span> PHONE
+          </p>
+          <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="text-base font-bold text-white hover:underline flex items-center gap-1">
+            {vendorData.contactInfo.mobile}
+          </a>
+        </div>
+        {/* OWNER with emoji */}
+        <div>
+          <p className="text-[10px] text-yellow-300 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
+            <span className="text-sm">👤</span> OWNER
+          </p>
+          <p className="text-base font-bold flex items-center gap-1">
+            {vendorData.basicDetails.ownerName}
+          </p>
+        </div>
+        {/* EMAIL with emoji */}
+        <div>
+          <p className="text-[10px] text-yellow-300 font-bold uppercase tracking-wider mb-0.5 flex items-center gap-1">
+            <span className="text-sm">✉️</span> EMAIL
+          </p>
+          <a href={`mailto:${vendorData.contactInfo.email}`} className="text-base font-bold text-white hover:underline break-all flex items-center gap-1">
+            {vendorData.contactInfo.email}
+          </a>
+        </div>
+      </div>
 
-                  {/* Action Buttons - Email and Web on left, View Full Details on right - REDUCED SIZE */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <a href={`mailto:${vendorData.contactInfo.email}`} className="flex items-center gap-1.5 bg-white text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg no-underline">
-                        <span className="text-base">✉️</span>
-                        <span>Email</span>
-                      </a>
-                      <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 bg-white text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg no-underline">
-                        <span className="text-base">🌐</span>
-                        <span>Web</span>
-                      </a>
-                    </div>
-                    
-                    {/* View Full Details Button - Bottom Right Corner */}
-                    {!showFullDetails && (
-                      <button 
-                        onClick={() => setShowFullDetails(true)} 
-                        className="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-red-900 hover:from-amber-500 hover:to-yellow-600 px-4 py-2 rounded-lg font-bold transition-all shadow-md hover:shadow-lg text-sm whitespace-nowrap"
-                      >
-                        <span className="text-base">👁️</span>
-                        <span>View Full Details</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Action Buttons - Email and Web on left, View Full Details on right - REDUCED SIZE */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <a href={`mailto:${vendorData.contactInfo.email}`} className="flex items-center gap-1.5 bg-white text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg no-underline">
+            <span className="text-base">✉️</span>
+            <span>Email</span>
+          </a>
+          <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 bg-white text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md hover:shadow-lg no-underline">
+            <span className="text-base">🌐</span>
+            <span>Web</span>
+          </a>
+        </div>
+        
+        {/* View Full Details Button - Bottom Right Corner */}
+        {!showFullDetails && (
+          <button 
+            onClick={() => setShowFullDetails(true)} 
+            className="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-500 text-red-900 hover:from-amber-500 hover:to-yellow-600 px-4 py-2 rounded-lg font-bold transition-all shadow-md hover:shadow-lg text-sm whitespace-nowrap"
+          >
+            <span className="text-base">👁️</span>
+            <span>View Full Details</span>
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+</div>
           </div>
 
           {/* Section Navigation - Hide when showing full details */}
