@@ -690,40 +690,42 @@ const Styling = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card */}
-            <div className="md:hidden mb-3 mt-2">
-              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-28">
-                  <div className="w-2/5 relative overflow-hidden">
-                    <img
-                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc"}
-                      alt="Eliteinova Matrimony"
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
-                      Eliteinova Matrimony
-                    </h2>
-                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
-                      Find Your Perfect Partner
-                    </h3>
-                    <a 
-                      href="https://eliteinovamatrimony.com/" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
-                    >
-                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                      </svg>
-                      Register Now
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Mobile Matrimony Card - Clear image with better branding (UPDATED to match Photography page) */}
+<div className="md:hidden mb-3 mt-2">
+  <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+    <div className="flex h-28">
+      {/* Left Side: Clear Image without overlay */}
+      <div className="w-2/5 relative overflow-hidden">
+        <img
+          src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
+          alt="Eliteinova Matrimony"
+          className="w-full h-full object-cover"
+        />
+      </div>
+      
+      {/* Right Side: Text and Button */}
+      <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
+        <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+          Eliteinova Matrimony
+        </h2>
+        <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
+          Find Your Perfect Partner
+        </h3>
+        <a 
+          href="https://eliteinovamatrimony.com/" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+        >
+          <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+          </svg>
+          Register Now
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
 
             {/* Mobile: Vendor Count & Filters */}
             <div className="lg:hidden">
