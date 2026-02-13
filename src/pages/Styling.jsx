@@ -536,23 +536,28 @@ const Styling = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation */}
-      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
-        <div className="container mx-auto px-2 md:px-4">
-          <h3 className="text-white text-xs sm:text-sm md:text-base font-bold mb-1 md:mb-2 text-center">
-            Browse All Wedding Services
-          </h3>
-          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-            {mainCategories.map((category) => (
-              <Link key={category.name} to={category.path} className="flex-shrink-0 transition-all duration-300">
-                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-xs whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                  {category.name}
-                </button>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
+                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+                    <div className="container mx-auto px-2 md:px-4">
+                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Browse All Wedding Services
+                      </h3>
+                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+                        {mainCategories.map((category) => (
+                          <Link
+                            key={category.name}
+                            to={category.path}
+                            className="flex-shrink-0 transition-all duration-300"
+                          >
+                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                              {category.name}
+                            </button>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+      
 
       {/* Main Content */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">

@@ -1895,17 +1895,17 @@ const Photography = () => {
               </section>
             </div>
 
-            {/* Vendor Profiles - Desktop using Mobile Format Horizontally - SLIGHTLY INCREASED SIZE */}
+            {/* Vendor Profiles - UPDATED MOBILE VIEW TO MATCH DECORATIONS PAGE */}
             <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
                 <div className="space-y-2 md:space-y-4">
                   {filteredVendors.map((vendor) => (
                     <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                       
-                      {/* DESKTOP VIEW - MOBILE FORMAT HORIZONTAL WITH ADJUSTED SIZING - BUSINESS CATEGORY FIRST, BUDGET SECOND */}
-                      <div className="hidden md:flex md:flex-row w-full">
-                        {/* Left Box - Image Full in Box - Slightly increased from 20% to 22% */}
-                        <div className="w-[22%] p-0 flex items-stretch">
+                      {/* DESKTOP VIEW - FIXED HEIGHT [280px] - UNCHANGED */}
+                      <div className="hidden md:flex md:flex-row w-full h-[280px]">
+                        {/* Left Box - Image */}
+                        <div className="w-[22%] p-0 flex items-stretch h-full">
                           <div className="w-full h-full overflow-hidden">
                             <img 
                               src={vendor.logo} 
@@ -1915,8 +1915,8 @@ const Photography = () => {
                           </div>
                         </div>
 
-                        {/* Middle Box - Business Details - Slightly reduced from 45% to 43% */}
-                        <div className="w-[43%] p-4 bg-white border-r border-gray-200">
+                        {/* Middle Box - Business Details */}
+                        <div className="w-[43%] p-4 bg-white border-r border-gray-200 h-full overflow-y-auto">
                           {/* Title with Star Rating */}
                           <div className="flex items-start justify-between mb-2">
                             <h3 className="text-lg font-bold text-red-800 pr-2 vendor-name" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
@@ -1930,14 +1930,14 @@ const Photography = () => {
                             </div>
                           </div>
 
-                          {/* Business Category - MOVED FIRST */}
+                          {/* Business Category */}
                           <div className="mb-3">
                             <span className="inline-block px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                               {vendor.businessCategory}
                             </span>
                           </div>
                           
-                          {/* Budget - MOVED SECOND */}
+                          {/* Budget */}
                           <div className="text-red-700 font-bold text-base mb-3 price-tag" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
                             <span className="font-semibold text-gray-600 mr-1.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
                             {vendor.priceRange}
@@ -1955,7 +1955,7 @@ const Photography = () => {
                           {/* Contact Details */}
                           <div className="space-y-1.5 text-sm">
                             <div className="flex items-start">
-                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Contact Person:</span>
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Name:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.personName}</span>
                             </div>
                             <div className="flex items-start">
@@ -1965,8 +1965,8 @@ const Photography = () => {
                           </div>
                         </div>
 
-                        {/* Right Box - Description and Services - Slightly increased from 35% to 35% (keeping as is) */}
-                        <div className="w-[35%] p-4 bg-white relative">
+                        {/* Right Box - Description and Services */}
+                        <div className="w-[35%] p-4 bg-white relative h-full overflow-y-auto">
                           {/* Description */}
                           <p className="text-gray-700 mb-3 text-sm leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
                             {vendor.description}
@@ -2001,11 +2001,11 @@ const Photography = () => {
                         </div>
                       </div>
 
-                      {/* MOBILE VIEW - COMPLETELY UNCHANGED - BUSINESS CATEGORY FIRST, BUDGET SECOND */}
-                      <div className="md:hidden">
+                      {/* MOBILE VIEW - FIXED SIZE LAYOUT LIKE DECORATIONS PAGE */}
+                      <div className="md:hidden flex flex-col w-full">
                         {/* Top Section - Image and Details Side by Side */}
                         <div className="flex border-b border-gray-200">
-                          {/* Left Box - Image ONLY (no overlay) */}
+                          {/* Left Box - Image ONLY */}
                           <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
                             <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
                               <img 
@@ -2029,16 +2029,13 @@ const Photography = () => {
                               </div>
                             </div>
 
-                            {/* Business Category - MOVED FIRST */}
+                            {/* Budget below title */}
+                            <p className="text-red-700 font-bold text-xs mb-1">{vendor.priceRange}</p>
+                            
+                            {/* Business Category */}
                             <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
                               {vendor.businessCategory}
                             </span>
-                            
-                            {/* Budget - MOVED SECOND */}
-                            <div className="text-red-700 font-bold text-xs mb-1">
-                              <span className="font-bold text-[9px] text-gray-600 mr-1">Budget:</span>
-                              {vendor.priceRange}
-                            </div>
                             
                             {/* Location */}
                             <div className="text-gray-600 flex items-start text-[10px] mb-1">
@@ -2052,7 +2049,7 @@ const Photography = () => {
                             {/* Contact Details */}
                             <div className="space-y-0.5 text-[10px]">
                               <div className="flex items-start">
-                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Contact Person:</span>
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Name:</span>
                                 <span className="text-gray-800 leading-tight">{vendor.personName}</span>
                               </div>
                               <div className="flex items-start">
@@ -2081,7 +2078,7 @@ const Photography = () => {
                             ))}
                           </ul>
 
-                          {/* Small View Details Button in Right Bottom Corner */}
+                          {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
                             <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
                               <span>View Details</span>

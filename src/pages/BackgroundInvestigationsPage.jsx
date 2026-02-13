@@ -27,6 +27,22 @@ const BackgroundInvestigationsPage = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // New filter states based on investigation form
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [experience, setExperience] = useState('');
+  const [licenseVerified, setLicenseVerified] = useState('');
+  const [teamSize, setTeamSize] = useState('');
+  const [preferredStates, setPreferredStates] = useState([]);
+  const [hasTravelCharges, setHasTravelCharges] = useState('');
+  const [businessType, setBusinessType] = useState('');
+  const [turnaroundTime, setTurnaroundTime] = useState('');
+  const [reportFormat, setReportFormat] = useState('');
+  
+  // Filter navigation
+  const [currentFilterPage, setCurrentFilterPage] = useState(0);
+  const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
+  const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -40,7 +56,7 @@ const BackgroundInvestigationsPage = () => {
           filterSection.scrollIntoView({ behavior: 'smooth' });
         }
         if (window.innerWidth < 1024) {
-          setShowMobileFilter(true);
+          setShowMobileFilterDrawer(true);
         }
       }, 500);
     }
@@ -130,8 +146,79 @@ const BackgroundInvestigationsPage = () => {
     'Social Media Screening'
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Bangalore', 'Hyderabad', 'Mumbai'];
+  const businessTypes = [
+    "Individual",
+    "Proprietorship",
+    "Partnership",
+    "Private Limited",
+    "LLP"
+  ];
+
+  const reportFormats = [
+    "Digital Report",
+    "Physical Certificate",
+    "Both",
+    "Online Dashboard"
+  ];
+
+  const turnaroundOptions = [
+    "1-3 days",
+    "4-7 days",
+    "8-14 days",
+    "15-30 days"
+  ];
+
+  const experienceOptions = [
+    "5+ years",
+    "10+ years", 
+    "15+ years",
+    "20+ years"
+  ];
+
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi', 'Gujarat'];
+  const districts = {
+    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Kanyakumari', 'Tirunelveli'],
+    'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur', 'Kollam'],
+    'Karnataka': ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum'],
+    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Nellore', 'Tirupati'],
+    'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Aurangabad'],
+    'Delhi': ['New Delhi', 'South Delhi', 'North Delhi', 'East Delhi', 'West Delhi'],
+    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar']
+  };
+
+  const handleServiceClick = (serviceName) => {
+    setSelectedService(serviceName);
+    
+    if (window.innerWidth < 1024) {
+      setTimeout(() => {
+        const vendorSection = document.querySelector('.vendor-profiles');
+        if (vendorSection) {
+          vendorSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  };
+
+  const handleServiceToggle = (service) => {
+    setSelectedServices(prev => {
+      if (prev.includes(service)) {
+        return prev.filter(s => s !== service);
+      } else {
+        return [...prev, service];
+      }
+    });
+  };
+
+  const handleStateToggle = (state) => {
+    setPreferredStates(prev => {
+      if (prev.includes(state)) {
+        return prev.filter(s => s !== state);
+      } else {
+        return [...prev, state];
+      }
+    });
+  };
 
   // Sample detective agencies data
   const agencies = [
@@ -150,7 +237,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.9,
       priceRange: '₹15,000 - ₹50,000',
       licenseNumber: 'DET-TN-2023001',
-      yearsExperience: 15
+      yearsExperience: 15,
+      teamSize: 12,
+      businessType: 'Private Limited',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Both',
+      preferredStates: ['Tamil Nadu', 'Karnataka'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Identity Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification']
     },
     {
       id: 2,
@@ -167,7 +261,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.8,
       priceRange: '₹12,000 - ₹45,000',
       licenseNumber: 'DET-KA-2023002',
-      yearsExperience: 12
+      yearsExperience: 12,
+      teamSize: 8,
+      businessType: 'Proprietorship',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Digital Report',
+      preferredStates: ['Karnataka', 'Tamil Nadu'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Marital Status Check', 'Family Background', 'Social Media Screening', 'Residential Verification']
     },
     {
       id: 3,
@@ -184,7 +285,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.7,
       priceRange: '₹20,000 - ₹75,000',
       licenseNumber: 'DET-TG-2023003',
-      yearsExperience: 18
+      yearsExperience: 18,
+      teamSize: 25,
+      businessType: 'Private Limited',
+      turnaroundTime: '8-14 days',
+      reportFormat: 'Both',
+      preferredStates: ['Telangana', 'Andhra Pradesh', 'Maharashtra'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Employment Verification', 'Financial Background', 'Court Case Check', 'Social Reputation Check']
     },
     {
       id: 4,
@@ -201,7 +309,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.8,
       priceRange: '₹10,000 - ₹40,000',
       licenseNumber: 'DET-TN-2023004',
-      yearsExperience: 10
+      yearsExperience: 10,
+      teamSize: 6,
+      businessType: 'Partnership',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Digital Report',
+      preferredStates: ['Tamil Nadu'],
+      hasTravelCharges: 'no',
+      selectedServices: ['Identity Verification', 'Education Verification', 'Employment Verification', 'Family Background']
     },
     {
       id: 5,
@@ -218,7 +333,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.9,
       priceRange: '₹8,000 - ₹35,000',
       licenseNumber: 'DET-MH-2023005',
-      yearsExperience: 14
+      yearsExperience: 14,
+      teamSize: 18,
+      businessType: 'Private Limited',
+      turnaroundTime: '1-3 days',
+      reportFormat: 'Online Dashboard',
+      preferredStates: ['Maharashtra', 'Gujarat'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Identity Verification', 'Residential Verification', 'Employment Verification']
     },
     {
       id: 6,
@@ -235,7 +357,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.6,
       priceRange: '₹15,000 - ₹60,000',
       licenseNumber: 'DET-KL-2023006',
-      yearsExperience: 8
+      yearsExperience: 8,
+      teamSize: 7,
+      businessType: 'Proprietorship',
+      turnaroundTime: '8-14 days',
+      reportFormat: 'Physical Certificate',
+      preferredStates: ['Kerala'],
+      hasTravelCharges: 'no',
+      selectedServices: ['Family Background', 'Social Reputation Check', 'Marital Status Check']
     },
     {
       id: 7,
@@ -252,7 +381,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.9,
       priceRange: '₹25,000 - ₹80,000',
       licenseNumber: 'DET-DL-2023007',
-      yearsExperience: 20
+      yearsExperience: 20,
+      teamSize: 15,
+      businessType: 'LLP',
+      turnaroundTime: '8-14 days',
+      reportFormat: 'Both',
+      preferredStates: ['Delhi', 'Maharashtra'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Criminal Record Check', 'Court Case / Litigation Check', 'Social Reputation Check']
     },
     {
       id: 8,
@@ -269,7 +405,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.7,
       priceRange: '₹18,000 - ₹65,000',
       licenseNumber: 'DET-GJ-2023008',
-      yearsExperience: 11
+      yearsExperience: 11,
+      teamSize: 9,
+      businessType: 'Private Limited',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Digital Report',
+      preferredStates: ['Gujarat', 'Maharashtra'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Financial Background', 'Employment Verification']
     },
     {
       id: 9,
@@ -286,7 +429,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.8,
       priceRange: '₹12,000 - ₹45,000',
       licenseNumber: 'DET-MH-2023009',
-      yearsExperience: 9
+      yearsExperience: 9,
+      teamSize: 11,
+      businessType: 'Partnership',
+      turnaroundTime: '1-3 days',
+      reportFormat: 'Online Dashboard',
+      preferredStates: ['Maharashtra', 'Karnataka'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Social Media Screening', 'Social Reputation Check']
     },
     {
       id: 10,
@@ -303,7 +453,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.7,
       priceRange: '₹7,000 - ₹30,000',
       licenseNumber: 'DET-WB-2023010',
-      yearsExperience: 13
+      yearsExperience: 13,
+      teamSize: 14,
+      businessType: 'Proprietorship',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Both',
+      preferredStates: ['West Bengal'],
+      hasTravelCharges: 'no',
+      selectedServices: ['Education Verification', 'Identity Verification']
     },
     {
       id: 11,
@@ -320,7 +477,14 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.8,
       priceRange: '₹10,000 - ₹40,000',
       licenseNumber: 'DET-KA-2023011',
-      yearsExperience: 12
+      yearsExperience: 12,
+      teamSize: 16,
+      businessType: 'Private Limited',
+      turnaroundTime: '4-7 days',
+      reportFormat: 'Digital Report',
+      preferredStates: ['Karnataka', 'Tamil Nadu'],
+      hasTravelCharges: 'yes',
+      selectedServices: ['Employment Verification', 'Financial Background']
     },
     {
       id: 12,
@@ -337,30 +501,34 @@ const BackgroundInvestigationsPage = () => {
       rating: 4.6,
       priceRange: '₹8,000 - ₹35,000',
       licenseNumber: 'DET-TN-2023012',
-      yearsExperience: 7
+      yearsExperience: 7,
+      teamSize: 8,
+      businessType: 'Individual',
+      turnaroundTime: '1-3 days',
+      reportFormat: 'Digital Report',
+      preferredStates: ['Tamil Nadu'],
+      hasTravelCharges: 'no',
+      selectedServices: ['Residential Verification', 'Identity Verification']
     },
   ];
 
-  const handleServiceClick = (serviceName) => {
-    setSelectedService(serviceName);
-    
-    if (window.innerWidth < 1024) {
-      setTimeout(() => {
-        const vendorSection = document.querySelector('.vendor-profiles');
-        if (vendorSection) {
-          vendorSection.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  };
-
-  // Filter agencies based on selections
+  // Filter agencies based on all selections
   const filteredAgencies = agencies.filter(agency => {
-    if (selectedService && !agency.services.includes(selectedService)) return false;
+    // Basic filters
+    if (selectedService && !agency.services.includes(selectedService) && !agency.selectedServices?.includes(selectedService)) return false;
     if (selectedState && !agency.location.includes(selectedState)) return false;
     if (selectedDistrict && !agency.location.includes(selectedDistrict)) return false;
     if (selectedLocation && !agency.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
     
+    // Budget filter
+    if (minBudget || maxBudget) {
+      const minPrice = parseInt(minBudget) || 0;
+      const maxPrice = parseInt(maxBudget) || Infinity;
+      const agencyMinPrice = parseInt(agency.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
+      if (agencyMinPrice < minPrice || agencyMinPrice > maxPrice) return false;
+    }
+    
+    // Search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       return (
@@ -371,15 +539,602 @@ const BackgroundInvestigationsPage = () => {
       );
     }
     
-    if (minBudget || maxBudget) {
-      const minPrice = parseInt(minBudget) || 0;
-      const maxPrice = parseInt(maxBudget) || Infinity;
-      const agencyPrice = parseInt(agency.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
-      return agencyPrice >= minPrice && agencyPrice <= maxPrice;
+    // Service types filter
+    if (selectedServices.length > 0) {
+      if (!agency.selectedServices && !agency.services) return false;
+      const agencyServices = agency.selectedServices || agency.services;
+      const hasMatchingService = selectedServices.some(service => 
+        agencyServices.includes(service)
+      );
+      if (!hasMatchingService) return false;
     }
+    
+    // Experience filter
+    if (experience) {
+      const expValue = parseInt(experience) || 0;
+      if (agency.yearsExperience < expValue) return false;
+    }
+    
+    // License verified filter
+    if (licenseVerified === 'yes') {
+      if (!agency.licenseNumber) return false;
+    }
+    
+    // Team size filter
+    if (teamSize) {
+      const minTeam = parseInt(teamSize) || 0;
+      if (agency.teamSize < minTeam) return false;
+    }
+    
+    // Preferred states filter
+    if (preferredStates.length > 0) {
+      if (!agency.preferredStates) return false;
+      const hasMatchingState = preferredStates.some(state => 
+        agency.preferredStates.includes(state)
+      );
+      if (!hasMatchingState) return false;
+    }
+    
+    // Travel charges filter
+    if (hasTravelCharges && agency.hasTravelCharges !== hasTravelCharges) return false;
+    
+    // Business type filter
+    if (businessType && agency.businessType !== businessType) return false;
+    
+    // Turnaround time filter
+    if (turnaroundTime && agency.turnaroundTime !== turnaroundTime) return false;
+    
+    // Report format filter
+    if (reportFormat && agency.reportFormat !== reportFormat) return false;
     
     return true;
   });
+
+  // Desktop filter pages - COMPACT VERSION (3 pages only)
+  const filterPages = [
+    {
+      title: "Basic Filters",
+      content: (
+        <div className="space-y-3">
+          {/* Budget Range */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          </div>
+
+          {/* Years of Experience */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Experience</label>
+            <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any Experience</option>
+              {experienceOptions.map(option => (
+                <option key={option} value={option.replace('+', '')}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Business Type */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Business Types</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Turnaround Time */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Turnaround</label>
+            <select
+              value={turnaroundTime}
+              onChange={(e) => setTurnaroundTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any Timeline</option>
+              {turnaroundOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Primary Service */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Service</label>
+            <select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Services</option>
+              {serviceTypes.map((service) => (
+                <option key={service} value={service}>{service}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Location & Services",
+      content: (
+        <div className="space-y-3">
+          {/* State */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All States</option>
+              {states.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* District */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
+            >
+              <option value="">All Districts</option>
+              {selectedState && districts[selectedState]?.map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Location/City */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
+            <input
+              type="text"
+              placeholder="Enter city"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          {/* Specific Services */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">More Services</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {serviceTypes.slice(0, 6).map(service => (
+                <label key={service} className="flex items-center gap-2 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Agency & Coverage",
+      content: (
+        <div className="space-y-3">
+          {/* Team Size */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Team Size</label>
+            <input
+              type="number"
+              placeholder="Investigators"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          {/* License Verified */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">License</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="licenseVerified" 
+                  value="yes"
+                  checked={licenseVerified === "yes"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="licenseVerified" 
+                  value="no"
+                  checked={licenseVerified === "no"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Report Format */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Report Format</label>
+            <select
+              value={reportFormat}
+              onChange={(e) => setReportFormat(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any Format</option>
+              {reportFormats.map(format => (
+                <option key={format} value={format}>{format}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Travel Charges */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="hasTravelCharges" 
+                  value="yes"
+                  checked={hasTravelCharges === "yes"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="hasTravelCharges" 
+                  value="no"
+                  checked={hasTravelCharges === "no"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Preferred States */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred States</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {states.slice(0, 6).map(state => (
+                <label key={state} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredStates.includes(state)}
+                    onChange={() => handleStateToggle(state)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {state.split(' ')[0]}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
+
+    // Mobile filter pages - ULTRA COMPACT VERSION (4 pages only)
+  const mobileFilterPages = [
+    {
+      title: "Basic",
+      content: (
+        <div className="space-y-2">
+          {/* Budget */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
+            <div className="flex gap-1">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              />
+            </div>
+          </div>
+
+          {/* Experience */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Experience</label>
+            <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">Any</option>
+              {experienceOptions.map(option => (
+                <option key={option} value={option.replace('+', '')}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Business Type */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Service",
+      content: (
+        <div className="space-y-2">
+          {/* Turnaround */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Turnaround</label>
+            <select
+              value={turnaroundTime}
+              onChange={(e) => setTurnaroundTime(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">Any</option>
+              {turnaroundOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Primary Service */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Primary Service</label>
+            <select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All</option>
+              {serviceTypes.slice(0, 6).map((service) => (
+                <option key={service} value={service}>{service.split(' ')[0]}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* More Services */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">More Services</label>
+            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {serviceTypes.slice(0, 4).map(service => (
+                <label key={service} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service.split(' ')[0]}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Location",
+      content: (
+        <div className="space-y-2">
+          {/* State */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All States</option>
+              {states.slice(0, 6).map((state) => (
+                <option key={state} value={state}>{state.split(' ')[0]}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* District */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+            >
+              <option value="">All Districts</option>
+              {selectedState && districts[selectedState]?.slice(0, 4).map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* City */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City</label>
+            <input
+              type="text"
+              placeholder="Enter city"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Agency",
+      content: (
+        <div className="space-y-2">
+          {/* Team Size */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Team Size</label>
+            <input
+              type="number"
+              placeholder="Min investigators"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          {/* License */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">License</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileLicense" 
+                  value="yes"
+                  checked={licenseVerified === "yes"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileLicense" 
+                  value="no"
+                  checked={licenseVerified === "no"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Report Format */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Report</label>
+            <select
+              value={reportFormat}
+              onChange={(e) => setReportFormat(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">Any</option>
+              {reportFormats.map(format => (
+                <option key={format} value={format}>{format.split(' ')[0]}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Travel Charges */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileTravel" 
+                  value="yes"
+                  checked={hasTravelCharges === "yes"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileTravel" 
+                  value="no"
+                  checked={hasTravelCharges === "no"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Preferred States */}
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Pref. States</label>
+            <div className="grid grid-cols-2 gap-1 max-h-20 overflow-y-auto p-1 border border-red-100 rounded">
+              {states.slice(0, 4).map(state => (
+                <label key={state} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredStates.includes(state)}
+                    onChange={() => handleStateToggle(state)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  {state.split(' ')[0]}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
 
   // Auto change banner every 3 seconds
   useEffect(() => {
@@ -398,6 +1153,7 @@ const BackgroundInvestigationsPage = () => {
 
   const handleFilter = () => {
     console.log('Filtering...', filteredAgencies.length);
+    setShowMobileFilterDrawer(false);
     setShowMobileFilter(false);
     
     // Scroll to agency section after applying filters
@@ -417,6 +1173,18 @@ const BackgroundInvestigationsPage = () => {
     setSelectedDistrict('');
     setSelectedLocation('');
     setSearchQuery('');
+    setSelectedServices([]);
+    setExperience('');
+    setLicenseVerified('');
+    setTeamSize('');
+    setPreferredStates([]);
+    setHasTravelCharges('');
+    setBusinessType('');
+    setTurnaroundTime('');
+    setReportFormat('');
+    setCurrentFilterPage(0);
+    setCurrentMobileFilterPage(0);
+    setShowMobileFilterDrawer(false);
     setShowMobileFilter(false);
   };
 
@@ -427,44 +1195,92 @@ const BackgroundInvestigationsPage = () => {
         filterSection.scrollIntoView({ behavior: 'smooth' });
       }
       if (window.innerWidth < 1024) {
-        setShowMobileFilter(true);
+        setShowMobileFilterDrawer(true);
       }
     } else {
       navigate('/background-investigations?openFilter=true');
     }
   };
 
-  // Function to handle agency registration - This is where the form should open
+  const nextFilterPage = () => {
+    if (currentFilterPage < filterPages.length - 1) {
+      setCurrentFilterPage(currentFilterPage + 1);
+    }
+  };
+
+  const prevFilterPage = () => {
+    if (currentFilterPage > 0) {
+      setCurrentFilterPage(currentFilterPage - 1);
+    }
+  };
+
+  const nextMobileFilterPage = () => {
+    if (currentMobileFilterPage < mobileFilterPages.length - 1) {
+      setCurrentMobileFilterPage(currentMobileFilterPage + 1);
+    }
+  };
+
+  const prevMobileFilterPage = () => {
+    if (currentMobileFilterPage > 0) {
+      setCurrentMobileFilterPage(currentMobileFilterPage - 1);
+    }
+  };
+
+  // Function to handle agency registration
   const handleAgencyRegistration = () => {
-    // This should trigger the vendor registration form
     const event = new CustomEvent('openVendorForm', { 
       detail: { formType: 'background-investigations' } 
     });
     window.dispatchEvent(event);
-    
-    // If the above doesn't work, use localStorage
     localStorage.setItem('openVendorForm', 'background-investigations');
     window.location.href = '/?openForm=background-investigations';
   };
 
+  // Count active filters
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (minBudget) count++;
+    if (maxBudget) count++;
+    if (selectedService) count++;
+    if (selectedState) count++;
+    if (selectedDistrict) count++;
+    if (selectedLocation) count++;
+    if (searchQuery) count++;
+    if (selectedServices.length > 0) count++;
+    if (experience) count++;
+    if (licenseVerified) count++;
+    if (teamSize) count++;
+    if (preferredStates.length > 0) count++;
+    if (hasTravelCharges) count++;
+    if (businessType) count++;
+    if (turnaroundTime) count++;
+    if (reportFormat) count++;
+    return count;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Add Pacifico font */}
-      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      {/* Google Fonts */}
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet" />
       
-      {/* Floating Filter Button */}
+      {/* Floating Filter Button with Badge */}
       <button
         onClick={handleFilterButtonClick}
         className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
         aria-label="Open Filters"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
         </svg>
-        <span className="ml-2 font-bold text-sm">Filter</span>
+        {getActiveFilterCount() > 0 && (
+          <span className="absolute -top-1 -right-1 bg-yellow-500 text-red-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {getActiveFilterCount()}
+          </span>
+        )}
       </button>
 
-      {/* Banner Section - Fixed Size */}
+      {/* Banner Section - COMPLETELY UNCHANGED */}
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
           {banners.map((banner, index) => (
@@ -542,28 +1358,28 @@ const BackgroundInvestigationsPage = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation */}
-      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-3">
-        <div className="container mx-auto px-2 md:px-4">
-          <h3 className="text-white text-xs sm:text-sm md:text-base font-bold mb-1 md:mb-2 text-center">
-            Browse All Wedding Services
-          </h3>
-          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-            {mainCategories.map((category) => (
-              <Link
-                key={category.name}
-                to={category.path}
-                className="flex-shrink-0 transition-all duration-300"
-              >
-                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2 px-2 md:px-4 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-xs whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                  {category.name}
-                </button>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-
+      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
+                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+                    <div className="container mx-auto px-2 md:px-4">
+                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Browse All Wedding Services
+                      </h3>
+                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+                        {mainCategories.map((category) => (
+                          <Link
+                            key={category.name}
+                            to={category.path}
+                            className="flex-shrink-0 transition-all duration-300"
+                          >
+                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                              {category.name}
+                            </button>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+      
       {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
@@ -640,42 +1456,111 @@ const BackgroundInvestigationsPage = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Clear image with better branding (UPDATED to match Photography page) */}
-<div className="md:hidden mb-3 mt-2">
-  <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-    <div className="flex h-28">
-      {/* Left Side: Clear Image without overlay */}
-      <div className="w-2/5 relative overflow-hidden">
-        <img
-          src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
-          alt="Eliteinova Matrimony"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      
-      {/* Right Side: Text and Button */}
-      <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-        <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
-          Eliteinova Matrimony
-        </h2>
-        <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
-          Find Your Perfect Partner
-        </h3>
-        <a 
-          href="https://eliteinovamatrimony.com/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
-        >
-          <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-          </svg>
-          Register Now
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
+            {/* Mobile Matrimony Card - Clear image with better branding */}
+            <div className="md:hidden mb-3 mt-2">
+              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-28">
+                  {/* Left Side: Clear Image without overlay */}
+                  <div className="w-2/5 relative overflow-hidden">
+                    <img
+                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
+                      alt="Eliteinova Matrimony"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  {/* Right Side: Text and Button */}
+                  <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
+                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
+                      Find Your Perfect Partner
+                    </h3>
+                    <a 
+                      href="https://eliteinovamatrimony.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                    >
+                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Register Now
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile Filters - Below Matrimony Card - EXTRA COMPACT */}
+              <div className="mt-2 bg-white rounded-md shadow border border-red-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 px-2 py-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-[10px] font-bold text-white flex items-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Filter
+                    </h3>
+                    <span className="text-[8px] bg-white/20 text-white px-1.5 py-0.5 rounded-full">
+                      {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-2">
+                  {/* Filter Content */}
+                  {mobileFilterPages[currentMobileFilterPage].content}
+
+                  {/* Pagination Buttons - Ultra Small */}
+                  <div className="flex justify-between items-center mt-2">
+                    <button
+                      onClick={prevMobileFilterPage}
+                      disabled={currentMobileFilterPage === 0}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === 0
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Prev
+                    </button>
+                    <button
+                      onClick={nextMobileFilterPage}
+                      disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === mobileFilterPages.length - 1
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                  {/* Action Buttons - Ultra Small */}
+                  <div className="flex gap-1 mt-2 pt-1.5 border-t border-gray-200">
+                    <button
+                      onClick={handleFilter}
+                      className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Apply
+                      <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[7px]">
+                        {filteredAgencies.length}
+                      </span>
+                    </button>
+                    <button
+                      onClick={handleReset}
+                      className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-1 px-1.5 rounded font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             {/* Search Bar */}
             <section className="py-1 md:py-2">
@@ -686,6 +1571,7 @@ const BackgroundInvestigationsPage = () => {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 border border-red-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 text-sm"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 />
                 <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -710,18 +1596,18 @@ const BackgroundInvestigationsPage = () => {
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
-                      <h3 className="text-xs font-bold text-white leading-tight">
-                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : '12 Detective Agencies'}
+                      <h3 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : `${filteredAgencies.length} Detective Agencies`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
+                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `Showing results for "${selectedService}"` : 'Professional background investigation services'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
-                        <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹7,000 - ₹80,000</span>
+                        <span className="text-white font-medium text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹7,000 - ₹80,000</span>
                       </div>
                     </div>
                   </div>
@@ -730,7 +1616,7 @@ const BackgroundInvestigationsPage = () => {
                 {/* Applied Filters Tags */}
                 <div className="flex flex-wrap gap-1 mb-2">
                   {selectedService && (
-                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Service: {selectedService}
                       <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">
                         ×
@@ -738,7 +1624,7 @@ const BackgroundInvestigationsPage = () => {
                     </span>
                   )}
                   {selectedState && (
-                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       State: {selectedState}
                       <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
                         ×
@@ -746,7 +1632,7 @@ const BackgroundInvestigationsPage = () => {
                     </span>
                   )}
                   {(minBudget || maxBudget) && (
-                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
                       <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
                         ×
@@ -754,130 +1640,50 @@ const BackgroundInvestigationsPage = () => {
                     </span>
                   )}
                   {searchQuery && (
-                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Search: {searchQuery}
                       <button onClick={() => setSearchQuery('')} className="ml-0.5 text-purple-500 hover:text-purple-700">
                         ×
                       </button>
                     </span>
                   )}
-                </div>
-              </section>
-
-              {/* Mobile Filters */}
-              <section className="py-1 mb-2">
-                <div className="bg-white rounded-md shadow border border-red-200 p-2">
-                  <div className="flex items-center justify-between mb-2 border-b border-gray-100 pb-1.5">
-                    <h3 className="text-xs font-bold text-red-800 flex items-center">
-                      <svg className="w-3.5 h-3.5 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                      </svg>
-                      Filter Options
-                    </h3>
-                    <button 
-                      onClick={handleReset}
-                      className="text-[10px] font-medium text-red-600 hover:text-red-800 flex items-center"
-                    >
-                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                      Reset
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
-                      <div className="flex gap-1.5">
-                        <input
-                          type="number"
-                          placeholder="Min"
-                          value={minBudget}
-                          onChange={(e) => setMinBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <input
-                          type="number"
-                          placeholder="Max"
-                          value={maxBudget}
-                          onChange={(e) => setMaxBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Service Type</label>
-                      <select
-                        value={selectedService}
-                        onChange={(e) => setSelectedService(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Services</option>
-                        {serviceTypes.map((service) => (
-                          <option key={service} value={service}>{service}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">State</label>
-                      <select
-                        value={selectedState}
-                        onChange={(e) => setSelectedState(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All States</option>
-                        {states.map((state) => (
-                          <option key={state} value={state}>{state}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">District</label>
-                      <select
-                        value={selectedDistrict}
-                        onChange={(e) => setSelectedDistrict(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Districts</option>
-                        {districts.map((district) => (
-                          <option key={district} value={district}>{district}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Location</label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="City or area"
-                          value={selectedLocation}
-                          onChange={(e) => setSelectedLocation(e.target.value)}
-                          className="w-full pl-7 pr-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleFilter}
-                    className="w-full mt-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
-                  >
-                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Apply Filters
-                    <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[10px]">
-                      ({filteredAgencies.length} found)
+                  {selectedServices.length > 0 && (
+                    <span className="inline-flex items-center bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Services: {selectedServices.length}
+                      <button onClick={() => setSelectedServices([])} className="ml-0.5 text-blue-500 hover:text-blue-700">
+                        ×
+                      </button>
                     </span>
-                  </button>
+                  )}
+                  {experience && (
+                    <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Exp: {experience}+ years
+                      <button onClick={() => setExperience('')} className="ml-0.5 text-indigo-500 hover:text-indigo-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {businessType && (
+                    <span className="inline-flex items-center bg-pink-100 text-pink-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Business: {businessType}
+                      <button onClick={() => setBusinessType('')} className="ml-0.5 text-pink-500 hover:text-pink-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {turnaroundTime && (
+                    <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Turnaround: {turnaroundTime}
+                      <button onClick={() => setTurnaroundTime('')} className="ml-0.5 text-teal-500 hover:text-teal-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {getActiveFilterCount() > 5 && (
+                    <span className="inline-flex items-center bg-gray-100 text-gray-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      +{getActiveFilterCount() - 5} more
+                    </span>
+                  )}
                 </div>
               </section>
             </div>
@@ -885,28 +1691,28 @@ const BackgroundInvestigationsPage = () => {
             {/* Desktop: Agency Count */}
             <div className="hidden lg:block mb-4">
               <section className="py-2">
-                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white leading-tight">
-                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : '12 Detective Agencies'}
+                      <h3 className="text-xl font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedService ? `${filteredAgencies.length} ${selectedService} Agencies` : `${filteredAgencies.length} Detective Agencies`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-sm">
+                      <p className="text-yellow-200 mt-1 text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `Showing results for "${selectedService}"` : 'Professional background investigation services'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
-                      <div className="bg-white/20 px-2.5 py-1.5 rounded">
-                        <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹7,000 - ₹80,000</span>
+                      <div className="bg-white/20 px-3 py-1.5 rounded">
+                        <span className="text-white font-medium text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹7,000 - ₹80,000</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {selectedService && (
-                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Service: {selectedService}
                         <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">
                           ×
@@ -914,7 +1720,7 @@ const BackgroundInvestigationsPage = () => {
                       </span>
                     )}
                     {selectedState && (
-                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         State: {selectedState}
                         <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
                           ×
@@ -922,7 +1728,7 @@ const BackgroundInvestigationsPage = () => {
                       </span>
                     )}
                     {(minBudget || maxBudget) && (
-                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Budget: {minBudget || '0'} - {maxBudget || '∞'}
                         <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
                           ×
@@ -930,11 +1736,48 @@ const BackgroundInvestigationsPage = () => {
                       </span>
                     )}
                     {searchQuery && (
-                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Search: {searchQuery}
                         <button onClick={() => setSearchQuery('')} className="ml-1 text-purple-500 hover:text-purple-700">
                           ×
                         </button>
+                      </span>
+                    )}
+                    {selectedServices.length > 0 && (
+                      <span className="inline-flex items-center bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Services: {selectedServices.length}
+                        <button onClick={() => setSelectedServices([])} className="ml-1 text-blue-500 hover:text-blue-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {experience && (
+                      <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Experience: {experience}+ years
+                        <button onClick={() => setExperience('')} className="ml-1 text-indigo-500 hover:text-indigo-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {businessType && (
+                      <span className="inline-flex items-center bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Business: {businessType}
+                        <button onClick={() => setBusinessType('')} className="ml-1 text-pink-500 hover:text-pink-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {turnaroundTime && (
+                      <span className="inline-flex items-center bg-teal-100 text-teal-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Turnaround: {turnaroundTime}
+                        <button onClick={() => setTurnaroundTime('')} className="ml-1 text-teal-500 hover:text-teal-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {getActiveFilterCount() > 5 && (
+                      <span className="inline-flex items-center bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        +{getActiveFilterCount() - 5} more
                       </span>
                     )}
                   </div>
@@ -942,198 +1785,213 @@ const BackgroundInvestigationsPage = () => {
               </section>
             </div>
 
-            {/* Agency Profiles */}
+            {/* Agency Profiles - UPDATED TO MATCH PHOTOGRAPHY PAGE */}
             <section className="py-1 md:py-2 vendor-profiles">
               {filteredAgencies.length > 0 ? (
-                <div className="space-y-1.5 md:space-y-3">
+                <div className="space-y-2 md:space-y-4">
                   {filteredAgencies.map((agency) => (
-                    <div key={agency.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo (Desktop Only) */}
-                        <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
+                    <div key={agency.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                      
+                      {/* DESKTOP VIEW - MOBILE FORMAT HORIZONTAL - BUSINESS CATEGORY FIRST, BUDGET SECOND */}
+                      <div className="hidden md:flex md:flex-row w-full">
+                        {/* Left Box - Image Full in Box - 22% */}
+                        <div className="w-[22%] p-0 flex items-stretch">
+                          <div className="w-full h-full overflow-hidden">
                             <img 
                               src={agency.logo} 
                               alt={agency.businessName} 
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="text-center">
-                            <div className="flex items-center justify-center mb-0.5">
-                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{agency.rating}</span>
+                        </div>
+
+                        {/* Middle Box - Business Details - 43% */}
+                        <div className="w-[43%] p-4 bg-white border-r border-gray-200">
+                          {/* Title with Star Rating */}
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="text-lg font-bold text-red-800 pr-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
+                              {agency.businessName}
+                            </h3>
+                            <div className="flex items-center bg-yellow-100 px-2 py-1 rounded-full flex-shrink-0">
+                              <span className="text-yellow-700 font-bold mr-0.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.rating}</span>
+                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Business Category - MOVED FIRST */}
+                          <div className="mb-3">
+                            <span className="inline-block px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              {agency.serviceType}
+                            </span>
+                          </div>
+                          
+                          {/* Budget - MOVED SECOND */}
+                          <div className="text-red-700 font-bold text-base mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            <span className="font-semibold text-gray-600 mr-1.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
+                            {agency.priceRange}
+                          </div>
+                          
+                          {/* Location */}
+                          <div className="text-gray-600 flex items-start text-sm mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <svg className="w-4 h-4 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span className="leading-tight font-medium">{agency.location}</span>
+                          </div>
+                          
+                          {/* Contact Details */}
+                          <div className="space-y-1.5 text-sm">
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Investigator:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.personName}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Experience:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.yearsExperience} years</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>License:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.licenseNumber}</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Box - Description and Services - 35% */}
+                        <div className="w-[35%] p-4 bg-white relative">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-3 text-sm leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
+                            {agency.description}
+                          </p>
+                          
+                          {/* Services Offered */}
+                          <h4 className="font-bold text-red-700 mb-2 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            Services Offered
+                          </h4>
+                          <ul className="space-y-1.5 mb-3">
+                            {(agency.services || agency.selectedServices || []).slice(0, 4).map((service, index) => (
+                              <li key={index} className="flex items-start">
+                                <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span className="text-gray-700 text-sm leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
+                                  {service}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* View Details Button */}
+                          <div className="mt-3">
+                            <button 
+                              onClick={() => navigate(`/agency-details/${agency.id}`)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm"
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
+                              <span>View Details</span>
+                              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* MOBILE VIEW - UPDATED TO MATCH PHOTOGRAPHY PAGE */}
+                      <div className="md:hidden flex flex-col w-full">
+                        {/* Top Section - Image and Details Side by Side */}
+                        <div className="flex border-b border-gray-200">
+                          {/* Left Box - Image ONLY */}
+                          <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                            <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
+                              <img 
+                                src={agency.logo} 
+                                alt={agency.businessName} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right Box - Business Details */}
+                          <div className="w-3/5 p-1.5 bg-white">
+                            {/* Title with Star Rating */}
+                            <div className="flex items-start justify-between mb-0.5">
+                              <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{agency.businessName}</h3>
+                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{agency.rating}</span>
                                 <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs">{agency.priceRange}</p>
-                            <p className="text-gray-600 text-[10px] mt-0.5">License: {agency.licenseNumber}</p>
-                          </div>
-                        </div>
 
-                        {/* Middle Section - Business Details & Services */}
-                        <div className="md:w-2/4 md:p-3 md:border-r border-gray-100">
-                          {/* Mobile Layout */}
-                          <div className="md:hidden">
-                            {/* Top Section - Image and Details Side by Side */}
-                            <div className="flex border-b border-gray-200">
-                              {/* Left Box - Image ONLY (no overlay) */}
-                              <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
-                                <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
-                                  <img 
-                                    src={agency.logo} 
-                                    alt={agency.businessName} 
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                              </div>
-
-                              {/* Right Box - Business Details */}
-                              <div className="w-3/5 p-1.5 bg-white">
-                                {/* Title with Star Rating */}
-                                <div className="flex items-start justify-between mb-0.5">
-                                  <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{agency.businessName}</h3>
-                                  <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
-                                    <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{agency.rating}</span>
-                                    <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                    </svg>
-                                  </div>
-                                </div>
-
-                                {/* Budget below title */}
-                                <p className="text-red-700 font-bold text-xs mb-1">{agency.priceRange}</p>
-                                
-                                {/* Business Category */}
-                                <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
-                                  {agency.serviceType}
-                                </span>
-                                
-                                {/* Location */}
-                                <div className="text-gray-600 flex items-start text-[10px] mb-1">
-                                  <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  <span className="leading-tight">{agency.location}</span>
-                                </div>
-                                
-                                {/* License Number */}
-                                <div className="text-gray-600 text-[9px] mb-0.5">
-                                  <span className="font-bold">License:</span> {agency.licenseNumber}
-                                </div>
-                                
-                                {/* Contact Details */}
-                                <div className="space-y-0.5 text-[10px]">
-                                  <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Lead Investigator:</span>
-                                    <span className="text-gray-800 leading-tight">{agency.personName}</span>
-                                  </div>
-                                  <div className="flex items-start">
-                                    <span className="text-gray-600 font-bold w-16 flex-shrink-0">Experience:</span>
-                                    <span className="text-gray-800 leading-tight">{agency.yearsExperience} years</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            {/* Bottom Section - Full Width Description and Services */}
-                            <div className="w-full p-2 bg-white relative pb-10">
-                              {/* Description */}
-                              <p className="text-gray-700 mb-2 text-xs leading-relaxed">{agency.description}</p>
-                              
-                              {/* Services Offered */}
-                              <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
-                              <ul className="space-y-0.5 mb-1">
-                                {agency.services.map((service, index) => (
-                                  <li key={index} className="flex items-start">
-                                    <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    <span className="text-gray-700 text-xs leading-tight">{service}</span>
-                                  </li>
-                                ))}
-                              </ul>
-
-                              {/* Small View Details Button in Right Bottom Corner */}
-                              <div className="absolute bottom-2 right-2">
-                                <button 
-                                  onClick={() => navigate(`/agency-details/${agency.id}`)}
-                                  className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
-                                >
-                                  <span>View Details</span>
-                                  <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                  </svg>
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Desktop Layout */}
-                          <div className="hidden md:block">
-                            <div className="mb-1.5">
-                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{agency.businessName}</h3>
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
-                                <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
-                                  {agency.serviceType}
-                                </span>
-                                <span className="text-gray-600 flex items-center text-xs">
-                                  <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  {agency.location}
-                                </span>
-                              </div>
-                              <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{agency.description}</p>
+                            {/* Budget below title */}
+                            <p className="text-red-700 font-bold text-xs mb-1">{agency.priceRange}</p>
+                            
+                            {/* Business Category */}
+                            <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
+                              {agency.serviceType}
+                            </span>
+                            
+                            {/* Location */}
+                            <div className="text-gray-600 flex items-start text-[10px] mb-1">
+                              <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="leading-tight">{agency.location}</span>
                             </div>
                             
-                            <div className="space-y-0.5">
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Lead Investigator:</span>
-                                <span className="font-medium text-gray-800 text-xs">{agency.personName}</span>
+                            {/* Contact Details */}
+                            <div className="space-y-0.5 text-[10px]">
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Investigator:</span>
+                                <span className="text-gray-800 leading-tight">{agency.personName}</span>
                               </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Designation:</span>
-                                <span className="font-medium text-gray-800 text-xs">{agency.designation}</span>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Experience:</span>
+                                <span className="text-gray-800 leading-tight">{agency.yearsExperience} years</span>
                               </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">License Number:</span>
-                                <span className="font-medium text-gray-800 text-xs">{agency.licenseNumber}</span>
-                              </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-24 text-xs flex-shrink-0">Experience:</span>
-                                <span className="font-medium text-gray-800 text-xs">{agency.yearsExperience} years</span>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">License:</span>
+                                <span className="text-gray-800 leading-tight">{agency.licenseNumber}</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services (Desktop Only) */}
-                        <div className="hidden md:block md:w-1/4 p-3 bg-white">
+                        {/* Bottom Section - Full Width Description and Services */}
+                        <div className="w-full p-2 bg-white relative pb-10">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-2 text-xs leading-relaxed">{agency.description}</p>
+                          
+                          {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
-                          <ul className="space-y-0.5 mb-2">
-                            {agency.services.map((service, index) => (
+                          <ul className="space-y-0.5 mb-1">
+                            {(agency.services || agency.selectedServices || []).map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
-                          
-                          <button 
-                            onClick={() => navigate(`/agency-details/${agency.id}`)}
-                            className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs"
-                          >
-                            <span>View Details</span>
-                            <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                          </button>
+
+                          {/* View Details Button in Right Bottom Corner */}
+                          <div className="absolute bottom-2 right-2">
+                            <button 
+                              onClick={() => navigate(`/agency-details/${agency.id}`)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
+                              <span>View Details</span>
+                              <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1144,11 +2002,12 @@ const BackgroundInvestigationsPage = () => {
                   <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Agencies Found</h3>
-                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more agencies</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No Agencies Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Try adjusting your filter criteria to find more agencies</p>
                   <button 
                     onClick={handleReset}
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset Filters
                   </button>
@@ -1164,6 +2023,7 @@ const BackgroundInvestigationsPage = () => {
                 <button
                   onClick={handleAgencyRegistration}
                   className="bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-6 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl text-sm md:text-base"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   Register Your Agency
                 </button>
@@ -1172,7 +2032,7 @@ const BackgroundInvestigationsPage = () => {
 
             {/* Why Choose Us Section */}
             <section className="py-2 md:py-4">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Why Choose Our Background Verification Services?
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
@@ -1182,8 +2042,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Confidential</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">100% confidential and secure investigations</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Confidential</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>100% confidential and secure investigations</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -1192,8 +2052,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Fast Turnaround</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Quick and efficient background checks</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Fast Turnaround</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Quick and efficient background checks</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
@@ -1202,8 +2062,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Professional Team</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Experienced investigators and verifiers</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Professional Team</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experienced investigators and verifiers</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -1212,151 +2072,107 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Verified Agencies</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">All agencies are licensed and verified</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Verified Agencies</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>All agencies are licensed and verified</p>
                 </div>
               </div>
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
-          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
+          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY WITH PAGINATION */}
+          <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
-              {/* NEW: Matrimony Registration Box - Clear image with branding (UPDATED to match Photography page) */}
-<div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-  {/* Banner Image - Clear without overlay */}
-  <div className="relative h-40 overflow-hidden">
-    <img
-      src={matrimonyBanner}
-      alt="Eliteinova Matrimony"
-      className="w-full h-full object-cover"
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
-      }}
-    />
-  </div>
-  
-  {/* Content below image */}
-  <div className="p-4">
-    {/* Branding */}
-    <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
-      Eliteinova Matrimony
-    </h2>
-    <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center">
-      Find Your Perfect Partner
-    </h3>
-    
-    {/* Register Now Button */}
-    <a 
-      href="https://eliteinovamatrimony.com/" 
-      target="_blank" 
-      rel="noopener noreferrer"
-      className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
-    >
-      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-      </svg>
-      Register Now
-    </a>
-    
-    {/* Small note */}
-    <p className="text-gray-500 text-[10px] text-center mt-3">
-      Redirects to eliteinovamatrimony.com
-    </p>
-  </div>
-</div>
-
-              {/* Filter Container */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
-                  Filter Detective Agencies
-                </h3>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minBudget}
-                      onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxBudget}
-                      onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Service</label>
-                  <select
-                    value={selectedService}
-                    onChange={(e) => setSelectedService(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Services</option>
-                    {serviceTypes.map((service) => (
-                      <option key={service} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Districts</option>
-                    {districts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-                  <input
-                    type="text"
-                    placeholder="Enter location"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+              {/* NEW: Matrimony Registration Box - Clear image with branding */}
+              <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
+                <div className="relative h-40 overflow-hidden">
+                  <img
+                    src={matrimonyBanner}
+                    alt="Eliteinova Matrimony"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+                    }}
                   />
                 </div>
+                <div className="p-4">
+                  <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    Eliteinova Matrimony
+                  </h2>
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    Find Your Perfect Partner
+                  </h3>
+                  <a 
+                    href="https://eliteinovamatrimony.com/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                  >
+                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                    Register Now
+                  </a>
+                  <p className="text-gray-500 text-[10px] text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    Redirects to eliteinovamatrimony.com
+                  </p>
+                </div>
+              </div>
 
-                <div className="flex gap-2">
+              {/* Filter Container with Pagination */}
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-base font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {filterPages[currentFilterPage].title}
+                  </h3>
+                  <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                    {currentFilterPage + 1}/{filterPages.length}
+                  </span>
+                </div>
+
+                {/* Filter Content */}
+                {filterPages[currentFilterPage].content}
+
+                {/* Pagination Buttons */}
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={prevFilterPage}
+                    disabled={currentFilterPage === 0}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === 0
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextFilterPage}
+                    disabled={currentFilterPage === filterPages.length - 1}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === filterPages.length - 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
+                  >
+                    Next
+                  </button>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
                   <button
                     onClick={handleFilter}
                     className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Apply Filter
                   </button>
                   <button
                     onClick={handleReset}
                     className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset
                   </button>
@@ -1367,124 +2183,77 @@ const BackgroundInvestigationsPage = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay - COMPACT VERSION */}
-      {showMobileFilter && (
+      {/* Mobile Filter Drawer - EXTRA COMPACT VERSION */}
+      {showMobileFilterDrawer && (
         <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
-          <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
+          <div className="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto">
             {/* Header */}
-            <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
-              <h3 className="text-base font-bold text-red-800">Filter Detective Agencies</h3>
+            <div className="sticky top-0 bg-white z-10 px-3 py-2 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
+              <div>
+                <h3 className="text-sm font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {mobileFilterPages[currentMobileFilterPage].title}
+                </h3>
+                <span className="text-[9px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full mt-0.5 inline-block">
+                  {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+                </span>
+              </div>
               <button
-                onClick={() => setShowMobileFilter(false)}
+                onClick={() => setShowMobileFilterDrawer(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
                 aria-label="Close filter"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
-            {/* Filter Content */}
-            <div className="px-4 py-3 space-y-3">
-              {/* Budget Range */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Budget Range (₹)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={minBudget}
-                    onChange={(e) => setMinBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={maxBudget}
-                    onChange={(e) => setMaxBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
-              </div>
+            {/* Filter Content - EXTRA COMPACT */}
+            <div className="px-3 py-2 space-y-2">
+              {mobileFilterPages[currentMobileFilterPage].content}
 
-              {/* Type of Service */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Service</label>
-                <select
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+              {/* Pagination Buttons */}
+              <div className="flex justify-between items-center mt-2">
+                <button
+                  onClick={prevMobileFilterPage}
+                  disabled={currentMobileFilterPage === 0}
+                  className={`px-3 py-1 text-[9px] font-medium rounded ${
+                    currentMobileFilterPage === 0
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  }`}
                 >
-                  <option value="">All Services</option>
-                  {serviceTypes.map((service) => (
-                    <option key={service} value={service}>{service}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Preferred State */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Preferred State</label>
-                <select
-                  value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  Previous
+                </button>
+                <button
+                  onClick={nextMobileFilterPage}
+                  disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+                  className={`px-3 py-1 text-[9px] font-medium rounded ${
+                    currentMobileFilterPage === mobileFilterPages.length - 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  }`}
                 >
-                  <option value="">All States</option>
-                  {states.map((state) => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* District */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">District</label>
-                <select
-                  value={selectedDistrict}
-                  onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                >
-                  <option value="">All Districts</option>
-                  {districts.map((district) => (
-                    <option key={district} value={district}>{district}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Location</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter city or area"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-3 py-2 pl-9 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
+                  Next
+                </button>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-2 pt-2 pb-1">
+              <div className="flex gap-2 pt-2 pb-1 border-t border-gray-200 mt-2">
                 <button
                   onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-2 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-xs flex items-center justify-center"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  Apply Filter
-                  <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
-                    ({filteredAgencies.length})
+                  Apply
+                  <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[8px]">
+                    {filteredAgencies.length}
                   </span>
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-2 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-xs"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   Reset
                 </button>
