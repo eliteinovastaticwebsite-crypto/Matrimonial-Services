@@ -10,19 +10,45 @@ import ecogifts from '../assets/ecogifts.jpg';
 import luxuryhampers from '../assets/luxuryhampers.jpg';
 import invitationbanner1 from '../assets/inbanner1.jpg';
 import invitationbanner2 from '../assets/inbanner2.jpg';
-// Add a matrimony banner image - you can add your own image or use a placeholder
-import matrimonyBanner from '../assets/Matrimonybanner.jpg'; // You'll need to add this image
+import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 
 const Invitation = () => {
   const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  
+  // Basic filter states
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
   const [selectedEvent, setSelectedEvent] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
-  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  
+  // Extended filter states matching registration form
+  const [selectedServices, setSelectedServices] = useState([]);
+  const [selectedInvitationTypes, setSelectedInvitationTypes] = useState([]);
+  const [selectedPrintingOptions, setSelectedPrintingOptions] = useState([]);
+  const [selectedGiftTypes, setSelectedGiftTypes] = useState([]);
+  const [businessType, setBusinessType] = useState('');
+  const [experience, setExperience] = useState('');
+  const [minOrderQuantity, setMinOrderQuantity] = useState('');
+  const [giftMinOrder, setGiftMinOrder] = useState('');
+  const [customizationAvailable, setCustomizationAvailable] = useState('');
+  const [brandingAvailable, setBrandingAvailable] = useState('');
+  const [packingIncluded, setPackingIncluded] = useState('');
+  const [designApprovalTime, setDesignApprovalTime] = useState('');
+  const [printingDeliveryTime, setPrintingDeliveryTime] = useState('');
+  const [giftPreparationTime, setGiftPreparationTime] = useState('');
+  const [preferredLocations, setPreferredLocations] = useState([]);
+  const [hasTravelCharges, setHasTravelCharges] = useState('');
+  const [advanceRequired, setAdvanceRequired] = useState('');
+  const [hasGST, setHasGST] = useState('');
+  const [hasPAN, setHasPAN] = useState('');
+  
+  // Filter navigation
+  const [currentFilterPage, setCurrentFilterPage] = useState(0);
+  const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
+  const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -36,7 +62,7 @@ const Invitation = () => {
           filterSection.scrollIntoView({ behavior: 'smooth' });
         }
         if (window.innerWidth < 1024) {
-          setShowMobileFilter(true);
+          setShowMobileFilterDrawer(true);
         }
       }, 500);
     }
@@ -90,8 +116,56 @@ const Invitation = () => {
     'Luxury Hampers'
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
+  // Filter options from registration form
+  const serviceTypes = [
+    "Wedding Invitation Printing",
+    "Digital Invitations / E-Cards",
+    "Customized Invitation Design",
+    "Wedding Return Gifts",
+    "Wedding Favors",
+    "Corporate / Bulk Gifts",
+    "Hampers & Custom Packaging"
+  ];
+
+  const invitationTypes = [
+    "Traditional Cards",
+    "Theme-based Cards",
+    "Premium / Box Invitations",
+    "Eco-friendly Invitations",
+    "Digital / Video Invitations"
+  ];
+
+  const printingOptions = [
+    "Offset",
+    "Digital",
+    "Letterpress",
+    "Foil / Embossing"
+  ];
+
+  const giftTypes = [
+    "Traditional Gifts",
+    "Customized Gifts",
+    "Eco-friendly Gifts",
+    "Edible Gifts",
+    "Premium Hampers"
+  ];
+
+  const businessTypes = [
+    "Individual",
+    "Proprietorship",
+    "Partnership",
+    "Private Limited"
+  ];
+
+  const locations = [
+    "Local",
+    "Within State",
+    "Outstation",
+    "International"
+  ];
+
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
+  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Bangalore', 'Hyderabad', 'Mumbai', 'Delhi'];
 
   const handleCategoryClick = (categoryName) => {
     let eventType = categoryName;
@@ -137,7 +211,58 @@ const Invitation = () => {
     }
   };
 
-  // Sample vendor data
+  // Toggle functions for multi-select filters
+  const handleServiceToggle = (service) => {
+    setSelectedServices(prev => {
+      if (prev.includes(service)) {
+        return prev.filter(s => s !== service);
+      } else {
+        return [...prev, service];
+      }
+    });
+  };
+
+  const handleInvitationTypeToggle = (type) => {
+    setSelectedInvitationTypes(prev => {
+      if (prev.includes(type)) {
+        return prev.filter(t => t !== type);
+      } else {
+        return [...prev, type];
+      }
+    });
+  };
+
+  const handlePrintingOptionToggle = (option) => {
+    setSelectedPrintingOptions(prev => {
+      if (prev.includes(option)) {
+        return prev.filter(o => o !== option);
+      } else {
+        return [...prev, option];
+      }
+    });
+  };
+
+  const handleGiftTypeToggle = (type) => {
+    setSelectedGiftTypes(prev => {
+      if (prev.includes(type)) {
+        return prev.filter(t => t !== type);
+      } else {
+        return [...prev, type];
+      }
+    });
+  };
+
+  const handleLocationToggle = (location) => {
+    setPreferredLocations(prev => {
+      if (prev.includes(location)) {
+        return prev.filter(l => l !== location);
+      } else {
+        return [...prev, location];
+      }
+    });
+  };
+
+  // Enhanced vendor data with extended fields
   const vendors = [
     // Digital Invites Vendors
     {
@@ -149,11 +274,29 @@ const Invitation = () => {
       personName: 'Rajesh Kumar',
       designation: 'Creative Director',
       description: 'Professional digital invitation design services with interactive features and tracking',
-      services: ['Animated Invites', 'RSVP Tracking', 'Social Media Integration', 'Custom Animations'],
+      services: ['Wedding Invitation Printing', 'Digital Invitations / E-Cards', 'Customized Invitation Design'],
       logo: digitalinvites,
       location: 'Chennai, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹5,000 - ₹50,000'
+      priceRange: '₹5,000 - ₹50,000 per project',
+      experience: 8,
+      businessType: 'Studio',
+      invitationTypes: ['Digital / Video Invitations', 'Theme-based Cards'],
+      printingOptions: ['Digital'],
+      giftTypes: [],
+      minOrderQuantity: 50,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'no',
+      designApprovalTime: 3,
+      printingDeliveryTime: 5,
+      giftPreparationTime: 0,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'no',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 2,
@@ -164,11 +307,29 @@ const Invitation = () => {
       personName: 'Priya Sharma',
       designation: 'Digital Designer',
       description: 'Creating beautiful digital invitations with modern designs and user-friendly interfaces',
-      services: ['Interactive Designs', 'Video Invites', 'WhatsApp Integration', 'Guest Management'],
+      services: ['Digital Invitations / E-Cards', 'Customized Invitation Design'],
       logo: digitalinvites,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹8,000 - ₹75,000'
+      priceRange: '₹8,000 - ₹75,000 per project',
+      experience: 6,
+      businessType: 'Individual',
+      invitationTypes: ['Digital / Video Invitations', 'Theme-based Cards'],
+      printingOptions: [],
+      giftTypes: [],
+      minOrderQuantity: 25,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'no',
+      designApprovalTime: 2,
+      printingDeliveryTime: 3,
+      giftPreparationTime: 0,
+      preferredLocations: ['Local', 'Within State'],
+      hasTravelCharges: 'no',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Luxury Cards Vendors
     {
@@ -180,11 +341,29 @@ const Invitation = () => {
       personName: 'Arun Mehta',
       designation: 'Premium Designer',
       description: 'Premium luxury wedding cards with exquisite materials and craftsmanship',
-      services: ['Embossed Cards', 'Foil Stamping', 'Handmade Paper', 'Velvet Finishing'],
+      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
       logo: luxurycards,
       location: 'Bangalore, Karnataka',
       rating: 4.7,
-      priceRange: '₹200 - ₹1,000 per card'
+      priceRange: '₹200 - ₹1,000 per card',
+      experience: 12,
+      businessType: 'Partnership',
+      invitationTypes: ['Traditional Cards', 'Premium / Box Invitations'],
+      printingOptions: ['Offset', 'Letterpress', 'Foil / Embossing'],
+      giftTypes: [],
+      minOrderQuantity: 100,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 5,
+      printingDeliveryTime: 14,
+      giftPreparationTime: 0,
+      preferredLocations: ['Local', 'Within State', 'Outstation', 'International'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 4,
@@ -195,11 +374,29 @@ const Invitation = () => {
       personName: 'Sneha Reddy',
       designation: 'Luxury Card Specialist',
       description: 'Royal themed luxury wedding cards with premium finishes and elegant designs',
-      services: ['Gold Foiling', 'Silk Finishes', 'Crystal Embellishments', 'Premium Packaging'],
+      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
       logo: luxurycards,
       location: 'Hyderabad, Telangana',
       rating: 4.6,
-      priceRange: '₹300 - ₹1,500 per card'
+      priceRange: '₹300 - ₹1,500 per card',
+      experience: 10,
+      businessType: 'Private Limited',
+      invitationTypes: ['Traditional Cards', 'Theme-based Cards', 'Premium / Box Invitations'],
+      printingOptions: ['Foil / Embossing', 'Letterpress'],
+      giftTypes: [],
+      minOrderQuantity: 50,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 4,
+      printingDeliveryTime: 12,
+      giftPreparationTime: 0,
+      preferredLocations: ['Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Printed Cards Vendors
     {
@@ -211,11 +408,29 @@ const Invitation = () => {
       personName: 'Vikram Singh',
       designation: 'Printing Specialist',
       description: 'High-quality printed wedding cards with various paper options and finishes',
-      services: ['Offset Printing', 'Digital Printing', 'Paper Selection', 'Design Templates'],
+      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
       logo: printedcards,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹50 - ₹500 per card'
+      priceRange: '₹50 - ₹500 per card',
+      experience: 15,
+      businessType: 'Partnership',
+      invitationTypes: ['Traditional Cards', 'Theme-based Cards'],
+      printingOptions: ['Offset', 'Digital'],
+      giftTypes: [],
+      minOrderQuantity: 200,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 3,
+      printingDeliveryTime: 10,
+      giftPreparationTime: 0,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 6,
@@ -226,11 +441,29 @@ const Invitation = () => {
       personName: 'Anjali Nair',
       designation: 'Print Manager',
       description: 'Traditional and contemporary printed wedding cards with excellent print quality',
-      services: ['Traditional Designs', 'Modern Layouts', 'Color Options', 'Envelope Printing'],
+      services: ['Wedding Invitation Printing'],
       logo: printedcards,
       location: 'Kochi, Kerala',
       rating: 4.8,
-      priceRange: '₹40 - ₹400 per card'
+      priceRange: '₹40 - ₹400 per card',
+      experience: 9,
+      businessType: 'Proprietorship',
+      invitationTypes: ['Traditional Cards', 'Eco-friendly Invitations'],
+      printingOptions: ['Offset'],
+      giftTypes: [],
+      minOrderQuantity: 150,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 4,
+      printingDeliveryTime: 8,
+      giftPreparationTime: 0,
+      preferredLocations: ['Within State'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Custom Designs Vendors
     {
@@ -242,11 +475,29 @@ const Invitation = () => {
       personName: 'Rahul Verma',
       designation: 'Design Head',
       description: 'Fully customized invitation designs created from scratch based on your vision',
-      services: ['Personalized Designs', 'Theme Based', 'Photo Integration', 'Family Crests'],
+      services: ['Customized Invitation Design', 'Wedding Invitation Printing'],
       logo: customdesigns,
       location: 'Madurai, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹10,000 - ₹1,00,000'
+      priceRange: '₹10,000 - ₹1,00,000 per project',
+      experience: 11,
+      businessType: 'Private Limited',
+      invitationTypes: ['Theme-based Cards', 'Premium / Box Invitations', 'Eco-friendly Invitations'],
+      printingOptions: ['Digital', 'Foil / Embossing'],
+      giftTypes: [],
+      minOrderQuantity: 25,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 7,
+      printingDeliveryTime: 14,
+      giftPreparationTime: 0,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 8,
@@ -257,11 +508,29 @@ const Invitation = () => {
       personName: 'Meera Patel',
       designation: 'Creative Designer',
       description: 'Unique custom-designed invitations that tell your personal love story',
-      services: ['Story-Based Designs', 'Illustrated Invites', 'Hand Drawn Elements', 'Personal Themes'],
+      services: ['Customized Invitation Design'],
       logo: customdesigns,
       location: 'Ahmedabad, Gujarat',
       rating: 4.6,
-      priceRange: '₹15,000 - ₹1,20,000'
+      priceRange: '₹15,000 - ₹1,20,000 per project',
+      experience: 7,
+      businessType: 'Individual',
+      invitationTypes: ['Theme-based Cards', 'Digital / Video Invitations'],
+      printingOptions: ['Letterpress'],
+      giftTypes: [],
+      minOrderQuantity: 20,
+      giftMinOrder: 0,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 5,
+      printingDeliveryTime: 10,
+      giftPreparationTime: 0,
+      preferredLocations: ['Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Return Gifts Vendors
     {
@@ -273,11 +542,29 @@ const Invitation = () => {
       personName: 'Aisha Khan',
       designation: 'Gift Consultant',
       description: 'Beautiful and thoughtful return gifts for wedding guests',
-      services: ['Personalized Gifts', 'Themed Gifts', 'Premium Packaging', 'Bulk Orders'],
+      services: ['Wedding Return Gifts', 'Wedding Favors', 'Corporate / Bulk Gifts'],
       logo: returngifts,
       location: 'Mumbai, Maharashtra',
       rating: 4.9,
-      priceRange: '₹200 - ₹2,000 per gift'
+      priceRange: '₹200 - ₹2,000 per gift',
+      experience: 8,
+      businessType: 'Private Limited',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Traditional Gifts', 'Customized Gifts', 'Edible Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 100,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 10,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 10,
@@ -288,11 +575,29 @@ const Invitation = () => {
       personName: 'Kabir Malhotra',
       designation: 'Gift Specialist',
       description: 'Elegant return gifts that show appreciation to your wedding guests',
-      services: ['Customized Tags', 'Gift Sets', 'Traditional Gifts', 'Modern Gifts'],
+      services: ['Wedding Return Gifts', 'Wedding Favors'],
       logo: returngifts,
       location: 'Delhi, Delhi',
       rating: 4.8,
-      priceRange: '₹150 - ₹1,500 per gift'
+      priceRange: '₹150 - ₹1,500 per gift',
+      experience: 6,
+      businessType: 'Partnership',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Traditional Gifts', 'Eco-friendly Gifts', 'Customized Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 50,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 7,
+      preferredLocations: ['Local', 'Within State'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Gift Hampers Vendors
     {
@@ -304,11 +609,29 @@ const Invitation = () => {
       personName: 'Sanjay Gupta',
       designation: 'Hamper Designer',
       description: 'Beautifully curated gift hampers for wedding guests and family',
-      services: ['Theme Hampers', 'Food Hampers', 'Wellness Hampers', 'Custom Arrangements'],
+      services: ['Hampers & Custom Packaging', 'Wedding Favors'],
       logo: gifthampers,
       location: 'Bangalore, Karnataka',
       rating: 4.7,
-      priceRange: '₹500 - ₹5,000 per hamper'
+      priceRange: '₹500 - ₹5,000 per hamper',
+      experience: 5,
+      businessType: 'Proprietorship',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Premium Hampers', 'Edible Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 20,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 5,
+      preferredLocations: ['Within State'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 12,
@@ -319,11 +642,29 @@ const Invitation = () => {
       personName: 'Neha Joshi',
       designation: 'Premium Hamper Curator',
       description: 'Luxury gift hampers with premium products and elegant packaging',
-      services: ['Luxury Items', 'Gourmet Products', 'Designer Packaging', 'Personal Touch'],
+      services: ['Hampers & Custom Packaging', 'Wedding Favors', 'Corporate / Bulk Gifts'],
       logo: gifthampers,
       location: 'Pune, Maharashtra',
       rating: 4.8,
-      priceRange: '₹1,000 - ₹10,000 per hamper'
+      priceRange: '₹1,000 - ₹10,000 per hamper',
+      experience: 7,
+      businessType: 'Private Limited',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Premium Hampers', 'Edible Gifts', 'Customized Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 10,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 7,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Eco Gifts Vendors
     {
@@ -335,11 +676,29 @@ const Invitation = () => {
       personName: 'Venkatesh Iyer',
       designation: 'Eco Products Manager',
       description: 'Environmentally friendly gift options for eco-conscious weddings',
-      services: ['Sustainable Materials', 'Plantable Gifts', 'Organic Products', 'Recycled Packaging'],
+      services: ['Wedding Return Gifts', 'Wedding Favors'],
       logo: ecogifts,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹100 - ₹1,000 per gift'
+      priceRange: '₹100 - ₹1,000 per gift',
+      experience: 6,
+      businessType: 'Individual',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Eco-friendly Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 50,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 5,
+      preferredLocations: ['Local', 'Within State'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 14,
@@ -350,11 +709,29 @@ const Invitation = () => {
       personName: 'Radha Krishnan',
       designation: 'Sustainable Gift Expert',
       description: 'Sustainable and eco-friendly gift options with minimal environmental impact',
-      services: ['Biodegradable Items', 'Handmade Products', 'Natural Materials', 'Eco Packaging'],
+      services: ['Wedding Return Gifts', 'Hampers & Custom Packaging'],
       logo: ecogifts,
       location: 'Kanyakumari, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹150 - ₹1,200 per gift'
+      priceRange: '₹150 - ₹1,200 per gift',
+      experience: 4,
+      businessType: 'Proprietorship',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Eco-friendly Gifts', 'Traditional Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 30,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 6,
+      preferredLocations: ['Local'],
+      hasTravelCharges: 'no',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     // Luxury Hampers Vendors
     {
@@ -366,11 +743,29 @@ const Invitation = () => {
       personName: 'Pooja Mehta',
       designation: 'Luxury Hamper Curator',
       description: 'Ultra-premium luxury hampers for VIP guests and family members',
-      services: ['Designer Brands', 'Imported Products', 'Personalized Notes', 'Premium Wrapping'],
+      services: ['Hampers & Custom Packaging', 'Corporate / Bulk Gifts'],
       logo: luxuryhampers,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹5,000 - ₹50,000 per hamper'
+      priceRange: '₹5,000 - ₹50,000 per hamper',
+      experience: 9,
+      businessType: 'Private Limited',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Premium Hampers', 'Customized Gifts'],
+      minOrderQuantity: 0,
+      giftMinOrder: 5,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 8,
+      preferredLocations: ['Local', 'Within State', 'Outstation'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     },
     {
       id: 16,
@@ -381,30 +776,1096 @@ const Invitation = () => {
       personName: 'David Wilson',
       designation: 'Royal Hamper Specialist',
       description: 'Royal themed luxury hampers with premium international brands',
-      services: ['International Brands', 'Exclusive Products', 'Custom Branding', 'VIP Packaging'],
+      services: ['Hampers & Custom Packaging'],
       logo: luxuryhampers,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹10,000 - ₹1,00,000 per hamper'
+      priceRange: '₹10,000 - ₹1,00,000 per hamper',
+      experience: 12,
+      businessType: 'Partnership',
+      invitationTypes: [],
+      printingOptions: [],
+      giftTypes: ['Premium Hampers'],
+      minOrderQuantity: 0,
+      giftMinOrder: 3,
+      customizationAvailable: 'yes',
+      brandingAvailable: 'yes',
+      packingIncluded: 'yes',
+      designApprovalTime: 0,
+      printingDeliveryTime: 0,
+      giftPreparationTime: 10,
+      preferredLocations: ['Within State', 'Outstation', 'International'],
+      hasTravelCharges: 'yes',
+      advanceRequired: 'yes',
+      hasGST: 'yes',
+      hasPAN: 'yes'
     }
   ];
 
-  // Filter vendors based on selections
+  // Enhanced filter function
   const filteredVendors = vendors.filter(vendor => {
+    // Basic filters
     if (selectedEvent && vendor.eventType !== selectedEvent) return false;
     if (selectedState && !vendor.location.includes(selectedState)) return false;
     if (selectedDistrict && !vendor.location.includes(selectedDistrict)) return false;
     if (selectedLocation && !vendor.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
     
+    // Budget filter
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
-      const vendorPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
-      return vendorPrice >= minPrice && vendorPrice <= maxPrice;
+      const vendorMinPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
+      if (vendorMinPrice < minPrice || vendorMinPrice > maxPrice) return false;
     }
+    
+    // Service types filter
+    if (selectedServices.length > 0) {
+      if (!vendor.services) return false;
+      const hasMatchingService = selectedServices.some(service => 
+        vendor.services.includes(service)
+      );
+      if (!hasMatchingService) return false;
+    }
+    
+    // Invitation types filter
+    if (selectedInvitationTypes.length > 0) {
+      if (!vendor.invitationTypes) return false;
+      const hasMatchingType = selectedInvitationTypes.some(type => 
+        vendor.invitationTypes.includes(type)
+      );
+      if (!hasMatchingType) return false;
+    }
+    
+    // Printing options filter
+    if (selectedPrintingOptions.length > 0) {
+      if (!vendor.printingOptions) return false;
+      const hasMatchingPrint = selectedPrintingOptions.some(option => 
+        vendor.printingOptions.includes(option)
+      );
+      if (!hasMatchingPrint) return false;
+    }
+    
+    // Gift types filter
+    if (selectedGiftTypes.length > 0) {
+      if (!vendor.giftTypes) return false;
+      const hasMatchingGift = selectedGiftTypes.some(type => 
+        vendor.giftTypes.includes(type)
+      );
+      if (!hasMatchingGift) return false;
+    }
+    
+    // Business type filter
+    if (businessType && vendor.businessType !== businessType) return false;
+    
+    // Experience filter
+    if (experience) {
+      const minExperience = parseInt(experience) || 0;
+      if (vendor.experience < minExperience) return false;
+    }
+    
+    // Order quantity filters
+    if (minOrderQuantity) {
+      const minQty = parseInt(minOrderQuantity) || 0;
+      if (vendor.minOrderQuantity < minQty) return false;
+    }
+    
+    if (giftMinOrder) {
+      const minGiftQty = parseInt(giftMinOrder) || 0;
+      if (vendor.giftMinOrder < minGiftQty) return false;
+    }
+    
+    // Customization filter
+    if (customizationAvailable && vendor.customizationAvailable !== customizationAvailable) return false;
+    
+    // Branding filter
+    if (brandingAvailable && vendor.brandingAvailable !== brandingAvailable) return false;
+    
+    // Packing filter
+    if (packingIncluded && vendor.packingIncluded !== packingIncluded) return false;
+    
+    // Timeline filters
+    if (designApprovalTime) {
+      const maxDays = parseInt(designApprovalTime) || Infinity;
+      if (vendor.designApprovalTime > maxDays) return false;
+    }
+    
+    if (printingDeliveryTime) {
+      const maxDays = parseInt(printingDeliveryTime) || Infinity;
+      if (vendor.printingDeliveryTime > maxDays) return false;
+    }
+    
+    if (giftPreparationTime) {
+      const maxDays = parseInt(giftPreparationTime) || Infinity;
+      if (vendor.giftPreparationTime > maxDays) return false;
+    }
+    
+    // Location preferences filter
+    if (preferredLocations.length > 0) {
+      if (!vendor.preferredLocations) return false;
+      const hasMatchingLocation = preferredLocations.some(location => 
+        vendor.preferredLocations.includes(location)
+      );
+      if (!hasMatchingLocation) return false;
+    }
+    
+    // Travel charges filter
+    if (hasTravelCharges && vendor.hasTravelCharges !== hasTravelCharges) return false;
+    
+    // Advance payment filter
+    if (advanceRequired && vendor.advanceRequired !== advanceRequired) return false;
+    
+    // Document filters
+    if (hasGST && vendor.hasGST !== hasGST) return false;
+    if (hasPAN && vendor.hasPAN !== hasPAN) return false;
     
     return true;
   });
+
+  // Desktop Filter Pages - Matching registration form structure
+  const filterPages = [
+    {
+      title: "Services & Type",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Service Type</label>
+            <select
+              value={selectedEvent}
+              onChange={(e) => setSelectedEvent(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Service Types</option>
+              {eventTypes.map((event) => (
+                <option key={event} value={event}>{event}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Services Offered</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {serviceTypes.map(service => (
+                <label key={service} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Invitation Details",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Invitation Types</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {invitationTypes.map(type => (
+                <label key={type} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedInvitationTypes.includes(type)}
+                    onChange={() => handleInvitationTypeToggle(type)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Printing Options</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {printingOptions.map(option => (
+                <label key={option} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedPrintingOptions.includes(option)}
+                    onChange={() => handlePrintingOptionToggle(option)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Order Quantity</label>
+            <input
+              type="number"
+              placeholder="Enter minimum quantity"
+              value={minOrderQuantity}
+              onChange={(e) => setMinOrderQuantity(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Customization Available</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="customizationAvailable" 
+                  value="yes"
+                  checked={customizationAvailable === "yes"}
+                  onChange={(e) => setCustomizationAvailable(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="customizationAvailable" 
+                  value="no"
+                  checked={customizationAvailable === "no"}
+                  onChange={(e) => setCustomizationAvailable(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Gift Details",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Types</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {giftTypes.map(type => (
+                <label key={type} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedGiftTypes.includes(type)}
+                    onChange={() => handleGiftTypeToggle(type)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Min. Order Quantity</label>
+            <input
+              type="number"
+              placeholder="Enter minimum gift quantity"
+              value={giftMinOrder}
+              onChange={(e) => setGiftMinOrder(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Branding Available</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="brandingAvailable" 
+                  value="yes"
+                  checked={brandingAvailable === "yes"}
+                  onChange={(e) => setBrandingAvailable(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="brandingAvailable" 
+                  value="no"
+                  checked={brandingAvailable === "no"}
+                  onChange={(e) => setBrandingAvailable(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Packing Included</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="packingIncluded" 
+                  value="yes"
+                  checked={packingIncluded === "yes"}
+                  onChange={(e) => setPackingIncluded(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="packingIncluded" 
+                  value="no"
+                  checked={packingIncluded === "no"}
+                  onChange={(e) => setPackingIncluded(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Location & Coverage",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All States</option>
+              {states.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
+            >
+              <option value="">All Districts</option>
+              {districts.map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
+            <input
+              type="text"
+              placeholder="Enter city or area"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Service Coverage</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {locations.map(location => (
+                <label key={location} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredLocations.includes(location)}
+                    onChange={() => handleLocationToggle(location)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {location}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="hasTravelCharges" 
+                  value="yes"
+                  checked={hasTravelCharges === "yes"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="hasTravelCharges" 
+                  value="no"
+                  checked={hasTravelCharges === "no"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Timeline",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Design Approval (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Enter max days"
+              value={designApprovalTime}
+              onChange={(e) => setDesignApprovalTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Printing & Delivery (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Enter max days"
+              value={printingDeliveryTime}
+              onChange={(e) => setPrintingDeliveryTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Preparation (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Enter max days"
+              value={giftPreparationTime}
+              onChange={(e) => setGiftPreparationTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Business & Payment",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Business Types</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <input
+              type="number"
+              placeholder="Minimum years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="advanceRequired" 
+                  value="yes"
+                  checked={advanceRequired === "yes"}
+                  onChange={(e) => setAdvanceRequired(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="advanceRequired" 
+                  value="no"
+                  checked={advanceRequired === "no"}
+                  onChange={(e) => setAdvanceRequired(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Available</label>
+            <div className="space-y-1.5">
+              <label className="flex items-center gap-2 text-xs">
+                <input 
+                  type="radio" 
+                  name="hasGST" 
+                  value="yes"
+                  checked={hasGST === "yes"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Has GST
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input 
+                  type="radio" 
+                  name="hasGST" 
+                  value="no"
+                  checked={hasGST === "no"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No GST
+              </label>
+              <div className="border-t border-gray-200 my-1"></div>
+              <label className="flex items-center gap-2 text-xs">
+                <input 
+                  type="radio" 
+                  name="hasPAN" 
+                  value="yes"
+                  checked={hasPAN === "yes"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Has PAN
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input 
+                  type="radio" 
+                  name="hasPAN" 
+                  value="no"
+                  checked={hasPAN === "no"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No PAN
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
+
+  // Mobile Filter Pages - IDENTICAL to desktop pages (with smaller font sizes)
+  const mobileFilterPages = [
+    {
+      title: "Services & Type",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Type</label>
+            <select
+              value={selectedEvent}
+              onChange={(e) => setSelectedEvent(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All Service Types</option>
+              {eventTypes.map((event) => (
+                <option key={event} value={event}>{event}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Services Offered</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {serviceTypes.map(service => (
+                <label key={service} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹)</label>
+            <div className="flex gap-1">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Invitation Details",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Invitation Types</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {invitationTypes.map(type => (
+                <label key={type} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedInvitationTypes.includes(type)}
+                    onChange={() => handleInvitationTypeToggle(type)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Printing Options</label>
+            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {printingOptions.map(option => (
+                <label key={option} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedPrintingOptions.includes(option)}
+                    onChange={() => handlePrintingOptionToggle(option)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Order Quantity</label>
+            <input
+              type="number"
+              placeholder="Min quantity"
+              value={minOrderQuantity}
+              onChange={(e) => setMinOrderQuantity(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Customization</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileCustomizationAvailable" 
+                  value="yes"
+                  checked={customizationAvailable === "yes"}
+                  onChange={(e) => setCustomizationAvailable(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileCustomizationAvailable" 
+                  value="no"
+                  checked={customizationAvailable === "no"}
+                  onChange={(e) => setCustomizationAvailable(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Gift Details",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Types</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {giftTypes.map(type => (
+                <label key={type} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedGiftTypes.includes(type)}
+                    onChange={() => handleGiftTypeToggle(type)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Min. Order Qty</label>
+            <input
+              type="number"
+              placeholder="Min gift qty"
+              value={giftMinOrder}
+              onChange={(e) => setGiftMinOrder(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Branding Available</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileBrandingAvailable" 
+                  value="yes"
+                  checked={brandingAvailable === "yes"}
+                  onChange={(e) => setBrandingAvailable(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileBrandingAvailable" 
+                  value="no"
+                  checked={brandingAvailable === "no"}
+                  onChange={(e) => setBrandingAvailable(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Packing Included</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobilePackingIncluded" 
+                  value="yes"
+                  checked={packingIncluded === "yes"}
+                  onChange={(e) => setPackingIncluded(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobilePackingIncluded" 
+                  value="no"
+                  checked={packingIncluded === "no"}
+                  onChange={(e) => setPackingIncluded(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Location & Coverage",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All States</option>
+              {states.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+            >
+              <option value="">All Districts</option>
+              {districts.map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
+            <input
+              type="text"
+              placeholder="Enter city"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Coverage</label>
+            <div className="grid grid-cols-2 gap-1">
+              {locations.map(location => (
+                <label key={location} className="flex items-center gap-1 text-[9px]">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredLocations.includes(location)}
+                    onChange={() => handleLocationToggle(location)}
+                    className="w-2.5 h-2.5 accent-red-600" 
+                  /> 
+                  {location}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasTravelCharges" 
+                  value="yes"
+                  checked={hasTravelCharges === "yes"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasTravelCharges" 
+                  value="no"
+                  checked={hasTravelCharges === "no"}
+                  onChange={(e) => setHasTravelCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Timeline",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Design Approval (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Max days"
+              value={designApprovalTime}
+              onChange={(e) => setDesignApprovalTime(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Printing & Delivery (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Max days"
+              value={printingDeliveryTime}
+              onChange={(e) => setPrintingDeliveryTime(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Preparation (Max Days)</label>
+            <input
+              type="number"
+              placeholder="Max days"
+              value={giftPreparationTime}
+              onChange={(e) => setGiftPreparationTime(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Business & Payment",
+      content: (
+        <div className="space-y-1.5">
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All Types</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Experience (Years)</label>
+            <input
+              type="number"
+              placeholder="Min years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Required</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileAdvanceRequired" 
+                  value="yes"
+                  checked={advanceRequired === "yes"}
+                  onChange={(e) => setAdvanceRequired(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileAdvanceRequired" 
+                  value="no"
+                  checked={advanceRequired === "no"}
+                  onChange={(e) => setAdvanceRequired(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Documents</label>
+            <div className="space-y-1">
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasGST" 
+                  value="yes"
+                  checked={hasGST === "yes"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Has GST
+              </label>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasGST" 
+                  value="no"
+                  checked={hasGST === "no"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No GST
+              </label>
+              <div className="border-t border-gray-200 my-0.5"></div>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasPAN" 
+                  value="yes"
+                  checked={hasPAN === "yes"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Has PAN
+              </label>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasPAN" 
+                  value="no"
+                  checked={hasPAN === "no"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No PAN
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
 
   // Auto change banner every 3 seconds
   useEffect(() => {
@@ -423,9 +1884,8 @@ const Invitation = () => {
 
   const handleFilter = () => {
     console.log('Filtering...', filteredVendors.length);
-    setShowMobileFilter(false);
+    setShowMobileFilterDrawer(false);
     
-    // Scroll to vendor section after applying filters
     setTimeout(() => {
       const vendorSection = document.querySelector('.vendor-profiles');
       if (vendorSection) {
@@ -441,7 +1901,28 @@ const Invitation = () => {
     setSelectedState('');
     setSelectedDistrict('');
     setSelectedLocation('');
-    setShowMobileFilter(false);
+    setSelectedServices([]);
+    setSelectedInvitationTypes([]);
+    setSelectedPrintingOptions([]);
+    setSelectedGiftTypes([]);
+    setBusinessType('');
+    setExperience('');
+    setMinOrderQuantity('');
+    setGiftMinOrder('');
+    setCustomizationAvailable('');
+    setBrandingAvailable('');
+    setPackingIncluded('');
+    setDesignApprovalTime('');
+    setPrintingDeliveryTime('');
+    setGiftPreparationTime('');
+    setPreferredLocations([]);
+    setHasTravelCharges('');
+    setAdvanceRequired('');
+    setHasGST('');
+    setHasPAN('');
+    setCurrentFilterPage(0);
+    setCurrentMobileFilterPage(0);
+    setShowMobileFilterDrawer(false);
   };
 
   const handleFilterButtonClick = () => {
@@ -451,28 +1932,111 @@ const Invitation = () => {
         filterSection.scrollIntoView({ behavior: 'smooth' });
       }
       if (window.innerWidth < 1024) {
-        setShowMobileFilter(true);
+        setShowMobileFilterDrawer(true);
       }
     } else {
       navigate('/invitation?openFilter=true');
     }
   };
 
+  const nextFilterPage = () => {
+    if (currentFilterPage < filterPages.length - 1) {
+      setCurrentFilterPage(currentFilterPage + 1);
+    }
+  };
+
+  const prevFilterPage = () => {
+    if (currentFilterPage > 0) {
+      setCurrentFilterPage(currentFilterPage - 1);
+    }
+  };
+
+  const nextMobileFilterPage = () => {
+    if (currentMobileFilterPage < mobileFilterPages.length - 1) {
+      setCurrentMobileFilterPage(currentMobileFilterPage + 1);
+    }
+  };
+
+  const prevMobileFilterPage = () => {
+    if (currentMobileFilterPage > 0) {
+      setCurrentMobileFilterPage(currentMobileFilterPage - 1);
+    }
+  };
+
+  // Count active filters
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (minBudget) count++;
+    if (maxBudget) count++;
+    if (selectedEvent) count++;
+    if (selectedState) count++;
+    if (selectedDistrict) count++;
+    if (selectedLocation) count++;
+    if (selectedServices.length > 0) count++;
+    if (selectedInvitationTypes.length > 0) count++;
+    if (selectedPrintingOptions.length > 0) count++;
+    if (selectedGiftTypes.length > 0) count++;
+    if (businessType) count++;
+    if (experience) count++;
+    if (minOrderQuantity) count++;
+    if (giftMinOrder) count++;
+    if (customizationAvailable) count++;
+    if (brandingAvailable) count++;
+    if (packingIncluded) count++;
+    if (designApprovalTime) count++;
+    if (printingDeliveryTime) count++;
+    if (giftPreparationTime) count++;
+    if (preferredLocations.length > 0) count++;
+    if (hasTravelCharges) count++;
+    if (advanceRequired) count++;
+    if (hasGST) count++;
+    if (hasPAN) count++;
+    return count;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
-      {/* Add Pacifico font */}
+      {/* Add Pacifico and Plus Jakarta Sans fonts */}
       <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       
-      {/* Floating Filter Button */}
+      {/* Global font style */}
+      <style jsx>{`
+        .vendor-card {
+          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .vendor-card h3, .vendor-card .vendor-name {
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+        .vendor-card .price-tag {
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+        .vendor-card .service-item {
+          font-weight: 500;
+        }
+        .vendor-card .contact-label {
+          font-weight: 600;
+          color: #4B5563;
+        }
+      `}</style>
+      
+      {/* Floating Filter Button with Badge */}
       <button
         onClick={handleFilterButtonClick}
         className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
         aria-label="Open Filters"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
         </svg>
-        <span className="ml-2 font-bold text-sm">Filter</span>
+        {getActiveFilterCount() > 0 && (
+          <span className="absolute -top-1 -right-1 bg-yellow-500 text-red-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {getActiveFilterCount()}
+          </span>
+        )}
       </button>
 
       {/* Banner Section */}
@@ -502,7 +2066,7 @@ const Invitation = () => {
             </div>
           ))}
 
-          {/* Navigation Buttons - Mobile Optimized */}
+          {/* Navigation Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
@@ -535,7 +2099,7 @@ const Invitation = () => {
             </svg>
           </button>
 
-          {/* Dot Indicators - Mobile Friendly */}
+          {/* Dot Indicators */}
           <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {banners.map((_, index) => (
               <button
@@ -553,37 +2117,36 @@ const Invitation = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
-                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
-                    <div className="container mx-auto px-2 md:px-4">
-                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Browse All Wedding Services
-                      </h3>
-                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-                        {mainCategories.map((category) => (
-                          <Link
-                            key={category.name}
-                            to={category.path}
-                            className="flex-shrink-0 transition-all duration-300"
-                          >
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                              {category.name}
-                            </button>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-      
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Browse All Wedding Services
+          </h3>
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+            {mainCategories.map((category) => (
+              <Link
+                key={category.name}
+                to={category.path}
+                className="flex-shrink-0 transition-all duration-300"
+              >
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                  {category.name}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
-          <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
+          <div className="lg:flex-1 lg:max-w-[calc(100%-320px)]">
             {/* Invitation Categories */}
             <section className="py-2 md:py-3">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Our Invitation & Gift Categories
               </h2>
               
@@ -619,7 +2182,7 @@ const Invitation = () => {
                   <div key={category.name} className="flex flex-col items-center group">
                     <button 
                       onClick={() => handleCategoryClick(category.name)}
-                      className="relative block w-full aspect-square max-w-[60px] md:max-w-[65px] mx-auto focus:outline-none"
+                      className="relative block w-full aspect-square max-w-[65px] md:max-w-[70px] mx-auto focus:outline-none"
                     >
                       <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                         <img 
@@ -630,7 +2193,7 @@ const Invitation = () => {
                       </div>
                       <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
                     </button>
-                    <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[9px] md:text-[10px] px-0.5 leading-tight line-clamp-2">
+                    <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] md:text-xs px-0.5 leading-tight line-clamp-2">
                       {category.name}
                     </h3>
                   </div>
@@ -642,6 +2205,7 @@ const Invitation = () => {
                   <button
                     onClick={() => setSelectedEvent('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -652,37 +2216,31 @@ const Invitation = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Enhanced with Pacifico font */}
+            {/* Mobile Matrimony Card */}
             <div className="md:hidden mb-3 mt-2">
               <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-                <div className="flex h-24">
-                  {/* Left Side: Image */}
-                  <div className="w-2/5 relative">
+                <div className="flex h-28">
+                  <div className="w-2/5 relative overflow-hidden">
                     <img
                       src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
-                      alt="Find Your Perfect Partner"
+                      alt="Eliteinova Matrimony"
                       className="w-full h-full object-cover"
                     />
-                    {/* Darker overlay for better text visibility */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent"></div>
                   </div>
                   
-                  {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-                    <h2 className="text-xs font-bold text-red-700 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
                       Eliteinova Matrimony
                     </h2>
-                    <h3 className="text-[10px] font-bold text-gray-800 mb-0.5 leading-tight">
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Find Your Perfect Partner
                     </h3>
-                    <p className="text-gray-600 text-[8px] mb-1.5 leading-tight">
-                      Join our matrimony service
-                    </p>
                     <a 
                       href="https://eliteinovamatrimony.com/" 
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -692,27 +2250,95 @@ const Invitation = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Mobile Filters - Below Matrimony Card */}
+              <div className="mt-2 bg-white rounded-md shadow border border-red-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 px-2 py-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-[10px] font-bold text-white flex items-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Filter
+                    </h3>
+                    <span className="text-[8px] bg-white/20 text-white px-1.5 py-0.5 rounded-full">
+                      {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-2">
+                  {/* Filter Content */}
+                  {mobileFilterPages[currentMobileFilterPage].content}
+
+                  {/* Pagination Buttons */}
+                  <div className="flex justify-between items-center mt-2">
+                    <button
+                      onClick={prevMobileFilterPage}
+                      disabled={currentMobileFilterPage === 0}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === 0
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Prev
+                    </button>
+                    <button
+                      onClick={nextMobileFilterPage}
+                      disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === mobileFilterPages.length - 1
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-1 mt-2 pt-1.5 border-t border-gray-200">
+                    <button
+                      onClick={handleFilter}
+                      className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Apply
+                      <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[7px]">
+                        {filteredVendors.length}
+                      </span>
+                    </button>
+                    <button
+                      onClick={handleReset}
+                      className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-1 px-1.5 rounded font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Mobile: Vendor Count & Filters */}
+            {/* Mobile: Vendor Count & Applied Filters */}
             <div className="lg:hidden">
-              {/* Vendor Count */}
               <section className="py-1 md:py-2">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
-                      <h3 className="text-xs font-bold text-white leading-tight">
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Invitation & Gift Vendors'}
+                      <h3 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : `${filteredVendors.length} Invitation & Gift Vendors`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
+                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional invitation & gift vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
-                        <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹40 - ₹1,00,000</span>
+                        <span className="text-white font-medium text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹40 - ₹1,00,000</span>
                       </div>
                     </div>
                   </div>
@@ -721,146 +2347,34 @@ const Invitation = () => {
                 {/* Applied Filters Tags */}
                 <div className="flex flex-wrap gap-1 mb-2">
                   {selectedEvent && (
-                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Service: {selectedEvent}
-                      <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">×</button>
                     </span>
                   )}
                   {selectedState && (
-                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       State: {selectedState}
-                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">×</button>
                     </span>
                   )}
                   {(minBudget || maxBudget) && (
-                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
-                        ×
-                      </button>
+                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">×</button>
                     </span>
                   )}
-                </div>
-              </section>
-
-              {/* Mobile Filters */}
-              <section className="py-1 mb-2">
-                <div className="bg-white rounded-md shadow border border-red-200 p-2">
-                  <div className="flex items-center justify-between mb-2 border-b border-gray-100 pb-1.5">
-                    <h3 className="text-xs font-bold text-red-800 flex items-center">
-                      <svg className="w-3.5 h-3.5 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                      </svg>
-                      Filter Options
-                    </h3>
-                    <button 
-                      onClick={handleReset}
-                      className="text-[10px] font-medium text-red-600 hover:text-red-800 flex items-center"
-                    >
-                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                      Reset
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
-                      <div className="flex gap-1.5">
-                        <input
-                          type="number"
-                          placeholder="Min"
-                          value={minBudget}
-                          onChange={(e) => setMinBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <input
-                          type="number"
-                          placeholder="Max"
-                          value={maxBudget}
-                          onChange={(e) => setMaxBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Service Type</label>
-                      <select
-                        value={selectedEvent}
-                        onChange={(e) => setSelectedEvent(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Services</option>
-                        {eventTypes.map((event) => (
-                          <option key={event} value={event}>{event}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">State</label>
-                      <select
-                        value={selectedState}
-                        onChange={(e) => setSelectedState(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All States</option>
-                        {states.map((state) => (
-                          <option key={state} value={state}>{state}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">District</label>
-                      <select
-                        value={selectedDistrict}
-                        onChange={(e) => setSelectedDistrict(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Districts</option>
-                        {districts.map((district) => (
-                          <option key={district} value={district}>{district}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Location</label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="City or area"
-                          value={selectedLocation}
-                          onChange={(e) => setSelectedLocation(e.target.value)}
-                          className="w-full pl-7 pr-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleFilter}
-                    className="w-full mt-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
-                  >
-                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Apply Filters
-                    <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[10px]">
-                      ({filteredVendors.length} found)
+                  {selectedServices.length > 0 && (
+                    <span className="inline-flex items-center bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Services: {selectedServices.length}
+                      <button onClick={() => setSelectedServices([])} className="ml-0.5 text-blue-500 hover:text-blue-700">×</button>
                     </span>
-                  </button>
+                  )}
+                  {getActiveFilterCount() > 3 && (
+                    <span className="inline-flex items-center bg-gray-100 text-gray-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      +{getActiveFilterCount() - 3} more
+                    </span>
+                  )}
                 </div>
               </section>
             </div>
@@ -868,48 +2382,53 @@ const Invitation = () => {
             {/* Desktop: Vendor Count */}
             <div className="hidden lg:block mb-4">
               <section className="py-2">
-                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white leading-tight">
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : '16 Invitation & Gift Vendors'}
+                      <h3 className="text-xl font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : `${filteredVendors.length} Invitation & Gift Vendors`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-sm">
+                      <p className="text-yellow-200 mt-1 text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our professional invitation & gift vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
-                      <div className="bg-white/20 px-2.5 py-1.5 rounded">
-                        <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹40 - ₹1,00,000</span>
+                      <div className="bg-white/20 px-3 py-1.5 rounded">
+                        <span className="text-white font-medium text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹40 - ₹1,00,000</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {selectedEvent && (
-                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Service: {selectedEvent}
-                        <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">×</button>
                       </span>
                     )}
                     {selectedState && (
-                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         State: {selectedState}
-                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">×</button>
                       </span>
                     )}
                     {(minBudget || maxBudget) && (
-                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
-                          ×
-                        </button>
+                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">×</button>
+                      </span>
+                    )}
+                    {selectedServices.length > 0 && (
+                      <span className="inline-flex items-center bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Services: {selectedServices.length}
+                        <button onClick={() => setSelectedServices([])} className="ml-1 text-blue-500 hover:text-blue-700">×</button>
+                      </span>
+                    )}
+                    {getActiveFilterCount() > 3 && (
+                      <span className="inline-flex items-center bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        +{getActiveFilterCount() - 3} more
                       </span>
                     )}
                   </div>
@@ -918,165 +2437,247 @@ const Invitation = () => {
             </div>
 
             {/* Vendor Profiles */}
-            <section className="py-1 md:py-2 vendor-profiles">
+            <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
-                <div className="space-y-1.5 md:space-y-3">
+                <div className="space-y-2 md:space-y-4">
                   {filteredVendors.map((vendor) => (
-                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo (Desktop Only) */}
-                        <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
+                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                      
+                      {/* DESKTOP VIEW - FIXED HEIGHT [280px] */}
+                      <div className="hidden md:flex md:flex-row w-full h-[280px]">
+                        {/* Left Box - Image */}
+                        <div className="w-[22%] p-0 flex items-stretch h-full">
+                          <div className="w-full h-full overflow-hidden">
                             <img 
                               src={vendor.logo} 
                               alt={vendor.businessName} 
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="text-center">
-                            <div className="flex items-center justify-center mb-0.5">
-                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
+                        </div>
+
+                        {/* Middle Box - Business Details */}
+                        <div className="w-[43%] p-4 bg-white border-r border-gray-200 h-full overflow-y-auto">
+                          {/* Title with Star Rating */}
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="text-lg font-bold text-red-800 pr-2 vendor-name" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
+                              {vendor.businessName}
+                            </h3>
+                            <div className="flex items-center bg-yellow-100 px-2 py-1 rounded-full flex-shrink-0">
+                              <span className="text-yellow-700 font-bold mr-0.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.rating}</span>
+                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Business Category */}
+                          <div className="mb-3">
+                            <span className="inline-block px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              {vendor.businessCategory}
+                            </span>
+                          </div>
+                          
+                          {/* Budget */}
+                          <div className="text-red-700 font-bold text-base mb-3 price-tag" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            <span className="font-semibold text-gray-600 mr-1.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
+                            {vendor.priceRange}
+                          </div>
+                          
+                          {/* Location */}
+                          <div className="text-gray-600 flex items-start text-sm mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <svg className="w-4 h-4 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span className="leading-tight font-medium">{vendor.location}</span>
+                          </div>
+                          
+                          {/* Contact Details */}
+                          <div className="space-y-1.5 text-sm">
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Name:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.personName}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Role:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.designation}</span>
+                            </div>
+                            {vendor.experience && (
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experience:</span>
+                                <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.experience} years</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Right Box - Description and Services */}
+                        <div className="w-[35%] p-4 bg-white relative h-full overflow-y-auto">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-3 text-sm leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
+                            {vendor.description}
+                          </p>
+                          
+                          {/* Services Offered */}
+                          <h4 className="font-bold text-red-700 mb-2 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            Services Offered
+                          </h4>
+                          <ul className="space-y-1.5 mb-3">
+                            {vendor.services.map((service, index) => (
+                              <li key={index} className="flex items-start">
+                                <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span className="text-gray-700 text-sm leading-tight service-item" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
+                                  {service}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* Additional Info Badges */}
+                          <div className="flex flex-wrap gap-1 mb-3">
+                            {vendor.minOrderQuantity > 0 && (
+                              <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full">
+                                Min Qty: {vendor.minOrderQuantity}
+                              </span>
+                            )}
+                            {vendor.giftMinOrder > 0 && (
+                              <span className="bg-purple-50 text-purple-700 text-xs px-2 py-1 rounded-full">
+                                Gift Min: {vendor.giftMinOrder}
+                              </span>
+                            )}
+                            {vendor.customizationAvailable === 'yes' && (
+                              <span className="bg-green-50 text-green-700 text-xs px-2 py-1 rounded-full">
+                                Customizable
+                              </span>
+                            )}
+                          </div>
+
+                          {/* View Details Button */}
+                          <div className="mt-3">
+                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              <span>View Details</span>
+                              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* MOBILE VIEW */}
+                      <div className="md:hidden flex flex-col w-full">
+                        {/* Top Section - Image and Details Side by Side */}
+                        <div className="flex border-b border-gray-200">
+                          {/* Left Box - Image ONLY */}
+                          <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                            <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
+                              <img 
+                                src={vendor.logo} 
+                                alt={vendor.businessName} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right Box - Business Details */}
+                          <div className="w-3/5 p-1.5 bg-white">
+                            {/* Title with Star Rating */}
+                            <div className="flex items-start justify-between mb-0.5">
+                              <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{vendor.businessName}</h3>
+                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
                                 <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs">{vendor.priceRange}</p>
-                          </div>
-                        </div>
 
-                        {/* Middle Section - Business Details & Services */}
-                        <div className="md:w-2/4 md:p-3 md:border-r border-gray-100">
-                          {/* Mobile Layout */}
-                          <div className="md:hidden">
-                            {/* Top Section */}
-                            <div className="flex border-b border-gray-200">
-                              {/* Left Half - Logo, Rating, Price */}
-                              <div className="w-1/2 p-2 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
-                                <div className="w-14 h-14 rounded-full overflow-hidden border border-white shadow mb-1">
-                                  <img 
-                                    src={vendor.logo} 
-                                    alt={vendor.businessName} 
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                                <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full mb-0.5">
-                                  <span className="text-yellow-700 font-bold mr-0.5 text-[9px]">{vendor.rating}</span>
-                                  <svg className="w-2 h-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <p className="text-red-700 font-bold text-[9px] text-center">{vendor.priceRange}</p>
-                              </div>
-
-                              {/* Right Half - Services */}
-                              <div className="w-1/2 p-2 bg-white">
-                                <h4 className="font-bold text-red-700 mb-1 text-[10px]">Services Offered</h4>
-                                <ul className="space-y-0.5">
-                                  {vendor.services.map((service, index) => (
-                                    <li key={index} className="flex items-start">
-                                      <svg className="w-1.5 h-1.5 text-green-500 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                      </svg>
-                                      <span className="text-gray-700 text-[7px] leading-tight">{service}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-
-                            {/* Middle Section */}
-                            <div className="w-full p-2 bg-white relative">
-                              <h3 className="text-[10px] font-bold text-red-800 mb-0.5 leading-tight">{vendor.businessName}</h3>
-                              
-                              <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[8px] font-medium mb-1">
-                                {vendor.businessCategory}
-                              </span>
-                              
-                              <div className="text-gray-600 flex items-start text-[8px] mb-1">
-                                <svg className="w-2 h-2 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span className="leading-tight">{vendor.location}</span>
-                              </div>
-                              
-                              <p className="text-gray-700 mb-1 text-[8px] leading-relaxed pr-16">{vendor.description}</p>
-                              
-                              <div className="space-y-0.5 text-[8px] mb-1.5">
-                                <div className="flex items-start">
-                                  <span className="text-gray-600 w-16 flex-shrink-0">Contact Person:</span>
-                                  <span className="font-medium text-gray-800 leading-tight">{vendor.personName}</span>
-                                </div>
-                                <div className="flex items-start">
-                                  <span className="text-gray-600 w-16 flex-shrink-0">Role:</span>
-                                  <span className="font-medium text-gray-800 leading-tight">{vendor.designation}</span>
-                                </div>
-                              </div>
-
-                              <button className="absolute bottom-1.5 right-1.5 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-2 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-[8px]">
-                                <span>View Details</span>
-                                <svg className="w-2 h-2 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Desktop Layout */}
-                          <div className="hidden md:block">
-                            <div className="mb-1.5">
-                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
-                                <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
-                                  {vendor.businessCategory}
-                                </span>
-                                <span className="text-gray-600 flex items-center text-xs">
-                                  <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  {vendor.location}
-                                </span>
-                              </div>
+                            {/* Budget below title */}
+                            <p className="text-red-700 font-bold text-xs mb-1">{vendor.priceRange}</p>
+                            
+                            {/* Business Category */}
+                            <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
+                              {vendor.businessCategory}
+                            </span>
+                            
+                            {/* Location */}
+                            <div className="text-gray-600 flex items-start text-[10px] mb-1">
+                              <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="leading-tight">{vendor.location}</span>
                             </div>
                             
-                            <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{vendor.description}</p>
-                            
-                            <div className="space-y-0.5">
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Contact Person:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                            {/* Contact Details */}
+                            <div className="space-y-0.5 text-[10px]">
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Name:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.personName}</span>
                               </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Designation:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Role:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.designation}</span>
                               </div>
+                              {vendor.experience && (
+                                <div className="flex items-start">
+                                  <span className="text-gray-600 font-bold w-16 flex-shrink-0">Exp:</span>
+                                  <span className="text-gray-800 leading-tight">{vendor.experience} years</span>
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services (Desktop Only) */}
-                        <div className="hidden md:block md:w-1/4 p-3 bg-white">
+                        {/* Bottom Section - Full Width Description and Services */}
+                        <div className="w-full p-2 bg-white relative pb-10">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
+                          
+                          {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
                           <ul className="space-y-0.5 mb-2">
                             {vendor.services.map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
-                          
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs">
-                            <span>View Details</span>
-                            <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                          </button>
+
+                          {/* Additional Info Badges */}
+                          <div className="flex flex-wrap gap-1 mb-2">
+                            {vendor.minOrderQuantity > 0 && (
+                              <span className="bg-blue-50 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                                Min Qty: {vendor.minOrderQuantity}
+                              </span>
+                            )}
+                            {vendor.giftMinOrder > 0 && (
+                              <span className="bg-purple-50 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                                Gift Min: {vendor.giftMinOrder}
+                              </span>
+                            )}
+                            {vendor.customizationAvailable === 'yes' && (
+                              <span className="bg-green-50 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                                Customizable
+                              </span>
+                            )}
+                          </div>
+
+                          {/* View Details Button in Right Bottom Corner */}
+                          <div className="absolute bottom-2 right-2">
+                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                              <span>View Details</span>
+                              <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1087,11 +2688,12 @@ const Invitation = () => {
                   <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Vendors Found</h3>
-                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more vendors</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No Vendors Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Try adjusting your filter criteria to find more vendors</p>
                   <button 
                     onClick={handleReset}
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset Filters
                   </button>
@@ -1101,7 +2703,7 @@ const Invitation = () => {
 
             {/* Why Choose Us Section */}
             <section className="py-2 md:py-4">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Why Choose Our Invitation & Gift Services?
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
@@ -1148,154 +2750,101 @@ const Invitation = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY */}
-          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
-            {/* This wrapper will be sticky - Fixed positioning with proper spacing */}
+          {/* Right Sidebar - Filter Section - Desktop Only - WITH PAGINATION */}
+          <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
-              {/* NEW: Matrimony Registration Box - UPDATED to match Catering page style */}
+              
+              {/* Matrimony Registration Box */}
               <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-                {/* Banner Image */}
-                <div className="relative h-32 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={matrimonyBanner}
-                    alt="Find Your Perfect Partner"
+                    alt="Eliteinova Matrimony"
                     className="w-full h-full object-cover"
                     onError={(e) => {
                       e.target.onerror = null;
-                      // Fallback image if the matrimony banner doesn't exist
                       e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
                     }}
                   />
-                  {/* Darker overlay for better text visibility */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                  
-                  {/* Text on image */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-4 text-center">
-                    <h2 className="text-xl font-bold text-white mb-1" style={{ fontFamily: "'Pacifico', cursive" }}>
-                      Eliteinova Matrimony
-                    </h2>
-                    <h3 className="text-base font-bold text-yellow-300">
-                      Find Your Perfect Partner
-                    </h3>
-                  </div>
                 </div>
-                
-                {/* Content below image */}
-                <div className="p-4">
-                  <p className="text-gray-600 text-xs mb-4 text-center leading-relaxed">
-                    Find your soulmate and create beautiful memories together. 
-                    Join our matrimony service and find your life partner.
-                  </p>
-                  
-                  {/* Register Now Button */}
+                <div className="p-5">
+                  <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
+                    Eliteinova Matrimony
+                  </h2>
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    Find Your Perfect Partner
+                  </h3>
                   <a 
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-base flex items-center justify-center"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
                     Register Now
                   </a>
-                  
-                  {/* Small note */}
-                  <p className="text-gray-500 text-[10px] text-center mt-3">
+                  <p className="text-gray-500 text-xs text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Redirects to eliteinovamatrimony.com
                   </p>
                 </div>
               </div>
 
-              {/* Filter Container */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
-                  Filter Services
-                </h3>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minBudget}
-                      onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxBudget}
-                      onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                  </div>
+              {/* Filter Container with Pagination */}
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {filterPages[currentFilterPage].title}
+                  </h3>
+                  <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                    {currentFilterPage + 1}/{filterPages.length}
+                  </span>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Service</label>
-                  <select
-                    value={selectedEvent}
-                    onChange={(e) => setSelectedEvent(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                {/* Filter Content */}
+                {filterPages[currentFilterPage].content}
+
+                {/* Pagination Buttons */}
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={prevFilterPage}
+                    disabled={currentFilterPage === 0}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === 0
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
                   >
-                    <option value="">All Service Types</option>
-                    {eventTypes.map((event) => (
-                      <option key={event} value={event}>{event}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextFilterPage}
+                    disabled={currentFilterPage === filterPages.length - 1}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === filterPages.length - 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
                   >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
+                    Next
+                  </button>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Districts</option>
-                    {districts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-                  <input
-                    type="text"
-                    placeholder="Enter location"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
-
-                <div className="flex gap-2">
+                {/* Action Buttons */}
+                <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200">
                   <button
                     onClick={handleFilter}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Apply Filter
                   </button>
                   <button
                     onClick={handleReset}
-                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset
                   </button>
@@ -1306,124 +2855,77 @@ const Invitation = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay - COMPACT VERSION */}
-      {showMobileFilter && (
+      {/* Mobile Filter Drawer */}
+      {showMobileFilterDrawer && (
         <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
-          <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
+          <div className="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto">
             {/* Header */}
-            <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
-              <h3 className="text-base font-bold text-red-800">Filter Services</h3>
+            <div className="sticky top-0 bg-white z-10 px-3 py-2 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
+              <div>
+                <h3 className="text-sm font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  {mobileFilterPages[currentMobileFilterPage].title}
+                </h3>
+                <span className="text-[9px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full mt-0.5 inline-block">
+                  {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+                </span>
+              </div>
               <button
-                onClick={() => setShowMobileFilter(false)}
+                onClick={() => setShowMobileFilterDrawer(false)}
                 className="text-gray-500 hover:text-red-700 p-1"
                 aria-label="Close filter"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
             
             {/* Filter Content */}
-            <div className="px-4 py-3 space-y-3">
-              {/* Budget Range */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Budget Range (₹)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={minBudget}
-                    onChange={(e) => setMinBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={maxBudget}
-                    onChange={(e) => setMaxBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
-              </div>
+            <div className="px-3 py-2 space-y-2">
+              {mobileFilterPages[currentMobileFilterPage].content}
 
-              {/* Type of Service */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Service</label>
-                <select
-                  value={selectedEvent}
-                  onChange={(e) => setSelectedEvent(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+              {/* Pagination Buttons */}
+              <div className="flex justify-between items-center mt-2">
+                <button
+                  onClick={prevMobileFilterPage}
+                  disabled={currentMobileFilterPage === 0}
+                  className={`px-3 py-1 text-[9px] font-medium rounded ${
+                    currentMobileFilterPage === 0
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  }`}
                 >
-                  <option value="">All Service Types</option>
-                  {eventTypes.map((event) => (
-                    <option key={event} value={event}>{event}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Preferred State */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Preferred State</label>
-                <select
-                  value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                  Previous
+                </button>
+                <button
+                  onClick={nextMobileFilterPage}
+                  disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+                  className={`px-3 py-1 text-[9px] font-medium rounded ${
+                    currentMobileFilterPage === mobileFilterPages.length - 1
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-red-100 text-red-700 hover:bg-red-200'
+                  }`}
                 >
-                  <option value="">All States</option>
-                  {states.map((state) => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* District */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">District</label>
-                <select
-                  value={selectedDistrict}
-                  onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                >
-                  <option value="">All Districts</option>
-                  {districts.map((district) => (
-                    <option key={district} value={district}>{district}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Location</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter city or area"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-3 py-2 pl-9 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
+                  Next
+                </button>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-2 pt-2 pb-1">
+              <div className="flex gap-2 pt-2 pb-1 border-t border-gray-200 mt-2">
                 <button
                   onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-2 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-xs flex items-center justify-center"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
-                  Apply Filter
-                  <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
-                    ({filteredVendors.length})
+                  Apply
+                  <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[8px]">
+                    {filteredVendors.length}
                   </span>
                 </button>
                 <button
                   onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
+                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-2 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-xs"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                 >
                   Reset
                 </button>

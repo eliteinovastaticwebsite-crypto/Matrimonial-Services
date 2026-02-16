@@ -729,7 +729,7 @@ const Photography = () => {
     return true;
   });
 
-  // Filter pages for desktop
+  // Filter pages for desktop - UPDATED (Removed page 2 - Services & Equipment)
   const filterPages = [
     {
       title: "Basic Filters",
@@ -810,90 +810,6 @@ const Photography = () => {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Services & Equipment",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Specific Services</label>
-            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{service}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Camera Models</label>
-            <input
-              type="text"
-              placeholder="e.g., Canon, Sony, Nikon"
-              value={cameraModels}
-              onChange={(e) => setCameraModels(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Video Equipment</label>
-            <input
-              type="text"
-              placeholder="e.g., DJI, Drone, Gimbal"
-              value={videoEquipment}
-              onChange={(e) => setVideoEquipment(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Team Members</label>
-            <input
-              type="number"
-              placeholder="Minimum team size"
-              value={teamMembers}
-              onChange={(e) => setTeamMembers(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Backup Equipment</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasBackup" 
-                  value="yes"
-                  checked={hasBackup === "yes"}
-                  onChange={(e) => setHasBackup(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasBackup" 
-                  value="no"
-                  checked={hasBackup === "no"}
-                  onChange={(e) => setHasBackup(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
           </div>
         </div>
       )
@@ -1015,10 +931,10 @@ const Photography = () => {
     }
   ];
 
-  // Mobile filter pages - EXTRA COMPACT VERSION like photography form
+  // Mobile filter pages - UPDATED (Removed page 2 - Services & Equipment)
   const mobileFilterPages = [
     {
-      title: "Budget",
+      title: "Basic Filters",
       content: (
         <div className="space-y-1.5">
           <div>
@@ -1048,19 +964,13 @@ const Photography = () => {
               onChange={(e) => setSelectedEvent(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             >
-              <option value="">All Events</option>
+              <option value="">All Event Types</option>
               {eventTypes.map((event) => (
                 <option key={event} value={event}>{event}</option>
               ))}
             </select>
           </div>
-        </div>
-      )
-    },
-    {
-      title: "Location",
-      content: (
-        <div className="space-y-1.5">
+
           <div>
             <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
             <select
@@ -1084,7 +994,7 @@ const Photography = () => {
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
               disabled={!selectedState}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100 disabled:text-gray-500"
             >
               <option value="">All Districts</option>
               {selectedState && districts[selectedState]?.map((district) => (
@@ -1094,10 +1004,10 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Location/City</label>
             <input
               type="text"
-              placeholder="Enter city"
+              placeholder="Enter city or area"
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -1107,124 +1017,9 @@ const Photography = () => {
       )
     },
     {
-      title: "Services",
+      title: "Coverage & Business",
       content: (
         <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Specific Services</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{service}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Camera</label>
-            <input
-              type="text"
-              placeholder="e.g., Canon, Sony"
-              value={cameraModels}
-              onChange={(e) => setCameraModels(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Video/Drone</label>
-            <input
-              type="text"
-              placeholder="e.g., DJI, Drone"
-              value={videoEquipment}
-              onChange={(e) => setVideoEquipment(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Team",
-      content: (
-        <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Team Members</label>
-            <input
-              type="number"
-              placeholder="Team size"
-              value={teamMembers}
-              onChange={(e) => setTeamMembers(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Backup Equipment</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasBackup" 
-                  value="yes"
-                  checked={hasBackup === "yes"}
-                  onChange={(e) => setHasBackup(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasBackup" 
-                  value="no"
-                  checked={hasBackup === "no"}
-                  onChange={(e) => setHasBackup(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience</label>
-            <input
-              type="number"
-              placeholder="Years"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Business",
-      content: (
-        <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-
           <div>
             <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Preferred Locations</label>
             <div className="grid grid-cols-2 gap-1">
@@ -1269,18 +1064,43 @@ const Photography = () => {
               </label>
             </div>
           </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
+            <input
+              type="number"
+              placeholder="Minimum years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            >
+              <option value="">All Business Types</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
         </div>
       )
     },
     {
-      title: "Delivery",
+      title: "Delivery Timeline",
       content: (
         <div className="space-y-1.5">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Photo Delivery</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Photo Delivery (Max Days)</label>
             <input
               type="number"
-              placeholder="Max days"
+              placeholder="Maximum days for photos"
               value={photoDelivery}
               onChange={(e) => setPhotoDelivery(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -1288,10 +1108,10 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Video Delivery</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Video Delivery (Max Days)</label>
             <input
               type="number"
-              placeholder="Max days"
+              placeholder="Maximum days for videos"
               value={videoDelivery}
               onChange={(e) => setVideoDelivery(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -1299,10 +1119,10 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Album Delivery</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Album Delivery (Max Days)</label>
             <input
               type="number"
-              placeholder="Max days"
+              placeholder="Maximum days for albums"
               value={albumDelivery}
               onChange={(e) => setAlbumDelivery(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"

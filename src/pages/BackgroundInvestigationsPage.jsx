@@ -131,27 +131,26 @@ const BackgroundInvestigationsPage = () => {
     },
   ];
 
-  const serviceTypes = [
-    'Identity Verification',
-    'Marital Status Check',
-    'Divorce / Separation Check',
-    'Family Background Check',
-    'Residential Verification',
-    'Education Verification',
-    'Employment / Business Verification',
-    'Financial Background (Non-banking)',
-    'Criminal Record Check',
-    'Court Case / Litigation Check',
-    'Social Reputation Check',
-    'Social Media Screening'
+  const verificationServices = [
+    "Identity Verification",
+    "Marital Status Verification",
+    "Divorce / Separation Check",
+    "Family Background Check",
+    "Residential Verification",
+    "Education Verification",
+    "Employment / Business Verification",
+    "Financial Background (Non-banking)",
+    "Criminal Record Check",
+    "Court Case / Litigation Check",
+    "Social Reputation Check",
+    "Social Media Screening"
   ];
 
   const businessTypes = [
-    "Individual",
     "Proprietorship",
     "Partnership",
-    "Private Limited",
-    "LLP"
+    "LLP",
+    "Private Limited"
   ];
 
   const reportFormats = [
@@ -175,7 +174,7 @@ const BackgroundInvestigationsPage = () => {
     "20+ years"
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi', 'Gujarat'];
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi', 'Gujarat', 'West Bengal'];
   const districts = {
     'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Kanyakumari', 'Tirunelveli'],
     'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur', 'Kollam'],
@@ -184,7 +183,8 @@ const BackgroundInvestigationsPage = () => {
     'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
     'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Aurangabad'],
     'Delhi': ['New Delhi', 'South Delhi', 'North Delhi', 'East Delhi', 'West Delhi'],
-    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar']
+    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar'],
+    'West Bengal': ['Kolkata', 'Howrah', 'Durgapur', 'Siliguri', 'Asansol']
   };
 
   const handleServiceClick = (serviceName) => {
@@ -590,13 +590,12 @@ const BackgroundInvestigationsPage = () => {
     return true;
   });
 
-  // Desktop filter pages - COMPACT VERSION (3 pages only)
+  // Desktop filter pages - UPDATED (Removed page 4 - Contact Person)
   const filterPages = [
     {
-      title: "Basic Filters",
+      title: "Basic Agency Details",
       content: (
         <div className="space-y-3">
-          {/* Budget Range */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
             <div className="flex gap-2">
@@ -617,22 +616,6 @@ const BackgroundInvestigationsPage = () => {
             </div>
           </div>
 
-          {/* Years of Experience */}
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Experience</label>
-            <select
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">Any Experience</option>
-              {experienceOptions.map(option => (
-                <option key={option} value={option.replace('+', '')}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Business Type */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
             <select
@@ -647,43 +630,90 @@ const BackgroundInvestigationsPage = () => {
             </select>
           </div>
 
-          {/* Turnaround Time */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Turnaround</label>
-            <select
-              value={turnaroundTime}
-              onChange={(e) => setTurnaroundTime(e.target.value)}
+            <label className="block text-xs font-bold text-gray-700 mb-1">Year of Establishment</label>
+            <input
+              type="number"
+              placeholder="Enter year (YYYY)"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">Any Timeline</option>
-              {turnaroundOptions.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Primary Service */}
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Service</label>
-            <select
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Services</option>
-              {serviceTypes.map((service) => (
-                <option key={service} value={service}>{service}</option>
-              ))}
-            </select>
+            />
           </div>
         </div>
       )
     },
     {
-      title: "Location & Services",
+      title: "License & Legal",
       content: (
         <div className="space-y-3">
-          {/* State */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">License Verified</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="licenseVerified" 
+                  value="yes"
+                  checked={licenseVerified === "yes"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="licenseVerified" 
+                  value="no"
+                  checked={licenseVerified === "no"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State(s) of Operation</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {states.slice(0, 6).map(state => (
+                <label key={state} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredStates.includes(state)}
+                    onChange={() => handleStateToggle(state)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {state}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">License Validity</label>
+            <div className="flex gap-2">
+              <input
+                type="month"
+                placeholder="From"
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+              <input
+                type="month"
+                placeholder="To"
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Office & Location",
+      content: (
+        <div className="space-y-3">
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
             <select
@@ -701,14 +731,13 @@ const BackgroundInvestigationsPage = () => {
             </select>
           </div>
 
-          {/* District */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">District / City</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
               disabled={!selectedState}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100 disabled:text-gray-500"
             >
               <option value="">All Districts</option>
               {selectedState && districts[selectedState]?.map((district) => (
@@ -717,84 +746,112 @@ const BackgroundInvestigationsPage = () => {
             </select>
           </div>
 
-          {/* Location/City */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Area / Locality</label>
             <input
               type="text"
-              placeholder="Enter city"
+              placeholder="Enter area or locality"
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
-          {/* Specific Services */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">More Services</label>
-            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {serviceTypes.slice(0, 6).map(service => (
-                <label key={service} className="flex items-center gap-2 text-xs">
+            <label className="block text-xs font-bold text-gray-700 mb-1">PIN Code</label>
+            <input
+              type="text"
+              placeholder="Enter PIN code"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Services Offered",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Main Service Type</label>
+            <select
+              value={selectedService}
+              onChange={(e) => setSelectedService(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Services</option>
+              {verificationServices.map((service) => (
+                <option key={service} value={service}>{service}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Additional Verification Services</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {verificationServices.map(service => (
+                <label key={service} className="flex items-center gap-1 text-xs">
                   <input 
                     type="checkbox" 
                     checked={selectedServices.includes(service)}
                     onChange={() => handleServiceToggle(service)}
                     className="w-3.5 h-3.5 accent-red-600" 
                   /> 
-                  <span className="truncate">{service}</span>
+                  <span className="truncate">{service.split(' ')[0]}</span>
                 </label>
               ))}
             </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Cities/Regions Covered</label>
+            <input
+              type="text"
+              placeholder="Enter cities covered"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Languages Supported</label>
+            <input
+              type="text"
+              placeholder="Enter languages"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
         </div>
       )
     },
     {
-      title: "Agency & Coverage",
+      title: "Operational Capability",
       content: (
         <div className="space-y-3">
-          {/* Team Size */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Team Size</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Number of Field Investigators</label>
             <input
               type="number"
-              placeholder="Investigators"
+              placeholder="Min investigators"
               value={teamSize}
               onChange={(e) => setTeamSize(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
-          {/* License Verified */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">License</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="licenseVerified" 
-                  value="yes"
-                  checked={licenseVerified === "yes"}
-                  onChange={(e) => setLicenseVerified(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="licenseVerified" 
-                  value="no"
-                  checked={licenseVerified === "no"}
-                  onChange={(e) => setLicenseVerified(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Average Turnaround Time</label>
+            <select
+              value={turnaroundTime}
+              onChange={(e) => setTurnaroundTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any Timeline</option>
+              {turnaroundOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
           </div>
 
-          {/* Report Format */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Report Format</label>
             <select
@@ -809,9 +866,8 @@ const BackgroundInvestigationsPage = () => {
             </select>
           </div>
 
-          {/* Travel Charges */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -837,304 +893,98 @@ const BackgroundInvestigationsPage = () => {
               </label>
             </div>
           </div>
-
-          {/* Preferred States */}
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred States</label>
-            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {states.slice(0, 6).map(state => (
-                <label key={state} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={preferredStates.includes(state)}
-                    onChange={() => handleStateToggle(state)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  {state.split(' ')[0]}
-                </label>
-              ))}
-            </div>
-          </div>
         </div>
       )
-    }
-  ];
-
-    // Mobile filter pages - ULTRA COMPACT VERSION (4 pages only)
-  const mobileFilterPages = [
+    },
     {
-      title: "Basic",
+      title: "Experience & References",
       content: (
-        <div className="space-y-2">
-          {/* Budget */}
+        <div className="space-y-3">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
-            <div className="flex gap-1">
-              <input
-                type="number"
-                placeholder="Min"
-                value={minBudget}
-                onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-            </div>
-          </div>
-
-          {/* Experience */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Experience</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
             <select
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             >
-              <option value="">Any</option>
+              <option value="">Any Experience</option>
               {experienceOptions.map(option => (
                 <option key={option} value={option.replace('+', '')}>{option}</option>
               ))}
             </select>
           </div>
 
-          {/* Business Type */}
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Service",
-      content: (
-        <div className="space-y-2">
-          {/* Turnaround */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Turnaround</label>
-            <select
-              value={turnaroundTime}
-              onChange={(e) => setTurnaroundTime(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">Any</option>
-              {turnaroundOptions.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Primary Service */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Primary Service</label>
-            <select
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All</option>
-              {serviceTypes.slice(0, 6).map((service) => (
-                <option key={service} value={service}>{service.split(' ')[0]}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* More Services */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">More Services</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {serviceTypes.slice(0, 4).map(service => (
-                <label key={service} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{service.split(' ')[0]}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Location",
-      content: (
-        <div className="space-y-2">
-          {/* State */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All States</option>
-              {states.slice(0, 6).map((state) => (
-                <option key={state} value={state}>{state.split(' ')[0]}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* District */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
-            >
-              <option value="">All Districts</option>
-              {selectedState && districts[selectedState]?.slice(0, 4).map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* City */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Existing Clients (Matrimony Apps/Bureaus)</label>
             <input
               type="text"
-              placeholder="Enter city"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              placeholder="Enter client names"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Reference Available</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="referenceAvailable" 
+                  value="yes"
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input 
+                  type="radio" 
+                  name="referenceAvailable" 
+                  value="no"
+                  className="w-3.5 h-3.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
           </div>
         </div>
       )
     },
     {
-      title: "Agency",
+      title: "Compliance & Documents",
       content: (
-        <div className="space-y-2">
-          {/* Team Size */}
+        <div className="space-y-3">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Team Size</label>
-            <input
-              type="number"
-              placeholder="Min investigators"
-              value={teamSize}
-              onChange={(e) => setTeamSize(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          {/* License */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">License</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLicense" 
-                  value="yes"
-                  checked={licenseVerified === "yes"}
-                  onChange={(e) => setLicenseVerified(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
+            <label className="block text-xs font-bold text-gray-700 mb-1">Compliance Declarations</label>
+            <div className="space-y-2 p-2 bg-gray-50 rounded-md">
+              <label className="flex items-center gap-2 text-xs">
+                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
+                Complies with local laws
               </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLicense" 
-                  value="no"
-                  checked={licenseVerified === "no"}
-                  onChange={(e) => setLicenseVerified(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
+              <label className="flex items-center gap-2 text-xs">
+                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
+                Ethical investigation practices
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
+                Confidentiality maintained
               </label>
             </div>
           </div>
 
-          {/* Report Format */}
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Report</label>
-            <select
-              value={reportFormat}
-              onChange={(e) => setReportFormat(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">Any</option>
-              {reportFormats.map(format => (
-                <option key={format} value={format}>{format.split(' ')[0]}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Travel Charges */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTravel" 
-                  value="yes"
-                  checked={hasTravelCharges === "yes"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTravel" 
-                  value="no"
-                  checked={hasTravelCharges === "no"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          {/* Preferred States */}
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Pref. States</label>
-            <div className="grid grid-cols-2 gap-1 max-h-20 overflow-y-auto p-1 border border-red-100 rounded">
-              {states.slice(0, 4).map(state => (
-                <label key={state} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={preferredStates.includes(state)}
-                    onChange={() => handleStateToggle(state)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  {state.split(' ')[0]}
-                </label>
-              ))}
+            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Uploaded</label>
+            <div className="flex gap-2 text-xs">
+              <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">PAN Card</span>
+              <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">GST</span>
             </div>
           </div>
         </div>
       )
     }
   ];
+
+  // Mobile filter pages - SAME CONTENT AS DESKTOP (also updated)
+  const mobileFilterPages = [...filterPages];
 
   // Auto change banner every 3 seconds
   useEffect(() => {
@@ -1261,7 +1111,30 @@ const BackgroundInvestigationsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* Google Fonts */}
-      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+      
+      {/* Global font style */}
+      <style jsx>{`
+        .vendor-card {
+          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .vendor-card h3, .vendor-card .vendor-name {
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+        .vendor-card .price-tag {
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+        .vendor-card .service-item {
+          font-weight: 500;
+        }
+        .vendor-card .contact-label {
+          font-weight: 600;
+          color: #4B5563;
+        }
+      `}</style>
       
       {/* Floating Filter Button with Badge */}
       <button
@@ -1280,7 +1153,7 @@ const BackgroundInvestigationsPage = () => {
         )}
       </button>
 
-      {/* Banner Section - COMPLETELY UNCHANGED */}
+      {/* Banner Section */}
       <section className="relative w-full overflow-hidden">
         <div className="relative h-[200px] xs:h-[250px] sm:h-[300px] md:h-[400px] lg:h-[500px] xl:h-[550px] w-full">
           {banners.map((banner, index) => (
@@ -1307,7 +1180,7 @@ const BackgroundInvestigationsPage = () => {
             </div>
           ))}
 
-          {/* Navigation Buttons - Mobile Optimized */}
+          {/* Navigation Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
@@ -1340,7 +1213,7 @@ const BackgroundInvestigationsPage = () => {
             </svg>
           </button>
 
-          {/* Dot Indicators - Mobile Friendly */}
+          {/* Dot Indicators */}
           <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {banners.map((_, index) => (
               <button
@@ -1358,36 +1231,36 @@ const BackgroundInvestigationsPage = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
-                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
-                    <div className="container mx-auto px-2 md:px-4">
-                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Browse All Wedding Services
-                      </h3>
-                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-                        {mainCategories.map((category) => (
-                          <Link
-                            key={category.name}
-                            to={category.path}
-                            className="flex-shrink-0 transition-all duration-300"
-                          >
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                              {category.name}
-                            </button>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-      
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Browse All Wedding Services
+          </h3>
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+            {mainCategories.map((category) => (
+              <Link
+                key={category.name}
+                to={category.path}
+                className="flex-shrink-0 transition-all duration-300"
+              >
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                  {category.name}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
-          <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
+          <div className="lg:flex-1 lg:max-w-[calc(100%-320px)]">
             {/* Investigation Services */}
             <section className="py-2 md:py-3">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Our Background Investigation Services
               </h2>
               
@@ -1434,7 +1307,7 @@ const BackgroundInvestigationsPage = () => {
                       </div>
                       <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-yellow-400 transition-all duration-300"></div>
                     </button>
-                    <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[9px] md:text-[10px] px-0.5 leading-tight line-clamp-2">
+                    <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] md:text-xs px-0.5 leading-tight line-clamp-2">
                       {service.name}
                     </h3>
                   </div>
@@ -1446,6 +1319,7 @@ const BackgroundInvestigationsPage = () => {
                   <button
                     onClick={() => setSelectedService('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -1456,11 +1330,10 @@ const BackgroundInvestigationsPage = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Clear image with better branding */}
+            {/* Mobile Matrimony Card */}
             <div className="md:hidden mb-3 mt-2">
               <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
                 <div className="flex h-28">
-                  {/* Left Side: Clear Image without overlay */}
                   <div className="w-2/5 relative overflow-hidden">
                     <img
                       src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
@@ -1469,12 +1342,11 @@ const BackgroundInvestigationsPage = () => {
                     />
                   </div>
                   
-                  {/* Right Side: Text and Button */}
                   <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
                     <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
                       Eliteinova Matrimony
                     </h2>
-                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Find Your Perfect Partner
                     </h3>
                     <a 
@@ -1482,6 +1354,7 @@ const BackgroundInvestigationsPage = () => {
                       target="_blank" 
                       rel="noopener noreferrer"
                       className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                     >
                       <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
@@ -1492,7 +1365,7 @@ const BackgroundInvestigationsPage = () => {
                 </div>
               </div>
 
-              {/* Mobile Filters - Below Matrimony Card - EXTRA COMPACT */}
+              {/* Mobile Filters - Below Matrimony Card - UPDATED */}
               <div className="mt-2 bg-white rounded-md shadow border border-red-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 px-2 py-1.5">
                   <div className="flex items-center justify-between">
@@ -1509,10 +1382,10 @@ const BackgroundInvestigationsPage = () => {
                 </div>
 
                 <div className="p-2">
-                  {/* Filter Content */}
+                  {/* Filter Content - Using the same pages as desktop */}
                   {mobileFilterPages[currentMobileFilterPage].content}
 
-                  {/* Pagination Buttons - Ultra Small */}
+                  {/* Pagination Buttons */}
                   <div className="flex justify-between items-center mt-2">
                     <button
                       onClick={prevMobileFilterPage}
@@ -1538,7 +1411,7 @@ const BackgroundInvestigationsPage = () => {
                     </button>
                   </div>
 
-                  {/* Action Buttons - Ultra Small */}
+                  {/* Action Buttons */}
                   <div className="flex gap-1 mt-2 pt-1.5 border-t border-gray-200">
                     <button
                       onClick={handleFilter}
@@ -1589,9 +1462,8 @@ const BackgroundInvestigationsPage = () => {
               </div>
             </section>
 
-            {/* Mobile: Agency Count & Filters */}
+            {/* Mobile: Agency Count & Applied Filters */}
             <div className="lg:hidden">
-              {/* Agency Count */}
               <section className="py-1 md:py-2">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
@@ -1618,65 +1490,49 @@ const BackgroundInvestigationsPage = () => {
                   {selectedService && (
                     <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Service: {selectedService}
-                      <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">×</button>
                     </span>
                   )}
                   {selectedState && (
                     <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       State: {selectedState}
-                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">×</button>
                     </span>
                   )}
                   {(minBudget || maxBudget) && (
                     <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
-                        ×
-                      </button>
+                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">×</button>
                     </span>
                   )}
                   {searchQuery && (
                     <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Search: {searchQuery}
-                      <button onClick={() => setSearchQuery('')} className="ml-0.5 text-purple-500 hover:text-purple-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSearchQuery('')} className="ml-0.5 text-purple-500 hover:text-purple-700">×</button>
                     </span>
                   )}
                   {selectedServices.length > 0 && (
                     <span className="inline-flex items-center bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Services: {selectedServices.length}
-                      <button onClick={() => setSelectedServices([])} className="ml-0.5 text-blue-500 hover:text-blue-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedServices([])} className="ml-0.5 text-blue-500 hover:text-blue-700">×</button>
                     </span>
                   )}
                   {experience && (
                     <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      Exp: {experience}+ years
-                      <button onClick={() => setExperience('')} className="ml-0.5 text-indigo-500 hover:text-indigo-700">
-                        ×
-                      </button>
+                      Estd: {experience}
+                      <button onClick={() => setExperience('')} className="ml-0.5 text-indigo-500 hover:text-indigo-700">×</button>
                     </span>
                   )}
                   {businessType && (
                     <span className="inline-flex items-center bg-pink-100 text-pink-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Business: {businessType}
-                      <button onClick={() => setBusinessType('')} className="ml-0.5 text-pink-500 hover:text-pink-700">
-                        ×
-                      </button>
+                      <button onClick={() => setBusinessType('')} className="ml-0.5 text-pink-500 hover:text-pink-700">×</button>
                     </span>
                   )}
                   {turnaroundTime && (
                     <span className="inline-flex items-center bg-teal-100 text-teal-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Turnaround: {turnaroundTime}
-                      <button onClick={() => setTurnaroundTime('')} className="ml-0.5 text-teal-500 hover:text-teal-700">
-                        ×
-                      </button>
+                      <button onClick={() => setTurnaroundTime('')} className="ml-0.5 text-teal-500 hover:text-teal-700">×</button>
                     </span>
                   )}
                   {getActiveFilterCount() > 5 && (
@@ -1714,65 +1570,49 @@ const BackgroundInvestigationsPage = () => {
                     {selectedService && (
                       <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Service: {selectedService}
-                        <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">×</button>
                       </span>
                     )}
                     {selectedState && (
                       <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         State: {selectedState}
-                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">×</button>
                       </span>
                     )}
                     {(minBudget || maxBudget) && (
                       <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
-                          ×
-                        </button>
+                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">×</button>
                       </span>
                     )}
                     {searchQuery && (
                       <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Search: {searchQuery}
-                        <button onClick={() => setSearchQuery('')} className="ml-1 text-purple-500 hover:text-purple-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSearchQuery('')} className="ml-1 text-purple-500 hover:text-purple-700">×</button>
                       </span>
                     )}
                     {selectedServices.length > 0 && (
                       <span className="inline-flex items-center bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Services: {selectedServices.length}
-                        <button onClick={() => setSelectedServices([])} className="ml-1 text-blue-500 hover:text-blue-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedServices([])} className="ml-1 text-blue-500 hover:text-blue-700">×</button>
                       </span>
                     )}
                     {experience && (
                       <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Experience: {experience}+ years
-                        <button onClick={() => setExperience('')} className="ml-1 text-indigo-500 hover:text-indigo-700">
-                          ×
-                        </button>
+                        Estd: {experience}
+                        <button onClick={() => setExperience('')} className="ml-1 text-indigo-500 hover:text-indigo-700">×</button>
                       </span>
                     )}
                     {businessType && (
                       <span className="inline-flex items-center bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Business: {businessType}
-                        <button onClick={() => setBusinessType('')} className="ml-1 text-pink-500 hover:text-pink-700">
-                          ×
-                        </button>
+                        <button onClick={() => setBusinessType('')} className="ml-1 text-pink-500 hover:text-pink-700">×</button>
                       </span>
                     )}
                     {turnaroundTime && (
                       <span className="inline-flex items-center bg-teal-100 text-teal-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Turnaround: {turnaroundTime}
-                        <button onClick={() => setTurnaroundTime('')} className="ml-1 text-teal-500 hover:text-teal-700">
-                          ×
-                        </button>
+                        <button onClick={() => setTurnaroundTime('')} className="ml-1 text-teal-500 hover:text-teal-700">×</button>
                       </span>
                     )}
                     {getActiveFilterCount() > 5 && (
@@ -1785,17 +1625,17 @@ const BackgroundInvestigationsPage = () => {
               </section>
             </div>
 
-            {/* Agency Profiles - UPDATED TO MATCH PHOTOGRAPHY PAGE */}
-            <section className="py-1 md:py-2 vendor-profiles">
+            {/* Agency Profiles */}
+            <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredAgencies.length > 0 ? (
                 <div className="space-y-2 md:space-y-4">
                   {filteredAgencies.map((agency) => (
                     <div key={agency.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                       
-                      {/* DESKTOP VIEW - MOBILE FORMAT HORIZONTAL - BUSINESS CATEGORY FIRST, BUDGET SECOND */}
-                      <div className="hidden md:flex md:flex-row w-full">
-                        {/* Left Box - Image Full in Box - 22% */}
-                        <div className="w-[22%] p-0 flex items-stretch">
+                      {/* DESKTOP VIEW */}
+                      <div className="hidden md:flex md:flex-row w-full h-[280px]">
+                        {/* Left Box - Image */}
+                        <div className="w-[22%] p-0 flex items-stretch h-full">
                           <div className="w-full h-full overflow-hidden">
                             <img 
                               src={agency.logo} 
@@ -1805,11 +1645,11 @@ const BackgroundInvestigationsPage = () => {
                           </div>
                         </div>
 
-                        {/* Middle Box - Business Details - 43% */}
-                        <div className="w-[43%] p-4 bg-white border-r border-gray-200">
+                        {/* Middle Box - Business Details */}
+                        <div className="w-[43%] p-4 bg-white border-r border-gray-200 h-full overflow-y-auto">
                           {/* Title with Star Rating */}
                           <div className="flex items-start justify-between mb-2">
-                            <h3 className="text-lg font-bold text-red-800 pr-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
+                            <h3 className="text-lg font-bold text-red-800 pr-2 vendor-name" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
                               {agency.businessName}
                             </h3>
                             <div className="flex items-center bg-yellow-100 px-2 py-1 rounded-full flex-shrink-0">
@@ -1820,15 +1660,15 @@ const BackgroundInvestigationsPage = () => {
                             </div>
                           </div>
 
-                          {/* Business Category - MOVED FIRST */}
+                          {/* Business Category */}
                           <div className="mb-3">
                             <span className="inline-block px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                               {agency.serviceType}
                             </span>
                           </div>
                           
-                          {/* Budget - MOVED SECOND */}
-                          <div className="text-red-700 font-bold text-base mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                          {/* Budget */}
+                          <div className="text-red-700 font-bold text-base mb-3 price-tag" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
                             <span className="font-semibold text-gray-600 mr-1.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
                             {agency.priceRange}
                           </div>
@@ -1845,22 +1685,22 @@ const BackgroundInvestigationsPage = () => {
                           {/* Contact Details */}
                           <div className="space-y-1.5 text-sm">
                             <div className="flex items-start">
-                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Investigator:</span>
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Investigator:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.personName}</span>
                             </div>
                             <div className="flex items-start">
-                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>Experience:</span>
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experience:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.yearsExperience} years</span>
                             </div>
                             <div className="flex items-start">
-                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 600 }}>License:</span>
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>License:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.licenseNumber}</span>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Box - Description and Services - 35% */}
-                        <div className="w-[35%] p-4 bg-white relative">
+                        {/* Right Box - Description and Services */}
+                        <div className="w-[35%] p-4 bg-white relative h-full overflow-y-auto">
                           {/* Description */}
                           <p className="text-gray-700 mb-3 text-sm leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
                             {agency.description}
@@ -1876,7 +1716,7 @@ const BackgroundInvestigationsPage = () => {
                                 <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
-                                <span className="text-gray-700 text-sm leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
+                                <span className="text-gray-700 text-sm leading-tight service-item" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
                                   {service}
                                 </span>
                               </li>
@@ -1899,7 +1739,7 @@ const BackgroundInvestigationsPage = () => {
                         </div>
                       </div>
 
-                      {/* MOBILE VIEW - UPDATED TO MATCH PHOTOGRAPHY PAGE */}
+                      {/* MOBILE VIEW */}
                       <div className="md:hidden flex flex-col w-full">
                         {/* Top Section - Image and Details Side by Side */}
                         <div className="flex border-b border-gray-200">
@@ -2042,8 +1882,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Confidential</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>100% confidential and secure investigations</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Confidential</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">100% confidential and secure investigations</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -2052,8 +1892,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Fast Turnaround</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Quick and efficient background checks</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Fast Turnaround</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Quick and efficient background checks</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-red-100 hover:shadow-md transition-shadow duration-300">
@@ -2062,8 +1902,8 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Professional Team</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experienced investigators and verifiers</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Professional Team</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">Experienced investigators and verifiers</p>
                 </div>
                 
                 <div className="bg-white p-1.5 md:p-3 rounded-md shadow border border-yellow-100 hover:shadow-md transition-shadow duration-300">
@@ -2072,19 +1912,20 @@ const BackgroundInvestigationsPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                   </div>
-                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Verified Agencies</h3>
-                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>All agencies are licensed and verified</p>
+                  <h3 className="font-bold text-[9px] md:text-sm text-red-700 mb-0.5 md:mb-0.5 text-center">Verified Agencies</h3>
+                  <p className="text-gray-600 text-[8px] md:text-xs text-center leading-tight">All agencies are licensed and verified</p>
                 </div>
               </div>
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY WITH PAGINATION */}
+          {/* Right Sidebar - Filter Section - Desktop Only - WITH PAGINATION */}
           <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
-              {/* NEW: Matrimony Registration Box - Clear image with branding */}
+              
+              {/* Matrimony Registration Box */}
               <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-                <div className="relative h-40 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={matrimonyBanner}
                     alt="Eliteinova Matrimony"
@@ -2095,7 +1936,7 @@ const BackgroundInvestigationsPage = () => {
                     }}
                   />
                 </div>
-                <div className="p-4">
+                <div className="p-5">
                   <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
                     Eliteinova Matrimony
                   </h2>
@@ -2106,24 +1947,24 @@ const BackgroundInvestigationsPage = () => {
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-base flex items-center justify-center"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
                     Register Now
                   </a>
-                  <p className="text-gray-500 text-[10px] text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                  <p className="text-gray-500 text-xs text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Redirects to eliteinovamatrimony.com
                   </p>
                 </div>
               </div>
 
               {/* Filter Container with Pagination */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-base font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     {filterPages[currentFilterPage].title}
                   </h3>
                   <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
@@ -2161,17 +2002,17 @@ const BackgroundInvestigationsPage = () => {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex gap-2 mt-3 pt-3 border-t border-gray-200">
+                <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200">
                   <button
                     onClick={handleFilter}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Apply Filter
                   </button>
                   <button
                     onClick={handleReset}
-                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset
@@ -2183,7 +2024,7 @@ const BackgroundInvestigationsPage = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Drawer - EXTRA COMPACT VERSION */}
+      {/* Mobile Filter Drawer */}
       {showMobileFilterDrawer && (
         <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
           <div className="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto">
@@ -2208,7 +2049,7 @@ const BackgroundInvestigationsPage = () => {
               </button>
             </div>
             
-            {/* Filter Content - EXTRA COMPACT */}
+            {/* Filter Content */}
             <div className="px-3 py-2 space-y-2">
               {mobileFilterPages[currentMobileFilterPage].content}
 

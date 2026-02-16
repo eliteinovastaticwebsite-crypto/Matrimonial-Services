@@ -1558,10 +1558,12 @@ const Catering = () => {
     }
   ];
 
-  // Mobile Filter Pages - EXTRA COMPACT
+  // Replace the mobileFilterPages array with this updated version that matches desktop filters
+
+  // Mobile Filter Pages - COMPLETE VERSION matching desktop
   const mobileFilterPages = [
     {
-      title: "Budget & Type",
+      title: "Budget & Catering Type",
       content: (
         <div className="space-y-1.5">
           <div>
@@ -1599,7 +1601,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Cuisines</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Cuisines Offered</label>
             <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
               {cuisineTypes.map(cuisine => (
                 <label key={cuisine} className="flex items-center gap-1 text-[9px]">
@@ -1665,7 +1667,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Locations</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Preferred Service Locations</label>
             <div className="grid grid-cols-2 gap-1">
               {cateringLocations.map(location => (
                 <label key={location} className="flex items-center gap-1 text-[9px]">
@@ -1680,15 +1682,43 @@ const Catering = () => {
               ))}
             </div>
           </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Transport Charges</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileTransportCharges" 
+                  value="yes"
+                  checked={transportCharges === "yes"}
+                  onChange={(e) => setTransportCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileTransportCharges" 
+                  value="no"
+                  checked={transportCharges === "no"}
+                  onChange={(e) => setTransportCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
         </div>
       )
     },
     {
-      title: "Menu",
+      title: "Menu & Services",
       content: (
         <div className="space-y-1.5">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Special Menus</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Special Menus Available</label>
             <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
               {specialMenus.map(menu => (
                 <label key={menu} className="flex items-center gap-1 text-[9px]">
@@ -1724,25 +1754,25 @@ const Catering = () => {
       )
     },
     {
-      title: "Capacity",
+      title: "Capacity & Staff",
       content: (
         <div className="space-y-1.5">
           <div className="grid grid-cols-2 gap-1">
             <div>
-              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min Capacity</label>
+              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Capacity</label>
               <input
                 type="number"
-                placeholder="Min"
+                placeholder="Min plates"
                 value={minCapacity}
                 onChange={(e) => setMinCapacity(e.target.value)}
                 className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               />
             </div>
             <div>
-              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Max Capacity</label>
+              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Max. Capacity</label>
               <input
                 type="number"
-                placeholder="Max"
+                placeholder="Max plates"
                 value={maxCapacity}
                 onChange={(e) => setMaxCapacity(e.target.value)}
                 className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -1751,7 +1781,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Serving Staff</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Serving Staff Provided</label>
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1809,7 +1839,7 @@ const Catering = () => {
       )
     },
     {
-      title: "Hygiene",
+      title: "Hygiene & Quality",
       content: (
         <div className="space-y-1.5">
           <div>
@@ -1841,10 +1871,10 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Prep Location</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Food Preparation Location</label>
             <input
               type="text"
-              placeholder="Central Kitchen / On-site"
+              placeholder="e.g., Central Kitchen, On-site"
               value={preparationLocation}
               onChange={(e) => setPreparationLocation(e.target.value)}
               className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
@@ -1852,7 +1882,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">RO Water</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">RO / Mineral Water</label>
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1878,11 +1908,39 @@ const Catering = () => {
               </label>
             </div>
           </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Waste Management</label>
+            <div className="flex gap-2">
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileWasteManagement" 
+                  value="yes"
+                  checked={wasteManagement === "yes"}
+                  onChange={(e) => setWasteManagement(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Yes
+              </label>
+              <label className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileWasteManagement" 
+                  value="no"
+                  checked={wasteManagement === "no"}
+                  onChange={(e) => setWasteManagement(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No
+              </label>
+            </div>
+          </div>
         </div>
       )
     },
     {
-      title: "Business",
+      title: "Business & Experience",
       content: (
         <div className="space-y-1.5">
           <div>
@@ -1900,7 +1958,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Experience (Years)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
             <input
               type="number"
               placeholder="Min years"
@@ -1911,35 +1969,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Transport Charges</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTransportCharges" 
-                  value="yes"
-                  checked={transportCharges === "yes"}
-                  onChange={(e) => setTransportCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTransportCharges" 
-                  value="no"
-                  checked={transportCharges === "no"}
-                  onChange={(e) => setTransportCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Payment</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Payment Required</label>
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1962,6 +1992,80 @@ const Catering = () => {
                   className="w-2.5 h-2.5 accent-red-600" 
                 /> 
                 No
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Documents Available</label>
+            <div className="space-y-1">
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasGST" 
+                  value="yes"
+                  checked={hasGST === "yes"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Has GST
+              </label>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasGST" 
+                  value="no"
+                  checked={hasGST === "no"}
+                  onChange={(e) => setHasGST(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No GST
+              </label>
+              <div className="border-t border-gray-200 my-0.5"></div>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasPAN" 
+                  value="yes"
+                  checked={hasPAN === "yes"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Has PAN
+              </label>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasPAN" 
+                  value="no"
+                  checked={hasPAN === "no"}
+                  onChange={(e) => setHasPAN(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No PAN
+              </label>
+              <div className="border-t border-gray-200 my-0.5"></div>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasFSSAI" 
+                  value="yes"
+                  checked={hasFSSAI === "yes"}
+                  onChange={(e) => setHasFSSAI(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                Has FSSAI
+              </label>
+              <label className="flex items-center gap-2 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHasFSSAI" 
+                  value="no"
+                  checked={hasFSSAI === "no"}
+                  onChange={(e) => setHasFSSAI(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                No FSSAI
               </label>
             </div>
           </div>

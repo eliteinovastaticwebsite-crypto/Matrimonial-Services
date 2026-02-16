@@ -197,8 +197,8 @@ const Decoration = () => {
       eventType: 'Wedding Decoration',
       personName: 'Rajesh Kumar',
       designation: 'Creative Director',
-      description: 'Specializing in elegant wedding decorations with 10+ years of experience creating magical wedding setups',
-      services: ['Complete Wedding Setup', 'Entrance Decor', 'Seating Arrangements', 'Ceiling Decorations', 'Stage Design'],
+      description: 'Specializing in decorations with 10+ years of experience creating magical wedding setups',
+      services: ['Complete Wedding Setup', 'Entrance Decor', 'Seating Arrangements', 'Stage Design'],
       logo: weddingdecor,
       location: 'Chennai, Tamil Nadu',
       rating: 4.8,
@@ -218,7 +218,7 @@ const Decoration = () => {
       personName: 'Priya Sharma',
       designation: 'Head Designer',
       description: 'Creating dream wedding decorations with artistic vision and modern design techniques',
-      services: ['Custom Wedding Themes', 'Destination Weddings', 'Traditional Decor', 'Modern Designs', 'Complete Setup'],
+      services: ['Custom Wedding Themes', 'Destination Weddings', 'Traditional Decor', 'Complete Setup'],
       logo: weddingdecor,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.9,
@@ -239,7 +239,7 @@ const Decoration = () => {
       personName: 'Arun Mehta',
       designation: 'Stage Designer',
       description: 'Professional stage decoration for weddings and events with spectacular designs',
-      services: ['Main Stage Setup', 'Backdrop Designs', 'Floral Stage Decor', 'LED Stage Effects', 'Custom Themes'],
+      services: ['Main Stage Setup', 'Floral Stage Decor', 'LED Stage Effects', 'Custom Themes'],
       logo: stagedecor,
       location: 'Bangalore, Karnataka',
       rating: 4.7,
@@ -259,7 +259,7 @@ const Decoration = () => {
       personName: 'Sneha Reddy',
       designation: 'Event Decorator',
       description: 'Creating elevated stage designs that become the focal point of every celebration',
-      services: ['Multi-level Stages', 'Themed Backdrops', 'Lighting Effects', 'Props and Sets', 'Quick Setup'],
+      services: ['Multi-level Stages', 'Lighting Effects', 'Props and Sets', 'Quick Setup'],
       logo: stagedecor,
       location: 'Hyderabad, Telangana',
       rating: 4.6,
@@ -280,7 +280,7 @@ const Decoration = () => {
       personName: 'Vikram Singh',
       designation: 'Traditional Decor Specialist',
       description: 'Traditional and modern mandap decorations for Hindu wedding ceremonies',
-      services: ['Traditional Mandaps', 'Floral Mandaps', 'Theme Mandaps', 'Custom Mandap Designs', 'Ceremony Setup'],
+      services: ['Traditional Mandaps', 'Floral Mandaps', 'Theme Mandaps', 'Custom Mandap Designs'],
       logo: mandapdecor,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
@@ -341,7 +341,7 @@ const Decoration = () => {
       personName: 'Meera Patel',
       designation: 'Party Decor Specialist',
       description: 'Creating celebration-ready reception spaces with vibrant and elegant decorations',
-      services: ['Balloon Decor', 'Centerpieces', 'Photo Booth Setup', 'Cake Table Decor', 'Guest Seating'],
+      services: ['Balloon Decor', 'Photo Booth Setup', 'Cake Table Decor', 'Guest Seating'],
       logo: receptiondecor,
       location: 'Ahmedabad, Gujarat',
       rating: 4.6,
@@ -423,7 +423,7 @@ const Decoration = () => {
       personName: 'Neha Joshi',
       designation: 'Floral Artist',
       description: 'Creating stunning floral decorations with artistic arrangements and premium blooms',
-      services: ['Exotic Flower Arrangements', 'Seasonal Flowers', 'Floral Installations', 'Garlands', 'Flower Crowns'],
+      services: ['Exotic Flower Arrangements', 'Seasonal Flowers', 'Floral Installations', 'Flower Crowns'],
       logo: floraldecor,
       location: 'Pune, Maharashtra',
       rating: 4.8,
@@ -444,7 +444,7 @@ const Decoration = () => {
       personName: 'Venkatesh Iyer',
       designation: 'Theme Designer',
       description: 'Complete theme-based decoration services that transform venues into magical spaces',
-      services: ['Royal Themes', 'Beach Themes', 'Garden Themes', 'Cultural Themes', 'Custom Themes'],
+      services: ['Beach Themes', 'Garden Themes', 'Cultural Themes', 'Custom Themes'],
       logo: themedecor,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
@@ -725,38 +725,38 @@ const Decoration = () => {
     }
   ];
 
-  // Mobile filter pages
+  // Mobile filter pages - COMPLETE VERSION matching desktop
   const mobileFilterPages = [
     {
-      title: "Budget",
+      title: "Basic Filters",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹)</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Budget Range (₹)</label>
             <div className="flex gap-1">
               <input
                 type="number"
                 placeholder="Min"
                 value={minBudget}
                 onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               />
               <input
                 type="number"
                 placeholder="Max"
                 value={maxBudget}
                 onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Decoration Type</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Decoration Type</label>
             <select
               value={selectedEvent}
               onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             >
               <option value="">All Types</option>
               {eventTypes.map((event) => (
@@ -764,22 +764,16 @@ const Decoration = () => {
               ))}
             </select>
           </div>
-        </div>
-      )
-    },
-    {
-      title: "Location",
-      content: (
-        <div className="space-y-1.5">
+
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">State</label>
             <select
               value={selectedState}
               onChange={(e) => {
                 setSelectedState(e.target.value);
                 setSelectedDistrict('');
               }}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             >
               <option value="">All States</option>
               {states.map((state) => (
@@ -789,12 +783,12 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
               disabled={!selectedState}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
             >
               <option value="">All Districts</option>
               {selectedState && districts[selectedState]?.map((district) => (
@@ -804,64 +798,64 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Location/City</label>
             <input
               type="text"
-              placeholder="Enter city"
+              placeholder="Enter city or area"
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             />
           </div>
         </div>
       )
     },
     {
-      title: "Services",
+      title: "Services & Expertise",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Specific Services</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Specific Services</label>
+            <div className="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto p-1 border border-red-100 rounded">
               {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-[9px]">
+                <label key={service} className="flex items-center gap-2 text-xs">
                   <input 
                     type="checkbox" 
                     checked={selectedServices.includes(service)}
                     onChange={() => handleServiceToggle(service)}
-                    className="w-2.5 h-2.5 accent-red-600" 
+                    className="w-3.5 h-3.5 accent-red-600" 
                   /> 
-                  <span className="truncate">{service}</span>
+                  <span>{service}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
             <input
               type="number"
-              placeholder="Years"
+              placeholder="Minimum years"
               value={minExperience}
               onChange={(e) => setMinExperience(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             />
           </div>
         </div>
       )
     },
     {
-      title: "Business",
+      title: "Business Details",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Business Type</label>
             <select
               value={businessType}
               onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
             >
-              <option value="">All Types</option>
+              <option value="">All Business Types</option>
               {businessTypes.map(type => (
                 <option key={type} value={type}>{type}</option>
               ))}
@@ -869,27 +863,27 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Travel Charges</label>
             <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
+              <label className="flex items-center gap-1 text-xs">
                 <input 
                   type="radio" 
                   name="mobileTravelCharges" 
                   value="yes"
                   checked={hasTravelCharges === "yes"}
                   onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
+                  className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 Yes
               </label>
-              <label className="flex items-center gap-1 text-[9px]">
+              <label className="flex items-center gap-1 text-xs">
                 <input 
                   type="radio" 
                   name="mobileTravelCharges" 
                   value="no"
                   checked={hasTravelCharges === "no"}
                   onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
+                  className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 No
               </label>

@@ -16,14 +16,38 @@ import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 const Styling = () => {
   const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  
+  // Basic filter states
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
   const [selectedService, setSelectedService] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
-  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  
+  // Extended filter states matching registration form
+  const [selectedStylingTypes, setSelectedStylingTypes] = useState([]);
+  const [selectedBridalStyles, setSelectedBridalStyles] = useState([]);
+  const [selectedGroomServices, setSelectedGroomServices] = useState([]);
+  const [selectedProductBrands, setSelectedProductBrands] = useState([]);
+  const [businessType, setBusinessType] = useState('');
+  const [experience, setExperience] = useState('');
+  const [teamSize, setTeamSize] = useState('');
+  const [ownKit, setOwnKit] = useState('');
+  const [backupArtist, setBackupArtist] = useState('');
+  const [hygieneKits, setHygieneKits] = useState('');
+  const [patchTest, setPatchTest] = useState('');
+  const [travelCharges, setTravelCharges] = useState('');
+  const [advanceRequired, setAdvanceRequired] = useState('');
+  const [hasGST, setHasGST] = useState('');
+  const [hasPAN, setHasPAN] = useState('');
+  
+  // Filter navigation
+  const [currentFilterPage, setCurrentFilterPage] = useState(0);
+  const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
+  const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
 
+  // Check if there's a filter parameter in the URL
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const openFilter = urlParams.get('openFilter');
@@ -35,7 +59,7 @@ const Styling = () => {
           filterSection.scrollIntoView({ behavior: 'smooth' });
         }
         if (window.innerWidth < 1024) {
-          setShowMobileFilter(true);
+          setShowMobileFilterDrawer(true);
         }
       }, 500);
     }
@@ -67,7 +91,7 @@ const Styling = () => {
     { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
-  // UPDATED: Separate categories for Bride (5) and Groom (4)
+  // Styling categories
   const brideStylingCategories = [
     { name: 'Bridal Makeup', image: bridalmakeup },
     { name: 'Bridal Accessories', image: bridalaccessories },
@@ -78,13 +102,13 @@ const Styling = () => {
 
   const groomStylingCategories = [
     { name: 'Groom Makeup', image: groommakeup },
-    { name: 'Groom Hair Styling', image: groomhairstyling  },
+    { name: 'Groom Hair Styling', image: groomhairstyling },
     { name: 'Groom Accessories', image: accessoriesfinishing },
     { name: 'Groom Attire Styling', image: commercial },
   ];
 
-  // UPDATED: Combined service types for filtering
-  const serviceTypes = [
+  // Filter options matching registration form
+  const stylingTypes = [
     'Bridal Makeup',
     'Bridal Accessories',
     'Hair Styling',
@@ -96,8 +120,41 @@ const Styling = () => {
     'Groom Attire Styling'
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy'];
+  const bridalStyles = [
+    "Traditional",
+    "HD Makeup",
+    "Airbrush Makeup",
+    "Natural / Minimal",
+    "Celebrity / Theme-based"
+  ];
+
+  const groomServices = [
+    "Hairstyling",
+    "Makeup",
+    "Beard / Grooming",
+    "Costume Draping"
+  ];
+
+  const productBrands = [
+    "MAC",
+    "HUDA Beauty",
+    "Bobbi Brown",
+    "Kryolan",
+    "Other Premium Brands"
+  ];
+
+  const businessTypes = [
+    "Individual Artist",
+    "Studio/Salon",
+    "Proprietorship",
+    "Partnership",
+    "Private Limited"
+  ];
+
+  const yesNoOptions = ["Yes", "No"];
+
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
+  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Kanyakumari', 'Bangalore', 'Hyderabad', 'Mumbai', 'Pune', 'Delhi'];
 
   const handleCategoryClick = (categoryName) => {
     setSelectedService(categoryName);
@@ -112,7 +169,48 @@ const Styling = () => {
     }
   };
 
-  // Sample vendor data - UPDATED to match new categories
+  // Toggle functions for multi-select filters
+  const handleStylingTypeToggle = (type) => {
+    setSelectedStylingTypes(prev => {
+      if (prev.includes(type)) {
+        return prev.filter(t => t !== type);
+      } else {
+        return [...prev, type];
+      }
+    });
+  };
+
+  const handleBridalStyleToggle = (style) => {
+    setSelectedBridalStyles(prev => {
+      if (prev.includes(style)) {
+        return prev.filter(s => s !== style);
+      } else {
+        return [...prev, style];
+      }
+    });
+  };
+
+  const handleGroomServiceToggle = (service) => {
+    setSelectedGroomServices(prev => {
+      if (prev.includes(service)) {
+        return prev.filter(s => s !== service);
+      } else {
+        return [...prev, service];
+      }
+    });
+  };
+
+  const handleProductBrandToggle = (brand) => {
+    setSelectedProductBrands(prev => {
+      if (prev.includes(brand)) {
+        return prev.filter(b => b !== brand);
+      } else {
+        return [...prev, brand];
+      }
+    });
+  };
+
+  // Sample vendor data with extended fields matching form
   const vendors = [
     // Bridal Makeup
     {
@@ -125,10 +223,24 @@ const Styling = () => {
       designation: 'Lead Makeup Artist',
       description: 'Specializing in bridal makeup with 8+ years of experience',
       services: ['Airbrush Makeup', 'Traditional Bridal Look', 'Contemporary Styles', 'Makeup for Events'],
+      bridalStyles: ['Airbrush Makeup', 'Traditional'],
+      groomServices: [],
+      productBrands: ['MAC', 'HUDA Beauty'],
       logo: bridalmakeup,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹25,000 - ₹1,50,000'
+      priceRange: '₹25,000 - ₹1,50,000',
+      experience: 8,
+      businessType: 'Studio/Salon',
+      teamSize: 5,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 2,
@@ -140,10 +252,24 @@ const Styling = () => {
       designation: 'Creative Director',
       description: 'Creating timeless bridal looks with international quality products',
       services: ['Bridal Makeup', 'Engagement Makeup', 'Reception Look', 'Trial Sessions'],
+      bridalStyles: ['HD Makeup', 'Celebrity / Theme-based'],
+      groomServices: [],
+      productBrands: ['Bobbi Brown', 'Kryolan'],
       logo: bridalmakeup,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹30,000 - ₹2,00,000'
+      priceRange: '₹30,000 - ₹2,00,000',
+      experience: 12,
+      businessType: 'Partnership',
+      teamSize: 8,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Bridal Accessories
     {
@@ -156,10 +282,24 @@ const Styling = () => {
       designation: 'Accessories Designer',
       description: 'Exquisite bridal accessories including jewelry and ornaments',
       services: ['Bridal Jewelry Sets', 'Hair Accessories', 'Maang Tikka', 'Traditional Ornaments'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: bridalaccessories,
       location: 'Chennai, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹15,000 - ₹2,00,000'
+      priceRange: '₹15,000 - ₹2,00,000',
+      experience: 6,
+      businessType: 'Proprietorship',
+      teamSize: 3,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'No',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 4,
@@ -171,10 +311,24 @@ const Styling = () => {
       designation: 'Jewelry Consultant',
       description: 'Premium bridal accessories with traditional and contemporary designs',
       services: ['Temple Jewelry', 'Kundan Sets', 'Pearl Accessories', 'Custom Designs'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: bridalaccessories,
       location: 'Madurai, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹20,000 - ₹3,00,000'
+      priceRange: '₹20,000 - ₹3,00,000',
+      experience: 10,
+      businessType: 'Individual Artist',
+      teamSize: 2,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'No',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Hair Styling
     {
@@ -185,12 +339,26 @@ const Styling = () => {
       serviceType: 'Hair Styling',
       personName: 'Aisha Kapoor',
       designation: 'Lead Hair Stylist',
-      description: 'Creating beautiful bridal hairstyles',
+      description: 'Creating beautiful bridal hairstyles for all occasions',
       services: ['Bridal Hairstyles', 'Hair Extensions', 'Flower Decorations', 'Traditional Plaits'],
+      bridalStyles: ['Traditional'],
+      groomServices: ['Hairstyling'],
+      productBrands: ['MAC', 'HUDA Beauty'],
       logo: hairstyling,
       location: 'Bangalore, Karnataka',
       rating: 4.9,
-      priceRange: '₹10,000 - ₹50,000'
+      priceRange: '₹10,000 - ₹50,000',
+      experience: 7,
+      businessType: 'Studio/Salon',
+      teamSize: 4,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 6,
@@ -202,10 +370,24 @@ const Styling = () => {
       designation: 'Hair Designer',
       description: 'Specialized in traditional and contemporary wedding hairstyles',
       services: ['Modern Hairstyles', 'Traditional Buns', 'Hair Accessories', 'Pre-wedding Hair Care'],
+      bridalStyles: ['Natural / Minimal'],
+      groomServices: ['Hairstyling'],
+      productBrands: ['Bobbi Brown'],
       logo: hairstyling,
       location: 'Hyderabad, Telangana',
       rating: 4.8,
-      priceRange: '₹12,000 - ₹60,000'
+      priceRange: '₹12,000 - ₹60,000',
+      experience: 9,
+      businessType: 'Individual Artist',
+      teamSize: 2,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Mehendi Art
     {
@@ -216,12 +398,26 @@ const Styling = () => {
       serviceType: 'Mehendi Art',
       personName: 'Zara Ahmed',
       designation: 'Mehendi Artist',
-      description: 'Traditional and contemporary mehendi designs',
+      description: 'Traditional and contemporary mehendi designs for weddings',
       services: ['Bridal Mehendi', 'Arabic Designs', 'Rajasthani Patterns', 'Custom Designs'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: mehendiart,
       location: 'Chennai, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹5,000 - ₹30,000'
+      priceRange: '₹5,000 - ₹30,000',
+      experience: 5,
+      businessType: 'Individual Artist',
+      teamSize: 2,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'No',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'No',
+      hasPAN: 'Yes'
     },
     {
       id: 8,
@@ -233,10 +429,24 @@ const Styling = () => {
       designation: 'Lead Artist',
       description: 'Creating intricate mehendi designs that tell your love story',
       services: ['Full Hand Designs', 'Feet Mehendi', 'Groom Design', 'Guest Mehendi'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: mehendiart,
       location: 'Coimbatore, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹8,000 - ₹40,000'
+      priceRange: '₹8,000 - ₹40,000',
+      experience: 8,
+      businessType: 'Individual Artist',
+      teamSize: 3,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Traditional Attire Styling
     {
@@ -249,10 +459,24 @@ const Styling = () => {
       designation: 'Traditional Stylist',
       description: 'Specializing in South Indian traditional wedding looks',
       services: ['Traditional Attire Draping', 'Temple Jewelry', 'Classic Makeup', 'Traditional Hairstyles'],
+      bridalStyles: ['Traditional'],
+      groomServices: ['Costume Draping'],
+      productBrands: ['Other Premium Brands'],
       logo: traditionalattire,
       location: 'Chennai, Tamil Nadu',
       rating: 4.9,
-      priceRange: '₹35,000 - ₹2,50,000'
+      priceRange: '₹35,000 - ₹2,50,000',
+      experience: 15,
+      businessType: 'Proprietorship',
+      teamSize: 4,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 10,
@@ -264,10 +488,24 @@ const Styling = () => {
       designation: 'Traditional Consultant',
       description: 'Preserving and presenting traditional wedding styles with modern comfort',
       services: ['Regional Traditional Styles', 'Antique Jewelry', 'Cultural Attire', 'Traditional Accessories'],
+      bridalStyles: ['Traditional'],
+      groomServices: ['Costume Draping'],
+      productBrands: ['Other Premium Brands'],
       logo: traditionalattire,
       location: 'Kanyakumari, Tamil Nadu',
       rating: 4.8,
-      priceRange: '₹40,000 - ₹3,00,000'
+      priceRange: '₹40,000 - ₹3,00,000',
+      experience: 12,
+      businessType: 'Individual Artist',
+      teamSize: 3,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Groom Makeup
     {
@@ -278,12 +516,26 @@ const Styling = () => {
       serviceType: 'Groom Makeup',
       personName: 'Rahul Verma',
       designation: 'Groom Stylist',
-      description: 'Professional grooming services for grooms',
+      description: 'Professional grooming services for modern grooms',
       services: ['Groom Makeup', 'Beard Styling', 'Hair Grooming', 'Traditional Attire Styling'],
+      bridalStyles: [],
+      groomServices: ['Makeup', 'Beard / Grooming'],
+      productBrands: ['MAC', 'Other Premium Brands'],
       logo: groommakeup,
       location: 'Bangalore, Karnataka',
       rating: 4.7,
-      priceRange: '₹15,000 - ₹80,000'
+      priceRange: '₹15,000 - ₹80,000',
+      experience: 6,
+      businessType: 'Studio/Salon',
+      teamSize: 3,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 12,
@@ -295,10 +547,24 @@ const Styling = () => {
       designation: 'Style Consultant',
       description: 'Transforming grooms into stylish gentlemen for their wedding day',
       services: ['Complete Groom Package', 'Suit Styling', 'Traditional Look', 'Accessory Consultation'],
+      bridalStyles: [],
+      groomServices: ['Makeup', 'Beard / Grooming'],
+      productBrands: ['Bobbi Brown', 'Kryolan'],
       logo: groommakeup,
       location: 'Hyderabad, Telangana',
       rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000'
+      priceRange: '₹20,000 - ₹1,00,000',
+      experience: 8,
+      businessType: 'Individual Artist',
+      teamSize: 2,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Groom Hair Styling
     {
@@ -309,12 +575,26 @@ const Styling = () => {
       serviceType: 'Groom Hair Styling',
       personName: 'Arjun Singh',
       designation: 'Hair Specialist',
-      description: 'Expert groom hair styling and grooming',
+      description: 'Expert groom hair styling and grooming services',
       services: ['Modern Hairstyles', 'Traditional Looks', 'Hair Color', 'Beard Shaping'],
+      bridalStyles: [],
+      groomServices: ['Hairstyling', 'Beard / Grooming'],
+      productBrands: ['HUDA Beauty', 'Other Premium Brands'],
       logo: hairstyling,
       location: 'Hyderabad, Telangana',
       rating: 4.8,
-      priceRange: '₹8,000 - ₹40,000'
+      priceRange: '₹8,000 - ₹40,000',
+      experience: 5,
+      businessType: 'Individual Artist',
+      teamSize: 2,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 14,
@@ -324,12 +604,26 @@ const Styling = () => {
       serviceType: 'Groom Hair Styling',
       personName: 'Vikram Seth',
       designation: 'Creative Stylist',
-      description: 'Modern and traditional hairstyles for grooms',
+      description: 'Modern and traditional hairstyles for grooms and wedding parties',
       services: ['Contemporary Cuts', 'Classic Styles', 'Beard Grooming', 'Hair Treatments'],
+      bridalStyles: [],
+      groomServices: ['Hairstyling', 'Beard / Grooming'],
+      productBrands: ['MAC', 'Other Premium Brands'],
       logo: hairstyling,
       location: 'Chennai, Tamil Nadu',
       rating: 4.7,
-      priceRange: '₹7,000 - ₹35,000'
+      priceRange: '₹7,000 - ₹35,000',
+      experience: 7,
+      businessType: 'Studio/Salon',
+      teamSize: 4,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Groom Accessories
     {
@@ -340,12 +634,26 @@ const Styling = () => {
       serviceType: 'Groom Accessories',
       personName: 'Vikram Patel',
       designation: 'Accessory Consultant',
-      description: 'Premium groom accessories and finishing touches',
+      description: 'Premium groom accessories and finishing touches for weddings',
       services: ['Turban & Safa', 'Brooches', 'Cufflinks', 'Traditional Accessories'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: accessoriesfinishing,
       location: 'Mumbai, Maharashtra',
       rating: 4.6,
-      priceRange: '₹10,000 - ₹75,000'
+      priceRange: '₹10,000 - ₹75,000',
+      experience: 9,
+      businessType: 'Proprietorship',
+      teamSize: 3,
+      ownKit: 'Yes',
+      backupArtist: 'No',
+      hygieneKits: 'Yes',
+      patchTest: 'No',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 16,
@@ -357,10 +665,24 @@ const Styling = () => {
       designation: 'Style Advisor',
       description: 'Complete accessory solutions for modern grooms',
       services: ['Wedding Sets', 'Custom Accessories', 'Matching Sets', 'Rental Options'],
+      bridalStyles: [],
+      groomServices: [],
+      productBrands: ['Other Premium Brands'],
       logo: accessoriesfinishing,
       location: 'Delhi, Delhi',
       rating: 4.7,
-      priceRange: '₹12,000 - ₹80,000'
+      priceRange: '₹12,000 - ₹80,000',
+      experience: 11,
+      businessType: 'Partnership',
+      teamSize: 4,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     // Groom Attire Styling
     {
@@ -371,12 +693,26 @@ const Styling = () => {
       serviceType: 'Groom Attire Styling',
       personName: 'Karan Malhotra',
       designation: 'Style Consultant',
-      description: 'Complete groom attire styling and coordination',
+      description: 'Complete groom attire styling and coordination for weddings',
       services: ['Sherwani Styling', 'Suit Selection', 'Traditional Attire', 'Color Coordination'],
+      bridalStyles: [],
+      groomServices: ['Costume Draping'],
+      productBrands: ['Other Premium Brands'],
       logo: commercial,
       location: 'Delhi, Delhi',
       rating: 4.7,
-      priceRange: '₹20,000 - ₹1,50,000'
+      priceRange: '₹20,000 - ₹1,50,000',
+      experience: 10,
+      businessType: 'Private Limited',
+      teamSize: 5,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     },
     {
       id: 18,
@@ -388,29 +724,842 @@ const Styling = () => {
       designation: 'Fashion Director',
       description: 'Luxury grooming and styling for discerning grooms',
       services: ['Bespoke Sherwanis', 'Designer Suits', 'Indo-Western Fusion', 'Complete Look'],
+      bridalStyles: [],
+      groomServices: ['Costume Draping'],
+      productBrands: ['Other Premium Brands'],
       logo: commercial,
       location: 'Mumbai, Maharashtra',
       rating: 4.9,
-      priceRange: '₹30,000 - ₹2,50,000'
+      priceRange: '₹30,000 - ₹2,50,000',
+      experience: 15,
+      businessType: 'Partnership',
+      teamSize: 6,
+      ownKit: 'Yes',
+      backupArtist: 'Yes',
+      hygieneKits: 'Yes',
+      patchTest: 'Yes',
+      travelCharges: 'Yes',
+      advanceRequired: 'Yes',
+      hasGST: 'Yes',
+      hasPAN: 'Yes'
     }
   ];
 
+  // Enhanced filter function matching form fields
   const filteredVendors = vendors.filter(vendor => {
+    // Basic filters
     if (selectedService && vendor.serviceType !== selectedService) return false;
     if (selectedState && !vendor.location.includes(selectedState)) return false;
     if (selectedDistrict && !vendor.location.includes(selectedDistrict)) return false;
     if (selectedLocation && !vendor.location.toLowerCase().includes(selectedLocation.toLowerCase())) return false;
     
+    // Budget filter
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
-      const vendorPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
-      return vendorPrice >= minPrice && vendorPrice <= maxPrice;
+      const vendorMinPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
+      if (vendorMinPrice < minPrice || vendorMinPrice > maxPrice) return false;
     }
+    
+    // Styling type filter
+    if (selectedStylingTypes.length > 0) {
+      if (!selectedStylingTypes.includes(vendor.serviceType)) return false;
+    }
+    
+    // Bridal styles filter
+    if (selectedBridalStyles.length > 0) {
+      if (!vendor.bridalStyles) return false;
+      const hasMatchingStyle = selectedBridalStyles.some(style => 
+        vendor.bridalStyles.includes(style)
+      );
+      if (!hasMatchingStyle) return false;
+    }
+    
+    // Groom services filter
+    if (selectedGroomServices.length > 0) {
+      if (!vendor.groomServices) return false;
+      const hasMatchingService = selectedGroomServices.some(service => 
+        vendor.groomServices.includes(service)
+      );
+      if (!hasMatchingService) return false;
+    }
+    
+    // Product brands filter
+    if (selectedProductBrands.length > 0) {
+      if (!vendor.productBrands) return false;
+      const hasMatchingBrand = selectedProductBrands.some(brand => 
+        vendor.productBrands.includes(brand)
+      );
+      if (!hasMatchingBrand) return false;
+    }
+    
+    // Business type filter
+    if (businessType && vendor.businessType !== businessType) return false;
+    
+    // Experience filter
+    if (experience) {
+      const minExperience = parseInt(experience) || 0;
+      if (vendor.experience < minExperience) return false;
+    }
+    
+    // Team size filter
+    if (teamSize) {
+      const minTeamSize = parseInt(teamSize) || 0;
+      if (vendor.teamSize < minTeamSize) return false;
+    }
+    
+    // Own kit filter
+    if (ownKit && vendor.ownKit !== ownKit) return false;
+    
+    // Backup artist filter
+    if (backupArtist && vendor.backupArtist !== backupArtist) return false;
+    
+    // Hygiene kits filter
+    if (hygieneKits && vendor.hygieneKits !== hygieneKits) return false;
+    
+    // Patch test filter
+    if (patchTest && vendor.patchTest !== patchTest) return false;
+    
+    // Travel charges filter
+    if (travelCharges && vendor.travelCharges !== travelCharges) return false;
+    
+    // Advance payment filter
+    if (advanceRequired && vendor.advanceRequired !== advanceRequired) return false;
+    
+    // Document filters
+    if (hasGST && vendor.hasGST !== hasGST) return false;
+    if (hasPAN && vendor.hasPAN !== hasPAN) return false;
     
     return true;
   });
 
+  // Desktop Filter Pages - Matching registration form
+  const filterPages = [
+    {
+      title: "Budget & Styling Type",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Styling Type</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {stylingTypes.map(type => (
+                <label key={type} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedStylingTypes.includes(type)}
+                    onChange={() => handleStylingTypeToggle(type)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Location",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All States</option>
+              {states.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100 disabled:text-gray-500"
+            >
+              <option value="">All Districts</option>
+              {districts.map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
+            <input
+              type="text"
+              placeholder="Enter city or area"
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Styling Specialization",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Bridal Makeup Styles</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {bridalStyles.map(style => (
+                <label key={style} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedBridalStyles.includes(style)}
+                    onChange={() => handleBridalStyleToggle(style)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{style}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Groom Styling Services</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {groomServices.map(service => (
+                <label key={service} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedGroomServices.includes(service)}
+                    onChange={() => handleGroomServiceToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Product Brands Used</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {productBrands.map(brand => (
+                <label key={brand} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedProductBrands.includes(brand)}
+                    onChange={() => handleProductBrandToggle(brand)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{brand}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Business & Experience",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Business Types</option>
+              {businessTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <input
+              type="number"
+              placeholder="Minimum years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Team Size</label>
+            <input
+              type="number"
+              placeholder="Minimum team members"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Equipment & Hygiene",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Own Makeup Kit & Tools</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="ownKit" 
+                    value={option}
+                    checked={ownKit === option}
+                    onChange={(e) => setOwnKit(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Backup Artist Available</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="backupArtist" 
+                    value={option}
+                    checked={backupArtist === option}
+                    onChange={(e) => setBackupArtist(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Hygiene Kits Used</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="hygieneKits" 
+                    value={option}
+                    checked={hygieneKits === option}
+                    onChange={(e) => setHygieneKits(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Patch Test Available</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="patchTest" 
+                    value={option}
+                    checked={patchTest === option}
+                    onChange={(e) => setPatchTest(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Payment & Documents",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="travelCharges" 
+                    value={option}
+                    checked={travelCharges === option}
+                    onChange={(e) => setTravelCharges(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <div className="flex gap-3 text-xs">
+              {yesNoOptions.map(option => (
+                <label key={option} className="flex items-center gap-1">
+                  <input 
+                    type="radio" 
+                    name="advanceRequired" 
+                    value={option}
+                    checked={advanceRequired === option}
+                    onChange={(e) => setAdvanceRequired(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {option}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Available</label>
+            <div className="space-y-1.5">
+              <div>
+                <label className="block text-[10px] font-semibold text-gray-600 mb-1">GST</label>
+                <div className="flex gap-3 text-xs">
+                  {yesNoOptions.map(option => (
+                    <label key={`gst-${option}`} className="flex items-center gap-1">
+                      <input 
+                        type="radio" 
+                        name="hasGST" 
+                        value={option}
+                        checked={hasGST === option}
+                        onChange={(e) => setHasGST(e.target.value)}
+                        className="w-3.5 h-3.5 accent-red-600" 
+                      /> 
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="block text-[10px] font-semibold text-gray-600 mb-1">PAN</label>
+                <div className="flex gap-3 text-xs">
+                  {yesNoOptions.map(option => (
+                    <label key={`pan-${option}`} className="flex items-center gap-1">
+                      <input 
+                        type="radio" 
+                        name="hasPAN" 
+                        value={option}
+                        checked={hasPAN === option}
+                        onChange={(e) => setHasPAN(e.target.value)}
+                        className="w-3.5 h-3.5 accent-red-600" 
+                      /> 
+                      {option}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+  ];
+
+  // Mobile Filter Pages - EXACT SAME CONTENT AS DESKTOP
+const mobileFilterPages = [
+  {
+    title: "Budget & Styling Type",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹)</label>
+          <div className="flex gap-1">
+            <input
+              type="number"
+              placeholder="Min"
+              value={minBudget}
+              onChange={(e) => setMinBudget(e.target.value)}
+              className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+            <input
+              type="number"
+              placeholder="Max"
+              value={maxBudget}
+              onChange={(e) => setMaxBudget(e.target.value)}
+              className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Styling Type</label>
+          <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            {stylingTypes.map(type => (
+              <label key={type} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="checkbox" 
+                  checked={selectedStylingTypes.includes(type)}
+                  onChange={() => handleStylingTypeToggle(type)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                <span className="truncate">{type}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Location",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
+          <select
+            value={selectedState}
+            onChange={(e) => {
+              setSelectedState(e.target.value);
+              setSelectedDistrict('');
+            }}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+          >
+            <option value="">All States</option>
+            {states.map((state) => (
+              <option key={state} value={state}>{state}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+          <select
+            value={selectedDistrict}
+            onChange={(e) => setSelectedDistrict(e.target.value)}
+            disabled={!selectedState}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+          >
+            <option value="">All Districts</option>
+            {districts.map((district) => (
+              <option key={district} value={district}>{district}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
+          <input
+            type="text"
+            placeholder="Enter city"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+          />
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Styling Specialization",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Bridal Makeup Styles</label>
+          <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            {bridalStyles.map(style => (
+              <label key={style} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="checkbox" 
+                  checked={selectedBridalStyles.includes(style)}
+                  onChange={() => handleBridalStyleToggle(style)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                <span className="truncate">{style}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Groom Styling Services</label>
+          <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            {groomServices.map(service => (
+              <label key={service} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="checkbox" 
+                  checked={selectedGroomServices.includes(service)}
+                  onChange={() => handleGroomServiceToggle(service)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                <span className="truncate">{service}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Product Brands Used</label>
+          <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            {productBrands.map(brand => (
+              <label key={brand} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="checkbox" 
+                  checked={selectedProductBrands.includes(brand)}
+                  onChange={() => handleProductBrandToggle(brand)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                <span className="truncate">{brand}</span>
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Business & Experience",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
+          <select
+            value={businessType}
+            onChange={(e) => setBusinessType(e.target.value)}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+          >
+            <option value="">All Types</option>
+            {businessTypes.map(type => (
+              <option key={type} value={type}>{type}</option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
+          <input
+            type="number"
+            placeholder="Min years"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+          />
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Team Size</label>
+          <input
+            type="number"
+            placeholder="Min team members"
+            value={teamSize}
+            onChange={(e) => setTeamSize(e.target.value)}
+            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+          />
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Equipment & Hygiene",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Own Makeup Kit & Tools</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileOwnKit" 
+                  value={option}
+                  checked={ownKit === option}
+                  onChange={(e) => setOwnKit(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Backup Artist Available</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileBackupArtist" 
+                  value={option}
+                  checked={backupArtist === option}
+                  onChange={(e) => setBackupArtist(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Hygiene Kits Used</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileHygieneKits" 
+                  value={option}
+                  checked={hygieneKits === option}
+                  onChange={(e) => setHygieneKits(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Patch Test Available</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobilePatchTest" 
+                  value={option}
+                  checked={patchTest === option}
+                  onChange={(e) => setPatchTest(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  },
+  {
+    title: "Payment & Documents",
+    content: (
+      <div className="space-y-1.5">
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges Applicable</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileTravelCharges" 
+                  value={option}
+                  checked={travelCharges === option}
+                  onChange={(e) => setTravelCharges(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Payment Required</label>
+          <div className="flex gap-2">
+            {yesNoOptions.map(option => (
+              <label key={option} className="flex items-center gap-1 text-[9px]">
+                <input 
+                  type="radio" 
+                  name="mobileAdvanceRequired" 
+                  value={option}
+                  checked={advanceRequired === option}
+                  onChange={(e) => setAdvanceRequired(e.target.value)}
+                  className="w-2.5 h-2.5 accent-red-600" 
+                /> 
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Documents Available</label>
+          <div className="space-y-1">
+            <div>
+              <label className="block text-[8px] font-semibold text-gray-600 mb-0.5">GST</label>
+              <div className="flex gap-2">
+                {yesNoOptions.map(option => (
+                  <label key={`mobile-gst-${option}`} className="flex items-center gap-1 text-[9px]">
+                    <input 
+                      type="radio" 
+                      name="mobileHasGST" 
+                      value={option}
+                      checked={hasGST === option}
+                      onChange={(e) => setHasGST(e.target.value)}
+                      className="w-2.5 h-2.5 accent-red-600" 
+                    /> 
+                    {option}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label className="block text-[8px] font-semibold text-gray-600 mb-0.5">PAN</label>
+              <div className="flex gap-2">
+                {yesNoOptions.map(option => (
+                  <label key={`mobile-pan-${option}`} className="flex items-center gap-1 text-[9px]">
+                    <input 
+                      type="radio" 
+                      name="mobileHasPAN" 
+                      value={option}
+                      checked={hasPAN === option}
+                      onChange={(e) => setHasPAN(e.target.value)}
+                      className="w-2.5 h-2.5 accent-red-600" 
+                    /> 
+                    {option}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+];
+
+  // Auto change banner every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => 
@@ -427,7 +1576,7 @@ const Styling = () => {
 
   const handleFilter = () => {
     console.log('Filtering...', filteredVendors.length);
-    setShowMobileFilter(false);
+    setShowMobileFilterDrawer(false);
     
     setTimeout(() => {
       const vendorSection = document.querySelector('.vendor-profiles');
@@ -438,13 +1587,31 @@ const Styling = () => {
   };
 
   const handleReset = () => {
+    // Reset all filter states
     setMinBudget('');
     setMaxBudget('');
     setSelectedService('');
     setSelectedState('');
     setSelectedDistrict('');
     setSelectedLocation('');
-    setShowMobileFilter(false);
+    setSelectedStylingTypes([]);
+    setSelectedBridalStyles([]);
+    setSelectedGroomServices([]);
+    setSelectedProductBrands([]);
+    setBusinessType('');
+    setExperience('');
+    setTeamSize('');
+    setOwnKit('');
+    setBackupArtist('');
+    setHygieneKits('');
+    setPatchTest('');
+    setTravelCharges('');
+    setAdvanceRequired('');
+    setHasGST('');
+    setHasPAN('');
+    setCurrentFilterPage(0);
+    setCurrentMobileFilterPage(0);
+    setShowMobileFilterDrawer(false);
   };
 
   const handleFilterButtonClick = () => {
@@ -454,26 +1621,107 @@ const Styling = () => {
         filterSection.scrollIntoView({ behavior: 'smooth' });
       }
       if (window.innerWidth < 1024) {
-        setShowMobileFilter(true);
+        setShowMobileFilterDrawer(true);
       }
     } else {
       navigate('/styling?openFilter=true');
     }
   };
 
+  const nextFilterPage = () => {
+    if (currentFilterPage < filterPages.length - 1) {
+      setCurrentFilterPage(currentFilterPage + 1);
+    }
+  };
+
+  const prevFilterPage = () => {
+    if (currentFilterPage > 0) {
+      setCurrentFilterPage(currentFilterPage - 1);
+    }
+  };
+
+  const nextMobileFilterPage = () => {
+    if (currentMobileFilterPage < mobileFilterPages.length - 1) {
+      setCurrentMobileFilterPage(currentMobileFilterPage + 1);
+    }
+  };
+
+  const prevMobileFilterPage = () => {
+    if (currentMobileFilterPage > 0) {
+      setCurrentMobileFilterPage(currentMobileFilterPage - 1);
+    }
+  };
+
+  // Count active filters
+  const getActiveFilterCount = () => {
+    let count = 0;
+    if (minBudget) count++;
+    if (maxBudget) count++;
+    if (selectedService) count++;
+    if (selectedState) count++;
+    if (selectedDistrict) count++;
+    if (selectedLocation) count++;
+    if (selectedStylingTypes.length > 0) count++;
+    if (selectedBridalStyles.length > 0) count++;
+    if (selectedGroomServices.length > 0) count++;
+    if (selectedProductBrands.length > 0) count++;
+    if (businessType) count++;
+    if (experience) count++;
+    if (teamSize) count++;
+    if (ownKit) count++;
+    if (backupArtist) count++;
+    if (hygieneKits) count++;
+    if (patchTest) count++;
+    if (travelCharges) count++;
+    if (advanceRequired) count++;
+    if (hasGST) count++;
+    if (hasPAN) count++;
+    return count;
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
+      {/* Add Pacifico and Plus Jakarta Sans fonts */}
       <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       
+      {/* Global font style */}
+      <style jsx>{`
+        .vendor-card {
+          font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        .vendor-card h3, .vendor-card .vendor-name {
+          font-weight: 700;
+          letter-spacing: -0.02em;
+        }
+        .vendor-card .price-tag {
+          font-weight: 600;
+          letter-spacing: -0.01em;
+        }
+        .vendor-card .service-item {
+          font-weight: 500;
+        }
+        .vendor-card .contact-label {
+          font-weight: 600;
+          color: #4B5563;
+        }
+      `}</style>
+      
+      {/* Floating Filter Button with Badge */}
       <button
         onClick={handleFilterButtonClick}
         className="fixed bottom-6 right-6 z-40 bg-gradient-to-r from-red-600 to-red-700 text-white p-3 rounded-full shadow-lg hover:from-red-700 hover:to-red-800 hover:shadow-xl transition-all duration-300 transform hover:scale-110 flex items-center justify-center lg:hidden"
         aria-label="Open Filters"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
         </svg>
-        <span className="ml-2 font-bold text-sm">Filter</span>
+        {getActiveFilterCount() > 0 && (
+          <span className="absolute -top-1 -right-1 bg-yellow-500 text-red-900 text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+            {getActiveFilterCount()}
+          </span>
+        )}
       </button>
 
       {/* Banner Section */}
@@ -495,18 +1743,27 @@ const Styling = () => {
                   className="w-full h-full object-cover"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
-                  style={{ objectPosition: 'center center' }}
+                  style={{
+                    objectPosition: 'center center',
+                  }}
                 />
               </div>
             </div>
           ))}
 
+          {/* Navigation Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Previous banner"
           >
-            <svg className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
@@ -516,18 +1773,27 @@ const Styling = () => {
             className="absolute right-1 xs:right-2 sm:right-4 md:right-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
             aria-label="Next banner"
           >
-            <svg className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+            <svg 
+              className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+              strokeWidth={2.5}
+            >
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
+          {/* Dot Indicators */}
           <div className="absolute bottom-3 sm:bottom-4 md:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2 z-20">
             {banners.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToBanner(index)}
                 className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
-                  index === currentBannerIndex ? 'bg-white scale-110' : 'bg-white/60 hover:bg-white/80'
+                  index === currentBannerIndex 
+                    ? 'bg-white scale-110' 
+                    : 'bg-white/60 hover:bg-white/80'
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -536,44 +1802,43 @@ const Styling = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
-                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
-                    <div className="container mx-auto px-2 md:px-4">
-                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Browse All Wedding Services
-                      </h3>
-                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-                        {mainCategories.map((category) => (
-                          <Link
-                            key={category.name}
-                            to={category.path}
-                            className="flex-shrink-0 transition-all duration-300"
-                          >
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                              {category.name}
-                            </button>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-      
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Browse All Wedding Services
+          </h3>
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+            {mainCategories.map((category) => (
+              <Link
+                key={category.name}
+                to={category.path}
+                className="flex-shrink-0 transition-all duration-300"
+              >
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                  {category.name}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
 
-      {/* Main Content */}
+      {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
         <div className="flex flex-col lg:flex-row gap-3 md:gap-4">
           {/* Main Content Area */}
-          <div className="lg:flex-1 lg:max-w-[calc(100%-300px)]">
+          <div className="lg:flex-1 lg:max-w-[calc(100%-320px)]">
             
             {/* Styling Categories - TWO ROWS */}
             <section className="py-2 md:py-3">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-2 md:mb-4">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Our Styling Categories
               </h2>
               
               {/* BRIDE CATEGORIES ROW */}
               <div className="mb-3 md:mb-4">
-                <h3 className="text-xs md:text-base font-bold text-pink-700 mb-1 md:mb-2 text-center md:text-left px-2">
+                <h3 className="text-xs md:text-base font-bold text-pink-700 mb-1 md:mb-2 text-center md:text-left px-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   For Bride
                 </h3>
                 
@@ -593,6 +1858,7 @@ const Styling = () => {
                               className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>
+                          <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-pink-400 transition-all duration-300"></div>
                         </button>
                         <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
                           {category.name}
@@ -603,12 +1869,12 @@ const Styling = () => {
                 </div>
                 
                 {/* Desktop: Grid */}
-                <div className="hidden md:grid grid-cols-5 gap-2 px-1">
+                <div className="hidden md:grid grid-cols-5 gap-1 md:gap-1.5 px-1">
                   {brideStylingCategories.map((category) => (
                     <div key={category.name} className="flex flex-col items-center group">
                       <button 
                         onClick={() => handleCategoryClick(category.name)}
-                        className="relative block w-full aspect-square max-w-[80px] mx-auto focus:outline-none"
+                        className="relative block w-full aspect-square max-w-[70px] mx-auto focus:outline-none"
                       >
                         <div className={`w-full h-full rounded-full border-2 ${selectedService === category.name ? 'border-pink-500 shadow-lg' : 'border-pink-300'} overflow-hidden bg-gradient-to-br from-pink-50 to-red-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                           <img 
@@ -617,8 +1883,9 @@ const Styling = () => {
                             className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                           />
                         </div>
+                        <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-pink-400 transition-all duration-300"></div>
                       </button>
-                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] px-0.5 leading-tight line-clamp-2">
+                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] md:text-xs px-0.5 leading-tight line-clamp-2">
                         {category.name}
                       </h3>
                     </div>
@@ -628,7 +1895,7 @@ const Styling = () => {
 
               {/* GROOM CATEGORIES ROW */}
               <div>
-                <h3 className="text-xs md:text-base font-bold text-blue-700 mb-1 md:mb-2 text-center md:text-left px-2">
+                <h3 className="text-xs md:text-base font-bold text-blue-700 mb-1 md:mb-2 text-center md:text-left px-2" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                   For Groom
                 </h3>
                 
@@ -648,6 +1915,7 @@ const Styling = () => {
                               className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                             />
                           </div>
+                          <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-blue-400 transition-all duration-300"></div>
                         </button>
                         <h3 className="mt-0.5 text-center font-medium text-gray-800 text-[7px] px-0.5 leading-tight line-clamp-2">
                           {category.name}
@@ -658,12 +1926,12 @@ const Styling = () => {
                 </div>
                 
                 {/* Desktop: Grid */}
-                <div className="hidden md:grid grid-cols-4 gap-2 px-1">
+                <div className="hidden md:grid grid-cols-4 gap-1 md:gap-1.5 px-1">
                   {groomStylingCategories.map((category) => (
                     <div key={category.name} className="flex flex-col items-center group">
                       <button 
                         onClick={() => handleCategoryClick(category.name)}
-                        className="relative block w-full aspect-square max-w-[80px] mx-auto focus:outline-none"
+                        className="relative block w-full aspect-square max-w-[70px] mx-auto focus:outline-none"
                       >
                         <div className={`w-full h-full rounded-full border-2 ${selectedService === category.name ? 'border-blue-500 shadow-lg' : 'border-blue-300'} overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                           <img 
@@ -672,8 +1940,9 @@ const Styling = () => {
                             className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
                           />
                         </div>
+                        <div className="absolute inset-0 rounded-full border border-transparent group-hover:border-blue-400 transition-all duration-300"></div>
                       </button>
-                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] px-0.5 leading-tight line-clamp-2">
+                      <h3 className="mt-1 text-center font-medium text-gray-800 text-[10px] md:text-xs px-0.5 leading-tight line-clamp-2">
                         {category.name}
                       </h3>
                     </div>
@@ -682,10 +1951,11 @@ const Styling = () => {
               </div>
 
               {selectedService && (
-                <div className="text-center mt-2 md:mt-3">
+                <div className="text-center mt-1 md:mt-2">
                   <button
                     onClick={() => setSelectedService('')}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -696,62 +1966,129 @@ const Styling = () => {
               )}
             </section>
 
-            {/* Mobile Matrimony Card - Clear image with better branding (UPDATED to match Photography page) */}
-<div className="md:hidden mb-3 mt-2">
-  <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
-    <div className="flex h-28">
-      {/* Left Side: Clear Image without overlay */}
-      <div className="w-2/5 relative overflow-hidden">
-        <img
-          src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
-          alt="Eliteinova Matrimony"
-          className="w-full h-full object-cover"
-        />
-      </div>
-      
-      {/* Right Side: Text and Button */}
-      <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
-        <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
-          Eliteinova Matrimony
-        </h2>
-        <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight">
-          Find Your Perfect Partner
-        </h3>
-        <a 
-          href="https://eliteinovamatrimony.com/" 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
-        >
-          <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-          </svg>
-          Register Now
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
+            {/* Mobile Matrimony Card */}
+            <div className="md:hidden mb-3 mt-2">
+              <div className="bg-white rounded-md shadow-lg border-2 border-red-300 overflow-hidden max-w-[95%] mx-auto">
+                <div className="flex h-28">
+                  <div className="w-2/5 relative overflow-hidden">
+                    <img
+                      src={matrimonyBanner || "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80"}
+                      alt="Eliteinova Matrimony"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  
+                  <div className="w-3/5 p-2 bg-gradient-to-r from-red-50 to-yellow-50 flex flex-col justify-center">
+                    <h2 className="text-sm font-bold text-red-600 mb-1 leading-tight" style={{ fontFamily: "'Pacifico', cursive" }}>
+                      Eliteinova Matrimony
+                    </h2>
+                    <h3 className="text-xs font-bold text-yellow-500 mb-1.5 leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Find Your Perfect Partner
+                    </h3>
+                    <a 
+                      href="https://eliteinovamatrimony.com/" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-2 rounded-md hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-[9px] font-bold flex items-center justify-center"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      <svg className="w-3 h-3 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                      </svg>
+                      Register Now
+                    </a>
+                  </div>
+                </div>
+              </div>
 
-            {/* Mobile: Vendor Count & Filters */}
+              {/* Mobile Filters - Below Matrimony Card */}
+              <div className="mt-2 bg-white rounded-md shadow border border-red-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 px-2 py-1.5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-[10px] font-bold text-white flex items-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                      </svg>
+                      Filter
+                    </h3>
+                    <span className="text-[8px] bg-white/20 text-white px-1.5 py-0.5 rounded-full">
+                      {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-2">
+                  {/* Filter Content - SAME AS DESKTOP */}
+                  {mobileFilterPages[currentMobileFilterPage].content}
+
+                  {/* Pagination Buttons */}
+                  <div className="flex justify-between items-center mt-2">
+                    <button
+                      onClick={prevMobileFilterPage}
+                      disabled={currentMobileFilterPage === 0}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === 0
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Prev
+                    </button>
+                    <button
+                      onClick={nextMobileFilterPage}
+                      disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+                      className={`px-2 py-0.5 text-[8px] font-medium rounded ${
+                        currentMobileFilterPage === mobileFilterPages.length - 1
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-red-100 text-red-700 hover:bg-red-200'
+                      }`}
+                    >
+                      Next
+                    </button>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-1 mt-2 pt-1.5 border-t border-gray-200">
+                    <button
+                      onClick={handleFilter}
+                      className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-1.5 rounded font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Apply
+                      <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[7px]">
+                        {filteredVendors.length}
+                      </span>
+                    </button>
+                    <button
+                      onClick={handleReset}
+                      className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-1 px-1.5 rounded font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-[9px]"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile: Vendor Count & Applied Filters */}
             <div className="lg:hidden">
-              {/* Vendor Count */}
               <section className="py-1 md:py-2">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-md shadow p-2 mb-2">
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
-                      <h3 className="text-xs font-bold text-white leading-tight">
+                      <h3 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : `${filteredVendors.length} Styling Vendors`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight">
+                      <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `Showing results for "${selectedService}"` : 'Browse our professional styling vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
                       <div className="bg-white/20 px-1.5 py-0.5 rounded mb-0.5">
-                        <span className="text-white font-medium text-[8px]">Price Range:</span>
-                        <span className="text-yellow-300 ml-0.5 text-[8px]">₹5,000 - ₹3,00,000</span>
+                        <span className="text-white font-medium text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-0.5 text-[8px]" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹5,000 - ₹3,00,000</span>
                       </div>
                     </div>
                   </div>
@@ -760,146 +2097,34 @@ const Styling = () => {
                 {/* Applied Filters Tags */}
                 <div className="flex flex-wrap gap-1 mb-2">
                   {selectedService && (
-                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Service: {selectedService}
-                      <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedService('')} className="ml-0.5 text-red-500 hover:text-red-700">×</button>
                     </span>
                   )}
                   {selectedState && (
-                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       State: {selectedState}
-                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">
-                        ×
-                      </button>
+                      <button onClick={() => setSelectedState('')} className="ml-0.5 text-yellow-500 hover:text-yellow-700">×</button>
                     </span>
                   )}
                   {(minBudget || maxBudget) && (
-                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center bg-green-100 text-green-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">
-                        ×
-                      </button>
+                      <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-0.5 text-green-500 hover:text-green-700">×</button>
                     </span>
                   )}
-                </div>
-              </section>
-
-              {/* Mobile Filters */}
-              <section className="py-1 mb-2">
-                <div className="bg-white rounded-md shadow border border-red-200 p-2">
-                  <div className="flex items-center justify-between mb-2 border-b border-gray-100 pb-1.5">
-                    <h3 className="text-xs font-bold text-red-800 flex items-center">
-                      <svg className="w-3.5 h-3.5 mr-1 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                      </svg>
-                      Filter Options
-                    </h3>
-                    <button 
-                      onClick={handleReset}
-                      className="text-[10px] font-medium text-red-600 hover:text-red-800 flex items-center"
-                    >
-                      <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                      </svg>
-                      Reset
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Budget (₹)</label>
-                      <div className="flex gap-1.5">
-                        <input
-                          type="number"
-                          placeholder="Min"
-                          value={minBudget}
-                          onChange={(e) => setMinBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <input
-                          type="number"
-                          placeholder="Max"
-                          value={maxBudget}
-                          onChange={(e) => setMaxBudget(e.target.value)}
-                          className="w-1/2 px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Service Type</label>
-                      <select
-                        value={selectedService}
-                        onChange={(e) => setSelectedService(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Services</option>
-                        {serviceTypes.map((service) => (
-                          <option key={service} value={service}>{service}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">State</label>
-                      <select
-                        value={selectedState}
-                        onChange={(e) => setSelectedState(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All States</option>
-                        {states.map((state) => (
-                          <option key={state} value={state}>{state}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">District</label>
-                      <select
-                        value={selectedDistrict}
-                        onChange={(e) => setSelectedDistrict(e.target.value)}
-                        className="w-full px-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                      >
-                        <option value="">All Districts</option>
-                        {districts.map((district) => (
-                          <option key={district} value={district}>{district}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="col-span-2">
-                      <label className="block text-[10px] font-bold text-gray-700 mb-0.5">Location</label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          placeholder="City or area"
-                          value={selectedLocation}
-                          onChange={(e) => setSelectedLocation(e.target.value)}
-                          className="w-full pl-7 pr-2 py-1 border border-red-300 rounded-md focus:outline-none focus:ring-0.5 focus:ring-red-500 text-xs"
-                        />
-                        <svg className="absolute left-2 top-1/2 transform -translate-y-1/2 w-2.5 h-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleFilter}
-                    className="w-full mt-3 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
-                  >
-                    <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-                    </svg>
-                    Apply Filters
-                    <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[10px]">
-                      ({filteredVendors.length} found)
+                  {selectedStylingTypes.length > 0 && (
+                    <span className="inline-flex items-center bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Styling: {selectedStylingTypes.length}
+                      <button onClick={() => setSelectedStylingTypes([])} className="ml-0.5 text-blue-500 hover:text-blue-700">×</button>
                     </span>
-                  </button>
+                  )}
+                  {getActiveFilterCount() > 3 && (
+                    <span className="inline-flex items-center bg-gray-100 text-gray-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      +{getActiveFilterCount() - 3} more
+                    </span>
+                  )}
                 </div>
               </section>
             </div>
@@ -907,48 +2132,53 @@ const Styling = () => {
             {/* Desktop: Vendor Count */}
             <div className="hidden lg:block mb-4">
               <section className="py-2">
-                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-3">
+                <div className="bg-gradient-to-r from-red-600 to-red-700 rounded-lg shadow p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
-                      <h3 className="text-lg font-bold text-white leading-tight">
+                      <h3 className="text-xl font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `${filteredVendors.length} ${selectedService} Vendors` : `${filteredVendors.length} Styling Vendors`}
                       </h3>
-                      <p className="text-yellow-200 mt-0.5 text-sm">
+                      <p className="text-yellow-200 mt-1 text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         {selectedService ? `Showing results for "${selectedService}"` : 'Browse our professional styling vendors'}
                       </p>
                     </div>
                     
                     <div className="flex flex-col items-end">
-                      <div className="bg-white/20 px-2.5 py-1.5 rounded">
-                        <span className="text-white font-medium text-sm">Price Range:</span>
-                        <span className="text-yellow-300 ml-1.5 font-bold text-sm">₹5,000 - ₹3,00,000</span>
+                      <div className="bg-white/20 px-3 py-1.5 rounded">
+                        <span className="text-white font-medium text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Price Range:</span>
+                        <span className="text-yellow-300 ml-1.5 font-bold text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹5,000 - ₹3,00,000</span>
                       </div>
                     </div>
                   </div>
                   
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {selectedService && (
-                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Service: {selectedService}
-                        <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedService('')} className="ml-1 text-red-500 hover:text-red-700">×</button>
                       </span>
                     )}
                     {selectedState && (
-                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         State: {selectedState}
-                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">
-                          ×
-                        </button>
+                        <button onClick={() => setSelectedState('')} className="ml-1 text-yellow-500 hover:text-yellow-700">×</button>
                       </span>
                     )}
                     {(minBudget || maxBudget) && (
-                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full">
+                      <span className="inline-flex items-center bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Budget: {minBudget || '0'} - {maxBudget || '∞'}
-                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">
-                          ×
-                        </button>
+                        <button onClick={() => { setMinBudget(''); setMaxBudget(''); }} className="ml-1 text-green-500 hover:text-green-700">×</button>
+                      </span>
+                    )}
+                    {selectedStylingTypes.length > 0 && (
+                      <span className="inline-flex items-center bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Styling: {selectedStylingTypes.length}
+                        <button onClick={() => setSelectedStylingTypes([])} className="ml-1 text-blue-500 hover:text-blue-700">×</button>
+                      </span>
+                    )}
+                    {getActiveFilterCount() > 3 && (
+                      <span className="inline-flex items-center bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        +{getActiveFilterCount() - 3} more
                       </span>
                     )}
                   </div>
@@ -957,165 +2187,205 @@ const Styling = () => {
             </div>
 
             {/* Vendor Profiles */}
-            <section className="py-1 md:py-2 vendor-profiles">
+            <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
-                <div className="space-y-1.5 md:space-y-3">
+                <div className="space-y-2 md:space-y-4">
                   {filteredVendors.map((vendor) => (
-                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                      <div className="flex flex-col md:flex-row">
-                        {/* Left Section - Logo (Desktop Only) */}
-                        <div className="hidden md:flex md:w-1/4 p-2 flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50">
-                          <div className="w-20 h-20 rounded-full overflow-hidden border border-white shadow mb-1">
+                    <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                      
+                      {/* DESKTOP VIEW */}
+                      <div className="hidden md:flex md:flex-row w-full h-[280px]">
+                        {/* Left Box - Image */}
+                        <div className="w-[22%] p-0 flex items-stretch h-full">
+                          <div className="w-full h-full overflow-hidden">
                             <img 
                               src={vendor.logo} 
                               alt={vendor.businessName} 
                               className="w-full h-full object-cover"
                             />
                           </div>
-                          <div className="text-center">
-                            <div className="flex items-center justify-center mb-0.5">
-                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full">
-                                <span className="text-yellow-700 font-bold mr-0.5 text-xs">{vendor.rating}</span>
+                        </div>
+
+                        {/* Middle Box - Business Details */}
+                        <div className="w-[43%] p-4 bg-white border-r border-gray-200 h-full overflow-y-auto">
+                          {/* Title with Star Rating */}
+                          <div className="flex items-start justify-between mb-2">
+                            <h3 className="text-lg font-bold text-red-800 pr-2 vendor-name" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}>
+                              {vendor.businessName}
+                            </h3>
+                            <div className="flex items-center bg-yellow-100 px-2 py-1 rounded-full flex-shrink-0">
+                              <span className="text-yellow-700 font-bold mr-0.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.rating}</span>
+                              <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                            </div>
+                          </div>
+
+                          {/* Business Category */}
+                          <div className="mb-3">
+                            <span className="inline-block px-3 py-1.5 bg-red-100 text-red-700 rounded-full text-sm font-semibold" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              {vendor.businessCategory}
+                            </span>
+                          </div>
+                          
+                          {/* Budget */}
+                          <div className="text-red-700 font-bold text-base mb-3 price-tag" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            <span className="font-semibold text-gray-600 mr-1.5 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Budget:</span>
+                            {vendor.priceRange}
+                          </div>
+                          
+                          {/* Location */}
+                          <div className="text-gray-600 flex items-start text-sm mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <svg className="w-4 h-4 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span className="leading-tight font-medium">{vendor.location}</span>
+                          </div>
+                          
+                          {/* Contact Details */}
+                          <div className="space-y-1.5 text-sm">
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Name:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.personName}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Role:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.designation}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experience:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{vendor.experience} years</span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Box - Description and Services */}
+                        <div className="w-[35%] p-4 bg-white relative h-full overflow-y-auto">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-3 text-sm leading-relaxed" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", lineHeight: '1.5' }}>
+                            {vendor.description}
+                          </p>
+                          
+                          {/* Services Offered */}
+                          <h4 className="font-bold text-red-700 mb-2 text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.01em' }}>
+                            Services Offered
+                          </h4>
+                          <ul className="space-y-1.5 mb-3">
+                            {vendor.services.map((service, index) => (
+                              <li key={index} className="flex items-start">
+                                <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
+                                <span className="text-gray-700 text-sm leading-tight service-item" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontWeight: 500 }}>
+                                  {service}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+
+                          {/* View Details Button */}
+                          <div className="mt-3">
+                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                              <span>View Details</span>
+                              <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* MOBILE VIEW */}
+                      <div className="md:hidden flex flex-col w-full">
+                        {/* Top Section - Image and Details Side by Side */}
+                        <div className="flex border-b border-gray-200">
+                          {/* Left Box - Image ONLY */}
+                          <div className="w-2/5 p-1.5 flex items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
+                            <div className="w-full aspect-square rounded-md overflow-hidden border border-white shadow-sm">
+                              <img 
+                                src={vendor.logo} 
+                                alt={vendor.businessName} 
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right Box - Business Details */}
+                          <div className="w-3/5 p-1.5 bg-white">
+                            {/* Title with Star Rating */}
+                            <div className="flex items-start justify-between mb-0.5">
+                              <h3 className="text-xs font-bold text-red-800 leading-tight line-clamp-2 pr-1">{vendor.businessName}</h3>
+                              <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full flex-shrink-0">
+                                <span className="text-yellow-700 font-bold mr-0.5 text-[10px]">{vendor.rating}</span>
                                 <svg className="w-2.5 h-2.5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
                                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                 </svg>
                               </div>
                             </div>
-                            <p className="text-red-700 font-medium text-xs">{vendor.priceRange}</p>
-                          </div>
-                        </div>
 
-                        {/* Middle Section - Business Details & Services */}
-                        <div className="md:w-2/4 md:p-3 md:border-r border-gray-100">
-                          {/* Mobile Layout */}
-                          <div className="md:hidden">
-                            {/* Top Section */}
-                            <div className="flex border-b border-gray-200">
-                              {/* Left Half - Logo, Rating, Price */}
-                              <div className="w-1/2 p-2 flex flex-col items-center justify-center bg-gradient-to-br from-red-50 to-yellow-50 border-r border-gray-200">
-                                <div className="w-14 h-14 rounded-full overflow-hidden border border-white shadow mb-1">
-                                  <img 
-                                    src={vendor.logo} 
-                                    alt={vendor.businessName} 
-                                    className="w-full h-full object-cover"
-                                  />
-                                </div>
-                                <div className="flex items-center bg-yellow-100 px-1.5 py-0.5 rounded-full mb-0.5">
-                                  <span className="text-yellow-700 font-bold mr-0.5 text-[9px]">{vendor.rating}</span>
-                                  <svg className="w-2 h-2 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                  </svg>
-                                </div>
-                                <p className="text-red-700 font-bold text-[9px] text-center">{vendor.priceRange}</p>
-                              </div>
-
-                              {/* Right Half - Services */}
-                              <div className="w-1/2 p-2 bg-white">
-                                <h4 className="font-bold text-red-700 mb-1 text-[10px]">Services Offered</h4>
-                                <ul className="space-y-0.5">
-                                  {vendor.services.map((service, index) => (
-                                    <li key={index} className="flex items-start">
-                                      <svg className="w-1.5 h-1.5 text-green-500 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                      </svg>
-                                      <span className="text-gray-700 text-[7px] leading-tight">{service}</span>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-
-                            {/* Middle Section */}
-                            <div className="w-full p-2 bg-white relative">
-                              <h3 className="text-[10px] font-bold text-red-800 mb-0.5 leading-tight">{vendor.businessName}</h3>
-                              
-                              <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[8px] font-medium mb-1">
-                                {vendor.businessCategory}
-                              </span>
-                              
-                              <div className="text-gray-600 flex items-start text-[8px] mb-1">
-                                <svg className="w-2 h-2 mr-0.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                <span className="leading-tight">{vendor.location}</span>
-                              </div>
-                              
-                              <p className="text-gray-700 mb-1 text-[8px] leading-relaxed pr-16">{vendor.description}</p>
-                              
-                              <div className="space-y-0.5 text-[8px] mb-1.5">
-                                <div className="flex items-start">
-                                  <span className="text-gray-600 w-16 flex-shrink-0">Contact Person:</span>
-                                  <span className="font-medium text-gray-800 leading-tight">{vendor.personName}</span>
-                                </div>
-                                <div className="flex items-start">
-                                  <span className="text-gray-600 w-16 flex-shrink-0">Role:</span>
-                                  <span className="font-medium text-gray-800 leading-tight">{vendor.designation}</span>
-                                </div>
-                              </div>
-
-                              <button className="absolute bottom-1.5 right-1.5 bg-gradient-to-r from-red-600 to-red-700 text-white py-1 px-2 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-[8px]">
-                                <span>View Details</span>
-                                <svg className="w-2 h-2 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                                </svg>
-                              </button>
-                            </div>
-                          </div>
-
-                          {/* Desktop Layout */}
-                          <div className="hidden md:block">
-                            <div className="mb-1.5">
-                              <h3 className="text-sm font-bold text-red-800 mb-0.5">{vendor.businessName}</h3>
-                              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-1.5 mb-1.5">
-                                <span className="px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-xs font-medium mb-0.5 sm:mb-0 w-fit">
-                                  {vendor.businessCategory}
-                                </span>
-                                <span className="text-gray-600 flex items-center text-xs">
-                                  <svg className="w-2.5 h-2.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                  </svg>
-                                  {vendor.location}
-                                </span>
-                              </div>
+                            {/* Budget below title */}
+                            <p className="text-red-700 font-bold text-xs mb-1">{vendor.priceRange}</p>
+                            
+                            {/* Business Category */}
+                            <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-700 rounded-full text-[10px] font-medium mb-1">
+                              {vendor.businessCategory}
+                            </span>
+                            
+                            {/* Location */}
+                            <div className="text-gray-600 flex items-start text-[10px] mb-1">
+                              <svg className="w-2.5 h-2.5 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="leading-tight">{vendor.location}</span>
                             </div>
                             
-                            <p className="text-gray-700 mb-1.5 text-xs leading-relaxed">{vendor.description}</p>
-                            
-                            <div className="space-y-0.5">
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Contact Person:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.personName}</span>
+                            {/* Contact Details */}
+                            <div className="space-y-0.5 text-[10px]">
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Name:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.personName}</span>
                               </div>
-                              <div className="flex items-start sm:items-center">
-                                <span className="text-gray-600 w-20 text-xs flex-shrink-0">Designation:</span>
-                                <span className="font-medium text-gray-800 text-xs">{vendor.designation}</span>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Role:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.designation}</span>
+                              </div>
+                              <div className="flex items-start">
+                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Exp:</span>
+                                <span className="text-gray-800 leading-tight">{vendor.experience} years</span>
                               </div>
                             </div>
                           </div>
                         </div>
 
-                        {/* Right Section - Services (Desktop Only) */}
-                        <div className="hidden md:block md:w-1/4 p-3 bg-white">
+                        {/* Bottom Section - Full Width Description and Services */}
+                        <div className="w-full p-2 bg-white relative pb-10">
+                          {/* Description */}
+                          <p className="text-gray-700 mb-2 text-xs leading-relaxed">{vendor.description}</p>
+                          
+                          {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
-                          <ul className="space-y-0.5 mb-2">
+                          <ul className="space-y-0.5 mb-1">
                             {vendor.services.map((service, index) => (
                               <li key={index} className="flex items-start">
-                                <svg className="w-2.5 h-2.5 text-green-500 mr-1 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                 </svg>
                                 <span className="text-gray-700 text-xs leading-tight">{service}</span>
                               </li>
                             ))}
                           </ul>
-                          
-                          <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow flex items-center justify-center text-xs">
-                            <span>View Details</span>
-                            <svg className="w-2.5 h-2.5 ml-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                            </svg>
-                          </button>
+
+                          {/* View Details Button in Right Bottom Corner */}
+                          <div className="absolute bottom-2 right-2">
+                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                              <span>View Details</span>
+                              <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -1126,11 +2396,12 @@ const Styling = () => {
                   <svg className="w-8 h-8 md:w-10 md:h-10 text-gray-400 mx-auto mb-1.5 md:mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5">No Vendors Found</h3>
-                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm">Try adjusting your filter criteria to find more vendors</p>
+                  <h3 className="text-xs md:text-base font-bold text-gray-700 mb-0.5" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>No Vendors Found</h3>
+                  <p className="text-gray-600 mb-2 text-[10px] md:text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Try adjusting your filter criteria to find more vendors</p>
                   <button 
                     onClick={handleReset}
                     className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1 md:py-1.5 px-2.5 md:px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md text-xs"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset Filters
                   </button>
@@ -1140,7 +2411,7 @@ const Styling = () => {
 
             {/* Why Choose Us Section */}
             <section className="py-2 md:py-4">
-              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3">
+              <h2 className="text-sm md:text-lg font-bold text-center text-red-800 mb-1.5 md:mb-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 Why Choose Our Styling Services?
               </h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-1.5 md:gap-2">
@@ -1187,135 +2458,101 @@ const Styling = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Desktop Filter Section */}
-          <div id="filter-section" className="hidden lg:block lg:w-72 flex-shrink-0">
+          {/* Right Sidebar - Filter Section - Desktop Only - WITH PAGINATION */}
+          <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
               
-              {/* Matrimony Card */}
+              {/* Matrimony Registration Box */}
               <div className="bg-white rounded-lg shadow-lg border-2 border-red-300 overflow-hidden mt-2">
-                <div className="relative h-40 overflow-hidden">
+                <div className="relative h-44 overflow-hidden">
                   <img
                     src={matrimonyBanner}
                     alt="Eliteinova Matrimony"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80";
+                    }}
                   />
                 </div>
-                
-                <div className="p-4">
+                <div className="p-5">
                   <h2 className="text-2xl font-bold text-red-600 mb-1 text-center" style={{ fontFamily: "'Pacifico', cursive" }}>
                     Eliteinova Matrimony
                   </h2>
-                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center">
+                  <h3 className="text-lg font-bold text-yellow-500 mb-4 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Find Your Perfect Partner
                   </h3>
-                  
                   <a 
                     href="https://eliteinovamatrimony.com/" 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
+                    className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-base flex items-center justify-center"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                     </svg>
                     Register Now
                   </a>
-                  
-                  <p className="text-gray-500 text-[10px] text-center mt-3">
+                  <p className="text-gray-500 text-xs text-center mt-3" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                     Redirects to eliteinovamatrimony.com
                   </p>
                 </div>
               </div>
 
-              {/* Filter Container */}
-              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-4">
-                <h3 className="text-base font-bold text-red-800 mb-3 text-center border-b border-yellow-500 pb-2">
-                  Filter Stylists
-                </h3>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-                  <div className="flex gap-2">
-                    <input
-                      type="number"
-                      placeholder="Min"
-                      value={minBudget}
-                      onChange={(e) => setMinBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                    <input
-                      type="number"
-                      placeholder="Max"
-                      value={maxBudget}
-                      onChange={(e) => setMaxBudget(e.target.value)}
-                      className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                    />
-                  </div>
+              {/* Filter Container with Pagination */}
+              <div className="bg-white rounded-lg shadow-lg border border-red-200 p-5">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {filterPages[currentFilterPage].title}
+                  </h3>
+                  <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                    {currentFilterPage + 1}/{filterPages.length}
+                  </span>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Type of Service</label>
-                  <select
-                    value={selectedService}
-                    onChange={(e) => setSelectedService(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                {/* Filter Content */}
+                {filterPages[currentFilterPage].content}
+
+                {/* Pagination Buttons */}
+                <div className="flex justify-between items-center mt-4">
+                  <button
+                    onClick={prevFilterPage}
+                    disabled={currentFilterPage === 0}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === 0
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
                   >
-                    <option value="">All Service Types</option>
-                    {serviceTypes.map((service) => (
-                      <option key={service} value={service}>{service}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Preferred State</label>
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
+                    Previous
+                  </button>
+                  <button
+                    onClick={nextFilterPage}
+                    disabled={currentFilterPage === filterPages.length - 1}
+                    className={`px-3 py-1.5 text-xs font-medium rounded-md ${
+                      currentFilterPage === filterPages.length - 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200'
+                    }`}
                   >
-                    <option value="">All States</option>
-                    {states.map((state) => (
-                      <option key={state} value={state}>{state}</option>
-                    ))}
-                  </select>
+                    Next
+                  </button>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-                  <select
-                    value={selectedDistrict}
-                    onChange={(e) => setSelectedDistrict(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  >
-                    <option value="">All Districts</option>
-                    {districts.map((district) => (
-                      <option key={district} value={district}>{district}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="mb-4">
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Location</label>
-                  <input
-                    type="text"
-                    placeholder="Enter location"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
-
-                <div className="flex gap-2">
+                {/* Action Buttons */}
+                <div className="flex gap-3 mt-4 pt-3 border-t border-gray-200">
                   <button
                     onClick={handleFilter}
-                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-medium hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Apply Filter
                   </button>
                   <button
                     onClick={handleReset}
-                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-xs"
+                    className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-md font-medium hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     Reset
                   </button>
@@ -1326,132 +2563,85 @@ const Styling = () => {
         </div>
       </div>
 
-      {/* Mobile Filter Overlay */}
-      {showMobileFilter && (
-        <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
-          <div className="bg-white w-full rounded-t-2xl max-h-[80vh] overflow-y-auto">
-            {/* Header */}
-            <div className="sticky top-0 bg-white z-10 px-4 py-3 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
-              <h3 className="text-base font-bold text-red-800">Filter Stylists</h3>
-              <button
-                onClick={() => setShowMobileFilter(false)}
-                className="text-gray-500 hover:text-red-700 p-1"
-                aria-label="Close filter"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            {/* Filter Content */}
-            <div className="px-4 py-3 space-y-3">
-              {/* Budget Range */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Budget Range (₹)</label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    placeholder="Min"
-                    value={minBudget}
-                    onChange={(e) => setMinBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Max"
-                    value={maxBudget}
-                    onChange={(e) => setMaxBudget(e.target.value)}
-                    className="flex-1 px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                </div>
-              </div>
-
-              {/* Type of Service */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Type of Service</label>
-                <select
-                  value={selectedService}
-                  onChange={(e) => setSelectedService(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                >
-                  <option value="">All Service Types</option>
-                  {serviceTypes.map((service) => (
-                    <option key={service} value={service}>{service}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Preferred State */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Preferred State</label>
-                <select
-                  value={selectedState}
-                  onChange={(e) => setSelectedState(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                >
-                  <option value="">All States</option>
-                  {states.map((state) => (
-                    <option key={state} value={state}>{state}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* District */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">District</label>
-                <select
-                  value={selectedDistrict}
-                  onChange={(e) => setSelectedDistrict(e.target.value)}
-                  className="w-full px-3 py-2 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                >
-                  <option value="">All Districts</option>
-                  {districts.map((district) => (
-                    <option key={district} value={district}>{district}</option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Location */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1.5">Location</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Enter city or area"
-                    value={selectedLocation}
-                    onChange={(e) => setSelectedLocation(e.target.value)}
-                    className="w-full px-3 py-2 pl-9 border border-red-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-red-500 text-sm"
-                  />
-                  <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex gap-2 pt-2 pb-1">
-                <button
-                  onClick={handleFilter}
-                  className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-md hover:shadow-lg text-sm flex items-center justify-center"
-                >
-                  Apply Filter
-                  <span className="ml-1.5 bg-white/30 px-1.5 py-0.5 rounded text-xs">
-                    ({filteredVendors.length})
-                  </span>
-                </button>
-                <button
-                  onClick={handleReset}
-                  className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2.5 px-3 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-md hover:shadow-lg text-sm"
-                >
-                  Reset
-                </button>
-              </div>
-            </div>
-          </div>
+      {/* Mobile Filter Drawer */}
+{showMobileFilterDrawer && (
+  <div className="lg:hidden fixed inset-0 z-[9999] bg-black/50 flex items-end justify-center">
+    <div className="bg-white w-full rounded-t-2xl max-h-[70vh] overflow-y-auto">
+      {/* Header */}
+      <div className="sticky top-0 bg-white z-10 px-3 py-2 border-b border-gray-200 flex justify-between items-center rounded-t-2xl">
+        <div>
+          <h3 className="text-sm font-bold text-red-800" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            {mobileFilterPages[currentMobileFilterPage].title}
+          </h3>
+          <span className="text-[9px] bg-red-100 text-red-700 px-1.5 py-0.5 rounded-full mt-0.5 inline-block">
+            {currentMobileFilterPage + 1}/{mobileFilterPages.length}
+          </span>
         </div>
-      )}
+        <button
+          onClick={() => setShowMobileFilterDrawer(false)}
+          className="text-gray-500 hover:text-red-700 p-1"
+          aria-label="Close filter"
+        >
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      {/* Filter Content */}
+      <div className="px-3 py-2 space-y-2">
+        {mobileFilterPages[currentMobileFilterPage].content}
+
+        {/* Pagination Buttons */}
+        <div className="flex justify-between items-center mt-2">
+          <button
+            onClick={prevMobileFilterPage}
+            disabled={currentMobileFilterPage === 0}
+            className={`px-3 py-1 text-[9px] font-medium rounded ${
+              currentMobileFilterPage === 0
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-red-100 text-red-700 hover:bg-red-200'
+            }`}
+          >
+            Previous
+          </button>
+          <button
+            onClick={nextMobileFilterPage}
+            disabled={currentMobileFilterPage === mobileFilterPages.length - 1}
+            className={`px-3 py-1 text-[9px] font-medium rounded ${
+              currentMobileFilterPage === mobileFilterPages.length - 1
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-red-100 text-red-700 hover:bg-red-200'
+            }`}
+          >
+            Next
+          </button>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex gap-2 pt-2 pb-1 border-t border-gray-200 mt-2">
+          <button
+            onClick={handleFilter}
+            className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-2 px-2 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-sm text-xs flex items-center justify-center"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Apply
+            <span className="ml-1 bg-white/30 px-1 py-0.5 rounded text-[8px]">
+              {filteredVendors.length}
+            </span>
+          </button>
+          <button
+            onClick={handleReset}
+            className="flex-1 bg-gradient-to-r from-yellow-500 to-yellow-600 text-red-900 py-2 px-2 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition-all duration-300 shadow-sm text-xs"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
