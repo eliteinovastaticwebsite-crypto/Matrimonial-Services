@@ -17,7 +17,6 @@ import VendorProfile from './pages/VendorProfile';
 
 // Import customer authentication pages
 import CustomerProfile from './pages/CustomerProfile';
-// REMOVED: import CustomerRegistration from './pages/CustomerRegistration';
 import CustomerLogin from './pages/CustomerLogin';
 import RegisterChoice from './pages/RegisterChoice';
 import LoginChoice from './pages/LoginChoice';
@@ -37,6 +36,9 @@ import StylingVendorForm from './Components/StylingForm';
 // Import Background Investigations components
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
 import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
+
+// IMPORT THE NEW VENDOR DETAILS PAGE
+import VendorDetails from './pages/VendorDetails';
 
 // Create a wrapper component for VendorProfile with params
 const VendorProfileWrapper = () => {
@@ -145,15 +147,24 @@ function App() {
           {/* ============================================ */}
           <Route path="/register-choice" element={<RegisterChoice />} />
           <Route path="/login-choice" element={<LoginChoice />} />
-          {/* REMOVED: Old customer registration page route */}
-          {/* <Route path="/customer-registration" element={<CustomerRegistration />} /> */}
-          {/* Customer registration is now handled via modal in RegisterChoice and LoginChoice */}
           <Route path="/customer-login" element={<CustomerLogin />} />
           <Route path="/customer-profile" element={<CustomerProfile />} />
           
           {/* ============================================ */}
-          {/* CUSTOMER SERVICE PAGES */}
+          {/* CUSTOMER SERVICE PAGES - IMPORTANT: DETAIL ROUTES MUST COME BEFORE LISTING ROUTES */}
           {/* ============================================ */}
+          
+          {/* DETAIL ROUTES FIRST - These are more specific */}
+          <Route path="/photography/:id" element={<VendorDetails />} />
+          <Route path="/catering/:id" element={<VendorDetails />} />
+          <Route path="/wedding-halls/:id" element={<VendorDetails />} />
+          <Route path="/decorations/:id" element={<VendorDetails />} />
+          <Route path="/entertainment/:id" element={<VendorDetails />} />
+          <Route path="/invitation/:id" element={<VendorDetails />} />
+          <Route path="/styling/:id" element={<VendorDetails />} />
+          <Route path="/background-investigations/:id" element={<VendorDetails />} />
+          
+          {/* LISTING ROUTES AFTER - These are less specific */}
           <Route path="/photography" element={<PhotographyWrapper openVendorForm={openVendorForm} />} />
           <Route path="/catering" element={<CateringWrapper openVendorForm={openVendorForm} />} />
           <Route path="/wedding-halls" element={<WeddingHallsWrapper openVendorForm={openVendorForm} />} />
@@ -172,7 +183,7 @@ function App() {
           <Route path="/vendor-profile" element={<VendorProfileWrapper />} />
           <Route path="/vendor-profile/:vendorId" element={<VendorProfileWrapper />} />
           
-          {/* Alternative vendor dashboard route */}
+          {/* Alternative vendor dashboard routes */}
           <Route path="/vendor-dashboard" element={<VendorProfileWrapper />} />
           <Route path="/vendor-dashboard/:vendorId" element={<VendorProfileWrapper />} />
           

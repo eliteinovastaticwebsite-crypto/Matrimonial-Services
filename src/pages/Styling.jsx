@@ -9,8 +9,8 @@ import groommakeup from '../assets/groommakeup.jpg';
 import groomhairstyling from '../assets/groomhairstyling.jpg';
 import accessoriesfinishing from '../assets/accessoriesfinishing.jpg';
 import commercial from '../assets/groomattire.jpg';
-import stylingbanner1 from '../assets/stylbanner1.jpg';
-import stylingbanner2 from '../assets/stylbanner2.jpg';
+import stylingbanner1 from '../assets/stylebanner1.jpg';
+import stylingbanner2 from '../assets/stylebanner2.jpg';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 
 const Styling = () => {

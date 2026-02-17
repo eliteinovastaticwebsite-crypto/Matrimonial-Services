@@ -1249,6 +1249,11 @@ const Photography = () => {
     return count;
   };
 
+  // Function to handle view details click
+  const handleViewDetails = (vendorId) => {
+    navigate(`/photography/${vendorId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* Add Google Fonts - SF Pro Display alternative for clean typography */}
@@ -1811,7 +1816,11 @@ const Photography = () => {
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" 
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1900,7 +1909,10 @@ const Photography = () => {
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
