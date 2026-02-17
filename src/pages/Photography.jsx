@@ -10,8 +10,7 @@ import commercial from '../assets/commercial.jpg';
 import religious from '../assets/religious.jpg';
 import photobanner1 from '../assets/photobanner1.png';
 import photobanner2 from '../assets/photobanner2.png';
-// Add a matrimony banner image - you can add your own image or use a placeholder
-import matrimonyBanner from '../assets/Matrimonybanner.jpg'; // You'll need to add this image
+import matrimonyBanner from '../assets/Matrimonybanner.jpg'; 
 
 const Photography = () => {
   const navigate = useNavigate();
