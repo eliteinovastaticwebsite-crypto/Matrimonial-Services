@@ -13,11 +13,19 @@ const EVENT_TYPES = [
   'Housewarming'
 ];
 
+// Configuration for WhatsApp numbers
+const WHATSAPP_CONFIG = {
+  OFFICE_NUMBER: '9876543210', // Office number for notifications
+};
+
 const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showEnquiryModal, setShowEnquiryModal] = useState(false);
   const [showAllPortfolio, setShowAllPortfolio] = useState(false);
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isSendingWhatsApp, setIsSendingWhatsApp] = useState(false);
+  const [enquiryStatus, setEnquiryStatus] = useState(null);
 
   // Enquiry form states
   const [step, setStep] = useState(1);
@@ -40,9 +48,12 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     preferredLocation: '',
   });
 
+  // Store enquiry ID for tracking
+  const [enquiryId, setEnquiryId] = useState(null);
+
   // Prevent background scroll when modal is open
   useEffect(() => {
-    if (isOpen || showEnquiryModal) {
+    if (isOpen || showEnquiryModal || showSuccessMessage) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
@@ -50,7 +61,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isOpen, showEnquiryModal]);
+  }, [isOpen, showEnquiryModal, showSuccessMessage]);
 
   // Reset state when vendor changes
   useEffect(() => {
@@ -59,6 +70,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
       setShowEnquiryModal(false);
       setShowAllPortfolio(false);
       setShowAllReviews(false);
+      setShowSuccessMessage(false);
+      setIsSendingWhatsApp(false);
+      setEnquiryStatus(null);
+      setEnquiryId(null);
       // Reset form when vendor changes
       setStep(1);
       setPhoneVerified(false);
@@ -79,6 +94,198 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     }
   }, [isOpen, vendor]);
 
+  // Generate unique enquiry ID
+  const generateEnquiryId = useCallback(() => {
+    return 'ENQ-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+  }, []);
+
+  // Function to send WhatsApp message
+  const sendWhatsAppMessage = useCallback(async (phoneNumber, message) => {
+    const formattedNumber = phoneNumber.replace(/\D/g, '');
+    const whatsappUrl = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  }, []);
+
+  // Handle interest submission with WhatsApp notifications
+  const handleInterestSubmit = useCallback(async () => {
+    setIsSendingWhatsApp(true);
+    
+    try {
+      const newEnquiryId = generateEnquiryId();
+      setEnquiryId(newEnquiryId);
+      
+      console.log('Interest submitted for vendor:', vendor.businessName || vendor.name);
+      console.log('Customer details:', formData);
+      console.log('Enquiry ID:', newEnquiryId);
+      
+      const vendorPhone = vendor.whatsappNumber || vendor.phone || vendor.contactNumber;
+      
+      if (!vendorPhone) {
+        console.error('Vendor WhatsApp number not found');
+      }
+
+      const eventDateObj = new Date(formData.eventDate);
+      const formattedDate = eventDateObj.toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
+      // 1. Send notification to office with accept/decline buttons
+      const officeMessage = `🏢 *NEW ENQUIRY RECEIVED*\n\n` +
+        `*Enquiry ID:* ${newEnquiryId}\n` +
+        `*Vendor:* ${vendor.businessName || vendor.name}\n` +
+        `*Category:* ${category}\n` +
+        `*Customer:* ${formData.name}\n` +
+        `*Phone:* ${formData.phoneNumber}\n` +
+        `*Address:* ${formData.address}\n` +
+        `*Time:* ${new Date().toLocaleString()}\n\n` +
+        `*Please respond:*\n` +
+        `✅ *ACCEPT* - Reply with "ACCEPT ${newEnquiryId}"\n` +
+        `❌ *DECLINE* - Reply with "DECLINE ${newEnquiryId}"\n\n` +
+        `This will determine if the enquiry is forwarded to the vendor.`;
+
+      await sendWhatsAppMessage(WHATSAPP_CONFIG.OFFICE_NUMBER, officeMessage);
+
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // 2. Send ONLY event details to vendor (no contact info)
+      if (vendorPhone) {
+        const vendorMessage = `🎉 *NEW EVENT ENQUIRY*\n\n` +
+          `*Enquiry ID:* ${newEnquiryId}\n\n` +
+          `*Event Details:*\n` +
+          `📋 Type: ${formData.eventType}\n` +
+          `📅 Date: ${formattedDate}\n` +
+          `⏰ Time: ${formData.eventTime}\n` +
+          `💰 Budget: ₹${formData.budget}\n` +
+          `📍 Event Location: ${formData.eventLocation}\n` +
+          `🎯 Preferred Location: ${formData.preferredLocation}\n\n` +
+          `*Please respond:*\n` +
+          `✅ *ACCEPT* - Reply with "ACCEPT ${newEnquiryId}" to get customer contact details\n` +
+          `❌ *DECLINE* - Reply with "DECLINE ${newEnquiryId}" to reject this enquiry\n\n` +
+          `*Note:* Customer contact details will only be shared after you accept.`;
+
+        await sendWhatsAppMessage(vendorPhone, vendorMessage);
+      }
+
+      setEnquiryStatus('pending');
+      setShowEnquiryModal(false);
+      setShowSuccessMessage(true);
+      
+    } catch (error) {
+      console.error('Error sending WhatsApp messages:', error);
+    } finally {
+      setIsSendingWhatsApp(false);
+    }
+  }, [formData, vendor, category, sendWhatsAppMessage, generateEnquiryId]);
+
+  // Handle office accepting the enquiry
+  const handleOfficeAccept = useCallback(() => {
+    console.log('Office accepted enquiry:', enquiryId);
+    setEnquiryStatus('office_accepted');
+    
+    // Notify vendor that office has approved and share contact details
+    if (vendor?.whatsappNumber) {
+      const contactMessage = `✅ *ENQUIRY APPROVED - CUSTOMER CONTACT DETAILS*\n\n` +
+        `*Enquiry ID:* ${enquiryId}\n\n` +
+        `*Customer Information:*\n` +
+        `👤 Name: ${formData.name}\n` +
+        `📞 Phone: ${formData.phoneNumber}\n` +
+        `📍 Address: ${formData.address}\n\n` +
+        `Please contact the customer to proceed with the booking.`;
+
+      sendWhatsAppMessage(vendor.whatsappNumber, contactMessage);
+    }
+    
+    // Notify customer that vendor will contact them
+    if (formData?.phoneNumber) {
+      const customerMessage = `✅ *ENQUIRY ACCEPTED*\n\n` +
+        `Good news! Your enquiry has been accepted. ${vendor?.businessName || vendor?.name} will contact you shortly.\n\n` +
+        `*Enquiry ID:* ${enquiryId}`;
+      
+      sendWhatsAppMessage(formData.phoneNumber, customerMessage);
+    }
+  }, [enquiryId, vendor, formData, sendWhatsAppMessage]);
+
+  // Handle office declining the enquiry
+  const handleOfficeDecline = useCallback(() => {
+    console.log('Office declined enquiry:', enquiryId);
+    setEnquiryStatus('office_declined');
+    
+    if (vendor?.whatsappNumber) {
+      const declineMessage = `❌ *ENQUIRY DECLINED*\n\n` +
+        `*Enquiry ID:* ${enquiryId}\n\n` +
+        `This enquiry has been declined by our team. Please ignore this request.`;
+      
+      sendWhatsAppMessage(vendor.whatsappNumber, declineMessage);
+    }
+    
+    if (formData?.phoneNumber) {
+      const customerMessage = `❌ *ENQUIRY UPDATE*\n\n` +
+        `We regret to inform you that your enquiry could not be processed at this time. We'll help you find another vendor.`;
+      
+      sendWhatsAppMessage(formData.phoneNumber, customerMessage);
+    }
+  }, [enquiryId, vendor, formData, sendWhatsAppMessage]);
+
+  // Handle vendor accepting the enquiry
+  const handleVendorAccept = useCallback(() => {
+    console.log('Vendor accepted enquiry:', enquiryId);
+    setEnquiryStatus('vendor_accepted');
+    
+    // Send customer contact details to vendor
+    if (vendor?.whatsappNumber) {
+      const contactMessage = `📞 *CUSTOMER CONTACT DETAILS*\n\n` +
+        `*Enquiry ID:* ${enquiryId}\n\n` +
+        `*Customer Information:*\n` +
+        `👤 Name: ${formData.name}\n` +
+        `📞 Phone: ${formData.phoneNumber}\n` +
+        `📍 Address: ${formData.address}\n\n` +
+        `Please contact the customer to proceed with the booking.`;
+
+      sendWhatsAppMessage(vendor.whatsappNumber, contactMessage);
+    }
+    
+    // Notify office that vendor accepted
+    const officeMessage = `✅ *VENDOR ACCEPTED ENQUIRY*\n\n` +
+      `*Enquiry ID:* ${enquiryId}\n` +
+      `*Vendor:* ${vendor?.businessName || vendor?.name}\n\n` +
+      `The vendor has accepted the enquiry and will contact the customer.`;
+    
+    sendWhatsAppMessage(WHATSAPP_CONFIG.OFFICE_NUMBER, officeMessage);
+    
+    // Notify customer that vendor will contact them
+    if (formData?.phoneNumber) {
+      const customerMessage = `✅ *ENQUIRY ACCEPTED*\n\n` +
+        `Good news! ${vendor?.businessName || vendor?.name} has accepted your enquiry and will contact you shortly.\n\n` +
+        `*Enquiry ID:* ${enquiryId}`;
+      
+      sendWhatsAppMessage(formData.phoneNumber, customerMessage);
+    }
+  }, [enquiryId, vendor, formData, sendWhatsAppMessage]);
+
+  // Handle vendor declining the enquiry
+  const handleVendorDecline = useCallback(() => {
+    console.log('Vendor declined enquiry:', enquiryId);
+    setEnquiryStatus('vendor_declined');
+    
+    // Notify office about vendor decline
+    const declineMessage = `❌ *VENDOR DECLINED ENQUIRY*\n\n` +
+      `*Enquiry ID:* ${enquiryId}\n` +
+      `*Vendor:* ${vendor?.businessName || vendor?.name}\n\n` +
+      `The vendor has declined this enquiry.`;
+    
+    sendWhatsAppMessage(WHATSAPP_CONFIG.OFFICE_NUMBER, declineMessage);
+    
+    // Notify customer about decline
+    if (formData?.phoneNumber) {
+      const customerMessage = `❌ *ENQUIRY UPDATE*\n\n` +
+        `We regret to inform you that ${vendor?.businessName || vendor?.name} has declined your enquiry. We'll help you find another vendor.`;
+      
+      sendWhatsAppMessage(formData.phoneNumber, customerMessage);
+    }
+  }, [enquiryId, vendor, formData, sendWhatsAppMessage]);
+
   // Handle opening enquiry modal
   const handleOpenEnquiry = useCallback(() => {
     setShowEnquiryModal(true);
@@ -87,7 +294,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
   // Handle closing enquiry modal
   const handleCloseEnquiry = useCallback(() => {
     setShowEnquiryModal(false);
-    // Reset form when closing
     setStep(1);
     setPhoneVerified(false);
     setOtpSent(false);
@@ -106,12 +312,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     });
   }, []);
 
-  // Handle interest submission
-  const handleInterestSubmit = useCallback(() => {
-    console.log('Interest submitted for vendor:', vendor.businessName || vendor.name);
-    console.log('Customer details:', formData);
-    handleCloseEnquiry();
-  }, [formData, vendor, handleCloseEnquiry]);
+  // Handle success message close
+  const handleCloseSuccess = useCallback(() => {
+    setShowSuccessMessage(false);
+  }, []);
 
   // Enquiry form handlers
   const handleChange = useCallback((e) => {
@@ -210,7 +414,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
 
   if (!isOpen || !vendor) return null;
 
-  // Image lightbox
+  // Image lightbox component
   const ImageModal = ({ image, title, onCloseImage }) =>
     createPortal(
       <div
@@ -241,6 +445,92 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
       document.body
     );
 
+  // Success Message Modal
+  const SuccessModal = () =>
+    createPortal(
+      <>
+        <div
+          className="fixed inset-0 bg-black/65 z-[9994]"
+          onClick={handleCloseSuccess}
+        />
+        <div className="fixed inset-0 z-[9995] flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden">
+            <div className="bg-gradient-to-r from-green-600 to-green-700 p-6 text-center">
+              <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-3">
+                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <h3 className="text-white text-xl font-bold">Enquiry Sent!</h3>
+              <p className="text-green-100 text-sm mt-1">Enquiry ID: {enquiryId}</p>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-sm text-gray-600 mb-4 text-center">
+                Your enquiry has been sent successfully. The vendor will contact you after approval.
+              </p>
+              
+              {/* Demo buttons for testing the flow */}
+              <div className="mb-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                <p className="text-xs text-yellow-700 font-medium mb-2">Demo Actions (Testing Only):</p>
+                <div className="flex gap-2 mb-2">
+                  <button
+                    onClick={handleOfficeAccept}
+                    className="flex-1 bg-green-500 text-white text-xs py-2 rounded hover:bg-green-600"
+                  >
+                    Office Accept
+                  </button>
+                  <button
+                    onClick={handleOfficeDecline}
+                    className="flex-1 bg-red-500 text-white text-xs py-2 rounded hover:bg-red-600"
+                  >
+                    Office Decline
+                  </button>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleVendorAccept}
+                    className="flex-1 bg-blue-500 text-white text-xs py-2 rounded hover:bg-blue-600"
+                  >
+                    Vendor Accept
+                  </button>
+                  <button
+                    onClick={handleVendorDecline}
+                    className="flex-1 bg-orange-500 text-white text-xs py-2 rounded hover:bg-orange-600"
+                  >
+                    Vendor Decline
+                  </button>
+                </div>
+              </div>
+              
+              <div className="mb-4 p-2 bg-gray-50 rounded-lg">
+                <p className="text-xs text-gray-600">
+                  <span className="font-semibold">Status:</span>{' '}
+                  <span className={
+                    enquiryStatus === 'office_accepted' ? 'text-green-600' :
+                    enquiryStatus === 'office_declined' ? 'text-red-600' :
+                    enquiryStatus === 'vendor_accepted' ? 'text-blue-600' :
+                    enquiryStatus === 'vendor_declined' ? 'text-orange-600' :
+                    'text-yellow-600'
+                  }>
+                    {enquiryStatus || 'pending'}
+                  </span>
+                </p>
+              </div>
+              
+              <button
+                onClick={handleCloseSuccess}
+                className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white py-2.5 rounded-lg font-medium hover:from-green-700 hover:to-green-800 transition-all duration-300"
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </>,
+      document.body
+    );
+
   const modalContent = (
     <>
       {/* Dark backdrop */}
@@ -258,7 +548,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         />
       )}
 
-      {/* Enquiry Modal - Render conditionally but not as a component */}
+      {/* Enquiry Modal */}
       {showEnquiryModal && createPortal(
         <>
           <div
@@ -521,17 +811,29 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                     </button>
                     <button
                       onClick={handleInterestSubmit}
-                      disabled={!isStep2Valid()}
+                      disabled={!isStep2Valid() || isSendingWhatsApp}
                       className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium flex items-center justify-center transition-all duration-300 ${
-                        isStep2Valid()
+                        isStep2Valid() && !isSendingWhatsApp
                           ? 'bg-gradient-to-r from-green-600 to-green-700 text-white hover:from-green-700 hover:to-green-800'
                           : 'bg-gray-200 text-gray-500 cursor-not-allowed'
                       }`}
                     >
-                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
-                      Interested
+                      {isSendingWhatsApp ? (
+                        <>
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                          </svg>
+                          Interested
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
@@ -542,7 +844,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         document.body
       )}
 
-      {/* Modal panel - Always card style, same on mobile and desktop */}
+      {/* Success Modal */}
+      {showSuccessMessage && <SuccessModal />}
+
+      {/* Main Vendor Details Modal */}
       <div
         className="fixed inset-0 z-[9991] flex items-center justify-center p-4 pointer-events-none"
       >
@@ -562,7 +867,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
               </svg>
             </button>
             
-            {/* Business name */}
             <h1 className="text-white font-bold text-base sm:text-lg px-2 text-center flex-1 line-clamp-2">
               {vendor.businessName || vendor.name}
             </h1>
@@ -578,7 +882,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
             </button>
           </div>
 
-          {/* Scrollable body */}
+          {/* Scrollable body - Vendor Details */}
           <div className="overflow-y-auto flex-1 bg-gradient-to-b from-red-50 to-yellow-50 rounded-b-2xl">
             <div className="p-4 space-y-4">
               {/* Hero Section */}
