@@ -1,21 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { createPortal } from 'react-dom';
 
-// Event types for dropdown
-const EVENT_TYPES = [
-  'Wedding',
-  'Engagement',
-  'Birthday Party',
-  'Corporate Event',
-  'Anniversary',
-  'Baby Shower',
-  'Graduation',
-  'Housewarming'
-];
-
 // Configuration for WhatsApp numbers
 const WHATSAPP_CONFIG = {
-  OFFICE_NUMBER: '9876543210', // Office number for notifications
+  OFFICE_NUMBER: '+917397260093', // Office number for notifications
 };
 
 const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
@@ -40,16 +28,43 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     name: '',
     phoneNumber: '',
     address: '',
-    eventType: '',
     eventDate: '',
     eventTime: '',
     budget: '',
-    eventLocation: '',
+    serviceTypes: [],
     preferredLocation: '',
   });
 
   // Store enquiry ID for tracking
   const [enquiryId, setEnquiryId] = useState(null);
+
+  // Get available locations from vendor data
+  const availableLocations = useMemo(() => {
+    if (vendor && vendor.availableLocations) {
+      return vendor.availableLocations;
+    }
+    return ['Chennai', 'Coimbatore', 'Madurai', 'Bangalore', 'Hyderabad', 'Mumbai', 'Delhi', 'Pune', 'Ahmedabad', 'Kochi'];
+  }, [vendor]);
+
+  // Get service types from vendor data
+  const serviceTypes = useMemo(() => {
+    if (vendor && vendor.services) {
+      return vendor.services;
+    }
+    return ['Wedding Photography', 'Candid Photography', 'Pre-wedding Shoot', 'Event Coverage', 'Cinematic Video'];
+  }, [vendor]);
+
+  // Handle service type selection
+  const handleServiceTypeChange = useCallback((service) => {
+    setFormData(prev => {
+      const currentServices = [...prev.serviceTypes];
+      if (currentServices.includes(service)) {
+        return { ...prev, serviceTypes: currentServices.filter(s => s !== service) };
+      } else {
+        return { ...prev, serviceTypes: [...currentServices, service] };
+      }
+    });
+  }, []);
 
   // Prevent background scroll when modal is open
   useEffect(() => {
@@ -74,7 +89,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
       setIsSendingWhatsApp(false);
       setEnquiryStatus(null);
       setEnquiryId(null);
-      // Reset form when vendor changes
       setStep(1);
       setPhoneVerified(false);
       setOtpSent(false);
@@ -84,11 +98,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         name: '',
         phoneNumber: '',
         address: '',
-        eventType: '',
         eventDate: '',
         eventTime: '',
         budget: '',
-        eventLocation: '',
+        serviceTypes: [],
         preferredLocation: '',
       });
     }
@@ -106,7 +119,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     window.open(whatsappUrl, '_blank');
   }, []);
 
-  // Handle interest submission with WhatsApp notifications
+  // Handle interest submission
   const handleInterestSubmit = useCallback(async () => {
     setIsSendingWhatsApp(true);
     
@@ -131,7 +144,11 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         year: 'numeric'
       });
 
-      // 1. Send notification to office with accept/decline buttons
+      const selectedServicesText = formData.serviceTypes.length > 0 
+        ? formData.serviceTypes.join(', ') 
+        : 'Not specified';
+
+      // Send notification to office
       const officeMessage = `🏢 *NEW ENQUIRY RECEIVED*\n\n` +
         `*Enquiry ID:* ${newEnquiryId}\n` +
         `*Vendor:* ${vendor.businessName || vendor.name}\n` +
@@ -140,6 +157,12 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         `*Phone:* ${formData.phoneNumber}\n` +
         `*Address:* ${formData.address}\n` +
         `*Time:* ${new Date().toLocaleString()}\n\n` +
+        `*Event Details:*\n` +
+        `📅 Date: ${formattedDate}\n` +
+        `⏰ Time: ${formData.eventTime}\n` +
+        `💰 Budget: ₹${formData.budget}\n` +
+        `📍 Preferred Location: ${formData.preferredLocation}\n` +
+        `📋 Services Requested: ${selectedServicesText}\n\n` +
         `*Please respond:*\n` +
         `✅ *ACCEPT* - Reply with "ACCEPT ${newEnquiryId}"\n` +
         `❌ *DECLINE* - Reply with "DECLINE ${newEnquiryId}"\n\n` +
@@ -149,17 +172,16 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // 2. Send ONLY event details to vendor (no contact info)
+      // Send event details to vendor
       if (vendorPhone) {
         const vendorMessage = `🎉 *NEW EVENT ENQUIRY*\n\n` +
           `*Enquiry ID:* ${newEnquiryId}\n\n` +
           `*Event Details:*\n` +
-          `📋 Type: ${formData.eventType}\n` +
           `📅 Date: ${formattedDate}\n` +
           `⏰ Time: ${formData.eventTime}\n` +
           `💰 Budget: ₹${formData.budget}\n` +
-          `📍 Event Location: ${formData.eventLocation}\n` +
-          `🎯 Preferred Location: ${formData.preferredLocation}\n\n` +
+          `📍 Preferred Location: ${formData.preferredLocation}\n` +
+          `📋 Services Requested: ${selectedServicesText}\n\n` +
           `*Please respond:*\n` +
           `✅ *ACCEPT* - Reply with "ACCEPT ${newEnquiryId}" to get customer contact details\n` +
           `❌ *DECLINE* - Reply with "DECLINE ${newEnquiryId}" to reject this enquiry\n\n` +
@@ -184,7 +206,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     console.log('Office accepted enquiry:', enquiryId);
     setEnquiryStatus('office_accepted');
     
-    // Notify vendor that office has approved and share contact details
+    const selectedServicesText = formData.serviceTypes.length > 0 
+      ? formData.serviceTypes.join(', ') 
+      : 'Not specified';
+
     if (vendor?.whatsappNumber) {
       const contactMessage = `✅ *ENQUIRY APPROVED - CUSTOMER CONTACT DETAILS*\n\n` +
         `*Enquiry ID:* ${enquiryId}\n\n` +
@@ -192,12 +217,17 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         `👤 Name: ${formData.name}\n` +
         `📞 Phone: ${formData.phoneNumber}\n` +
         `📍 Address: ${formData.address}\n\n` +
+        `*Event Details:*\n` +
+        `📅 Date: ${formData.eventDate}\n` +
+        `⏰ Time: ${formData.eventTime}\n` +
+        `💰 Budget: ₹${formData.budget}\n` +
+        `📍 Preferred Location: ${formData.preferredLocation}\n` +
+        `📋 Services Requested: ${selectedServicesText}\n\n` +
         `Please contact the customer to proceed with the booking.`;
 
       sendWhatsAppMessage(vendor.whatsappNumber, contactMessage);
     }
     
-    // Notify customer that vendor will contact them
     if (formData?.phoneNumber) {
       const customerMessage = `✅ *ENQUIRY ACCEPTED*\n\n` +
         `Good news! Your enquiry has been accepted. ${vendor?.businessName || vendor?.name} will contact you shortly.\n\n` +
@@ -233,7 +263,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     console.log('Vendor accepted enquiry:', enquiryId);
     setEnquiryStatus('vendor_accepted');
     
-    // Send customer contact details to vendor
+    const selectedServicesText = formData.serviceTypes.length > 0 
+      ? formData.serviceTypes.join(', ') 
+      : 'Not specified';
+
     if (vendor?.whatsappNumber) {
       const contactMessage = `📞 *CUSTOMER CONTACT DETAILS*\n\n` +
         `*Enquiry ID:* ${enquiryId}\n\n` +
@@ -241,12 +274,17 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
         `👤 Name: ${formData.name}\n` +
         `📞 Phone: ${formData.phoneNumber}\n` +
         `📍 Address: ${formData.address}\n\n` +
+        `*Event Details:*\n` +
+        `📅 Date: ${formData.eventDate}\n` +
+        `⏰ Time: ${formData.eventTime}\n` +
+        `💰 Budget: ₹${formData.budget}\n` +
+        `📍 Preferred Location: ${formData.preferredLocation}\n` +
+        `📋 Services Requested: ${selectedServicesText}\n\n` +
         `Please contact the customer to proceed with the booking.`;
 
       sendWhatsAppMessage(vendor.whatsappNumber, contactMessage);
     }
     
-    // Notify office that vendor accepted
     const officeMessage = `✅ *VENDOR ACCEPTED ENQUIRY*\n\n` +
       `*Enquiry ID:* ${enquiryId}\n` +
       `*Vendor:* ${vendor?.businessName || vendor?.name}\n\n` +
@@ -254,7 +292,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     
     sendWhatsAppMessage(WHATSAPP_CONFIG.OFFICE_NUMBER, officeMessage);
     
-    // Notify customer that vendor will contact them
     if (formData?.phoneNumber) {
       const customerMessage = `✅ *ENQUIRY ACCEPTED*\n\n` +
         `Good news! ${vendor?.businessName || vendor?.name} has accepted your enquiry and will contact you shortly.\n\n` +
@@ -269,7 +306,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     console.log('Vendor declined enquiry:', enquiryId);
     setEnquiryStatus('vendor_declined');
     
-    // Notify office about vendor decline
     const declineMessage = `❌ *VENDOR DECLINED ENQUIRY*\n\n` +
       `*Enquiry ID:* ${enquiryId}\n` +
       `*Vendor:* ${vendor?.businessName || vendor?.name}\n\n` +
@@ -277,7 +313,6 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
     
     sendWhatsAppMessage(WHATSAPP_CONFIG.OFFICE_NUMBER, declineMessage);
     
-    // Notify customer about decline
     if (formData?.phoneNumber) {
       const customerMessage = `❌ *ENQUIRY UPDATE*\n\n` +
         `We regret to inform you that ${vendor?.businessName || vendor?.name} has declined your enquiry. We'll help you find another vendor.`;
@@ -303,11 +338,10 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
       name: '',
       phoneNumber: '',
       address: '',
-      eventType: '',
       eventDate: '',
       eventTime: '',
       budget: '',
-      eventLocation: '',
+      serviceTypes: [],
       preferredLocation: '',
     });
   }, []);
@@ -320,18 +354,12 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
   // Enquiry form handlers
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData(prev => {
-      if (prev[name] === value) return prev;
-      return { ...prev, [name]: value };
-    });
+    setFormData(prev => ({ ...prev, [name]: value }));
   }, []);
 
   const handlePhoneChange = useCallback((e) => {
     const value = e.target.value.replace(/\D/g, '').slice(0, 10);
-    setFormData(prev => {
-      if (prev.phoneNumber === value) return prev;
-      return { ...prev, phoneNumber: value };
-    });
+    setFormData(prev => ({ ...prev, phoneNumber: value }));
   }, []);
 
   const handleSendOTP = useCallback(async () => {
@@ -400,23 +428,49 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
   }, [formData.name, formData.address, formData.phoneNumber]);
 
   const isStep2Valid = useCallback(() => {
-    return formData.eventType !== '' &&
-           formData.eventDate !== '' &&
+    return formData.eventDate !== '' &&
            formData.eventTime !== '' &&
            formData.budget !== '' &&
            Number(formData.budget) > 0 &&
-           formData.eventLocation.trim() !== '' &&
-           formData.preferredLocation.trim() !== '';
-  }, [formData.eventType, formData.eventDate, formData.eventTime, 
-      formData.budget, formData.eventLocation, formData.preferredLocation]);
+           formData.serviceTypes.length > 0 &&
+           formData.preferredLocation !== '';
+  }, [formData.eventDate, formData.eventTime, formData.budget, formData.serviceTypes, formData.preferredLocation]);
 
   const today = useMemo(() => new Date().toISOString().split('T')[0], []);
 
   if (!isOpen || !vendor) return null;
 
+  // SIMPLIFIED IMAGE HANDLER
+  const getImageUrl = (image) => {
+    // If it's a string, return it directly
+    if (typeof image === 'string') {
+      return image;
+    }
+    
+    // If it's an imported asset (most common case)
+    if (image && typeof image === 'object') {
+      // In Create React App and Vite, imported images become objects with a src property
+      if (image.src) {
+        return image.src;
+      }
+      // If it's a default export
+      if (image.default) {
+        return image.default;
+      }
+    }
+    
+    // Log what we received for debugging
+    console.log('Unknown image format:', image);
+    
+    // Fallback
+    return 'https://via.placeholder.com/300x300?text=Image+Not+Found';
+  };
+
   // Image lightbox component
-  const ImageModal = ({ image, title, onCloseImage }) =>
-    createPortal(
+  const ImageModal = ({ image, title, onCloseImage }) => {
+    const imageUrl = getImageUrl(image);
+    
+    return createPortal(
       <div
         className="fixed inset-0 bg-black/90 z-[9999] flex items-center justify-center p-4"
         onClick={onCloseImage}
@@ -431,9 +485,14 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
             </svg>
           </button>
           <img 
-            src={image} 
+            src={imageUrl} 
             alt={title} 
-            className="w-full h-auto max-h-[80vh] object-contain rounded-lg" 
+            className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+            onError={(e) => {
+              console.error('Failed to load image:', imageUrl);
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/800x600?text=Image+Not+Available';
+            }}
           />
           {title && (
             <p className="absolute -bottom-8 left-0 right-0 text-white text-center text-sm bg-black/50 py-2 px-4 rounded-lg">
@@ -444,6 +503,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
       </div>,
       document.body
     );
+  };
 
   // Success Message Modal
   const SuccessModal = () =>
@@ -470,7 +530,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                 Your enquiry has been sent successfully. The vendor will contact you after approval.
               </p>
               
-              {/* Demo buttons for testing the flow */}
+              {/* Demo buttons for testing */}
               <div className="mb-4 p-3 bg-yellow-50 rounded-lg border border-yellow-200">
                 <p className="text-xs text-yellow-700 font-medium mb-2">Demo Actions (Testing Only):</p>
                 <div className="flex gap-2 mb-2">
@@ -700,24 +760,9 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Type of Event *</label>
-                      <select
-                        name="eventType"
-                        value={formData.eventType}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      >
-                        <option value="">Select event type</option>
-                        {EVENT_TYPES.map(type => (
-                          <option key={type} value={type}>{type}</option>
-                        ))}
-                      </select>
-                    </div>
-
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Date *</label>
                         <input
                           type="date"
                           name="eventDate"
@@ -728,7 +773,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Time *</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Event Time *</label>
                         <input
                           type="time"
                           name="eventTime"
@@ -753,28 +798,51 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Event Location *</label>
-                      <input
-                        type="text"
-                        name="eventLocation"
-                        value={formData.eventLocation}
-                        onChange={handleChange}
-                        placeholder="Where will the event take place?"
-                        className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      />
-                    </div>
-
-                    <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">Preferred Location *</label>
-                      <input
-                        type="text"
+                      <select
                         name="preferredLocation"
                         value={formData.preferredLocation}
                         onChange={handleChange}
-                        placeholder="Your preferred area/location"
                         className="w-full px-3 py-2.5 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
-                      />
+                      >
+                        <option value="">Select preferred location</option>
+                        {availableLocations.map(location => (
+                          <option key={location} value={location}>{location}</option>
+                        ))}
+                      </select>
                     </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Services Required * (Select multiple)</label>
+                      <div className="space-y-2 max-h-48 overflow-y-auto border border-gray-200 rounded-lg p-3">
+                        {serviceTypes.map(service => (
+                          <div key={service} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id={`service-${service}`}
+                              checked={formData.serviceTypes.includes(service)}
+                              onChange={() => handleServiceTypeChange(service)}
+                              className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                            />
+                            <label htmlFor={`service-${service}`} className="ml-2 text-sm text-gray-700">
+                              {service}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                      {formData.serviceTypes.length === 0 && (
+                        <p className="text-xs text-red-500 mt-1">Please select at least one service</p>
+                      )}
+                    </div>
+
+                    {formData.serviceTypes.length > 0 && (
+                      <div className="bg-blue-50 p-2 rounded-lg">
+                        <p className="text-xs text-blue-700">
+                          <span className="font-semibold">Selected: </span>
+                          {formData.serviceTypes.join(', ')}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -831,7 +899,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                           <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                           </svg>
-                          Interested
+                          Submit Enquiry
                         </>
                       )}
                     </button>
@@ -889,7 +957,7 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
               <div className="bg-white rounded-xl shadow-md overflow-hidden">
                 <div className="relative h-44 bg-gradient-to-r from-red-100 to-yellow-100">
                   <img
-                    src={vendor.logo}
+                    src={getImageUrl(vendor.logo)}
                     alt={vendor.businessName || vendor.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -956,6 +1024,24 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                 </p>
               </div>
 
+              {/* Available Locations */}
+              <div className="bg-white rounded-xl shadow-md p-4">
+                <h3 className="text-base sm:text-lg font-bold text-red-800 mb-2 flex items-center">
+                  <svg className="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Available Locations
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {vendor.availableLocations?.map((location, index) => (
+                    <span key={index} className="bg-gradient-to-r from-red-50 to-yellow-50 border border-red-200 rounded-full px-3 py-1.5 text-xs font-medium text-gray-700">
+                      {location}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
               {/* Equipment - Photography specific */}
               {category === 'photography' && vendor.cameraModels && (
                 <div className="bg-white rounded-xl shadow-md p-4">
@@ -1005,45 +1091,26 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                   </h3>
 
                   <div className="grid grid-cols-3 gap-2 mb-3">
-                    {vendor.portfolio.slice(0, 3).map((item) => (
-                      <div 
-                        key={item.id} 
-                        className="relative rounded-lg overflow-hidden cursor-pointer aspect-square group" 
-                        onClick={() => setSelectedImage(item)}
-                      >
-                        <img 
-                          src={item.image} 
-                          alt={item.title} 
-                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                          onError={(e) => { 
-                            e.target.onerror = null; 
-                            e.target.src = 'https://via.placeholder.com/150'; 
-                          }} 
-                        />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                          <p className="text-white text-xs p-1.5 truncate w-full bg-gradient-to-t from-black/70 to-transparent">
-                            {item.title}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {showAllPortfolio && vendor.portfolio.length > 3 && (
-                    <div className="grid grid-cols-3 gap-2 mt-2">
-                      {vendor.portfolio.slice(3).map((item) => (
+                    {vendor.portfolio.slice(0, 3).map((item) => {
+                      const imageUrl = getImageUrl(item.image);
+                      
+                      return (
                         <div 
                           key={item.id} 
                           className="relative rounded-lg overflow-hidden cursor-pointer aspect-square group" 
-                          onClick={() => setSelectedImage(item)}
+                          onClick={() => setSelectedImage({
+                            image: imageUrl,
+                            title: item.title
+                          })}
                         >
                           <img 
-                            src={item.image} 
+                            src={imageUrl} 
                             alt={item.title} 
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                             onError={(e) => { 
+                              console.error('Failed to load portfolio image:', imageUrl);
                               e.target.onerror = null; 
-                              e.target.src = 'https://via.placeholder.com/150'; 
+                              e.target.src = 'https://via.placeholder.com/300x300?text=Image+Not+Found'; 
                             }} 
                           />
                           <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
@@ -1052,7 +1119,41 @@ const VendorDetails = ({ isOpen, onClose, vendor, category }) => {
                             </p>
                           </div>
                         </div>
-                      ))}
+                      );
+                    })}
+                  </div>
+
+                  {showAllPortfolio && vendor.portfolio.length > 3 && (
+                    <div className="grid grid-cols-3 gap-2 mt-2">
+                      {vendor.portfolio.slice(3).map((item) => {
+                        const imageUrl = getImageUrl(item.image);
+                        
+                        return (
+                          <div 
+                            key={item.id} 
+                            className="relative rounded-lg overflow-hidden cursor-pointer aspect-square group" 
+                            onClick={() => setSelectedImage({
+                              image: imageUrl,
+                              title: item.title
+                            })}
+                          >
+                            <img 
+                              src={imageUrl} 
+                              alt={item.title} 
+                              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                              onError={(e) => { 
+                                e.target.onerror = null; 
+                                e.target.src = 'https://via.placeholder.com/300x300?text=Image+Not+Found'; 
+                              }} 
+                            />
+                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
+                              <p className="text-white text-xs p-1.5 truncate w-full bg-gradient-to-t from-black/70 to-transparent">
+                                {item.title}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
 
