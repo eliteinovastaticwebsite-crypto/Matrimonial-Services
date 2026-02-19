@@ -21,7 +21,7 @@ import CustomerLogin from './pages/CustomerLogin';
 import RegisterChoice from './pages/RegisterChoice';
 import LoginChoice from './pages/LoginChoice';
 
-// ADD THIS IMPORT - New modal component
+// Customer Registration Modal
 import CustomerRegistrationForm from './Components/CustomerRegistrationForm';
 
 // Import all vendor form components
@@ -37,8 +37,8 @@ import StylingVendorForm from './Components/StylingForm';
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
 import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
 
-// IMPORT THE NEW VENDOR DETAILS PAGE
-import VendorDetails from './pages/VendorDetails';
+// NOTE: VendorDetails is now a modal component used inside each page.
+// It is NO LONGER used as a route here in App.jsx.
 
 // Create a wrapper component for VendorProfile with params
 const VendorProfileWrapper = () => {
@@ -83,7 +83,6 @@ function App() {
 
   // Function to render the correct form based on type
   const renderVendorForm = () => {
-    console.log(`App.jsx: Rendering ${activeFormType} form, isOpen: ${isFormOpen}`);
     switch (activeFormType) {
       case 'photography':
         return <PhotographyVendorForm isOpen={isFormOpen} onClose={closeVendorForm} />;
@@ -110,13 +109,10 @@ function App() {
   useEffect(() => {
     const handleGlobalFormOpen = (event) => {
       if (event.detail && event.detail.formType) {
-        console.log(`Global event: Opening ${event.detail.formType} form`);
         openVendorForm(event.detail.formType);
       }
     };
-
     window.addEventListener('openVendorFormGlobal', handleGlobalFormOpen);
-
     return () => {
       window.removeEventListener('openVendorFormGlobal', handleGlobalFormOpen);
     };
@@ -151,20 +147,10 @@ function App() {
           <Route path="/customer-profile" element={<CustomerProfile />} />
           
           {/* ============================================ */}
-          {/* CUSTOMER SERVICE PAGES - IMPORTANT: DETAIL ROUTES MUST COME BEFORE LISTING ROUTES */}
+          {/* CUSTOMER SERVICE LISTING PAGES */}
+          {/* VendorDetails now opens as a modal inside each page.
+              The /:id detail routes are no longer needed here. */}
           {/* ============================================ */}
-          
-          {/* DETAIL ROUTES FIRST - These are more specific */}
-          <Route path="/photography/:id" element={<VendorDetails />} />
-          <Route path="/catering/:id" element={<VendorDetails />} />
-          <Route path="/wedding-halls/:id" element={<VendorDetails />} />
-          <Route path="/decorations/:id" element={<VendorDetails />} />
-          <Route path="/entertainment/:id" element={<VendorDetails />} />
-          <Route path="/invitation/:id" element={<VendorDetails />} />
-          <Route path="/styling/:id" element={<VendorDetails />} />
-          <Route path="/background-investigations/:id" element={<VendorDetails />} />
-          
-          {/* LISTING ROUTES AFTER - These are less specific */}
           <Route path="/photography" element={<PhotographyWrapper openVendorForm={openVendorForm} />} />
           <Route path="/catering" element={<CateringWrapper openVendorForm={openVendorForm} />} />
           <Route path="/wedding-halls" element={<WeddingHallsWrapper openVendorForm={openVendorForm} />} />
@@ -178,17 +164,13 @@ function App() {
           {/* VENDOR LOGIN & PROFILE ROUTES */}
           {/* ============================================ */}
           <Route path="/vendor-login" element={<VendorLoginWrapper openVendorForm={openVendorForm} />} />
-          
-          {/* Vendor Profile Routes - Both with and without ID */}
           <Route path="/vendor-profile" element={<VendorProfileWrapper />} />
           <Route path="/vendor-profile/:vendorId" element={<VendorProfileWrapper />} />
-          
-          {/* Alternative vendor dashboard routes */}
           <Route path="/vendor-dashboard" element={<VendorProfileWrapper />} />
           <Route path="/vendor-dashboard/:vendorId" element={<VendorProfileWrapper />} />
           
           {/* ============================================ */}
-          {/* VENDOR SERVICE FORMS ROUTES */}
+          {/* VENDOR REGISTRATION FORM ROUTES */}
           {/* ============================================ */}
           <Route path="/register/photography" element={
             <PhotographyVendorForm isOpen={true} onClose={() => window.history.back()} />
@@ -215,10 +197,7 @@ function App() {
             <BackgroundInvestigationsForm isOpen={true} onClose={() => window.history.back()} />
           } />
           
-          {/* Redirect old /register to new choice page */}
           <Route path="/register" element={<RegisterChoice />} />
-          
-          {/* Fallback route */}
           <Route path="*" element={<Home />} />
         </Routes>
       </div>

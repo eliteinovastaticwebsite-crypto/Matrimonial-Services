@@ -11,6 +11,7 @@ import religious from '../assets/religious.jpg';
 import photobanner1 from '../assets/photobanner1.png';
 import photobanner2 from '../assets/photobanner2.png';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg'; 
+import VendorDetails from '../Components/VendorDetails';
 
 const Photography = () => {
   const navigate = useNavigate();
@@ -41,6 +42,9 @@ const Photography = () => {
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -1248,11 +1252,13 @@ const Photography = () => {
     return count;
   };
 
-  // Function to handle view details click
   const handleViewDetails = (vendorId) => {
-    navigate(`/photography/${vendorId}`);
-  };
-
+  const vendor = vendors.find(v => v.id === vendorId);
+  if (vendor) {
+     setSelectedVendor(vendor);
+     setShowVendorDetails(true);
+    }
+   };
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* Add Google Fonts - SF Pro Display alternative for clean typography */}
@@ -2174,6 +2180,15 @@ const Photography = () => {
           </div>
         </div>
       )}
+      <VendorDetails
+     isOpen={showVendorDetails}
+    onClose={() => {
+      setShowVendorDetails(false);
+      setSelectedVendor(null);
+    }}
+     vendor={selectedVendor}
+     category="photography"
+   />
     </div>
   );
 };
