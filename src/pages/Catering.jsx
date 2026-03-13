@@ -13,6 +13,8 @@ import eventbased from '../assets/eventbased.jpg';
 import caterbanner1 from '../assets/bannercat1.jpg';
 import caterbanner2 from '../assets/bannercat2.jpg';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
+import VendorDetails from '../Components/VendorDetails'; // ADD THIS IMPORT
+import { cateringVendors } from '../data/cateringData'; 
 
 const Catering = () => {
   const navigate = useNavigate();
@@ -52,6 +54,10 @@ const Catering = () => {
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // ADD THESE STATES FOR VENDOR DETAILS
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -254,699 +260,16 @@ const Catering = () => {
     });
   };
 
-  // Sample vendor data with extended fields
-  const vendors = [
-    // Traditional Catering Vendors
-    {
-      id: 1,
-      name: 'Traditional Tastes',
-      businessName: 'Traditional Tastes Catering Service',
-      businessCategory: 'Traditional Catering',
-      eventType: 'Traditional Catering',
-      personName: 'Rajeshwari Iyer',
-      designation: 'Head Chef',
-      description: 'Authentic traditional Indian cuisine with family recipes passed down for generations',
-      services: ['South Indian Meals', 'North Indian Thali', 'Wedding Banquets', 'Traditional Sweets'],
-      logo: traditional,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹500 - ₹1,500 per plate',
-      experience: 15,
-      businessType: 'Proprietorship',
-      cuisines: ['South Indian', 'North Indian'],
-      specialMenus: ['Wedding Feast', 'Reception'],
-      serviceTypes: ['Banana Leaf Service', 'Table Service'],
-      minCapacity: 100,
-      maxCapacity: 1000,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 2,
-      name: 'Heritage Kitchen',
-      businessName: 'Heritage Kitchen Caterers',
-      businessCategory: 'Traditional Catering',
-      eventType: 'Traditional Catering',
-      personName: 'Vikram Singh',
-      designation: 'Catering Manager',
-      description: 'Preserving culinary heritage with authentic regional cuisines',
-      services: ['Royal Rajasthani Food', 'Hyderabadi Biryani', 'Kerala Sadya', 'Bengali Cuisine'],
-      logo: traditional,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹600 - ₹2,000 per plate',
-      experience: 12,
-      businessType: 'Partnership',
-      cuisines: ['North Indian', 'South Indian'],
-      specialMenus: ['Wedding Feast', 'Sangeet / Mehendi'],
-      serviceTypes: ['Buffet', 'Banana Leaf Service'],
-      minCapacity: 150,
-      maxCapacity: 1200,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Vegetarian Catering Vendors
-    {
-      id: 3,
-      name: 'Pure Veg Delights',
-      businessName: 'Pure Veg Delights Catering',
-      businessCategory: 'Vegetarian Catering',
-      eventType: 'Vegetarian Catering',
-      personName: 'Priya Sharma',
-      designation: 'Nutrition Specialist',
-      description: '100% vegetarian catering with emphasis on organic and healthy ingredients',
-      services: ['Organic Vegetable Dishes', 'Jain Food Options', 'Healthy Salads', 'Fresh Juices'],
-      logo: veg,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹400 - ₹1,200 per plate',
-      experience: 8,
-      businessType: 'Individual',
-      cuisines: ['South Indian', 'North Indian'],
-      specialMenus: ['Wedding Feast', 'Reception', 'Engagement'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 50,
-      maxCapacity: 800,
-      servingStaff: 'yes',
-      uniformedStaff: 'no',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 4,
-      name: 'Green Leaf Caterers',
-      businessName: 'Green Leaf Vegetarian Catering',
-      businessCategory: 'Vegetarian Catering',
-      eventType: 'Vegetarian Catering',
-      personName: 'Arun Mehta',
-      designation: 'Executive Chef',
-      description: 'Innovative vegetarian cuisine with global flavors',
-      services: ['Continental Vegetarian', 'Italian Pasta', 'Mexican Veg', 'Asian Fusion'],
-      logo: veg,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹450 - ₹1,500 per plate',
-      experience: 6,
-      businessType: 'Private Limited',
-      cuisines: ['Continental', 'Chinese'],
-      specialMenus: ['Buffet', 'Live Counters'],
-      serviceTypes: ['Buffet'],
-      minCapacity: 80,
-      maxCapacity: 600,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Non-Vegetarian Catering Vendors
-    {
-      id: 5,
-      name: 'Royal Non-Veg Caterers',
-      businessName: 'Royal Non-Veg Catering Services',
-      businessCategory: 'Non-Vegetarian Catering',
-      eventType: 'Non-Vegetarian Catering',
-      personName: 'Rahul Kapoor',
-      designation: 'Master Chef',
-      description: 'Specializing in premium non-vegetarian dishes with expert preparation',
-      services: ['Mutton Biryani', 'Chicken Specialties', 'Seafood Spread', 'BBQ Grill'],
-      logo: nonveg,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹700 - ₹2,500 per plate',
-      experience: 18,
-      businessType: 'Partnership',
-      cuisines: ['South Indian', 'North Indian', 'Arabic'],
-      specialMenus: ['Wedding Feast', 'Reception', 'Buffet'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 200,
-      maxCapacity: 1500,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 6,
-      name: 'Ocean Delights',
-      businessName: 'Ocean Delights Seafood Catering',
-      businessCategory: 'Non-Vegetarian Catering',
-      eventType: 'Non-Vegetarian Catering',
-      personName: 'Anjali Nair',
-      designation: 'Seafood Specialist',
-      description: 'Fresh seafood catering with coastal flavors',
-      services: ['Prawn Specialties', 'Fish Curries', 'Crab Dishes', 'Lobster Preparations'],
-      logo: nonveg,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹800 - ₹3,000 per plate',
-      experience: 10,
-      businessType: 'Proprietorship',
-      cuisines: ['South Indian'],
-      specialMenus: ['Wedding Feast', 'Reception'],
-      serviceTypes: ['Buffet', 'Banana Leaf Service'],
-      minCapacity: 100,
-      maxCapacity: 800,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Multi-Cuisine Catering Vendors
-    {
-      id: 7,
-      name: 'Global Flavors',
-      businessName: 'Global Flavors Multi-Cuisine Catering',
-      businessCategory: 'Multi-Cuisine Catering',
-      eventType: 'Multi-Cuisine Catering',
-      personName: 'David Wilson',
-      designation: 'Culinary Director',
-      description: 'World cuisine experts offering diverse menu options',
-      services: ['Indian', 'Chinese', 'Continental', 'Mexican', 'Italian'],
-      logo: multicuisine,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹600 - ₹2,000 per plate',
-      experience: 14,
-      businessType: 'Private Limited',
-      cuisines: ['South Indian', 'North Indian', 'Chinese', 'Continental'],
-      specialMenus: ['Buffet', 'Live Counters', 'Wedding Feast'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 150,
-      maxCapacity: 2000,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 8,
-      name: 'Fusion Feast',
-      businessName: 'Fusion Feast Catering',
-      businessCategory: 'Multi-Cuisine Catering',
-      eventType: 'Multi-Cuisine Catering',
-      personName: 'Meera Patel',
-      designation: 'Fusion Chef',
-      description: 'Creative fusion cuisine blending traditional and modern flavors',
-      services: ['Indo-Chinese', 'Continental-Indian Fusion', 'Asian Mix', 'Dessert Stations'],
-      logo: multicuisine,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹650 - ₹2,200 per plate',
-      experience: 7,
-      businessType: 'Partnership',
-      cuisines: ['Chinese', 'Continental', 'North Indian'],
-      specialMenus: ['Live Counters', 'Buffet'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 100,
-      maxCapacity: 1000,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Buffet Catering Vendors
-    {
-      id: 9,
-      name: 'Grand Buffet Services',
-      businessName: 'Grand Buffet Catering',
-      businessCategory: 'Buffet Catering',
-      eventType: 'Buffet Catering',
-      personName: 'Aisha Khan',
-      designation: 'Buffet Manager',
-      description: 'Professional buffet setup with extensive menu options',
-      services: ['Live Counters', 'Salad Bars', 'Dessert Stations', 'Beverage Centers'],
-      logo: buffet,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹550 - ₹1,800 per plate',
-      experience: 9,
-      businessType: 'Private Limited',
-      cuisines: ['North Indian', 'Chinese', 'Continental'],
-      specialMenus: ['Buffet', 'Live Counters'],
-      serviceTypes: ['Buffet'],
-      minCapacity: 200,
-      maxCapacity: 2500,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 10,
-      name: 'Unlimited Buffet',
-      businessName: 'Unlimited Buffet Caterers',
-      businessCategory: 'Buffet Catering',
-      eventType: 'Buffet Catering',
-      personName: 'Kabir Malhotra',
-      designation: 'Operations Head',
-      description: 'Unlimited buffet services for large gatherings',
-      services: ['Unlimited Food', 'Multiple Cuisines', 'Specialty Counters', 'Kids Corner'],
-      logo: buffet,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹500 - ₹1,700 per plate',
-      experience: 11,
-      businessType: 'Partnership',
-      cuisines: ['North Indian', 'South Indian', 'Chinese'],
-      specialMenus: ['Buffet', 'Reception'],
-      serviceTypes: ['Buffet'],
-      minCapacity: 150,
-      maxCapacity: 2000,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Live Counter Catering Vendors
-    {
-      id: 11,
-      name: 'Live Kitchen Masters',
-      businessName: 'Live Kitchen Masters Catering',
-      businessCategory: 'Live Counter Catering',
-      eventType: 'Live Counter Catering',
-      personName: 'Sanjay Gupta',
-      designation: 'Live Counter Chef',
-      description: 'Interactive live cooking stations for engaging dining experience',
-      services: ['Live Pasta Station', 'Chaat Counter', 'Dosa Counter', 'Barbecue Station'],
-      logo: livecounter,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹700 - ₹2,500 per plate',
-      experience: 8,
-      businessType: 'Proprietorship',
-      cuisines: ['South Indian', 'North Indian', 'Chinese'],
-      specialMenus: ['Live Counters', 'Buffet'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 80,
-      maxCapacity: 800,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 12,
-      name: 'Interactive Dining',
-      businessName: 'Interactive Dining Experiences',
-      businessCategory: 'Live Counter Catering',
-      eventType: 'Live Counter Catering',
-      personName: 'Neha Joshi',
-      designation: 'Event Coordinator',
-      description: 'Customized live counters based on event theme',
-      services: ['Sushi Bar', 'Taco Station', 'Waffle Counter', 'Mongolian Grill'],
-      logo: livecounter,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹750 - ₹2,800 per plate',
-      experience: 6,
-      businessType: 'Private Limited',
-      cuisines: ['Continental', 'Chinese', 'Arabic'],
-      specialMenus: ['Live Counters', 'Buffet'],
-      serviceTypes: ['Buffet'],
-      minCapacity: 100,
-      maxCapacity: 600,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Theme-Based Catering Vendors
-    {
-      id: 13,
-      name: 'Themed Cuisine',
-      businessName: 'Themed Cuisine Catering',
-      businessCategory: 'Theme-Based Catering',
-      eventType: 'Theme-Based Catering',
-      personName: 'Venkatesh Iyer',
-      designation: 'Theme Specialist',
-      description: 'Complete theme-based catering including decor and menu',
-      services: ['Royal Theme', 'Beach Theme', 'Garden Party', 'Retro Theme'],
-      logo: themebased,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹1,000 - ₹3,500 per plate',
-      experience: 13,
-      businessType: 'Private Limited',
-      cuisines: ['South Indian', 'North Indian', 'Continental'],
-      specialMenus: ['Wedding Feast', 'Reception', 'Sangeet / Mehendi'],
-      serviceTypes: ['Buffet', 'Table Service', 'Banana Leaf Service'],
-      minCapacity: 100,
-      maxCapacity: 1000,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 14,
-      name: 'Concept Catering',
-      businessName: 'Concept Catering Services',
-      businessCategory: 'Theme-Based Catering',
-      eventType: 'Theme-Based Catering',
-      personName: 'Radha Krishnan',
-      designation: 'Concept Designer',
-      description: 'Innovative concept-based catering solutions',
-      services: ['Destination Themes', 'Cultural Themes', 'Seasonal Themes', 'Color Themes'],
-      logo: themebased,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹900 - ₹3,200 per plate',
-      experience: 10,
-      businessType: 'Partnership',
-      cuisines: ['South Indian', 'North Indian'],
-      specialMenus: ['Wedding Feast', 'Reception'],
-      serviceTypes: ['Buffet', 'Banana Leaf Service'],
-      minCapacity: 80,
-      maxCapacity: 800,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Event-Based Catering Vendors
-    {
-      id: 15,
-      name: 'Event Specialists',
-      businessName: 'Event Specialists Catering',
-      businessCategory: 'Event-Based Catering',
-      eventType: 'Event-Based Catering',
-      personName: 'Pooja Mehta',
-      designation: 'Event Manager',
-      description: 'Specialized catering for different types of events',
-      services: ['Weddings', 'Corporate Events', 'Birthday Parties', 'Anniversaries'],
-      logo: eventbased,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹600 - ₹2,000 per plate',
-      experience: 12,
-      businessType: 'Private Limited',
-      cuisines: ['South Indian', 'North Indian', 'Chinese'],
-      specialMenus: ['Wedding Feast', 'Reception', 'Buffet'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 150,
-      maxCapacity: 1500,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 16,
-      name: 'Occasion Experts',
-      businessName: 'Occasion Experts Catering',
-      businessCategory: 'Event-Based Catering',
-      eventType: 'Event-Based Catering',
-      personName: 'Ramesh Kumar',
-      designation: 'Event Planner',
-      description: 'Customized catering solutions for every occasion',
-      services: ['Engagements', 'Baby Showers', 'House Warmings', 'Festival Events'],
-      logo: eventbased,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹550 - ₹1,800 per plate',
-      experience: 9,
-      businessType: 'Proprietorship',
-      cuisines: ['South Indian'],
-      specialMenus: ['Wedding Feast', 'Engagement'],
-      serviceTypes: ['Banana Leaf Service', 'Table Service'],
-      minCapacity: 100,
-      maxCapacity: 800,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Snack & Beverage Catering Vendors
-    {
-      id: 17,
-      name: 'Snack Masters',
-      businessName: 'Snack Masters Catering',
-      businessCategory: 'Snack & Beverage Catering',
-      eventType: 'Snack & Beverage Catering',
-      personName: 'Suresh Reddy',
-      designation: 'Snack Specialist',
-      description: 'Premium snack and beverage services for all events',
-      services: ['Finger Foods', 'Mocktail Bar', 'Coffee Station', 'Dessert Bar'],
-      logo: snackscatering,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹300 - ₹1,000 per person',
-      experience: 5,
-      businessType: 'Individual',
-      cuisines: ['South Indian', 'North Indian', 'Chinese'],
-      specialMenus: ['Live Counters', 'Buffet'],
-      serviceTypes: ['Buffet', 'Table Service'],
-      minCapacity: 50,
-      maxCapacity: 500,
-      servingStaff: 'yes',
-      uniformedStaff: 'no',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'no',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 18,
-      name: 'Beverage Plus',
-      businessName: 'Beverage Plus Catering',
-      businessCategory: 'Snack & Beverage Catering',
-      eventType: 'Snack & Beverage Catering',
-      personName: 'Geetha Nair',
-      designation: 'Beverage Manager',
-      description: 'Specialized beverage and snack catering',
-      services: ['Juice Bar', 'Tea/Coffee Station', 'Canapés', 'Mini Desserts'],
-      logo: snackscatering,
-      location: 'Trichy, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹250 - ₹900 per person',
-      experience: 7,
-      businessType: 'Proprietorship',
-      cuisines: ['South Indian'],
-      specialMenus: ['Live Counters'],
-      serviceTypes: ['Table Service'],
-      minCapacity: 40,
-      maxCapacity: 400,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'Central Kitchen',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local'],
-      transportCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    // Special Service Catering Vendors
-    {
-      id: 19,
-      name: 'Special Services',
-      businessName: 'Special Services Catering',
-      businessCategory: 'Special Service Catering',
-      eventType: 'Special Service Catering',
-      personName: 'Anand Kumar',
-      designation: 'Service Director',
-      description: 'Premium catering services with additional amenities',
-      services: ['Silver Service', 'Butler Service', 'VIP Catering', 'Luxury Setup'],
-      logo: specialcatering,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹1,500 - ₹5,000 per plate',
-      experience: 16,
-      businessType: 'Private Limited',
-      cuisines: ['North Indian', 'Continental'],
-      specialMenus: ['Wedding Feast', 'Reception'],
-      serviceTypes: ['Table Service'],
-      minCapacity: 50,
-      maxCapacity: 500,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
-    },
-    {
-      id: 20,
-      name: 'Elite Catering',
-      businessName: 'Elite Catering Services',
-      businessCategory: 'Special Service Catering',
-      eventType: 'Special Service Catering',
-      personName: 'Divya Sharma',
-      designation: 'Premium Services Manager',
-      description: 'Luxury catering for high-profile events',
-      services: ['Personalized Menus', 'Celebrity Chefs', 'Gourmet Dining', 'Wine Pairing'],
-      logo: specialcatering,
-      location: 'Bangalore, Karnataka',
-      rating: 4.8,
-      priceRange: '₹2,000 - ₹6,000 per plate',
-      experience: 11,
-      businessType: 'Partnership',
-      cuisines: ['Continental', 'Arabic'],
-      specialMenus: ['Wedding Feast', 'Reception'],
-      serviceTypes: ['Table Service'],
-      minCapacity: 30,
-      maxCapacity: 300,
-      servingStaff: 'yes',
-      uniformedStaff: 'yes',
-      fssaiCompliance: 'yes',
-      preparationLocation: 'On-site',
-      waterSource: 'yes',
-      wasteManagement: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      transportCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes',
-      hasFSSAI: 'yes'
+  const vendors = cateringVendors;
+
+  // ADD THIS FUNCTION TO HANDLE VIEW DETAILS
+  const handleViewDetails = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
     }
-  ];
+  };
 
   // Enhanced filter function with all catering form fields
   const filteredVendors = vendors.filter(vendor => {
@@ -1051,7 +374,7 @@ const Catering = () => {
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹ per plate)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-2">
               <input
                 type="number"
@@ -1068,20 +391,6 @@ const Catering = () => {
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Catering Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Catering Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
           </div>
 
           <div>
@@ -1125,7 +434,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City / District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -1137,17 +446,6 @@ const Catering = () => {
                 <option key={district} value={district}>{district}</option>
               ))}
             </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
           </div>
 
           <div>
@@ -1243,7 +541,7 @@ const Catering = () => {
         <div className="space-y-3">
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Min. Capacity</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Minimum Plate Capacity</label>
               <input
                 type="number"
                 placeholder="Min plates"
@@ -1253,7 +551,7 @@ const Catering = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-gray-700 mb-1">Max. Capacity</label>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Maximum Plate Capacity</label>
               <input
                 type="number"
                 placeholder="Max plates"
@@ -1366,7 +664,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">RO / Mineral Water</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Water Source (RO / Mineral) </label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -1394,7 +692,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Waste Management</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Waste Management Arranged</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -1442,7 +740,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
             <input
               type="number"
               placeholder="Minimum years"
@@ -1509,29 +807,6 @@ const Catering = () => {
               <label className="flex items-center gap-2 text-xs">
                 <input 
                   type="radio" 
-                  name="hasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No PAN
-              </label>
-              <div className="border-t border-gray-200 my-1"></div>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
                   name="hasFSSAI" 
                   value="yes"
                   checked={hasFSSAI === "yes"}
@@ -1567,7 +842,7 @@ const Catering = () => {
       content: (
         <div className="space-y-1.5">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹ per plate)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-1">
               <input
                 type="number"
@@ -1584,20 +859,6 @@ const Catering = () => {
                 className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Catering Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
           </div>
 
           <div>
@@ -1641,7 +902,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City / District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -1653,17 +914,6 @@ const Catering = () => {
                 <option key={district} value={district}>{district}</option>
               ))}
             </select>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
           </div>
 
           <div>
@@ -1759,7 +1009,7 @@ const Catering = () => {
         <div className="space-y-1.5">
           <div className="grid grid-cols-2 gap-1">
             <div>
-              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Capacity</label>
+              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Minimum Plate Capacity</label>
               <input
                 type="number"
                 placeholder="Min plates"
@@ -1769,7 +1019,7 @@ const Catering = () => {
               />
             </div>
             <div>
-              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Max. Capacity</label>
+              <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Maximum Plate Capacity</label>
               <input
                 type="number"
                 placeholder="Max plates"
@@ -1882,7 +1132,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">RO / Mineral Water</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Water Source (RO / Mineral)</label>
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1910,7 +1160,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Waste Management</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Waste Management Arranged</label>
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1958,7 +1208,7 @@ const Catering = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Years of Experience</label>
             <input
               type="number"
               placeholder="Min years"
@@ -2020,29 +1270,6 @@ const Catering = () => {
                   className="w-2.5 h-2.5 accent-red-600" 
                 /> 
                 No GST
-              </label>
-              <div className="border-t border-gray-200 my-0.5"></div>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No PAN
               </label>
               <div className="border-t border-gray-200 my-0.5"></div>
               <label className="flex items-center gap-2 text-[9px]">
@@ -2740,9 +1967,13 @@ const Catering = () => {
                             ))}
                           </ul>
 
-                          {/* View Details Button */}
+                          {/* View Details Button - UPDATED WITH onClick */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm"
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2829,9 +2060,12 @@ const Catering = () => {
                             ))}
                           </ul>
 
-                          {/* View Details Button in Right Bottom Corner */}
+                          {/* View Details Button in Right Bottom Corner - UPDATED WITH onClick */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -3094,6 +2328,17 @@ const Catering = () => {
           </div>
         </div>
       )}
+
+      {/* ADD THE VENDORDETAILS COMPONENT AT THE END */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="catering"
+      />
     </div>
   );
 };

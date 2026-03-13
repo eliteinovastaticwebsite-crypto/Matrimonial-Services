@@ -12,37 +12,55 @@ import hallbanner1 from '../assets/luxuryhall.jpg';
 import hallbanner2 from '../assets/achall.jpg';
 // Add a matrimony banner image
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
+import VendorDetails from '../Components/VendorDetails'; // ADD THIS IMPORT
+import { weddingHallsVendors } from '../data/weddingHallsData'; // ADD THIS IMPORT
 
 const WeddingHalls = () => {
   const navigate = useNavigate();
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  
+  // NEW FILTER STATES - Updated to match form
+  const [selectedVenueTypes, setSelectedVenueTypes] = useState([]);   // replaces selectedEvent for venue type
   const [minBudget, setMinBudget] = useState('');
   const [maxBudget, setMaxBudget] = useState('');
-  const [selectedEvent, setSelectedEvent] = useState('');
   const [selectedState, setSelectedState] = useState('');
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   
-  // New filter states from the form
-  const [minSeatingCapacity, setMinSeatingCapacity] = useState('');
-  const [maxSeatingCapacity, setMaxSeatingCapacity] = useState('');
-  const [parkingFilter, setParkingFilter] = useState('');
+  // Capacity & Facilities - Updated to text inputs
+  const [seatingCapacity, setSeatingCapacity] = useState('');
+  const [parkingCapacity, setParkingCapacity] = useState('');
+  const [numberOfFloors, setNumberOfFloors] = useState('');
+  const [diningCapacity, setDiningCapacity] = useState('');
   const [selectedFacilities, setSelectedFacilities] = useState([]);
-  const [floorsFilter, setFloorsFilter] = useState('');
-  const [selectedEvents, setSelectedEvents] = useState([]);
-  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
-  const [selectedCatering, setSelectedCatering] = useState([]);
-  const [selectedDecoration, setSelectedDecoration] = useState('');
-  const [soundAllowed, setSoundAllowed] = useState(false);
-  const [alcoholAllowed, setAlcoholAllowed] = useState(false);
+  
+  // Rooms & Accommodation
   const [roomsFilter, setRoomsFilter] = useState('');
   const [roomTypeFilter, setRoomTypeFilter] = useState('');
+  
+  // Events & Time Slots
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
+  
+  // Catering & Policy
+  const [inhouseCateringFilter, setInhouseCateringFilter] = useState('');
+  const [outsideCateringFilter, setOutsideCateringFilter] = useState('');
+  const [selectedDecoration, setSelectedDecoration] = useState('');
+  const [soundFilter, setSoundFilter] = useState('');
+  const [alcoholFilter, setAlcoholFilter] = useState('');
   
   // Filter navigation
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // ADD THESE STATES FOR VENDOR DETAILS
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
+
+  // USE THE IMPORTED VENDORS DATA
+  const vendors = weddingHallsVendors;
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -161,7 +179,7 @@ const WeddingHalls = () => {
   };
 
   const handleCategoryClick = (categoryName) => {
-    setSelectedEvent(categoryName);
+    setSelectedVenueTypes([categoryName]);
     
     if (window.innerWidth < 1024) {
       setTimeout(() => {
@@ -173,7 +191,13 @@ const WeddingHalls = () => {
     }
   };
 
-  // Handler functions for new filters
+  // NEW HANDLER FUNCTIONS
+  const handleVenueTypeToggle = (type) => {
+    setSelectedVenueTypes(prev =>
+      prev.includes(type) ? prev.filter(t => t !== type) : [...prev, type]
+    );
+  };
+
   const handleFacilityToggle = (facility) => {
     setSelectedFacilities(prev => {
       if (prev.includes(facility)) {
@@ -204,765 +228,146 @@ const WeddingHalls = () => {
     });
   };
 
-  const handleCateringToggle = (option) => {
-    setSelectedCatering(prev => {
-      if (prev.includes(option)) {
-        return prev.filter(o => o !== option);
-      } else {
-        return [...prev, option];
-      }
-    });
+  // ADD THIS FUNCTION TO HANDLE VIEW DETAILS
+  const handleViewDetails = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
   };
 
-  // Sample vendor data - enhanced with form fields
-  const vendors = [
-    // AC Wedding Halls Vendors
-    {
-      id: 1,
-      name: 'Royal AC Palace',
-      businessName: 'Royal AC Wedding Palace',
-      businessCategory: 'AC Wedding Halls',
-      eventType: 'AC Wedding Halls',
-      venueType: 'Wedding Hall',
-      personName: 'Rajesh Kumar',
-      designation: 'Venue Manager',
-      description: 'Premium air-conditioned wedding hall with state-of-the-art facilities and luxurious interiors.',
-      services: ['Central AC', 'Stage Setup', 'Parking Space', 'Changing Rooms', 'Generator Backup', 'Sound System'],
-      logo: achall,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹2,00,000 per event',
-      capacity: '500',
-      amenities: ['AC Hall', 'Generator Backup', 'Power Backup', 'CCTV', 'Fire Safety', 'RO Water'],
-      established: 2010,
-      hallSize: '5000 sq.ft',
-      parkingCapacity: '50',
-      numberOfFloors: '2',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['In-house Catering Available'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '10',
-      roomType: 'AC'
-    },
-    {
-      id: 2,
-      name: 'Grand AC Venue',
-      businessName: 'Grand AC Wedding Venue',
-      businessCategory: 'AC Wedding Halls',
-      eventType: 'AC Wedding Halls',
-      venueType: 'Convention Center',
-      personName: 'Priya Sharma',
-      designation: 'Event Coordinator',
-      description: 'Spacious AC hall with modern amenities and excellent service staff.',
-      services: ['Fully Air Conditioned', 'LED Lighting', 'Sound System', 'Kitchen Facilities', 'Decoration Support', 'Valet Parking'],
-      logo: achall,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹75,000 - ₹3,00,000 per event',
-      capacity: '800',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Wheelchair Access', 'Green Rooms (Bridal/Groom)', 'CCTV'],
-      established: 2015,
-      hallSize: '7500 sq.ft',
-      parkingCapacity: '100',
-      numberOfFloors: '3',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      timeSlots: ['Morning', 'Evening', 'Full Day', 'Night'],
-      catering: ['In-house Catering Available', 'Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '15',
-      roomType: 'AC'
-    },
-    // Non AC Wedding Halls Vendors
-    {
-      id: 3,
-      name: 'Traditional Garden Hall',
-      businessName: 'Traditional Garden Wedding Hall',
-      businessCategory: 'Non AC Wedding Halls',
-      eventType: 'Non AC Wedding Halls',
-      venueType: 'Open Lawn',
-      personName: 'Arun Mehta',
-      designation: 'Hall Manager',
-      description: 'Traditional non-AC hall with natural ventilation and beautiful garden setting.',
-      services: ['Natural Ventilation', 'Garden Area', 'Traditional Décor', 'Catering Space', 'Outdoor Seating', 'Fountain Area'],
-      logo: nonachall,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹25,000 - ₹1,50,000 per event',
-      capacity: '250',
-      amenities: ['Non-AC Hall', 'Parking Available', 'Decoration Services', 'Outdoor Space', 'RO Water'],
-      established: 2008,
-      hallSize: '4000 sq.ft',
-      parkingCapacity: '30',
-      numberOfFloors: '1',
-      eventsAllowed: ['Marriage', 'Engagement', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '5',
-      roomType: 'Non-AC'
-    },
-    {
-      id: 4,
-      name: 'Heritage Wedding Hall',
-      businessName: 'Heritage Non AC Wedding Hall',
-      businessCategory: 'Non AC Wedding Halls',
-      eventType: 'Non AC Wedding Halls',
-      venueType: 'Mandapam',
-      personName: 'Sneha Reddy',
-      designation: 'Event Manager',
-      description: 'Heritage style wedding hall with traditional architecture and large capacity.',
-      services: ['Traditional Architecture', 'Large Capacity', 'Natural Lighting', 'Multiple Halls', 'Prayer Room', 'Courtyard'],
-      logo: nonachall,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000 per event',
-      capacity: '400',
-      amenities: ['Non-AC Hall', 'Parking Available', 'Bridal Room', 'Decoration Services', 'Fire Safety'],
-      established: 2005,
-      hallSize: '6000 sq.ft',
-      parkingCapacity: '40',
-      numberOfFloors: '2',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Seemantham'],
-      timeSlots: ['Morning', 'Evening'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '8',
-      roomType: 'Non-AC'
-    },
-    // Luxury Wedding Halls Vendors
-    {
-      id: 5,
-      name: 'Luxury Palace',
-      businessName: 'Luxury Wedding Palace',
-      businessCategory: 'Luxury Wedding Halls',
-      eventType: 'Luxury Wedding Halls',
-      venueType: 'Banquet Hall',
-      personName: 'Vikram Singh',
-      designation: 'Luxury Services Director',
-      description: 'Ultra-luxurious wedding venue with premium amenities and five-star services. Every detail is crafted for royalty.',
-      services: ['VIP Lounges', 'Premium Catering', 'Valet Parking', 'Bridal Suite', 'Professional Event Planning', 'Poolside Venue'],
-      logo: luxuryhall,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹1,50,000 - ₹5,00,000 per event',
-      capacity: '1000',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Wheelchair Access', 'Green Rooms (Bridal/Groom)', 'Power Backup', 'CCTV', 'Fire Safety', 'RO Water'],
-      established: 2018,
-      hallSize: '10000 sq.ft',
-      parkingCapacity: '150',
-      numberOfFloors: '4',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Sangeet / Mehendi', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening', 'Full Day', 'Night'],
-      catering: ['In-house Catering Available', 'Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '20',
-      roomType: 'AC'
-    },
-    {
-      id: 6,
-      name: 'Elite Banquet',
-      businessName: 'Elite Luxury Banquet Hall',
-      businessCategory: 'Luxury Wedding Halls',
-      eventType: 'Luxury Wedding Halls',
-      venueType: 'Banquet Hall',
-      personName: 'Anjali Nair',
-      designation: 'Luxury Venue Manager',
-      description: 'Exclusive luxury venue with custom-designed interiors and premium facilities. Where memories become treasures.',
-      services: ['Custom Interiors', 'Premium Sound System', 'Luxury Décor', 'Private Garden', 'Concierge Service', 'Champagne Bar'],
-      logo: luxuryhall,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹2,00,000 - ₹6,00,000 per event',
-      capacity: '500',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Green Rooms (Bridal/Groom)', 'Power Backup', 'CCTV', 'Fire Safety'],
-      established: 2019,
-      hallSize: '8000 sq.ft',
-      parkingCapacity: '80',
-      numberOfFloors: '3',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['In-house Catering Available'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '12',
-      roomType: 'AC'
-    },
-    // Mini Wedding Halls Vendors
-    {
-      id: 7,
-      name: 'Cozy Celebrations',
-      businessName: 'Cozy Mini Wedding Hall',
-      businessCategory: 'Mini Wedding Halls',
-      eventType: 'Mini Wedding Halls',
-      venueType: 'Wedding Hall',
-      personName: 'Rahul Verma',
-      designation: 'Small Events Manager',
-      description: 'Perfect for intimate weddings with cozy atmosphere and personalized service. Your special day, perfectly sized.',
-      services: ['Intimate Setting', 'Personalized Service', 'Cost-Effective', 'Quick Setup', 'Home-like Feel', 'Custom Menus'],
-      logo: minihall,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹15,000 - ₹80,000 per event',
-      capacity: '100',
-      amenities: ['AC Hall', 'Parking Available', 'Decoration Services', 'Sound System', 'RO Water'],
-      established: 2016,
-      hallSize: '2000 sq.ft',
-      parkingCapacity: '20',
-      numberOfFloors: '1',
-      eventsAllowed: ['Marriage', 'Engagement', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'In-house Decoration Only',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '3',
-      roomType: 'AC'
-    },
-    {
-      id: 8,
-      name: 'Family Venue',
-      businessName: 'Family Mini Wedding Venue',
-      businessCategory: 'Mini Wedding Halls',
-      eventType: 'Mini Wedding Halls',
-      venueType: 'Mandapam',
-      personName: 'Meera Patel',
-      designation: 'Family Events Coordinator',
-      description: 'Small wedding hall perfect for family gatherings and intimate ceremonies. Where close-knit celebrations happen.',
-      services: ['Family Gatherings', 'Simple Decorations', 'Basic Facilities', 'Affordable Packages', 'Flexible Timings', 'Homely Atmosphere'],
-      logo: minihall,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹10,000 - ₹50,000 per event',
-      capacity: '80',
-      amenities: ['Non-AC Hall', 'Parking Available', 'Decoration Services', 'Fire Safety'],
-      established: 2014,
-      hallSize: '1500 sq.ft',
-      parkingCapacity: '15',
-      numberOfFloors: '1',
-      eventsAllowed: ['Marriage', 'Engagement'],
-      timeSlots: ['Morning'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '2',
-      roomType: 'Non-AC'
-    },
-    // Event Halls Vendors
-    {
-      id: 9,
-      name: 'Multi-Purpose Hall',
-      businessName: 'Multi-Purpose Event Hall',
-      businessCategory: 'Event Halls',
-      eventType: 'Event Halls',
-      venueType: 'Convention Center',
-      personName: 'Aisha Khan',
-      designation: 'Event Hall Manager',
-      description: 'Versatile event hall suitable for weddings, corporate events, and celebrations. Adaptable space for any occasion.',
-      services: ['Multi-Purpose Use', 'Flexible Layout', 'Modern Equipment', 'Catering Kitchen', 'Storage Space', 'Breakout Rooms'],
-      logo: eventhall,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹50,000 - ₹2,50,000 per event',
-      capacity: '500',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Wheelchair Access', 'Power Backup', 'CCTV', 'Fire Safety', 'RO Water'],
-      established: 2017,
-      hallSize: '5500 sq.ft',
-      parkingCapacity: '60',
-      numberOfFloors: '2',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['In-house Catering Available', 'Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '6',
-      roomType: 'AC'
-    },
-    {
-      id: 10,
-      name: 'City Events Center',
-      businessName: 'City Events Center Hall',
-      businessCategory: 'Event Halls',
-      eventType: 'Event Halls',
-      venueType: 'Convention Center',
-      personName: 'Kabir Malhotra',
-      designation: 'Events Director',
-      description: 'Central location event hall with modern amenities and professional event support. Convenience meets elegance.',
-      services: ['Central Location', 'Professional Staff', 'Technical Support', 'Catering Services', 'Parking Facility', 'AV Equipment'],
-      logo: eventhall,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹40,000 - ₹3,00,000 per event',
-      capacity: '800',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Green Rooms (Bridal/Groom)', 'Power Backup', 'CCTV', 'Fire Safety'],
-      established: 2013,
-      hallSize: '9000 sq.ft',
-      parkingCapacity: '100',
-      numberOfFloors: '3',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      timeSlots: ['Morning', 'Evening', 'Full Day', 'Night'],
-      catering: ['In-house Catering Available'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '10',
-      roomType: 'AC'
-    },
-    // Convention & Banquet Halls Vendors
-    {
-      id: 11,
-      name: 'Grand Convention',
-      businessName: 'Grand Convention Center',
-      businessCategory: 'Convention & Banquet Halls',
-      eventType: 'Convention & Banquet Halls',
-      venueType: 'Convention Center',
-      personName: 'Sanjay Gupta',
-      designation: 'Convention Manager',
-      description: 'Large convention hall suitable for big weddings and grand celebrations. Where grand visions come to life.',
-      services: ['Large Capacity', 'Multiple Halls', 'Professional Setup', 'Technical Support', 'Hospitality Services', 'Exhibition Space'],
-      logo: conventionhall,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹75,000 - ₹4,00,000 per event',
-      capacity: '1500',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Wheelchair Access', 'Green Rooms (Bridal/Groom)', 'Power Backup', 'CCTV', 'Fire Safety', 'RO Water'],
-      established: 2011,
-      hallSize: '15000 sq.ft',
-      parkingCapacity: '200',
-      numberOfFloors: '4',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Sangeet / Mehendi', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening', 'Full Day', 'Night'],
-      catering: ['In-house Catering Available', 'Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '25',
-      roomType: 'AC'
-    },
-    {
-      id: 12,
-      name: 'Banquet Excellence',
-      businessName: 'Banquet Excellence Hall',
-      businessCategory: 'Convention & Banquet Halls',
-      eventType: 'Convention & Banquet Halls',
-      venueType: 'Banquet Hall',
-      personName: 'Neha Joshi',
-      designation: 'Banquet Manager',
-      description: 'Premium banquet hall with professional event management services. Excellence in every detail.',
-      services: ['Banquet Services', 'Event Planning', 'Catering Coordination', 'Decoration Services', 'Guest Management', 'Lighting Design'],
-      logo: conventionhall,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹80,000 - ₹3,50,000 per event',
-      capacity: '1000',
-      amenities: ['AC Hall', 'Generator Backup', 'Lift', 'Green Rooms (Bridal/Groom)', 'Power Backup', 'CCTV', 'Fire Safety'],
-      established: 2016,
-      hallSize: '12000 sq.ft',
-      parkingCapacity: '150',
-      numberOfFloors: '3',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['In-house Catering Available'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '18',
-      roomType: 'AC'
-    },
-    // Party & Reception Halls Vendors
-    {
-      id: 13,
-      name: 'Celebration Hall',
-      businessName: 'Celebration Party Hall',
-      businessCategory: 'Party & Reception Halls',
-      eventType: 'Party & Reception Halls',
-      venueType: 'Banquet Hall',
-      personName: 'Venkatesh Iyer',
-      designation: 'Party Hall Manager',
-      description: 'Perfect venue for wedding receptions and party celebrations. Let the celebrations begin!',
-      services: ['Reception Setup', 'Dance Floor', 'Party Lighting', 'DJ Booth', 'Bar Setup', 'Photo Booth'],
-      logo: partyhall,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹35,000 - ₹2,00,000 per event',
-      capacity: '250',
-      amenities: ['AC Hall', 'Generator Backup', 'Sound System', 'Decoration Services', 'CCTV', 'Fire Safety'],
-      established: 2018,
-      hallSize: '3000 sq.ft',
-      parkingCapacity: '40',
-      numberOfFloors: '1',
-      eventsAllowed: ['Reception', 'Engagement', 'Sangeet / Mehendi'],
-      timeSlots: ['Evening', 'Night'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '4',
-      roomType: 'AC'
-    },
-    {
-      id: 14,
-      name: 'Reception Palace',
-      businessName: 'Reception Palace Hall',
-      businessCategory: 'Party & Reception Halls',
-      eventType: 'Party & Reception Halls',
-      venueType: 'Banquet Hall',
-      personName: 'Radha Krishnan',
-      designation: 'Reception Coordinator',
-      description: 'Specialized reception hall with party atmosphere and celebration setup. Where every reception is memorable.',
-      services: ['Themed Decorations', 'Sound & Lighting', 'Food Counters', 'Seating Arrangements', 'Entertainment Setup', 'Cocktail Area'],
-      logo: partyhall,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹40,000 - ₹2,50,000 per event',
-      capacity: '200',
-      amenities: ['AC Hall', 'Generator Backup', 'Sound System', 'Decoration Services', 'Bridal Room', 'RO Water'],
-      established: 2017,
-      hallSize: '3500 sq.ft',
-      parkingCapacity: '35',
-      numberOfFloors: '1',
-      eventsAllowed: ['Reception', 'Engagement'],
-      timeSlots: ['Evening', 'Night'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'In-house Decoration Only',
-      soundAllowed: true,
-      alcoholAllowed: false,
-      roomsAvailable: '3',
-      roomType: 'AC'
-    },
-    // Outdoor / Open-Air Venues Vendors
-    {
-      id: 15,
-      name: 'Garden Paradise',
-      businessName: 'Garden Paradise Open-Air Venue',
-      businessCategory: 'Outdoor / Open-Air Venues',
-      eventType: 'Outdoor / Open-Air Venues',
-      venueType: 'Open Lawn',
-      personName: 'Pooja Mehta',
-      designation: 'Outdoor Venue Manager',
-      description: 'Beautiful garden venue for outdoor weddings and open-air celebrations.',
-      services: ['Garden Setting', 'Outdoor Seating', 'Natural Backdrop', 'Weather Contingency', 'Garden Decor', 'Water Feature'],
-      logo: outdoorvenue,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹60,000 - ₹3,00,000 per event',
-      capacity: '400',
-      amenities: ['Non-AC Hall', 'Parking Available', 'Outdoor Space', 'Decoration Services', 'Generator Backup', 'RO Water'],
-      established: 2019,
-      hallSize: '8000 sq.ft',
-      parkingCapacity: '60',
-      numberOfFloors: '1',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement', 'Other Functions'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '2',
-      roomType: 'Non-AC'
-    },
-    {
-      id: 16,
-      name: 'Open Sky Venue',
-      businessName: 'Open Sky Wedding Venue',
-      businessCategory: 'Outdoor / Open-Air Venues',
-      eventType: 'Outdoor / Open-Air Venues',
-      venueType: 'Open Lawn',
-      personName: 'David Wilson',
-      designation: 'Outdoor Events Director',
-      description: 'Stunning open-air venue with panoramic views and natural surroundings. Celebrate under the open sky.',
-      services: ['Panoramic Views', 'Natural Lighting', 'Outdoor Stage', 'Tent Setup', 'Landscaped Gardens', 'Sunset Point'],
-      logo: outdoorvenue,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹70,000 - ₹3,50,000 per event',
-      capacity: '450',
-      amenities: ['Non-AC Hall', 'Parking Available', 'Outdoor Space', 'Decoration Services', 'Generator Backup', 'Bridal Room', 'Fire Safety'],
-      established: 2020,
-      hallSize: '10000 sq.ft',
-      parkingCapacity: '80',
-      numberOfFloors: '1',
-      eventsAllowed: ['Marriage', 'Reception', 'Engagement'],
-      timeSlots: ['Morning', 'Evening', 'Full Day'],
-      catering: ['Outside Catering Allowed'],
-      decoration: 'Outside Decoration Allowed',
-      soundAllowed: true,
-      alcoholAllowed: true,
-      roomsAvailable: '4',
-      roomType: 'Non-AC'
-    }
-  ];
-
-  // Desktop Filter Pages - Updated to match form
+  // ─────────────────────────────────────────────────────────────
+  //  DESKTOP filterPages
+  // ─────────────────────────────────────────────────────────────
   const filterPages = [
+    // PAGE 1 ── Venue Type & Budget  (Form Step 1)
     {
-      title: "Venue Type & Capacity",
+      title: "Venue Type & Budget",
       content: (
         <div className="space-y-3">
+          {/* Type of Venue */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Venue Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Venue Types</option>
-              {venueTypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Venue</label>
+            <div className="space-y-1.5">
+              {venueTypes.map(type => (
+                <label key={type} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedVenueTypes.includes(type)}
+                    onChange={() => handleVenueTypeToggle(type)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{type}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
 
+          {/* Budget Range */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Capacity (Guests)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="grid grid-cols-2 gap-2">
               <input
                 type="number"
-                placeholder="Min Seating"
-                value={minSeatingCapacity}
-                onChange={(e) => setMinSeatingCapacity(e.target.value)}
-                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-              />
-              <input
-                type="number"
-                placeholder="Max Seating"
-                value={maxSeatingCapacity}
-                onChange={(e) => setMaxSeatingCapacity(e.target.value)}
-                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Parking Capacity</label>
-            <select
-              value={parkingFilter}
-              onChange={(e) => setParkingFilter(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">Any Parking</option>
-              <option value="upto20">Up to 20 vehicles</option>
-              <option value="21to50">21-50 vehicles</option>
-              <option value="51to100">51-100 vehicles</option>
-              <option value="100plus">100+ vehicles</option>
-            </select>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Location & Budget",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All States</option>
-              {states.map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100 disabled:text-gray-500"
-            >
-              <option value="">All Districts</option>
-              {selectedState && districts[selectedState]?.map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹ per event)</label>
-            <div className="flex gap-2">
-              <input
-                type="number"
-                placeholder="Min"
+                placeholder="Min Budget"
                 value={minBudget}
                 onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
               <input
                 type="number"
-                placeholder="Max"
+                placeholder="Max Budget"
                 value={maxBudget}
                 onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
             </div>
           </div>
         </div>
       )
     },
+
+    // PAGE 2 ── Capacity & Facilities  (Form Step 4) - UPDATED
     {
-      title: "Facilities",
+      title: "Capacity & Facilities",
       content: (
         <div className="space-y-3">
+          {/* Seating Capacity */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Available Facilities</label>
-            <div className="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {facilityOptions.map(facility => (
-                <label key={facility} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedFacilities.includes(facility)}
-                    onChange={() => handleFacilityToggle(facility)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{facility}</span>
-                </label>
-              ))}
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Seating Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter seating capacity"
+              value={seatingCapacity}
+              onChange={(e) => setSeatingCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
 
+          {/* Parking Capacity */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Parking Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter parking capacity"
+              value={parkingCapacity}
+              onChange={(e) => setParkingCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          {/* Number of Floors */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Number of Floors</label>
-            <select
-              value={floorsFilter}
-              onChange={(e) => setFloorsFilter(e.target.value)}
+            <input
+              type="text"
+              placeholder="Enter number of floors"
+              value={numberOfFloors}
+              onChange={(e) => setNumberOfFloors(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">Any</option>
-              <option value="1">Single Floor</option>
-              <option value="2">2 Floors</option>
-              <option value="3">3 Floors</option>
-              <option value="4+">4+ Floors</option>
-            </select>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Services & Policies",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Events Allowed</label>
-            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {eventTypeOptions.map(event => (
-                <label key={event} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedEvents.includes(event)}
-                    onChange={() => handleEventToggle(event)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{event}</span>
-                </label>
-              ))}
-            </div>
+            />
           </div>
 
+          {/* Dining Capacity */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Time Slots</label>
-            <div className="grid grid-cols-2 gap-1.5">
-              {timeSlots.map(slot => (
-                <label key={slot} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedTimeSlots.includes(slot)}
-                    onChange={() => handleTimeSlotToggle(slot)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span>{slot}</span>
-                </label>
-              ))}
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Dining Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter dining capacity"
+              value={diningCapacity}
+              onChange={(e) => setDiningCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
 
+          {/* Facilities Available */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Catering Options</label>
-            <div className="space-y-1.5">
-              {cateringOptions.map(option => (
-                <label key={option} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedCatering.includes(option)}
-                    onChange={() => handleCateringToggle(option)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span>{option}</span>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Facilities Available</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-44 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {facilityOptions.map(facility => (
+                <label key={facility} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedFacilities.includes(facility)}
+                    onChange={() => handleFacilityToggle(facility)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{facility}</span>
                 </label>
               ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Decoration</label>
-            <div className="space-y-1.5">
-              {decorationOptions.map(option => (
-                <label key={option} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="radio" 
-                    name="decorationFilter"
-                    value={option}
-                    checked={selectedDecoration === option}
-                    onChange={(e) => setSelectedDecoration(e.target.value)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span>{option}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Additional Policies</label>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="checkbox" 
-                  checked={soundAllowed}
-                  onChange={(e) => setSoundAllowed(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Sound/DJ Allowed
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="checkbox" 
-                  checked={alcoholAllowed}
-                  onChange={(e) => setAlcoholAllowed(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Alcohol Allowed
-              </label>
             </div>
           </div>
         </div>
       )
     },
+
+    // PAGE 3 ── Rooms & Accommodation  (Form Step 5)
     {
       title: "Rooms & Accommodation",
       content: (
         <div className="space-y-3">
+          {/* Number of Rooms */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Rooms Available</label>
             <select
@@ -970,299 +375,354 @@ const WeddingHalls = () => {
               onChange={(e) => setRoomsFilter(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             >
-              <option value="">Any Rooms</option>
-              <option value="1-5">1-5 Rooms</option>
-              <option value="6-10">6-10 Rooms</option>
-              <option value="11-20">11-20 Rooms</option>
+              <option value="">Any</option>
+              <option value="1-5">1–5 Rooms</option>
+              <option value="6-10">6–10 Rooms</option>
+              <option value="11-20">11–20 Rooms</option>
               <option value="20+">20+ Rooms</option>
             </select>
           </div>
 
+          {/* Room Type */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Room Type</label>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
+                <input
+                  type="radio"
                   name="roomTypeFilter"
                   value="AC"
                   checked={roomTypeFilter === "AC"}
                   onChange={(e) => setRoomTypeFilter(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
                 AC
               </label>
               <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
+                <input
+                  type="radio"
                   name="roomTypeFilter"
                   value="Non-AC"
                   checked={roomTypeFilter === "Non-AC"}
                   onChange={(e) => setRoomTypeFilter(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
                 Non-AC
               </label>
             </div>
           </div>
         </div>
       )
-    }
-  ];
-
-  // UPDATED Mobile Filter Pages - Now matching desktop with all 5 pages
-  const mobileFilterPages = [
-    {
-      title: "Venue Type & Capacity",
-      content: (
-        <div className="space-y-2">
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Venue Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Venue Types</option>
-              {venueTypes.map((type) => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Capacity (Guests)</label>
-            <div className="grid grid-cols-2 gap-1">
-              <input
-                type="number"
-                placeholder="Min"
-                value={minSeatingCapacity}
-                onChange={(e) => setMinSeatingCapacity(e.target.value)}
-                className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxSeatingCapacity}
-                onChange={(e) => setMaxSeatingCapacity(e.target.value)}
-                className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Parking Capacity</label>
-            <select
-              value={parkingFilter}
-              onChange={(e) => setParkingFilter(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
-            >
-              <option value="">Any Parking</option>
-              <option value="upto20">Up to 20 vehicles</option>
-              <option value="21to50">21-50 vehicles</option>
-              <option value="51to100">51-100 vehicles</option>
-              <option value="100plus">100+ vehicles</option>
-            </select>
-          </div>
-        </div>
-      )
     },
-    {
-      title: "Location & Budget",
-      content: (
-        <div className="space-y-2">
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
-            >
-              <option value="">All States</option>
-              {states.map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
 
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded disabled:bg-gray-100"
-            >
-              <option value="">All Districts</option>
-              {selectedState && districts[selectedState]?.map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Budget Range (₹)</label>
-            <div className="flex gap-1">
-              <input
-                type="number"
-                placeholder="Min"
-                value={minBudget}
-                onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded"
-              />
-            </div>
-          </div>
-        </div>
-      )
-    },
+    // PAGE 4 ── Events & Time Slots  (Form Step 6)
     {
-      title: "Facilities",
+      title: "Events & Time Slots",
       content: (
-        <div className="space-y-2">
+        <div className="space-y-3">
+          {/* Events Allowed */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Available Facilities</label>
-            <div className="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto p-1 border border-red-100 rounded">
-              {facilityOptions.map(facility => (
-                <label key={facility} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedFacilities.includes(facility)}
-                    onChange={() => handleFacilityToggle(facility)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span>{facility}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Number of Floors</label>
-            <select
-              value={floorsFilter}
-              onChange={(e) => setFloorsFilter(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
-            >
-              <option value="">Any</option>
-              <option value="1">Single Floor</option>
-              <option value="2">2 Floors</option>
-              <option value="3">3 Floors</option>
-              <option value="4+">4+ Floors</option>
-            </select>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Services & Policies",
-      content: (
-        <div className="space-y-2">
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Events Allowed</label>
-            <div className="grid grid-cols-1 gap-1 max-h-32 overflow-y-auto p-1 border border-red-100 rounded">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Events Allowed</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto p-1 border border-red-100 rounded-md">
               {eventTypeOptions.map(event => (
                 <label key={event} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     checked={selectedEvents.includes(event)}
                     onChange={() => handleEventToggle(event)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span>{event}</span>
                 </label>
               ))}
             </div>
           </div>
 
+          {/* Time Slots */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Time Slots</label>
-            <div className="grid grid-cols-2 gap-1">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Time Slots Available</label>
+            <div className="grid grid-cols-2 gap-1.5">
               {timeSlots.map(slot => (
-                <label key={slot} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={slot} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedTimeSlots.includes(slot)}
                     onChange={() => handleTimeSlotToggle(slot)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span>{slot}</span>
                 </label>
               ))}
             </div>
           </div>
+        </div>
+      )
+    },
 
+    // PAGE 5 ── Catering & Policy  (Form Step 8)
+    {
+      title: "Catering & Policy",
+      content: (
+        <div className="space-y-3">
+          {/* In-house Catering */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Catering Options</label>
-            <div className="space-y-1">
-              {cateringOptions.map(option => (
-                <label key={option} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedCatering.includes(option)}
-                    onChange={() => handleCateringToggle(option)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span>{option}</span>
-                </label>
-              ))}
+            <label className="block text-xs font-bold text-gray-700 mb-1">In-house Catering</label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="inhouseCateringFilter"
+                  value="yes"
+                  checked={inhouseCateringFilter === "yes"}
+                  onChange={(e) => setInhouseCateringFilter(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="inhouseCateringFilter"
+                  value="no"
+                  checked={inhouseCateringFilter === "no"}
+                  onChange={(e) => setInhouseCateringFilter(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                No
+              </label>
             </div>
           </div>
 
+          {/* Outside Catering */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Decoration</label>
-            <div className="space-y-1">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Outside Catering Allowed</label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="outsideCateringFilter"
+                  value="yes"
+                  checked={outsideCateringFilter === "yes"}
+                  onChange={(e) => setOutsideCateringFilter(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="outsideCateringFilter"
+                  value="no"
+                  checked={outsideCateringFilter === "no"}
+                  onChange={(e) => setOutsideCateringFilter(e.target.value)}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Decoration */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Decoration Allowed</label>
+            <div className="space-y-1.5">
               {decorationOptions.map(option => (
                 <label key={option} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="radio" 
-                    name="decorationFilterMobile"
+                  <input
+                    type="radio"
+                    name="decorationFilter"
                     value={option}
                     checked={selectedDecoration === option}
                     onChange={(e) => setSelectedDecoration(e.target.value)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span>{option}</span>
                 </label>
               ))}
             </div>
           </div>
 
+          {/* Sound / DJ */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Additional Policies</label>
-            <div className="space-y-1">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Sound / DJ Allowed</label>
+            <div className="flex gap-4">
               <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="checkbox" 
-                  checked={soundAllowed}
-                  onChange={(e) => setSoundAllowed(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Sound/DJ Allowed
+                <input
+                  type="radio"
+                  name="soundFilter"
+                  value="yes"
+                  checked={soundFilter === "yes"}
+                  onChange={() => setSoundFilter("yes")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                Yes
               </label>
               <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="checkbox" 
-                  checked={alcoholAllowed}
-                  onChange={(e) => setAlcoholAllowed(e.target.checked)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Alcohol Allowed
+                <input
+                  type="radio"
+                  name="soundFilter"
+                  value="no"
+                  checked={soundFilter === "no"}
+                  onChange={() => setSoundFilter("no")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Alcohol */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Alcohol Allowed</label>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="alcoholFilter"
+                  value="yes"
+                  checked={alcoholFilter === "yes"}
+                  onChange={() => setAlcoholFilter("yes")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-2 text-xs">
+                <input
+                  type="radio"
+                  name="alcoholFilter"
+                  value="no"
+                  checked={alcoholFilter === "no"}
+                  onChange={() => setAlcoholFilter("no")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
+                No
               </label>
             </div>
           </div>
         </div>
       )
     },
+  ];
+
+  // ─────────────────────────────────────────────────────────────
+  //  MOBILE mobileFilterPages - UPDATED
+  // ─────────────────────────────────────────────────────────────
+  const mobileFilterPages = [
+    // PAGE 1 ── Venue Type & Budget
+    {
+      title: "Venue Type & Budget",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Type of Venue</label>
+            <div className="grid grid-cols-2 gap-1">
+              {venueTypes.map(type => (
+                <label key={type} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedVenueTypes.includes(type)}
+                    onChange={() => handleVenueTypeToggle(type)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
+            <div className="grid grid-cols-2 gap-1">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 2 ── Capacity & Facilities - UPDATED
+    {
+      title: "Capacity & Facilities",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Seating Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter seating capacity"
+              value={seatingCapacity}
+              onChange={(e) => setSeatingCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Parking Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter parking capacity"
+              value={parkingCapacity}
+              onChange={(e) => setParkingCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Number of Floors</label>
+            <input
+              type="text"
+              placeholder="Enter number of floors"
+              value={numberOfFloors}
+              onChange={(e) => setNumberOfFloors(e.target.value)}
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Dining Capacity</label>
+            <input
+              type="text"
+              placeholder="Enter dining capacity"
+              value={diningCapacity}
+              onChange={(e) => setDiningCapacity(e.target.value)}
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Facilities Available</label>
+            <div className="grid grid-cols-1 gap-1 max-h-36 overflow-y-auto p-1 border border-red-100 rounded">
+              {facilityOptions.map(facility => (
+                <label key={facility} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedFacilities.includes(facility)}
+                    onChange={() => handleFacilityToggle(facility)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{facility}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 3 ── Rooms & Accommodation
     {
       title: "Rooms & Accommodation",
       content: (
@@ -1274,50 +734,156 @@ const WeddingHalls = () => {
               onChange={(e) => setRoomsFilter(e.target.value)}
               className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
             >
-              <option value="">Any Rooms</option>
-              <option value="1-5">1-5 Rooms</option>
-              <option value="6-10">6-10 Rooms</option>
-              <option value="11-20">11-20 Rooms</option>
+              <option value="">Any</option>
+              <option value="1-5">1–5 Rooms</option>
+              <option value="6-10">6–10 Rooms</option>
+              <option value="11-20">11–20 Rooms</option>
               <option value="20+">20+ Rooms</option>
             </select>
           </div>
 
           <div>
             <label className="block text-[10px] font-bold text-gray-700 mb-1">Room Type</label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="roomTypeFilterMobile"
-                  value="AC"
-                  checked={roomTypeFilter === "AC"}
-                  onChange={(e) => setRoomTypeFilter(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="roomTypeFilterM" value="AC" checked={roomTypeFilter === "AC"} onChange={() => setRoomTypeFilter("AC")} className="w-3.5 h-3.5 accent-red-600" />
                 AC
               </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="roomTypeFilterMobile"
-                  value="Non-AC"
-                  checked={roomTypeFilter === "Non-AC"}
-                  onChange={(e) => setRoomTypeFilter(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="roomTypeFilterM" value="Non-AC" checked={roomTypeFilter === "Non-AC"} onChange={() => setRoomTypeFilter("Non-AC")} className="w-3.5 h-3.5 accent-red-600" />
                 Non-AC
               </label>
             </div>
           </div>
         </div>
       )
-    }
+    },
+
+    // PAGE 4 ── Events & Time Slots
+    {
+      title: "Events & Time Slots",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Events Allowed</label>
+            <div className="grid grid-cols-1 gap-1 max-h-32 overflow-y-auto p-1 border border-red-100 rounded">
+              {eventTypeOptions.map(event => (
+                <label key={event} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedEvents.includes(event)}
+                    onChange={() => handleEventToggle(event)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{event}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Time Slots Available</label>
+            <div className="grid grid-cols-2 gap-1">
+              {timeSlots.map(slot => (
+                <label key={slot} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedTimeSlots.includes(slot)}
+                    onChange={() => handleTimeSlotToggle(slot)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{slot}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 5 ── Catering & Policy
+    {
+      title: "Catering & Policy",
+      content: (
+        <div className="space-y-2">
+          {/* In-house Catering */}
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">In-house Catering</label>
+            <div className="flex gap-3">
+              {["yes", "no"].map((v) => (
+                <label key={v} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="inhouseCatM" value={v} checked={inhouseCateringFilter === v} onChange={() => setInhouseCateringFilter(v)} className="w-3.5 h-3.5 accent-red-600" />
+                  {v === "yes" ? "Yes" : "No"}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Outside Catering */}
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Outside Catering Allowed</label>
+            <div className="flex gap-3">
+              {["yes", "no"].map((v) => (
+                <label key={v} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="outsideCatM" value={v} checked={outsideCateringFilter === v} onChange={() => setOutsideCateringFilter(v)} className="w-3.5 h-3.5 accent-red-600" />
+                  {v === "yes" ? "Yes" : "No"}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Decoration */}
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Decoration Allowed</label>
+            <div className="space-y-1">
+              {decorationOptions.map(option => (
+                <label key={option} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="decM" value={option} checked={selectedDecoration === option} onChange={() => setSelectedDecoration(option)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Sound / DJ */}
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Sound / DJ Allowed</label>
+            <div className="flex gap-3">
+               {["yes", "no"].map((v) => (
+                <label key={v} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="soundM" value={v} checked={soundFilter === v} onChange={() => setSoundFilter(v)} className="w-3.5 h-3.5 accent-red-600" />
+                  {v === "yes" ? "Yes" : "No"}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Alcohol */}
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Alcohol Allowed</label>
+            <div className="flex gap-3">
+              {["yes", "no"].map((v) => (
+                <label key={v} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="alcoholM" value={v} checked={alcoholFilter === v} onChange={() => setAlcoholFilter(v)} className="w-3.5 h-3.5 accent-red-600" />
+                  {v === "yes" ? "Yes" : "No"}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
   ];
 
-  // Filter vendors based on selections
+  // Filter vendors based on selections - UPDATED
   const filteredVendors = vendors.filter(vendor => {
     // Venue type filter
-    if (selectedEvent && vendor.venueType !== selectedEvent) return false;
+    if (selectedVenueTypes.length > 0) {
+      const hasMatchingVenue = selectedVenueTypes.some(type => 
+        vendor.venueType?.includes(type) || vendor.businessCategory?.includes(type)
+      );
+      if (!hasMatchingVenue) return false;
+    }
     
     // Location filters
     if (selectedState && !vendor.location.includes(selectedState)) return false;
@@ -1328,43 +894,57 @@ const WeddingHalls = () => {
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
-      const vendorPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
+      const vendorPrice = parseInt(vendor.priceRange?.replace(/[^0-9]/g, '').split('-')[0]) || 0;
       if (vendorPrice < minPrice || vendorPrice > maxPrice) return false;
     }
 
-    // Capacity filters
-    if (minSeatingCapacity || maxSeatingCapacity) {
+    // Seating Capacity filter
+    if (seatingCapacity) {
       const vendorCapacity = parseInt(vendor.capacity) || 0;
-      const minCap = parseInt(minSeatingCapacity) || 0;
-      const maxCap = parseInt(maxSeatingCapacity) || Infinity;
-      if (vendorCapacity < minCap || vendorCapacity > maxCap) return false;
+      const searchCapacity = parseInt(seatingCapacity) || 0;
+      if (vendorCapacity < searchCapacity) return false;
     }
 
-    // Parking filter
-    if (parkingFilter) {
+    // Parking Capacity filter
+    if (parkingCapacity) {
       const vendorParking = parseInt(vendor.parkingCapacity) || 0;
-      if (parkingFilter === 'upto20' && vendorParking > 20) return false;
-      if (parkingFilter === '21to50' && (vendorParking < 21 || vendorParking > 50)) return false;
-      if (parkingFilter === '51to100' && (vendorParking < 51 || vendorParking > 100)) return false;
-      if (parkingFilter === '100plus' && vendorParking < 100) return false;
+      const searchParking = parseInt(parkingCapacity) || 0;
+      if (vendorParking < searchParking) return false;
+    }
+
+    // Number of Floors filter
+    if (numberOfFloors) {
+      const vendorFloors = parseInt(vendor.numberOfFloors) || 0;
+      const searchFloors = parseInt(numberOfFloors) || 0;
+      if (vendorFloors < searchFloors) return false;
+    }
+
+    // Dining Capacity filter
+    if (diningCapacity) {
+      const vendorDining = parseInt(vendor.diningCapacity) || 0;
+      const searchDining = parseInt(diningCapacity) || 0;
+      if (vendorDining < searchDining) return false;
     }
 
     // Facilities filter
     if (selectedFacilities.length > 0) {
       const hasAllFacilities = selectedFacilities.every(facility => 
-        vendor.amenities.includes(facility)
+        vendor.amenities?.includes(facility)
       );
       if (!hasAllFacilities) return false;
     }
 
-    // Floors filter
-    if (floorsFilter) {
-      const vendorFloors = parseInt(vendor.numberOfFloors) || 0;
-      if (floorsFilter === '1' && vendorFloors !== 1) return false;
-      if (floorsFilter === '2' && vendorFloors !== 2) return false;
-      if (floorsFilter === '3' && vendorFloors !== 3) return false;
-      if (floorsFilter === '4+' && vendorFloors < 4) return false;
+    // Rooms filter
+    if (roomsFilter) {
+      const vendorRooms = parseInt(vendor.roomsAvailable) || 0;
+      if (roomsFilter === '1-5' && (vendorRooms < 1 || vendorRooms > 5)) return false;
+      if (roomsFilter === '6-10' && (vendorRooms < 6 || vendorRooms > 10)) return false;
+      if (roomsFilter === '11-20' && (vendorRooms < 11 || vendorRooms > 20)) return false;
+      if (roomsFilter === '20+' && vendorRooms < 20) return false;
     }
+
+    // Room type filter
+    if (roomTypeFilter && vendor.roomType !== roomTypeFilter) return false;
 
     // Events filter
     if (selectedEvents.length > 0) {
@@ -1382,34 +962,32 @@ const WeddingHalls = () => {
       if (!hasAllSlots) return false;
     }
 
-    // Catering filter
-    if (selectedCatering.length > 0) {
-      const hasAllCatering = selectedCatering.every(option => 
-        vendor.catering?.includes(option)
-      );
-      if (!hasAllCatering) return false;
+    // In-house catering filter
+    if (inhouseCateringFilter) {
+      if (inhouseCateringFilter === 'yes' && !vendor.inhouseCatering) return false;
+      if (inhouseCateringFilter === 'no' && vendor.inhouseCatering) return false;
+    }
+
+    // Outside catering filter
+    if (outsideCateringFilter) {
+      if (outsideCateringFilter === 'yes' && !vendor.outsideCatering) return false;
+      if (outsideCateringFilter === 'no' && vendor.outsideCatering) return false;
     }
 
     // Decoration filter
     if (selectedDecoration && vendor.decoration !== selectedDecoration) return false;
 
     // Sound filter
-    if (soundAllowed && !vendor.soundAllowed) return false;
-
-    // Alcohol filter
-    if (alcoholAllowed && !vendor.alcoholAllowed) return false;
-
-    // Rooms filter
-    if (roomsFilter) {
-      const vendorRooms = parseInt(vendor.roomsAvailable) || 0;
-      if (roomsFilter === '1-5' && (vendorRooms < 1 || vendorRooms > 5)) return false;
-      if (roomsFilter === '6-10' && (vendorRooms < 6 || vendorRooms > 10)) return false;
-      if (roomsFilter === '11-20' && (vendorRooms < 11 || vendorRooms > 20)) return false;
-      if (roomsFilter === '20+' && vendorRooms < 20) return false;
+    if (soundFilter) {
+      if (soundFilter === 'yes' && !vendor.soundAllowed) return false;
+      if (soundFilter === 'no' && vendor.soundAllowed) return false;
     }
 
-    // Room type filter
-    if (roomTypeFilter && vendor.roomType !== roomTypeFilter) return false;
+    // Alcohol filter
+    if (alcoholFilter) {
+      if (alcoholFilter === 'yes' && !vendor.alcoholAllowed) return false;
+      if (alcoholFilter === 'no' && vendor.alcoholAllowed) return false;
+    }
     
     return true;
   });
@@ -1443,25 +1021,26 @@ const WeddingHalls = () => {
   };
 
   const handleReset = () => {
+    setSelectedVenueTypes([]);
     setMinBudget('');
     setMaxBudget('');
-    setSelectedEvent('');
     setSelectedState('');
     setSelectedDistrict('');
     setSelectedLocation('');
-    setMinSeatingCapacity('');
-    setMaxSeatingCapacity('');
-    setParkingFilter('');
+    setSeatingCapacity('');
+    setParkingCapacity('');
+    setNumberOfFloors('');
+    setDiningCapacity('');
     setSelectedFacilities([]);
-    setFloorsFilter('');
-    setSelectedEvents([]);
-    setSelectedTimeSlots([]);
-    setSelectedCatering([]);
-    setSelectedDecoration('');
-    setSoundAllowed(false);
-    setAlcoholAllowed(false);
     setRoomsFilter('');
     setRoomTypeFilter('');
+    setSelectedEvents([]);
+    setSelectedTimeSlots([]);
+    setInhouseCateringFilter('');
+    setOutsideCateringFilter('');
+    setSelectedDecoration('');
+    setSoundFilter('');
+    setAlcoholFilter('');
     setCurrentFilterPage(0);
     setCurrentMobileFilterPage(0);
     setShowMobileFilterDrawer(false);
@@ -1506,28 +1085,29 @@ const WeddingHalls = () => {
     }
   };
 
-  // Count active filters
+  // Count active filters - UPDATED
   const getActiveFilterCount = () => {
     let count = 0;
+    if (selectedVenueTypes.length > 0) count++;
     if (minBudget) count++;
     if (maxBudget) count++;
-    if (selectedEvent) count++;
     if (selectedState) count++;
     if (selectedDistrict) count++;
     if (selectedLocation) count++;
-    if (minSeatingCapacity) count++;
-    if (maxSeatingCapacity) count++;
-    if (parkingFilter) count++;
+    if (seatingCapacity) count++;
+    if (parkingCapacity) count++;
+    if (numberOfFloors) count++;
+    if (diningCapacity) count++;
     if (selectedFacilities.length > 0) count++;
-    if (floorsFilter) count++;
-    if (selectedEvents.length > 0) count++;
-    if (selectedTimeSlots.length > 0) count++;
-    if (selectedCatering.length > 0) count++;
-    if (selectedDecoration) count++;
-    if (soundAllowed) count++;
-    if (alcoholAllowed) count++;
     if (roomsFilter) count++;
     if (roomTypeFilter) count++;
+    if (selectedEvents.length > 0) count++;
+    if (selectedTimeSlots.length > 0) count++;
+    if (inhouseCateringFilter) count++;
+    if (outsideCateringFilter) count++;
+    if (selectedDecoration) count++;
+    if (soundFilter) count++;
+    if (alcoholFilter) count++;
     return count;
   };
 
@@ -1654,27 +1234,27 @@ const WeddingHalls = () => {
         </div>
       </section>
 
-      {/* Main Categories Navigation - INCREASED FONT SIZE FOR DESKTOP */}
-                  <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
-                    <div className="container mx-auto px-2 md:px-4">
-                      <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Browse All Wedding Services
-                      </h3>
-                      <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
-                        {mainCategories.map((category) => (
-                          <Link
-                            key={category.name}
-                            to={category.path}
-                            className="flex-shrink-0 transition-all duration-300"
-                          >
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
-                              {category.name}
-                            </button>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+      {/* Main Categories Navigation */}
+      <div className="bg-gradient-to-r from-orange-400 via-red-400 to-yellow-400 shadow-md py-2 md:py-4">
+        <div className="container mx-auto px-2 md:px-4">
+          <h3 className="text-white text-xs sm:text-sm md:text-xl lg:text-2xl font-bold mb-1 md:mb-2 text-center" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Browse All Wedding Services
+          </h3>
+          <div className="flex items-center justify-start lg:justify-center overflow-x-auto pb-1 scrollbar-hide gap-1 md:gap-2">
+            {mainCategories.map((category) => (
+              <Link
+                key={category.name}
+                to={category.path}
+                className="flex-shrink-0 transition-all duration-300"
+              >
+                <button className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-medium py-1 md:py-2.5 px-2 md:px-5 rounded-md shadow hover:shadow-md transition-all duration-300 transform hover:scale-[1.02] text-[10px] md:text-sm whitespace-nowrap border border-white/20 hover:border-yellow-300">
+                  {category.name}
+                </button>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Main Content with Filter Sidebar */}
       <div className="container mx-auto px-2 md:px-4 py-2 md:py-3 lg:py-4">
@@ -1696,7 +1276,7 @@ const WeddingHalls = () => {
                         onClick={() => handleCategoryClick(category.name)}
                         className="relative block w-12 h-12 mx-auto focus:outline-none"
                       >
-                        <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                        <div className={`w-full h-full rounded-full border ${selectedVenueTypes.includes(category.name) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                           <img 
                             src={category.image}
                             alt={category.name} 
@@ -1721,7 +1301,7 @@ const WeddingHalls = () => {
                       onClick={() => handleCategoryClick(category.name)}
                       className="relative block w-full aspect-square max-w-[60px] md:max-w-[65px] mx-auto focus:outline-none"
                     >
-                      <div className={`w-full h-full rounded-full border ${selectedEvent && selectedEvent.includes(category.name.split(' ')[0]) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
+                      <div className={`w-full h-full rounded-full border ${selectedVenueTypes.includes(category.name) ? 'border-yellow-500' : 'border-amber-700'} overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 shadow-sm hover:shadow transition-all duration-300 p-0.5`}>
                         <img 
                           src={category.image}
                           alt={category.name} 
@@ -1737,17 +1317,17 @@ const WeddingHalls = () => {
                 ))}
               </div>
 
-              {selectedEvent && (
+              {selectedVenueTypes.length > 0 && (
                 <div className="text-center mt-1 md:mt-2">
                   <button
-                    onClick={() => setSelectedEvent('')}
+                    onClick={() => setSelectedVenueTypes([])}
                     className="inline-flex items-center text-red-600 hover:text-red-800 text-[9px] md:text-xs font-medium"
                     style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                   >
                     <svg className="w-3 h-3 md:w-3.5 md:h-3.5 mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    Clear "{selectedEvent}" filter
+                    Clear venue type filter
                   </button>
                 </div>
               )}
@@ -1868,10 +1448,10 @@ const WeddingHalls = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex-1 pr-2">
                       <h3 className="text-xs font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : `${filteredVendors.length} Wedding Hall Vendors`}
+                        {selectedVenueTypes.length > 0 ? `${filteredVendors.length} ${selectedVenueTypes[0]} Vendors` : `${filteredVendors.length} Wedding Hall Vendors`}
                       </h3>
                       <p className="text-yellow-200 mt-0.5 text-[9px] leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our premium wedding hall vendors'}
+                        {selectedVenueTypes.length > 0 ? `Showing results for "${selectedVenueTypes[0]}"` : 'Browse our premium wedding hall vendors'}
                       </p>
                     </div>
                     
@@ -1884,12 +1464,12 @@ const WeddingHalls = () => {
                   </div>
                 </div>
                 
-                {/* Applied Filters Tags */}
+                {/* Applied Filters Tags - UPDATED */}
                 <div className="flex flex-wrap gap-1 mb-2">
-                  {selectedEvent && (
+                  {selectedVenueTypes.length > 0 && (
                     <span className="inline-flex items-center bg-red-100 text-red-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      Venue: {selectedEvent}
-                      <button onClick={() => setSelectedEvent('')} className="ml-0.5 text-red-500 hover:text-red-700">
+                      Venue: {selectedVenueTypes[0]}
+                      <button onClick={() => setSelectedVenueTypes([])} className="ml-0.5 text-red-500 hover:text-red-700">
                         ×
                       </button>
                     </span>
@@ -1910,26 +1490,34 @@ const WeddingHalls = () => {
                       </button>
                     </span>
                   )}
-                  {selectedFacilities.length > 0 && (
+                  {seatingCapacity && (
                     <span className="inline-flex items-center bg-blue-100 text-blue-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Seating: {seatingCapacity}+
+                      <button onClick={() => setSeatingCapacity('')} className="ml-0.5 text-blue-500 hover:text-blue-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {parkingCapacity && (
+                    <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Parking: {parkingCapacity}+
+                      <button onClick={() => setParkingCapacity('')} className="ml-0.5 text-indigo-500 hover:text-indigo-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {selectedFacilities.length > 0 && (
+                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Facilities: {selectedFacilities.length}
-                      <button onClick={() => setSelectedFacilities([])} className="ml-0.5 text-blue-500 hover:text-blue-700">
+                      <button onClick={() => setSelectedFacilities([])} className="ml-0.5 text-purple-500 hover:text-purple-700">
                         ×
                       </button>
                     </span>
                   )}
                   {selectedEvents.length > 0 && (
-                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    <span className="inline-flex items-center bg-pink-100 text-pink-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       Events: {selectedEvents.length}
-                      <button onClick={() => setSelectedEvents([])} className="ml-0.5 text-purple-500 hover:text-purple-700">
-                        ×
-                      </button>
-                    </span>
-                  )}
-                  {(minSeatingCapacity || maxSeatingCapacity) && (
-                    <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                      Capacity: {minSeatingCapacity || '0'} - {maxSeatingCapacity || '∞'}
-                      <button onClick={() => { setMinSeatingCapacity(''); setMaxSeatingCapacity(''); }} className="ml-0.5 text-indigo-500 hover:text-indigo-700">
+                      <button onClick={() => setSelectedEvents([])} className="ml-0.5 text-pink-500 hover:text-pink-700">
                         ×
                       </button>
                     </span>
@@ -1950,10 +1538,10 @@ const WeddingHalls = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white leading-tight" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {selectedEvent ? `${filteredVendors.length} ${selectedEvent} Vendors` : `${filteredVendors.length} Wedding Hall Vendors`}
+                        {selectedVenueTypes.length > 0 ? `${filteredVendors.length} ${selectedVenueTypes[0]} Vendors` : `${filteredVendors.length} Wedding Hall Vendors`}
                       </h3>
                       <p className="text-yellow-200 mt-1 text-base" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        {selectedEvent ? `Showing results for "${selectedEvent}"` : 'Browse our premium wedding hall vendors'}
+                        {selectedVenueTypes.length > 0 ? `Showing results for "${selectedVenueTypes[0]}"` : 'Browse our premium wedding hall vendors'}
                       </p>
                     </div>
                     
@@ -1965,11 +1553,12 @@ const WeddingHalls = () => {
                     </div>
                   </div>
                   
+                  {/* Desktop Applied Filters Tags - UPDATED */}
                   <div className="flex flex-wrap gap-1.5 mt-2">
-                    {selectedEvent && (
+                    {selectedVenueTypes.length > 0 && (
                       <span className="inline-flex items-center bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                        Venue: {selectedEvent}
-                        <button onClick={() => setSelectedEvent('')} className="ml-1 text-red-500 hover:text-red-700">
+                        Venue: {selectedVenueTypes[0]}
+                        <button onClick={() => setSelectedVenueTypes([])} className="ml-1 text-red-500 hover:text-red-700">
                           ×
                         </button>
                       </span>
@@ -1990,18 +1579,34 @@ const WeddingHalls = () => {
                         </button>
                       </span>
                     )}
-                    {selectedFacilities.length > 0 && (
+                    {seatingCapacity && (
                       <span className="inline-flex items-center bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Seating: {seatingCapacity}+
+                        <button onClick={() => setSeatingCapacity('')} className="ml-1 text-blue-500 hover:text-blue-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {parkingCapacity && (
+                      <span className="inline-flex items-center bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Parking: {parkingCapacity}+
+                        <button onClick={() => setParkingCapacity('')} className="ml-1 text-indigo-500 hover:text-indigo-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {selectedFacilities.length > 0 && (
+                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Facilities: {selectedFacilities.length}
-                        <button onClick={() => setSelectedFacilities([])} className="ml-1 text-blue-500 hover:text-blue-700">
+                        <button onClick={() => setSelectedFacilities([])} className="ml-1 text-purple-500 hover:text-purple-700">
                           ×
                         </button>
                       </span>
                     )}
                     {selectedEvents.length > 0 && (
-                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      <span className="inline-flex items-center bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         Events: {selectedEvents.length}
-                        <button onClick={() => setSelectedEvents([])} className="ml-1 text-purple-500 hover:text-purple-700">
+                        <button onClick={() => setSelectedEvents([])} className="ml-1 text-pink-500 hover:text-pink-700">
                           ×
                         </button>
                       </span>
@@ -2116,7 +1721,11 @@ const WeddingHalls = () => {
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm"
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2205,7 +1814,10 @@ const WeddingHalls = () => {
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2467,6 +2079,17 @@ const WeddingHalls = () => {
           </div>
         </div>
       )}
+
+      {/* ADD THE VENDORDETAILS COMPONENT AT THE END */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="weddingHalls"
+      />
     </div>
   );
 };

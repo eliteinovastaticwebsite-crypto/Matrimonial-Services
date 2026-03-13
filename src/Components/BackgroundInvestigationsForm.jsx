@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { ArrowLeft, Search, FileText, Shield, Building, User, MapPin, Phone, Mail, Globe, Banknote, X, Pen, Trash2, Upload, Check } from "lucide-react";
+import { ArrowLeft, Search, FileText, Shield, Building, User, MapPin, Phone, Mail, Globe, Banknote, X, Pen, Trash2, Upload, Check, DollarSign } from "lucide-react";
 
 const steps = [
   "Agency Details",
@@ -51,6 +51,8 @@ export default function BackgroundInvestigationsForm({ isOpen, onClose }) {
     registrationNumber: "",
     gstNumber: "",
     panNumber: "",
+    minBudget: "", // Added min budget
+    maxBudget: "", // Added max budget
     
     // Step 2
     detectiveLicense: "",
@@ -349,6 +351,38 @@ export default function BackgroundInvestigationsForm({ isOpen, onClose }) {
                     placeholder="Enter PAN number" 
                   />
                 </div>
+
+                {/* BUDGET RANGE SECTION - ADDED HERE */}
+                <div className="form-group mt-4 pt-2 border-t border-red-200">
+                  <label className="form-label flex items-center gap-2">
+                    <span>₹ Budget Range (Min - Max) *</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input 
+                        name="minBudget"
+                        value={formData.minBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Min Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        name="maxBudget"
+                        value={formData.maxBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Max Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    Enter your typical price range for background verification services
+                  </p>
+                </div>
               </div>
             )}
 
@@ -450,7 +484,7 @@ export default function BackgroundInvestigationsForm({ isOpen, onClose }) {
                 </div>
                 
                 <div className="form-group">
-                  <label className="form-label">City *</label>
+                  <label className="form-label">District / City *</label>
                   <input 
                     name="city"
                     value={formData.city}

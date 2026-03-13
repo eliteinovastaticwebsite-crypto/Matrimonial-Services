@@ -12,6 +12,7 @@ import photobanner1 from '../assets/photobanner1.png';
 import photobanner2 from '../assets/photobanner2.png';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg'; 
 import VendorDetails from '../Components/VendorDetails';
+import { photographyVendors } from '../data/photographyData'; // IMPORT THE VENDORS DATA
 
 const Photography = () => {
   const navigate = useNavigate();
@@ -212,441 +213,8 @@ const Photography = () => {
     });
   };
 
-  // Sample vendor data - updated with more fields for filtering
-  const vendors = [
-    {
-      id: 1,
-      name: 'Capture Moments Studio',
-      businessName: 'Capture Moments Wedding Photography',
-      businessCategory: 'Wedding Photography',
-      eventType: 'Wedding Photography',
-      personName: 'Rajesh Kumar',
-      designation: 'Lead Photographer',
-      description: 'Specializing in candid wedding photography with 10+ years of experience',
-      services: ['Pre-wedding Shoots', 'Candid Photography', 'Traditional Wedding Coverage', 'Album Design'],
-      logo: weddingphoto,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹2,00,000',
-      experience: 10,
-      businessType: 'Proprietorship',
-      cameraModels: 'Canon EOS R5, Sony A7III',
-      videoEquipment: 'DJI Ronin, Sony FX6',
-      teamMembers: 8,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 45,
-      videoDelivery: 60,
-      albumDelivery: 75,
-      selectedServices: ['Wedding Photography', 'Candid Photography', 'Pre-Wedding Shoot']
-    },
-    {
-      id: 2,
-      name: 'Evergreen Memories',
-      businessName: 'Evergreen Wedding Photography',
-      businessCategory: 'Wedding Photography',
-      eventType: 'Wedding Photography',
-      personName: 'Priya Sharma',
-      designation: 'Creative Director',
-      description: 'Documenting love stories with artistic vision and modern techniques',
-      services: ['Destination Weddings', 'Drone Photography', 'Cinematic Videos', 'Photo Booths'],
-      logo: weddingphoto,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹75,000 - ₹3,00,000',
-      experience: 8,
-      businessType: 'Private Limited',
-      cameraModels: 'Nikon Z9, Fujifilm GFX',
-      videoEquipment: 'DJI Mavic 3, Blackmagic URSA',
-      teamMembers: 12,
-      hasBackup: 'yes',
-      preferredLocations: ['Outstation', 'International'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 30,
-      videoDelivery: 45,
-      albumDelivery: 60,
-      selectedServices: ['Wedding Photography', 'Cinematic Wedding Film', 'Drone Coverage']
-    },
-    {
-      id: 3,
-      name: 'Event Masters Pro',
-      businessName: 'Event Masters Photography',
-      businessCategory: 'Event Photography',
-      eventType: 'Event Photography',
-      personName: 'Arun Mehta',
-      designation: 'Event Photographer',
-      description: 'Professional event coverage for corporate and social events',
-      services: ['Corporate Events', 'Birthday Parties', 'Product Launches', 'Conferences'],
-      logo: event,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹25,000 - ₹1,50,000',
-      experience: 6,
-      businessType: 'Individual',
-      cameraModels: 'Sony A7IV, Canon 5D Mark IV',
-      videoEquipment: 'DJI Osmo Pocket, GoPro',
-      teamMembers: 4,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'no',
-      photoDelivery: 14,
-      videoDelivery: 21,
-      albumDelivery: 30,
-      selectedServices: ['Event Photography', 'Videography']
-    },
-    {
-      id: 4,
-      name: 'Celebration Shots',
-      businessName: 'Celebration Photography Services',
-      businessCategory: 'Event Photography',
-      eventType: 'Event Photography',
-      personName: 'Sneha Reddy',
-      designation: 'Event Manager',
-      description: 'Capturing the essence of every celebration with precision',
-      services: ['Anniversary Events', 'Festival Celebrations', 'Award Functions', 'Social Gatherings'],
-      logo: event,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000',
-      experience: 5,
-      businessType: 'Partnership',
-      cameraModels: 'Canon EOS R6, Nikon D850',
-      videoEquipment: 'DJI Ronin-S, Sony ZV-1',
-      teamMembers: 6,
-      hasBackup: 'yes',
-      preferredLocations: ['Local'],
-      hasTravelCharges: 'no',
-      photoDelivery: 10,
-      videoDelivery: 15,
-      albumDelivery: 20,
-      selectedServices: ['Event Photography']
-    },
-    {
-      id: 5,
-      name: 'Motion Picture Studio',
-      businessName: 'Motion Picture Videography',
-      businessCategory: 'Videography',
-      eventType: 'Videography',
-      personName: 'Vikram Singh',
-      designation: 'Videography Director',
-      description: 'Creating cinematic wedding films and corporate videos',
-      services: ['Wedding Films', 'Corporate Videos', 'Documentaries', 'Promotional Videos'],
-      logo: videography,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹1,00,000 - ₹5,00,000',
-      experience: 12,
-      businessType: 'Private Limited',
-      cameraModels: 'RED Komodo, Sony FX9',
-      videoEquipment: 'DJI Inspire 2, Arri Alexa',
-      teamMembers: 15,
-      hasBackup: 'yes',
-      preferredLocations: ['Outstation', 'International'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 60,
-      videoDelivery: 90,
-      albumDelivery: 120,
-      selectedServices: ['Videography', 'Cinematic Wedding Film', 'Drone Coverage']
-    },
-    {
-      id: 6,
-      name: 'Visual Storytellers',
-      businessName: 'Visual Storytellers Studio',
-      businessCategory: 'Videography',
-      eventType: 'Videography',
-      personName: 'Anjali Nair',
-      designation: 'Creative Producer',
-      description: 'Story-driven video production for memorable occasions',
-      services: ['Short Films', 'Event Coverage', 'Music Videos', 'Animation Videos'],
-      logo: videography,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹80,000 - ₹4,00,000',
-      experience: 7,
-      businessType: 'Proprietorship',
-      cameraModels: 'Blackmagic Pocket 6K, Sony FS7',
-      videoEquipment: 'DJI Mavic Pro, Zhiyun Crane',
-      teamMembers: 8,
-      hasBackup: 'yes',
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 30,
-      videoDelivery: 45,
-      albumDelivery: 60,
-      selectedServices: ['Videography', 'Cinematic Wedding Film']
-    },
-    {
-      id: 7,
-      name: 'Pixel Perfect Editing',
-      businessName: 'Pixel Perfect Photo Studio',
-      businessCategory: 'Editing & Album Services',
-      eventType: 'Editing & Album Services',
-      personName: 'Rahul Verma',
-      designation: 'Photo Editor',
-      description: 'Professional photo editing and custom album design services',
-      services: ['Photo Retouching', 'Album Design', 'Photo Restoration', 'Digital Artwork'],
-      logo: album,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹10,000 - ₹50,000',
-      experience: 9,
-      businessType: 'Individual',
-      cameraModels: 'N/A',
-      videoEquipment: 'N/A',
-      teamMembers: 3,
-      hasBackup: 'yes',
-      preferredLocations: ['Local'],
-      hasTravelCharges: 'no',
-      photoDelivery: 7,
-      videoDelivery: 'N/A',
-      albumDelivery: 14,
-      selectedServices: ['Editing & Album Services']
-    },
-    {
-      id: 8,
-      name: 'Memory Albums',
-      businessName: 'Memory Album Creators',
-      businessCategory: 'Editing & Album Services',
-      eventType: 'Editing & Album Services',
-      personName: 'Meera Patel',
-      designation: 'Album Designer',
-      description: 'Creating beautiful photo albums that tell your story',
-      services: ['Custom Albums', 'Photo Books', 'Digital Albums', 'Coffee Table Books'],
-      logo: album,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹15,000 - ₹75,000',
-      experience: 6,
-      businessType: 'Partnership',
-      cameraModels: 'N/A',
-      videoEquipment: 'N/A',
-      teamMembers: 5,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 10,
-      videoDelivery: 'N/A',
-      albumDelivery: 20,
-      selectedServices: ['Editing & Album Services']
-    },
-    {
-      id: 9,
-      name: 'Style Frame Studio',
-      businessName: 'Style Frame Fashion Photography',
-      businessCategory: 'Fashion & Lifestyle',
-      eventType: 'Fashion & Lifestyle',
-      personName: 'Aisha Khan',
-      designation: 'Fashion Photographer',
-      description: 'Specializing in fashion editorial and lifestyle photography',
-      services: ['Fashion Shoots', 'Portfolio Photography', 'Lookbook Creation', 'Model Portfolios'],
-      logo: fashion,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹50,000 - ₹3,00,000',
-      experience: 11,
-      businessType: 'Private Limited',
-      cameraModels: 'Hasselblad H6D, Canon EOS R5',
-      videoEquipment: 'DJI Ronin 2, Sony FX6',
-      teamMembers: 10,
-      hasBackup: 'yes',
-      preferredLocations: ['Outstation', 'International'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 21,
-      videoDelivery: 30,
-      albumDelivery: 45,
-      selectedServices: ['Fashion & Lifestyle', 'Candid Photography']
-    },
-    {
-      id: 10,
-      name: 'Urban Lifestyle',
-      businessName: 'Urban Lifestyle Photography',
-      businessCategory: 'Fashion & Lifestyle',
-      eventType: 'Fashion & Lifestyle',
-      personName: 'Kabir Malhotra',
-      designation: 'Creative Director',
-      description: 'Contemporary lifestyle and urban photography',
-      services: ['Street Photography', 'Lifestyle Brands', 'E-commerce Photography', 'Personal Branding'],
-      logo: fashion,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹40,000 - ₹2,50,000',
-      experience: 8,
-      businessType: 'Proprietorship',
-      cameraModels: 'Fujifilm X-T4, Sony A7RIV',
-      videoEquipment: 'DJI RS2, Sony ZV-E1',
-      teamMembers: 7,
-      hasBackup: 'yes',
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 14,
-      videoDelivery: 21,
-      albumDelivery: 30,
-      selectedServices: ['Fashion & Lifestyle']
-    },
-    {
-      id: 11,
-      name: 'Business Lens',
-      businessName: 'Business Lens Commercial Photography',
-      businessCategory: 'Commercial Photography',
-      eventType: 'Commercial Photography',
-      personName: 'Sanjay Gupta',
-      designation: 'Commercial Photographer',
-      description: 'Professional commercial photography for businesses',
-      services: ['Product Photography', 'Architecture', 'Food Photography', 'Corporate Headshots'],
-      logo: commercial,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹30,000 - ₹2,00,000',
-      experience: 13,
-      businessType: 'Private Limited',
-      cameraModels: 'Phase One IQ4, Canon 1DX Mark III',
-      videoEquipment: 'DJI Mavic 3, Sony FS7',
-      teamMembers: 12,
-      hasBackup: 'yes',
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 10,
-      videoDelivery: 15,
-      albumDelivery: 20,
-      selectedServices: ['Commercial Photography']
-    },
-    {
-      id: 12,
-      name: 'Brand Visuals',
-      businessName: 'Brand Visuals Studio',
-      businessCategory: 'Commercial Photography',
-      eventType: 'Commercial Photography',
-      personName: 'Neha Joshi',
-      designation: 'Brand Photographer',
-      description: 'Creating compelling visual content for brands',
-      services: ['Brand Campaigns', 'Advertising Photography', 'Packaging Shots', 'Corporate Events'],
-      logo: commercial,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹3,00,000',
-      experience: 9,
-      businessType: 'Partnership',
-      cameraModels: 'Sony A9II, Canon EOS R3',
-      videoEquipment: 'DJI Inspire 2, Blackmagic Pocket',
-      teamMembers: 9,
-      hasBackup: 'yes',
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 14,
-      videoDelivery: 21,
-      albumDelivery: 28,
-      selectedServices: ['Commercial Photography']
-    },
-    {
-      id: 13,
-      name: 'Cultural Heritage',
-      businessName: 'Cultural Heritage Photography',
-      businessCategory: 'Religious & Cultural',
-      eventType: 'Religious & Cultural Photography',
-      personName: 'Venkatesh Iyer',
-      designation: 'Cultural Photographer',
-      description: 'Documenting religious ceremonies and cultural events',
-      services: ['Temple Festivals', 'Religious Ceremonies', 'Cultural Events', 'Traditional Rituals'],
-      logo: religious,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹1,50,000',
-      experience: 15,
-      businessType: 'Individual',
-      cameraModels: 'Nikon D850, Canon EOS R',
-      videoEquipment: 'DJI Osmo Pocket, Sony A6400',
-      teamMembers: 4,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'no',
-      photoDelivery: 21,
-      videoDelivery: 30,
-      albumDelivery: 45,
-      selectedServices: ['Religious & Cultural Photography']
-    },
-    {
-      id: 14,
-      name: 'Divine Moments',
-      businessName: 'Divine Moments Photography',
-      businessCategory: 'Religious & Cultural',
-      eventType: 'Religious & Cultural Photography',
-      personName: 'Radha Krishnan',
-      designation: 'Religious Event Specialist',
-      description: 'Specializing in religious event photography with respect and devotion',
-      services: ['Pujas', 'Religious Processions', 'Temple Events', 'Spiritual Gatherings'],
-      logo: religious,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹20,000 - ₹1,00,000',
-      experience: 12,
-      businessType: 'Proprietorship',
-      cameraModels: 'Canon 90D, Sony A7III',
-      videoEquipment: 'DJI Mavic Air, Panasonic GH5',
-      teamMembers: 5,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'no',
-      photoDelivery: 14,
-      videoDelivery: 21,
-      albumDelivery: 30,
-      selectedServices: ['Religious & Cultural Photography']
-    },
-    {
-      id: 15,
-      name: 'Little Angels',
-      businessName: 'Little Angels Photography',
-      businessCategory: 'Kids & Special Shoots',
-      eventType: 'Kids & Special Shoots',
-      personName: 'Pooja Mehta',
-      designation: 'Children Photographer',
-      description: 'Creating magical memories for children and families',
-      services: ['Newborn Photography', 'Birthday Shoots', 'Family Portraits', 'Baby Showers'],
-      logo: kids,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹15,000 - ₹80,000',
-      experience: 7,
-      businessType: 'Individual',
-      cameraModels: 'Canon EOS R6, Sony A7C',
-      videoEquipment: 'DJI Osmo Pocket, iPhone 14 Pro',
-      teamMembers: 3,
-      hasBackup: 'yes',
-      preferredLocations: ['Local'],
-      hasTravelCharges: 'no',
-      photoDelivery: 10,
-      videoDelivery: 14,
-      albumDelivery: 21,
-      selectedServices: ['Kids & Special Shoots']
-    },
-    {
-      id: 16,
-      name: 'Special Moments',
-      businessName: 'Special Moments Studio',
-      businessCategory: 'Kids & Special Shoots',
-      eventType: 'Kids & Special Shoots',
-      personName: 'David Wilson',
-      designation: 'Special Shoots Director',
-      description: 'Specialized photography for unique occasions and celebrations',
-      services: ['Maternity Shoots', 'Pet Photography', 'Anniversary Shoots', 'Surprise Events'],
-      logo: kids,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹1,00,000',
-      experience: 5,
-      businessType: 'Partnership',
-      cameraModels: 'Nikon Z6II, Fujifilm X-T4',
-      videoEquipment: 'DJI Ronin-SC, Sony ZV-1',
-      teamMembers: 4,
-      hasBackup: 'yes',
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'yes',
-      photoDelivery: 7,
-      videoDelivery: 10,
-      albumDelivery: 14,
-      selectedServices: ['Kids & Special Shoots']
-    }
-  ];
+  // USE THE IMPORTED VENDORS DATA INSTEAD OF INLINE ARRAY
+  const vendors = photographyVendors;
 
   // Filter vendors based on all selections
   const filteredVendors = vendors.filter(vendor => {
@@ -732,10 +300,10 @@ const Photography = () => {
     return true;
   });
 
-  // Filter pages for desktop - UPDATED (Removed page 2 - Services & Equipment)
+  // Filter pages for desktop - ONLY HEADINGS CHANGED to match registration form
   const filterPages = [
     {
-      title: "Basic Filters",
+      title: "Basic Filters", 
       content: (
         <div className="space-y-3">
           <div>
@@ -758,7 +326,7 @@ const Photography = () => {
             </div>
           </div>
 
-          <div>
+          {/*<div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Event Type</label>
             <select
               value={selectedEvent}
@@ -770,7 +338,7 @@ const Photography = () => {
                 <option key={event} value={event}>{event}</option>
               ))}
             </select>
-          </div>
+          </div>*/}
 
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
@@ -790,7 +358,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City / District</label> {/* Changed from "District" */}
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -803,26 +371,15 @@ const Photography = () => {
               ))}
             </select>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Location/City</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
         </div>
       )
     },
     {
-      title: "Coverage & Business",
+      title: "Service Coverage", // Changed from "Coverage & Business"
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Locations</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Wedding Locations</label> {/* Changed from "Preferred Locations" */}
             <div className="grid grid-cols-2 gap-1.5">
               {weddingLocations.map(location => (
                 <label key={location} className="flex items-center gap-1 text-xs">
@@ -839,7 +396,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label> {/* Changed from "Travel Charges" */}
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -867,7 +424,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label> {/* Changed from "Min. Experience (Years)" */}
             <input
               type="number"
               placeholder="Minimum years"
@@ -894,11 +451,11 @@ const Photography = () => {
       )
     },
     {
-      title: "Delivery Timeline",
+      title: "Delivery Timeline", // Kept as is - matches form
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Photo Delivery (Max Days)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Photo Delivery (Days)</label> {/* Changed from "Photo Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for photos"
@@ -909,7 +466,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Video Delivery (Max Days)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Video Delivery (Days)</label> {/* Changed from "Video Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for videos"
@@ -920,7 +477,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Album Delivery (Max Days)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Album Delivery (Days)</label> {/* Changed from "Album Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for albums"
@@ -934,10 +491,10 @@ const Photography = () => {
     }
   ];
 
-  // Mobile filter pages - UPDATED (Removed page 2 - Services & Equipment)
+  // Mobile filter pages - ONLY HEADINGS CHANGED to match registration form
   const mobileFilterPages = [
     {
-      title: "Basic Filters",
+      title: "Basic Filters", 
       content: (
         <div className="space-y-1.5">
           <div>
@@ -960,7 +517,7 @@ const Photography = () => {
             </div>
           </div>
 
-          <div>
+         {/* <div>
             <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Event Type</label>
             <select
               value={selectedEvent}
@@ -972,7 +529,7 @@ const Photography = () => {
                 <option key={event} value={event}>{event}</option>
               ))}
             </select>
-          </div>
+          </div>*/}
 
           <div>
             <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
@@ -992,7 +549,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City / District</label> {/* Changed from "District" */}
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -1005,26 +562,15 @@ const Photography = () => {
               ))}
             </select>
           </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Location/City</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
         </div>
       )
     },
     {
-      title: "Coverage & Business",
+      title: "Service Coverage", // Changed from "Coverage & Business"
       content: (
         <div className="space-y-1.5">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Preferred Locations</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Preferred Wedding Locations</label> {/* Changed from "Preferred Locations" */}
             <div className="grid grid-cols-2 gap-1">
               {weddingLocations.map(location => (
                 <label key={location} className="flex items-center gap-1 text-[9px]">
@@ -1041,7 +587,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges Applicable</label> {/* Changed from "Travel Charges" */}
             <div className="flex gap-2">
               <label className="flex items-center gap-1 text-[9px]">
                 <input 
@@ -1069,7 +615,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Years of Experience</label> {/* Changed from "Min. Experience (Years)" */}
             <input
               type="number"
               placeholder="Minimum years"
@@ -1096,11 +642,11 @@ const Photography = () => {
       )
     },
     {
-      title: "Delivery Timeline",
+      title: "Delivery Timeline", // Kept as is - matches form
       content: (
         <div className="space-y-1.5">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Photo Delivery (Max Days)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Photo Delivery (Days)</label> {/* Changed from "Photo Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for photos"
@@ -1111,7 +657,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Video Delivery (Max Days)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Video Delivery (Days)</label> {/* Changed from "Video Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for videos"
@@ -1122,7 +668,7 @@ const Photography = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Album Delivery (Max Days)</label>
+            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Album Delivery (Days)</label> {/* Changed from "Album Delivery (Max Days)" */}
             <input
               type="number"
               placeholder="Maximum days for albums"
@@ -1253,12 +799,13 @@ const Photography = () => {
   };
 
   const handleViewDetails = (vendorId) => {
-  const vendor = vendors.find(v => v.id === vendorId);
-  if (vendor) {
-     setSelectedVendor(vendor);
-     setShowVendorDetails(true);
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
     }
-   };
+  };
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
       {/* Add Google Fonts - SF Pro Display alternative for clean typography */}
@@ -2181,14 +1728,14 @@ const Photography = () => {
         </div>
       )}
       <VendorDetails
-     isOpen={showVendorDetails}
-    onClose={() => {
-      setShowVendorDetails(false);
-      setSelectedVendor(null);
-    }}
-     vendor={selectedVendor}
-     category="photography"
-   />
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="photography"
+      />
     </div>
   );
 };

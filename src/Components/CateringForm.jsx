@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { ArrowLeft, Utensils, Banknote, X, Pen, Trash2, Upload, Image as ImageIcon, Link as LinkIcon } from "lucide-react";
+import { ArrowLeft, Utensils, Banknote, X, Pen, Trash2, Upload, Image as ImageIcon, Link as LinkIcon, DollarSign } from "lucide-react";
 
 // Form steps for catering services
 const steps = [
@@ -78,6 +78,8 @@ export default function CateringVendorRegistrationModal({ isOpen, onClose }) {
     contactPerson: "",
     selectedCateringTypes: [],
     otherCateringType: "",
+    minBudget: "", // Added min budget
+    maxBudget: "", // Added max budget
     
     // Step 2
     mobile: "",
@@ -125,7 +127,7 @@ export default function CateringVendorRegistrationModal({ isOpen, onClose }) {
     transportCharges: "",
     serviceOffers: "",
     workPhotos: [],
-    workLinks: [""], // ADDED: Work links field
+    workLinks: [""],
     
     // Step 9
     weddingsCatered: "",
@@ -436,6 +438,38 @@ export default function CateringVendorRegistrationModal({ isOpen, onClose }) {
                       />
                     </div>
                   </div>
+                </div>
+
+                {/* BUDGET RANGE SECTION - ADDED HERE */}
+                <div className="form-group mt-4 pt-2 border-t border-red-200">
+                  <label className="form-label flex items-center gap-2">
+                    <span>₹ Budget Range (Min - Max) *</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input 
+                        name="minBudget"
+                        value={formData.minBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Min Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        name="maxBudget"
+                        value={formData.maxBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Max Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Enter your typical price range for catering services
+                  </p>
                 </div>
               </div>
             )}
@@ -1087,7 +1121,7 @@ export default function CateringVendorRegistrationModal({ isOpen, onClose }) {
                   </div>
                 </div>
 
-                {/* Work Links Section - ADDED */}
+                {/* Work Links Section */}
                 <div className="form-group">
                   <label className="form-label flex items-center gap-2">
                     <LinkIcon className="w-4 h-4" />

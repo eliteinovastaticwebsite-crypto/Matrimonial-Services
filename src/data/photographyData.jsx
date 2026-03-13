@@ -24,7 +24,7 @@ export const photographyVendors = [
     location: 'Chennai, Tamil Nadu',
     rating: 4.8,
     totalReviews: 156,
-    priceRange: '₹50,000 - ₹2,00,000',
+    budgetRange: '₹50,000 - ₹2,00,000',
     experience: 10,
     businessType: 'Proprietorship',
     cameraModels: 'Canon EOS R5, Sony A7III',
@@ -44,6 +44,8 @@ export const photographyVendors = [
       website: 'www.capturemoments.com',
       address: '123 Photography Street, Chennai - 600001'
     },
+    whatsappNumber: '+919876543210',
+    contactNumber: '+919876543210',
     socialMedia: {
       instagram: '@capturemoments',
       facebook: '/capturemoments',
@@ -106,7 +108,7 @@ export const photographyVendors = [
     location: 'Coimbatore, Tamil Nadu',
     rating: 4.9,
     totalReviews: 203,
-    priceRange: '₹75,000 - ₹3,00,000',
+    budgetRange: '₹75,000 - ₹3,00,000',
     experience: 8,
     businessType: 'Private Limited',
     cameraModels: 'Nikon Z9, Fujifilm GFX',
@@ -126,6 +128,8 @@ export const photographyVendors = [
       website: 'www.evergreenmemories.com',
       address: '456 Photography Avenue, Coimbatore - 641001'
     },
+    whatsappNumber: '+919876543211',
+    contactNumber: '+919876543211',
     socialMedia: {
       instagram: '@evergreenmemories',
       facebook: '/evergreenmemories',
@@ -179,7 +183,7 @@ export const photographyVendors = [
     location: 'Bangalore, Karnataka',
     rating: 4.7,
     totalReviews: 89,
-    priceRange: '₹25,000 - ₹1,50,000',
+    budgetRange: '₹25,000 - ₹1,50,000',
     experience: 6,
     businessType: 'Individual',
     cameraModels: 'Sony A7IV, Canon 5D Mark IV',
@@ -199,6 +203,8 @@ export const photographyVendors = [
       website: 'www.eventmasters.com',
       address: '789 Event Street, Bangalore - 560001'
     },
+    whatsappNumber: '+919876543212',
+    contactNumber: '+919876543212',
     socialMedia: {
       instagram: '@eventmasters',
       facebook: '/eventmasters',
@@ -251,7 +257,7 @@ export const photographyVendors = [
     location: 'Hyderabad, Telangana',
     rating: 4.6,
     totalReviews: 67,
-    priceRange: '₹20,000 - ₹1,00,000',
+    budgetRange: '₹20,000 - ₹1,00,000',
     experience: 5,
     businessType: 'Partnership',
     cameraModels: 'Canon EOS R6, Nikon D850',
@@ -271,6 +277,8 @@ export const photographyVendors = [
       website: 'www.celebrationshots.com',
       address: '321 Celebration Road, Hyderabad - 500001'
     },
+    whatsappNumber: '+919876543213',
+    contactNumber: '+919876543213',
     socialMedia: {
       instagram: '@celebrationshots',
       facebook: '/celebrationshots'
@@ -322,7 +330,7 @@ export const photographyVendors = [
     location: 'Chennai, Tamil Nadu',
     rating: 4.9,
     totalReviews: 178,
-    priceRange: '₹1,00,000 - ₹5,00,000',
+    budgetRange: '₹1,00,000 - ₹5,00,000',
     experience: 12,
     businessType: 'Private Limited',
     cameraModels: 'RED Komodo, Sony FX9',
@@ -342,6 +350,8 @@ export const photographyVendors = [
       website: 'www.motionpicture.com',
       address: '456 Film Nagar, Chennai - 600001'
     },
+    whatsappNumber: '+919876543214',
+    contactNumber: '+919876543214',
     socialMedia: {
       instagram: '@motionpicture',
       facebook: '/motionpicture',
@@ -394,7 +404,7 @@ export const photographyVendors = [
     location: 'Kochi, Kerala',
     rating: 4.8,
     totalReviews: 92,
-    priceRange: '₹80,000 - ₹4,00,000',
+    budgetRange: '₹80,000 - ₹4,00,000',
     experience: 7,
     businessType: 'Proprietorship',
     cameraModels: 'Blackmagic Pocket 6K, Sony FS7',
@@ -414,6 +424,8 @@ export const photographyVendors = [
       website: 'www.visualstorytellers.com',
       address: '789 Creative Street, Kochi - 682001'
     },
+    whatsappNumber: '+919876543215',
+    contactNumber: '+919876543215',
     socialMedia: {
       instagram: '@visualstorytellers',
       facebook: '/visualstorytellers'
@@ -465,7 +477,7 @@ export const photographyVendors = [
     location: 'Madurai, Tamil Nadu',
     rating: 4.7,
     totalReviews: 134,
-    priceRange: '₹10,000 - ₹50,000',
+    budgetRange: '₹10,000 - ₹50,000',
     experience: 9,
     businessType: 'Individual',
     cameraModels: 'N/A',
@@ -485,6 +497,8 @@ export const photographyVendors = [
       website: 'www.pixelperfect.com',
       address: '123 Editing Lane, Madurai - 625001'
     },
+    whatsappNumber: '+919876543216',
+    contactNumber: '+919876543216',
     socialMedia: {
       instagram: '@pixelperfect',
       facebook: '/pixelperfect'
@@ -536,7 +550,7 @@ export const photographyVendors = [
     location: 'Ahmedabad, Gujarat',
     rating: 4.6,
     totalReviews: 78,
-    priceRange: '₹15,000 - ₹75,000',
+    budgetRange: '₹15,000 - ₹75,000',
     experience: 6,
     businessType: 'Partnership',
     cameraModels: 'N/A',
@@ -556,6 +570,8 @@ export const photographyVendors = [
       website: 'www.memoryalbums.com',
       address: '456 Album Street, Ahmedabad - 380001'
     },
+    whatsappNumber: '+919876543217',
+    contactNumber: '+919876543217',
     socialMedia: {
       instagram: '@memoryalbums',
       facebook: '/memoryalbums'
@@ -607,7 +623,7 @@ export const photographyVendors = [
     location: 'Mumbai, Maharashtra',
     rating: 4.9,
     totalReviews: 167,
-    priceRange: '₹50,000 - ₹3,00,000',
+    budgetRange: '₹50,000 - ₹3,00,000',
     experience: 11,
     businessType: 'Private Limited',
     cameraModels: 'Hasselblad H6D, Canon EOS R5',
@@ -627,6 +643,8 @@ export const photographyVendors = [
       website: 'www.styleframe.com',
       address: '789 Fashion Avenue, Mumbai - 400001'
     },
+    whatsappNumber: '+919876543218',
+    contactNumber: '+919876543218',
     socialMedia: {
       instagram: '@styleframestudio',
       facebook: '/styleframe',
@@ -679,7 +697,7 @@ export const photographyVendors = [
     location: 'Delhi, Delhi',
     rating: 4.8,
     totalReviews: 112,
-    priceRange: '₹40,000 - ₹2,50,000',
+    budgetRange: '₹40,000 - ₹2,50,000',
     experience: 8,
     businessType: 'Proprietorship',
     cameraModels: 'Fujifilm X-T4, Sony A7RIV',
@@ -699,6 +717,8 @@ export const photographyVendors = [
       website: 'www.urbanlifestyle.com',
       address: '123 Lifestyle Street, Delhi - 110001'
     },
+    whatsappNumber: '+919876543219',
+    contactNumber: '+919876543219',
     socialMedia: {
       instagram: '@urbanlifestyle',
       facebook: '/urbanlifestyle'
@@ -750,7 +770,7 @@ export const photographyVendors = [
     location: 'Bangalore, Karnataka',
     rating: 4.7,
     totalReviews: 98,
-    priceRange: '₹30,000 - ₹2,00,000',
+    budgetRange: '₹30,000 - ₹2,00,000',
     experience: 13,
     businessType: 'Private Limited',
     cameraModels: 'Phase One IQ4, Canon 1DX Mark III',
@@ -770,6 +790,8 @@ export const photographyVendors = [
       website: 'www.businesslens.com',
       address: '456 Commercial Street, Bangalore - 560001'
     },
+    whatsappNumber: '+919876543220',
+    contactNumber: '+919876543220',
     socialMedia: {
       instagram: '@businesslens',
       facebook: '/businesslens',
@@ -822,7 +844,7 @@ export const photographyVendors = [
     location: 'Pune, Maharashtra',
     rating: 4.8,
     totalReviews: 87,
-    priceRange: '₹50,000 - ₹3,00,000',
+    budgetRange: '₹50,000 - ₹3,00,000',
     experience: 9,
     businessType: 'Partnership',
     cameraModels: 'Sony A9II, Canon EOS R3',
@@ -842,6 +864,8 @@ export const photographyVendors = [
       website: 'www.brandvisuals.com',
       address: '789 Brand Avenue, Pune - 411001'
     },
+    whatsappNumber: '+919876543221',
+    contactNumber: '+919876543221',
     socialMedia: {
       instagram: '@brandvisuals',
       facebook: '/brandvisuals',
@@ -894,7 +918,7 @@ export const photographyVendors = [
     location: 'Chennai, Tamil Nadu',
     rating: 4.9,
     totalReviews: 145,
-    priceRange: '₹25,000 - ₹1,50,000',
+    budgetRange: '₹25,000 - ₹1,50,000',
     experience: 15,
     businessType: 'Individual',
     cameraModels: 'Nikon D850, Canon EOS R',
@@ -914,6 +938,8 @@ export const photographyVendors = [
       website: 'www.culturalheritage.com',
       address: '123 Temple Road, Chennai - 600001'
     },
+    whatsappNumber: '+919876543222',
+    contactNumber: '+919876543222',
     socialMedia: {
       instagram: '@culturalheritage',
       facebook: '/culturalheritage'
@@ -965,7 +991,7 @@ export const photographyVendors = [
     location: 'Kanyakumari, Tamil Nadu',
     rating: 4.8,
     totalReviews: 112,
-    priceRange: '₹20,000 - ₹1,00,000',
+    budgetRange: '₹20,000 - ₹1,00,000',
     experience: 12,
     businessType: 'Proprietorship',
     cameraModels: 'Canon 90D, Sony A7III',
@@ -985,6 +1011,8 @@ export const photographyVendors = [
       website: 'www.divinemoments.com',
       address: '456 Temple Street, Kanyakumari - 629001'
     },
+    whatsappNumber: '+919876543223',
+    contactNumber: '+919876543223',
     socialMedia: {
       instagram: '@divinemoments',
       facebook: '/divinemoments'
@@ -1036,7 +1064,7 @@ export const photographyVendors = [
     location: 'Chennai, Tamil Nadu',
     rating: 4.9,
     totalReviews: 178,
-    priceRange: '₹15,000 - ₹80,000',
+    budgetRange: '₹15,000 - ₹80,000',
     experience: 7,
     businessType: 'Individual',
     cameraModels: 'Canon EOS R6, Sony A7C',
@@ -1056,6 +1084,8 @@ export const photographyVendors = [
       website: 'www.littleangels.com',
       address: '789 Kids Street, Chennai - 600001'
     },
+    whatsappNumber: '+919876543224',
+    contactNumber: '+919876543224',
     socialMedia: {
       instagram: '@littleangels',
       facebook: '/littleangels'
@@ -1108,7 +1138,7 @@ export const photographyVendors = [
     location: 'Coimbatore, Tamil Nadu',
     rating: 4.7,
     totalReviews: 89,
-    priceRange: '₹20,000 - ₹1,00,000',
+    budgetRange: '₹20,000 - ₹1,00,000',
     experience: 5,
     businessType: 'Partnership',
     cameraModels: 'Nikon Z6II, Fujifilm X-T4',
@@ -1128,6 +1158,8 @@ export const photographyVendors = [
       website: 'www.specialmoments.com',
       address: '321 Celebration Road, Coimbatore - 641001'
     },
+    whatsappNumber: '+919876543225',
+    contactNumber: '+919876543225',
     socialMedia: {
       instagram: '@specialmoments',
       facebook: '/specialmoments'

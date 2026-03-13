@@ -9,8 +9,9 @@ import ledeffects from '../assets/ledeffects.jpg';
 import kidsentertainment from '../assets/kidsentertainment.jpg';
 import photobanner1 from '../assets/enbanner.jpg';
 import photobanner2 from '../assets/enbanner2.jpg';
-// Add a matrimony banner image
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
+import VendorDetails from '../Components/VendorDetails';
+import { entertainmentVendors } from '../data/entertainmentData'; // IMPORT THE VENDORS DATA
 
 const Entertainment = () => {
   const navigate = useNavigate();
@@ -55,6 +56,10 @@ const Entertainment = () => {
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // Vendor details modal state
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -155,8 +160,17 @@ const Entertainment = () => {
     "Outstation"
   ];
 
-  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Bangalore', 'Hyderabad', 'Mumbai', 'Delhi'];
+  const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi', 'Gujarat'];
+  const districts = {
+    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Kanyakumari', 'Tirunelveli'],
+    'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur', 'Kollam'],
+    'Karnataka': ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum'],
+    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Nellore', 'Tirupati'],
+    'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Aurangabad'],
+    'Delhi': ['New Delhi', 'South Delhi', 'North Delhi', 'East Delhi', 'West Delhi'],
+    'Gujarat': ['Ahmedabad', 'Surat', 'Vadodara', 'Rajkot', 'Gandhinagar']
+  };
 
   const handleCategoryClick = (categoryName) => {
     let eventType = categoryName;
@@ -230,534 +244,8 @@ const Entertainment = () => {
     });
   };
 
-  // Sample vendor data with extended fields matching Entertainment form
-  const vendors = [
-    // Wedding MCs
-    {
-      id: 1,
-      name: 'Master of Ceremonies',
-      businessName: 'Master of Ceremonies Entertainment',
-      businessCategory: 'Wedding MCs',
-      eventType: 'Wedding MCs',
-      personName: 'Rajesh Kumar',
-      designation: 'Lead MC',
-      description: 'Professional wedding MC with 10+ years experience in hosting memorable wedding events',
-      services: ['Wedding Hosting', 'Event Coordination', 'Audience Engagement', 'Script Writing', 'Bilingual MC'],
-      logo: weddingmc,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹20,000 - ₹1,00,000',
-      serviceTypes: ['MC / Anchor'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      businessType: 'Proprietorship',
-      experience: 10,
-      performanceDuration: 4,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 500,
-      backupEquipment: 'yes',
-      teamSize: 2,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹5,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 2,
-      name: 'Celebration Hosts',
-      businessName: 'Celebration Hosts MC Services',
-      businessCategory: 'Wedding MCs',
-      eventType: 'Wedding MCs',
-      personName: 'Priya Sharma',
-      designation: 'Wedding Host',
-      description: 'Energetic and engaging MC services for weddings and special celebrations',
-      services: ['Traditional Weddings', 'Modern Events', 'Interactive Games', 'Guest Management', 'Multilingual Hosting'],
-      logo: weddingmc,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹1,20,000',
-      serviceTypes: ['MC / Anchor'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement'],
-      businessType: 'Individual',
-      experience: 8,
-      performanceDuration: 5,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 300,
-      backupEquipment: 'yes',
-      teamSize: 1,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '30%',
-      overtimeCharges: '₹4,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // DJ & Remix
-    {
-      id: 3,
-      name: 'Sound Waves DJ',
-      businessName: 'Sound Waves DJ Entertainment',
-      businessCategory: 'DJ & Remix',
-      eventType: 'DJ & Remix',
-      personName: 'Arun Mehta',
-      designation: 'Head DJ',
-      description: 'Professional DJ services with latest music collection and state-of-the-art equipment',
-      services: ['Wedding Mixes', 'Bollywood Remixes', 'International Music', 'Sound System Setup', 'Light Effects'],
-      logo: dj,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹15,000 - ₹80,000',
-      serviceTypes: ['DJ & Music', 'Sound & Light Systems'],
-      eventCoverage: ['Wedding', 'Reception', 'Sangeet / Mehendi', 'Pre-Wedding Events'],
-      businessType: 'Partnership',
-      experience: 12,
-      performanceDuration: 6,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'yes',
-      ledEffects: 'yes',
-      powerRequirement: 2000,
-      backupEquipment: 'yes',
-      teamSize: 2,
-      uniformProvided: 'no',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹6,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 4,
-      name: 'Beat Masters',
-      businessName: 'Beat Masters DJ Services',
-      businessCategory: 'DJ & Remix',
-      eventType: 'DJ & Remix',
-      personName: 'Sneha Reddy',
-      designation: 'DJ Specialist',
-      description: 'Creating perfect party atmosphere with custom music mixes and professional DJing',
-      services: ['Custom Playlists', 'Live Mixing', 'Karaoke Setup', 'Wireless Mic System', 'Party Music'],
-      logo: dj,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹12,000 - ₹75,000',
-      serviceTypes: ['DJ & Music'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Post-Wedding Events'],
-      businessType: 'Proprietorship',
-      experience: 6,
-      performanceDuration: 5,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'yes',
-      ledEffects: 'no',
-      powerRequirement: 1500,
-      backupEquipment: 'yes',
-      teamSize: 2,
-      uniformProvided: 'no',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '20%',
-      overtimeCharges: '₹5,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Dance Shows
-    {
-      id: 5,
-      name: 'Dance Express',
-      businessName: 'Dance Express Performances',
-      businessCategory: 'Dance Shows',
-      eventType: 'Dance Shows',
-      personName: 'Vikram Singh',
-      designation: 'Dance Director',
-      description: 'Professional dance performances for weddings and special events with trained artists',
-      services: ['Bollywood Dance', 'Traditional Dances', 'Fusion Performances', 'Group Dances', 'Solo Performances'],
-      logo: danceshow,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹1,50,000',
-      serviceTypes: ['Dance Troupe'],
-      eventCoverage: ['Wedding', 'Reception', 'Sangeet / Mehendi', 'Pre-Wedding Events'],
-      businessType: 'Private Limited',
-      experience: 15,
-      performanceDuration: 3,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 0,
-      backupEquipment: 'no',
-      teamSize: 8,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '30%',
-      overtimeCharges: '₹8,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 6,
-      name: 'Rhythm Masters',
-      businessName: 'Rhythm Masters Dance Troupe',
-      businessCategory: 'Dance Shows',
-      eventType: 'Dance Shows',
-      personName: 'Anjali Nair',
-      designation: 'Choreographer',
-      description: 'Energetic dance performances that add glamour and excitement to your celebrations',
-      services: ['Themed Performances', 'Classical Dances', 'Contemporary Dance', 'Interactive Performances', 'Costume Design'],
-      logo: danceshow,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹20,000 - ₹1,20,000',
-      serviceTypes: ['Dance Troupe'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      businessType: 'Partnership',
-      experience: 9,
-      performanceDuration: 4,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 0,
-      backupEquipment: 'no',
-      teamSize: 6,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹6,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Live Music
-    {
-      id: 7,
-      name: 'Melody Makers',
-      businessName: 'Melody Makers Live Music',
-      businessCategory: 'Live Music',
-      eventType: 'Live Music',
-      personName: 'Rahul Verma',
-      designation: 'Music Director',
-      description: 'Live musical performances with professional singers and instrumentalists',
-      services: ['Live Singing', 'Instrumental Music', 'Band Performances', 'Classical Music', 'Fusion Music'],
-      logo: livemusic,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹30,000 - ₹2,00,000',
-      serviceTypes: ['Live Band / Orchestra', 'Classical Music / Nadaswaram'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      businessType: 'Partnership',
-      experience: 14,
-      performanceDuration: 5,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 1000,
-      backupEquipment: 'yes',
-      teamSize: 5,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹7,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 8,
-      name: 'Harmony Ensemble',
-      businessName: 'Harmony Ensemble Music Group',
-      businessCategory: 'Live Music',
-      eventType: 'Live Music',
-      personName: 'Meera Patel',
-      designation: 'Lead Vocalist',
-      description: 'Creating beautiful musical ambiance with live performances for special occasions',
-      services: ['Wedding Songs', 'Background Music', 'Cultural Music', 'Western Music', 'Custom Compositions'],
-      logo: livemusic,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹25,000 - ₹1,80,000',
-      serviceTypes: ['Live Band / Orchestra'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement'],
-      businessType: 'Proprietorship',
-      experience: 7,
-      performanceDuration: 4,
-      customPerformances: 'yes',
-      soundSystem: 'yes',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 800,
-      backupEquipment: 'yes',
-      teamSize: 4,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '20%',
-      overtimeCharges: '₹5,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Photo Booths
-    {
-      id: 9,
-      name: 'Snap Happy',
-      businessName: 'Snap Happy Photo Booth',
-      businessCategory: 'Photo Booths',
-      eventType: 'Photo Booths',
-      personName: 'Aisha Khan',
-      designation: 'Booth Manager',
-      description: 'Fun and interactive photo booth services for weddings and events with instant prints',
-      services: ['Instant Prints', 'Custom Backdrops', 'Props Collection', 'Digital Copies', 'Social Media Sharing'],
-      logo: photobooth,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹10,000 - ₹50,000',
-      serviceTypes: ['Games & Interactive Activities'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Sangeet / Mehendi', 'Pre-Wedding Events', 'Post-Wedding Events'],
-      businessType: 'Private Limited',
-      experience: 5,
-      performanceDuration: 6,
-      customPerformances: 'no',
-      soundSystem: 'no',
-      lightingSetup: 'yes',
-      ledEffects: 'yes',
-      powerRequirement: 500,
-      backupEquipment: 'yes',
-      teamSize: 2,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'no',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹3,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 10,
-      name: 'Memory Booth',
-      businessName: 'Memory Booth Services',
-      businessCategory: 'Photo Booths',
-      eventType: 'Photo Booths',
-      personName: 'Kabir Malhotra',
-      designation: 'Photo Booth Specialist',
-      description: 'Creating memorable photo experiences with themed booths and instant sharing options',
-      services: ['360° Video Booth', 'GIF Booth', 'Green Screen', 'Custom Themes', 'Online Gallery'],
-      logo: photobooth,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹12,000 - ₹60,000',
-      serviceTypes: ['Games & Interactive Activities'],
-      eventCoverage: ['Wedding', 'Reception', 'Engagement', 'Sangeet / Mehendi'],
-      businessType: 'Proprietorship',
-      experience: 4,
-      performanceDuration: 5,
-      customPerformances: 'no',
-      soundSystem: 'no',
-      lightingSetup: 'yes',
-      ledEffects: 'yes',
-      powerRequirement: 500,
-      backupEquipment: 'yes',
-      teamSize: 2,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'no',
-      advanceRequired: 'yes',
-      advanceAmount: '20%',
-      overtimeCharges: '₹2,500/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // LED Effects
-    {
-      id: 11,
-      name: 'Light Magic',
-      businessName: 'Light Magic LED Effects',
-      businessCategory: 'LED Effects',
-      eventType: 'LED Effects',
-      personName: 'Sanjay Gupta',
-      designation: 'Lighting Designer',
-      description: 'Professional LED lighting effects and installations for weddings and events',
-      services: ['LED Walls', 'Light Shows', 'Stage Lighting', 'Ambience Lighting', 'Special Effects'],
-      logo: ledeffects,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹1,00,000',
-      serviceTypes: ['Sound & Light Systems'],
-      eventCoverage: ['Wedding', 'Reception', 'Sangeet / Mehendi', 'Pre-Wedding Events', 'Post-Wedding Events'],
-      businessType: 'Private Limited',
-      experience: 11,
-      performanceDuration: 8,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'yes',
-      ledEffects: 'yes',
-      powerRequirement: 3000,
-      backupEquipment: 'yes',
-      teamSize: 3,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District', 'Outstation'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'no',
-      advanceRequired: 'yes',
-      advanceAmount: '30%',
-      overtimeCharges: '₹8,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 12,
-      name: 'Glow Effects',
-      businessName: 'Glow Effects Lighting',
-      businessCategory: 'LED Effects',
-      eventType: 'LED Effects',
-      personName: 'Neha Joshi',
-      designation: 'Effects Specialist',
-      description: 'Creating magical lighting effects that transform event spaces',
-      services: ['LED Dance Floor', 'Moving Lights', 'Projection Mapping', 'Color Effects', 'Sound Sync Lights'],
-      logo: ledeffects,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹25,000 - ₹1,20,000',
-      serviceTypes: ['Sound & Light Systems'],
-      eventCoverage: ['Wedding', 'Reception', 'Sangeet / Mehendi'],
-      businessType: 'Partnership',
-      experience: 8,
-      performanceDuration: 6,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'yes',
-      ledEffects: 'yes',
-      powerRequirement: 2500,
-      backupEquipment: 'yes',
-      teamSize: 4,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'no',
-      advanceRequired: 'yes',
-      advanceAmount: '25%',
-      overtimeCharges: '₹6,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Kids Entertainment
-    {
-      id: 13,
-      name: 'Kids Kingdom',
-      businessName: 'Kids Kingdom Entertainment',
-      businessCategory: 'Kids Entertainment',
-      eventType: 'Kids Entertainment',
-      personName: 'Venkatesh Iyer',
-      designation: 'Kids Activity Coordinator',
-      description: 'Specialized entertainment services for children at weddings and family events',
-      services: ['Magic Shows', 'Face Painting', 'Games & Activities', 'Balloon Art', 'Storytelling'],
-      logo: kidsentertainment,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹8,000 - ₹40,000',
-      serviceTypes: ['Magic Show', 'Games & Interactive Activities'],
-      eventCoverage: ['Wedding', 'Engagement', 'Pre-Wedding Events', 'Post-Wedding Events'],
-      businessType: 'Proprietorship',
-      experience: 7,
-      performanceDuration: 3,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 200,
-      backupEquipment: 'no',
-      teamSize: 3,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local', 'Within District'],
-      travelCharges: 'yes',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '20%',
-      overtimeCharges: '₹2,000/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 14,
-      name: 'Little Stars',
-      businessName: 'Little Stars Kids Entertainment',
-      businessCategory: 'Kids Entertainment',
-      eventType: 'Kids Entertainment',
-      personName: 'Radha Krishnan',
-      designation: 'Kids Entertainer',
-      description: 'Engaging and fun entertainment activities specially designed for children',
-      services: ['Puppet Shows', 'Art & Craft', 'Treasure Hunts', 'Interactive Games', 'Toy Zone'],
-      logo: kidsentertainment,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹10,000 - ₹50,000',
-      serviceTypes: ['Magic Show', 'Games & Interactive Activities'],
-      eventCoverage: ['Wedding', 'Engagement', 'Pre-Wedding Events'],
-      businessType: 'Individual',
-      experience: 6,
-      performanceDuration: 4,
-      customPerformances: 'yes',
-      soundSystem: 'no',
-      lightingSetup: 'no',
-      ledEffects: 'no',
-      powerRequirement: 200,
-      backupEquipment: 'no',
-      teamSize: 2,
-      uniformProvided: 'yes',
-      setupIncluded: 'yes',
-      preferredLocations: ['Local'],
-      travelCharges: 'no',
-      noiseRestrictions: 'yes',
-      advanceRequired: 'yes',
-      advanceAmount: '15%',
-      overtimeCharges: '₹1,500/hour',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    }
-  ];
+  // USE THE IMPORTED VENDORS DATA
+  const vendors = entertainmentVendors;
 
   // Enhanced filter function with all entertainment form fields
   const filteredVendors = vendors.filter(vendor => {
@@ -775,7 +263,7 @@ const Entertainment = () => {
       if (vendorMinPrice < minPrice || vendorMinPrice > maxPrice) return false;
     }
     
-    // Service type filter (from entertainment form)
+    // Service type filter
     if (selectedServices.length > 0) {
       if (!vendor.serviceTypes) return false;
       const hasMatchingService = selectedServices.some(service => 
@@ -816,7 +304,7 @@ const Entertainment = () => {
     if (lightingSetup && vendor.lightingSetup !== lightingSetup) return false;
     if (ledEffects && vendor.ledEffects !== ledEffects) return false;
     
-    // Power requirement filter (if less than or equal to provided power)
+    // Power requirement filter
     if (powerRequirement) {
       const maxPower = parseInt(powerRequirement) || Infinity;
       if (vendor.powerRequirement > maxPower) return false;
@@ -826,8 +314,10 @@ const Entertainment = () => {
     if (backupEquipment && vendor.backupEquipment !== backupEquipment) return false;
     
     // Team size filter
-    if (teamSize === 'yes' && (!vendor.teamSize || vendor.teamSize === 0)) return false;
-    if (teamSize === 'no' && vendor.teamSize > 0) return false;
+    if (teamSize) {
+      const minTeamSize = parseInt(teamSize) || 0;
+      if (vendor.teamSize < minTeamSize) return false;
+    }
     
     // Uniform filter
     if (uniformProvided && vendor.uniformProvided !== uniformProvided) return false;
@@ -853,7 +343,7 @@ const Entertainment = () => {
     // Advance required filter
     if (advanceRequired && vendor.advanceRequired !== advanceRequired) return false;
     
-    // Overtime charges filter (if they have overtime charges)
+    // Overtime charges filter
     if (overtimeCharges === 'yes' && !vendor.overtimeCharges) return false;
     if (overtimeCharges === 'no' && vendor.overtimeCharges) return false;
     
@@ -864,25 +354,45 @@ const Entertainment = () => {
     return true;
   });
 
-  // Desktop Filter Pages - UPDATED to match Entertainment form
+  // Desktop Filter Pages (keep as is from your original code)
   const filterPages = [
+    // PAGE 1 ── Vendor Details
     {
-      title: "Budget & Service Type",
+      title: "Vendor Details",
       content: (
         <div className="space-y-3">
+          {/* Type of Entertainment Services - checkboxes */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Entertainment Services</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {serviceTypes.map(service => (
+                <label key={service} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Budget Range */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-2">
               <input
                 type="number"
-                placeholder="Min"
+                placeholder="Min Budget"
                 value={minBudget}
                 onChange={(e) => setMinBudget(e.target.value)}
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
               <input
                 type="number"
-                placeholder="Max"
+                placeholder="Max Budget"
                 value={maxBudget}
                 onChange={(e) => setMaxBudget(e.target.value)}
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
@@ -890,51 +400,12 @@ const Entertainment = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Entertainment Category</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Categories</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Service Types</label>
-            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{service}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Location & Coverage",
-      content: (
-        <div className="space-y-3">
+          {/* State Selection */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
             <select
               value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
+              onChange={(e) => { setSelectedState(e.target.value); setSelectedDistrict(''); }}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             >
               <option value="">All States</option>
@@ -944,395 +415,189 @@ const Entertainment = () => {
             </select>
           </div>
 
+          {/* District Selection */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
               disabled={!selectedState}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100 disabled:text-gray-500"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
             >
               <option value="">All Districts</option>
-              {districts.map((district) => (
+              {selectedState && districts[selectedState]?.map((district) => (
                 <option key={district} value={district}>{district}</option>
               ))}
             </select>
           </div>
+        </div>
+      )
+    },
 
+    // PAGE 2 ── Business & Legal
+    {
+      title: "Business & Legal",
+      content: (
+        <div className="space-y-3">
+          {/* Business Type - radio */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Service Locations</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
             <div className="grid grid-cols-2 gap-1.5">
-              {locationOptions.map(location => (
-                <label key={location} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={preferredLocations.includes(location)}
-                    onChange={() => handleLocationToggle(location)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  {location}
+              {businessTypes.map(type => (
+                <label key={type} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="radio"
+                    name="businessType"
+                    value={type}
+                    checked={businessType === type}
+                    onChange={(e) => setBusinessType(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{type}</span>
                 </label>
               ))}
             </div>
           </div>
-
+          {/* Years of Experience */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="travelCharges" 
-                  value="yes"
-                  checked={travelCharges === "yes"}
-                  onChange={(e) => setTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="travelCharges" 
-                  value="no"
-                  checked={travelCharges === "no"}
-                  onChange={(e) => setTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
+            <input
+              type="number"
+              placeholder="Enter years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
         </div>
       )
     },
+
+    // PAGE 3 ── Event & Performance
     {
-      title: "Event Coverage",
+      title: "Event & Performance",
       content: (
         <div className="space-y-3">
+          {/* Events Covered */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Events Covered</label>
-            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
               {eventCoverageTypes.map(event => (
-                <label key={event} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={event} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedEvents.includes(event)}
                     onChange={() => handleEventCoverageToggle(event)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{event}</span>
                 </label>
               ))}
             </div>
           </div>
 
+          {/* Performance Duration */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Custom Performances Available</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="customPerformances" 
-                  value="yes"
-                  checked={customPerformances === "yes"}
-                  onChange={(e) => setCustomPerformances(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="customPerformances" 
-                  value="no"
-                  checked={customPerformances === "no"}
-                  onChange={(e) => setCustomPerformances(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Performance Duration (Hours)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Typical Performance Duration (Hours)</label>
             <input
               type="number"
-              placeholder="Minimum hours"
+              placeholder="Enter hours"
               value={performanceDuration}
               onChange={(e) => setPerformanceDuration(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
+
+          {/* Custom Performances */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Custom Performances Available</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input type="radio" name="customPerformances" value="yes" checked={customPerformances === "yes"} onChange={(e) => setCustomPerformances(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input type="radio" name="customPerformances" value="no" checked={customPerformances === "no"} onChange={(e) => setCustomPerformances(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                No
+              </label>
+            </div>
+          </div>
         </div>
       )
     },
+
+    // PAGE 4 ── Equipment & Setup
     {
       title: "Equipment & Setup",
       content: (
         <div className="space-y-3">
+          {/* Sound System Provided */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Sound System Provided</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="soundSystem" 
-                  value="yes"
-                  checked={soundSystem === "yes"}
-                  onChange={(e) => setSoundSystem(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="soundSystem" value="yes" checked={soundSystem === "yes"} onChange={(e) => setSoundSystem(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="soundSystem" 
-                  value="no"
-                  checked={soundSystem === "no"}
-                  onChange={(e) => setSoundSystem(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="soundSystem" value="no" checked={soundSystem === "no"} onChange={(e) => setSoundSystem(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
 
+          {/* Lighting Setup Provided */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">Lighting Setup Provided</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="lightingSetup" 
-                  value="yes"
-                  checked={lightingSetup === "yes"}
-                  onChange={(e) => setLightingSetup(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="lightingSetup" value="yes" checked={lightingSetup === "yes"} onChange={(e) => setLightingSetup(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="lightingSetup" 
-                  value="no"
-                  checked={lightingSetup === "no"}
-                  onChange={(e) => setLightingSetup(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="lightingSetup" value="no" checked={lightingSetup === "no"} onChange={(e) => setLightingSetup(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
 
+          {/* LED / Special Effects */}
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">LED / Special Effects</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="ledEffects" 
-                  value="yes"
-                  checked={ledEffects === "yes"}
-                  onChange={(e) => setLedEffects(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="ledEffects" value="yes" checked={ledEffects === "yes"} onChange={(e) => setLedEffects(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="ledEffects" 
-                  value="no"
-                  checked={ledEffects === "no"}
-                  onChange={(e) => setLedEffects(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="ledEffects" value="no" checked={ledEffects === "no"} onChange={(e) => setLedEffects(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
 
+          {/* Power Requirement */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Backup Equipment Available</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="backupEquipment" 
-                  value="yes"
-                  checked={backupEquipment === "yes"}
-                  onChange={(e) => setBackupEquipment(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="backupEquipment" 
-                  value="no"
-                  checked={backupEquipment === "no"}
-                  onChange={(e) => setBackupEquipment(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Setup & Dismantling Included</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="setupIncluded" 
-                  value="yes"
-                  checked={setupIncluded === "yes"}
-                  onChange={(e) => setSetupIncluded(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="setupIncluded" 
-                  value="no"
-                  checked={setupIncluded === "no"}
-                  onChange={(e) => setSetupIncluded(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Manpower & Business",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Business Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Power Requirement (Watts)</label>
             <input
               type="number"
-              placeholder="Minimum years"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
+              placeholder="Enter watts"
+              value={powerRequirement}
+              onChange={(e) => setPowerRequirement(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
+          {/* Backup Equipment Available */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Team / Crew Available</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Backup Equipment Available</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="teamSize" 
-                  value="yes"
-                  checked={teamSize === "yes"}
-                  onChange={(e) => setTeamSize(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="backupEquipment" value="yes" checked={backupEquipment === "yes"} onChange={(e) => setBackupEquipment(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="teamSize" 
-                  value="no"
-                  checked={teamSize === "no"}
-                  onChange={(e) => setTeamSize(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Uniform / Dress Code Provided</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="uniformProvided" 
-                  value="yes"
-                  checked={uniformProvided === "yes"}
-                  onChange={(e) => setUniformProvided(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="uniformProvided" 
-                  value="no"
-                  checked={uniformProvided === "no"}
-                  onChange={(e) => setUniformProvided(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Noise/Time Restrictions Aware</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="noiseRestrictions" 
-                  value="yes"
-                  checked={noiseRestrictions === "yes"}
-                  onChange={(e) => setNoiseRestrictions(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="noiseRestrictions" 
-                  value="no"
-                  checked={noiseRestrictions === "no"}
-                  onChange={(e) => setNoiseRestrictions(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="backupEquipment" value="no" checked={backupEquipment === "no"} onChange={(e) => setBackupEquipment(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
@@ -1340,289 +605,255 @@ const Entertainment = () => {
         </div>
       )
     },
+
+    // PAGE 5 ── Manpower & Logistics
     {
-      title: "Pricing & Documents",
+      title: "Manpower & Logistics",
       content: (
         <div className="space-y-3">
+          {/* Number of Performers / Crew */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Number of Performers / Crew</label>
+            <input
+              type="number"
+              placeholder="Enter number"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          {/* Uniform / Dress Code Provided */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Uniform / Dress Code Provided</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="advanceRequired" 
-                  value="yes"
-                  checked={advanceRequired === "yes"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="uniformProvided" value="yes" checked={uniformProvided === "yes"} onChange={(e) => setUniformProvided(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="advanceRequired" 
-                  value="no"
-                  checked={advanceRequired === "no"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="uniformProvided" value="no" checked={uniformProvided === "no"} onChange={(e) => setUniformProvided(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
 
+          {/* Setup & Dismantling Included */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Has Overtime Charges</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Setup & Dismantling Included</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="overtimeCharges" 
-                  value="yes"
-                  checked={overtimeCharges === "yes"}
-                  onChange={(e) => setOvertimeCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="setupIncluded" value="yes" checked={setupIncluded === "yes"} onChange={(e) => setSetupIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
               <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="overtimeCharges" 
-                  value="no"
-                  checked={overtimeCharges === "no"}
-                  onChange={(e) => setOvertimeCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                <input type="radio" name="setupIncluded" value="no" checked={setupIncluded === "no"} onChange={(e) => setSetupIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Available</label>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasGST" 
-                  value="yes"
-                  checked={hasGST === "yes"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Has GST
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasGST" 
-                  value="no"
-                  checked={hasGST === "no"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No GST
-              </label>
-              <div className="border-t border-gray-200 my-1"></div>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No PAN
               </label>
             </div>
           </div>
         </div>
       )
-    }
-  ];
+    },
 
-  // Mobile Filter Pages - SAME CONTENT AS DESKTOP
-  const mobileFilterPages = [
+    // PAGE 6 ── Service Coverage
     {
-      title: "Budget & Service Type",
+      title: "Service Coverage",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-3">
+          {/* Preferred Locations */}
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹)</label>
-            <div className="flex gap-1">
-              <input
-                type="number"
-                placeholder="Min"
-                value={minBudget}
-                onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
+            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Locations</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {locationOptions.map(location => (
+                <label key={location} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={preferredLocations.includes(location)}
+                    onChange={() => handleLocationToggle(location)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  {location}
+                </label>
+              ))}
             </div>
           </div>
 
+          {/* Travel / Accommodation Charges Applicable */}
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Entertainment Category</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Categories</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel / Accommodation Charges Applicable</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input type="radio" name="travelCharges" value="yes" checked={travelCharges === "yes"} onChange={(e) => setTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input type="radio" name="travelCharges" value="no" checked={travelCharges === "no"} onChange={(e) => setTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                No
+              </label>
+            </div>
           </div>
 
+          {/* Noise / Time Restrictions Aware */}
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Types</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Noise / Time Restrictions Aware</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input type="radio" name="noiseRestrictions" value="yes" checked={noiseRestrictions === "yes"} onChange={(e) => setNoiseRestrictions(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input type="radio" name="noiseRestrictions" value="no" checked={noiseRestrictions === "no"} onChange={(e) => setNoiseRestrictions(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 7 ── Packages & Pricing
+    {
+      title: "Packages & Pricing",
+      content: (
+        <div className="space-y-3">
+          {/* Advance Payment Required */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
+                <input type="radio" name="advanceRequired" value="yes" checked={advanceRequired === "yes"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                Yes
+              </label>
+              <label className="flex items-center gap-1">
+                <input type="radio" name="advanceRequired" value="no" checked={advanceRequired === "no"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                No
+              </label>
+            </div>
+          </div>
+
+          {/* Advance Amount */}
+          {advanceRequired === "yes" && (
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Advance Amount</label>
+              <input
+                type="text"
+                placeholder="Enter advance % or amount"
+                value={advanceAmount}
+                onChange={(e) => setAdvanceAmount(e.target.value)}
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          )}
+
+          {/* Overtime Charges */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Overtime Charges (if any)</label>
+            <input
+              type="text"
+              placeholder="Enter overtime charges"
+              value={overtimeCharges}
+              onChange={(e) => setOvertimeCharges(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+  ];
+
+  // Mobile filter pages (keep as is from your original code)
+  const mobileFilterPages = [
+    // PAGE 1 ── Vendor Details
+    {
+      title: "Vendor Details",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Type of Entertainment Services</label>
+            <div className="grid grid-cols-1 gap-1 max-h-28 overflow-y-auto p-1 border border-red-100 rounded">
               {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
+                <label key={service} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedServices.includes(service)} onChange={() => handleServiceToggle(service)} className="w-3.5 h-3.5 accent-red-600" />
                   <span className="truncate">{service}</span>
                 </label>
               ))}
             </div>
           </div>
-        </div>
-      )
-    },
-    {
-      title: "Location & Coverage",
-      content: (
-        <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All States</option>
-              {states.map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
-            >
-              <option value="">All Districts</option>
-              {districts.map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Other Service</label>
             <input
               type="text"
-              placeholder="Enter city"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              placeholder="Specify other service"
+              value={otherService}
+              onChange={(e) => setOtherService(e.target.value)}
+              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded"
             />
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Preferred Service Locations</label>
-            <div className="grid grid-cols-2 gap-1">
-              {locationOptions.map(location => (
-                <label key={location} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={preferredLocations.includes(location)}
-                    onChange={() => handleLocationToggle(location)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  {location}
-                </label>
-              ))}
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
+            <div className="flex gap-1">
+              <input type="number" placeholder="Min Budget" value={minBudget} onChange={(e) => setMinBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded" />
+              <input type="number" placeholder="Max Budget" value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded" />
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges Applicable</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTravelCharges" 
-                  value="yes"
-                  checked={travelCharges === "yes"}
-                  onChange={(e) => setTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTravelCharges" 
-                  value="no"
-                  checked={travelCharges === "no"}
-                  onChange={(e) => setTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">State</label>
+            <select value={selectedState} onChange={(e) => { setSelectedState(e.target.value); setSelectedDistrict(''); }} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded">
+              <option value="">All States</option>
+              {states.map((state) => <option key={state} value={state}>{state}</option>)}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">District</label>
+            <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} disabled={!selectedState} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded disabled:bg-gray-100">
+              <option value="">All Districts</option>
+              {selectedState && districts[selectedState]?.map((district) => <option key={district} value={district}>{district}</option>)}
+            </select>
           </div>
         </div>
       )
     },
+
+    // PAGE 2 ── Business & Legal
     {
-      title: "Event Coverage",
+      title: "Business & Legal",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Events Covered</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Business Type</label>
+            <div className="grid grid-cols-2 gap-1">
+              {businessTypes.map(type => (
+                <label key={type} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="mobileBusinessType" value={type} checked={businessType === type} onChange={(e) => setBusinessType(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span>{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Years of Experience</label>
+            <input type="number" placeholder="Enter years" value={experience} onChange={(e) => setExperience(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 3 ── Event & Performance
+    {
+      title: "Event & Performance",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Events Covered</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
               {eventCoverageTypes.map(event => (
-                <label key={event} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedEvents.includes(event)}
-                    onChange={() => handleEventCoverageToggle(event)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
+                <label key={event} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedEvents.includes(event)} onChange={() => handleEventCoverageToggle(event)} className="w-3.5 h-3.5 accent-red-600" />
                   <span className="truncate">{event}</span>
                 </label>
               ))}
@@ -1630,420 +861,164 @@ const Entertainment = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Custom Performances Available</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileCustomPerformances" 
-                  value="yes"
-                  checked={customPerformances === "yes"}
-                  onChange={(e) => setCustomPerformances(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Typical Performance Duration (Hours)</label>
+            <input type="number" placeholder="Enter hours" value={performanceDuration} onChange={(e) => setPerformanceDuration(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Custom Performances Available</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="mobileCustomPerformances" value="yes" checked={customPerformances === "yes"} onChange={(e) => setCustomPerformances(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileCustomPerformances" 
-                  value="no"
-                  checked={customPerformances === "no"}
-                  onChange={(e) => setCustomPerformances(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="mobileCustomPerformances" value="no" checked={customPerformances === "no"} onChange={(e) => setCustomPerformances(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Performance Duration (Hours)</label>
-            <input
-              type="number"
-              placeholder="Min hours"
-              value={performanceDuration}
-              onChange={(e) => setPerformanceDuration(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
         </div>
       )
     },
+
+    // PAGE 4 ── Equipment & Setup
     {
       title: "Equipment & Setup",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Sound System Provided</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileSoundSystem" 
-                  value="yes"
-                  checked={soundSystem === "yes"}
-                  onChange={(e) => setSoundSystem(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileSoundSystem" 
-                  value="no"
-                  checked={soundSystem === "no"}
-                  onChange={(e) => setSoundSystem(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Sound System Provided</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileSoundSystem" value="yes" checked={soundSystem === "yes"} onChange={(e) => setSoundSystem(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileSoundSystem" value="no" checked={soundSystem === "no"} onChange={(e) => setSoundSystem(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Lighting Setup Provided</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLightingSetup" 
-                  value="yes"
-                  checked={lightingSetup === "yes"}
-                  onChange={(e) => setLightingSetup(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLightingSetup" 
-                  value="no"
-                  checked={lightingSetup === "no"}
-                  onChange={(e) => setLightingSetup(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Lighting Setup Provided</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileLightingSetup" value="yes" checked={lightingSetup === "yes"} onChange={(e) => setLightingSetup(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileLightingSetup" value="no" checked={lightingSetup === "no"} onChange={(e) => setLightingSetup(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">LED / Special Effects</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLedEffects" 
-                  value="yes"
-                  checked={ledEffects === "yes"}
-                  onChange={(e) => setLedEffects(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileLedEffects" 
-                  value="no"
-                  checked={ledEffects === "no"}
-                  onChange={(e) => setLedEffects(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">LED / Special Effects</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileLedEffects" value="yes" checked={ledEffects === "yes"} onChange={(e) => setLedEffects(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileLedEffects" value="no" checked={ledEffects === "no"} onChange={(e) => setLedEffects(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Backup Equipment Available</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileBackupEquipment" 
-                  value="yes"
-                  checked={backupEquipment === "yes"}
-                  onChange={(e) => setBackupEquipment(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileBackupEquipment" 
-                  value="no"
-                  checked={backupEquipment === "no"}
-                  onChange={(e) => setBackupEquipment(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Power Requirement (Watts)</label>
+            <input type="number" placeholder="Enter watts" value={powerRequirement} onChange={(e) => setPowerRequirement(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Setup & Dismantling Included</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileSetupIncluded" 
-                  value="yes"
-                  checked={setupIncluded === "yes"}
-                  onChange={(e) => setSetupIncluded(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileSetupIncluded" 
-                  value="no"
-                  checked={setupIncluded === "no"}
-                  onChange={(e) => setSetupIncluded(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Backup Equipment Available</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileBackupEquipment" value="yes" checked={backupEquipment === "yes"} onChange={(e) => setBackupEquipment(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileBackupEquipment" value="no" checked={backupEquipment === "no"} onChange={(e) => setBackupEquipment(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
         </div>
       )
     },
+
+    // PAGE 5 ── Manpower & Logistics
     {
-      title: "Manpower & Business",
+      title: "Manpower & Logistics",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Number of Performers / Crew</label>
+            <input type="number" placeholder="Enter number" value={teamSize} onChange={(e) => setTeamSize(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Uniform / Dress Code Provided</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileUniformProvided" value="yes" checked={uniformProvided === "yes"} onChange={(e) => setUniformProvided(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileUniformProvided" value="no" checked={uniformProvided === "no"} onChange={(e) => setUniformProvided(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Setup & Dismantling Included</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileSetupIncluded" value="yes" checked={setupIncluded === "yes"} onChange={(e) => setSetupIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileSetupIncluded" value="no" checked={setupIncluded === "no"} onChange={(e) => setSetupIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 6 ── Service Coverage
+    {
+      title: "Service Coverage",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Preferred Locations</label>
+            <div className="grid grid-cols-2 gap-1">
+              {locationOptions.map(location => (
+                <label key={location} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={preferredLocations.includes(location)} onChange={() => handleLocationToggle(location)} className="w-3.5 h-3.5 accent-red-600" />
+                  {location}
+                </label>
               ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
-            <input
-              type="number"
-              placeholder="Min years"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Team / Crew Available</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTeamSize" 
-                  value="yes"
-                  checked={teamSize === "yes"}
-                  onChange={(e) => setTeamSize(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileTeamSize" 
-                  value="no"
-                  checked={teamSize === "no"}
-                  onChange={(e) => setTeamSize(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Uniform / Dress Code Provided</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileUniformProvided" 
-                  value="yes"
-                  checked={uniformProvided === "yes"}
-                  onChange={(e) => setUniformProvided(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileUniformProvided" 
-                  value="no"
-                  checked={uniformProvided === "no"}
-                  onChange={(e) => setUniformProvided(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Travel / Accommodation Charges Applicable</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileTravelCharges" value="yes" checked={travelCharges === "yes"} onChange={(e) => setTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileTravelCharges" value="no" checked={travelCharges === "no"} onChange={(e) => setTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Noise/Time Restrictions Aware</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileNoiseRestrictions" 
-                  value="yes"
-                  checked={noiseRestrictions === "yes"}
-                  onChange={(e) => setNoiseRestrictions(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileNoiseRestrictions" 
-                  value="no"
-                  checked={noiseRestrictions === "no"}
-                  onChange={(e) => setNoiseRestrictions(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Noise / Time Restrictions Aware</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileNoiseRestrictions" value="yes" checked={noiseRestrictions === "yes"} onChange={(e) => setNoiseRestrictions(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileNoiseRestrictions" value="no" checked={noiseRestrictions === "no"} onChange={(e) => setNoiseRestrictions(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
         </div>
       )
     },
+
+    // PAGE 7 ── Packages & Pricing
     {
-      title: "Pricing & Documents",
+      title: "Packages & Pricing",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Payment Required</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileAdvanceRequired" 
-                  value="yes"
-                  checked={advanceRequired === "yes"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileAdvanceRequired" 
-                  value="no"
-                  checked={advanceRequired === "no"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileAdvanceRequired" value="yes" checked={advanceRequired === "yes"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileAdvanceRequired" value="no" checked={advanceRequired === "no"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
 
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Has Overtime Charges</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileOvertimeCharges" 
-                  value="yes"
-                  checked={overtimeCharges === "yes"}
-                  onChange={(e) => setOvertimeCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileOvertimeCharges" 
-                  value="no"
-                  checked={overtimeCharges === "no"}
-                  onChange={(e) => setOvertimeCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+          {advanceRequired === "yes" && (
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Advance Amount</label>
+              <input type="text" placeholder="Enter advance % or amount" value={advanceAmount} onChange={(e) => setAdvanceAmount(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
             </div>
-          </div>
+          )}
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Documents Available</label>
-            <div className="space-y-1">
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasGST" 
-                  value="yes"
-                  checked={hasGST === "yes"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Has GST
-              </label>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasGST" 
-                  value="no"
-                  checked={hasGST === "no"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No GST
-              </label>
-              <div className="border-t border-gray-200 my-0.5"></div>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No PAN
-              </label>
-            </div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Overtime Charges (if any)</label>
+            <input type="text" placeholder="Enter overtime charges" value={overtimeCharges} onChange={(e) => setOvertimeCharges(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
           </div>
         </div>
       )
-    }
+    },
   ];
 
   // Auto change banner every 3 seconds
@@ -2160,6 +1135,7 @@ const Entertainment = () => {
     if (selectedDistrict) count++;
     if (selectedLocation) count++;
     if (selectedServices.length > 0) count++;
+    if (otherService) count++;
     if (selectedEvents.length > 0) count++;
     if (businessType) count++;
     if (experience) count++;
@@ -2177,10 +1153,20 @@ const Entertainment = () => {
     if (travelCharges) count++;
     if (noiseRestrictions) count++;
     if (advanceRequired) count++;
+    if (advanceAmount) count++;
     if (overtimeCharges) count++;
     if (hasGST) count++;
     if (hasPAN) count++;
     return count;
+  };
+
+  // Handle view details button click
+  const handleViewDetails = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
   };
 
   return (
@@ -2625,14 +1611,14 @@ const Entertainment = () => {
               </section>
             </div>
 
-            {/* Vendor Profiles - UPDATED MOBILE VIEW TO MATCH CATERING PAGE */}
+            {/* Vendor Profiles */}
             <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
                 <div className="space-y-2 md:space-y-4">
                   {filteredVendors.map((vendor) => (
                     <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                       
-                      {/* DESKTOP VIEW - FIXED HEIGHT [280px] */}
+                      {/* DESKTOP VIEW */}
                       <div className="hidden md:flex md:flex-row w-full h-[280px]">
                         {/* Left Box - Image */}
                         <div className="w-[22%] p-0 flex items-stretch h-full">
@@ -2707,7 +1693,7 @@ const Entertainment = () => {
                             Services Offered
                           </h4>
                           <ul className="space-y-1.5 mb-3">
-                            {vendor.services.map((service, index) => (
+                            {vendor.services.slice(0, 4).map((service, index) => (
                               <li key={index} className="flex items-start">
                                 <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -2721,7 +1707,11 @@ const Entertainment = () => {
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" 
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2731,7 +1721,7 @@ const Entertainment = () => {
                         </div>
                       </div>
 
-                      {/* MOBILE VIEW - UPDATED TO MATCH CATERING PAGE */}
+                      {/* MOBILE VIEW */}
                       <div className="md:hidden flex flex-col w-full">
                         {/* Top Section - Image and Details Side by Side */}
                         <div className="flex border-b border-gray-200">
@@ -2798,7 +1788,7 @@ const Entertainment = () => {
                           {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
                           <ul className="space-y-0.5 mb-1">
-                            {vendor.services.map((service, index) => (
+                            {vendor.services.slice(0, 3).map((service, index) => (
                               <li key={index} className="flex items-start">
                                 <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -2810,7 +1800,10 @@ const Entertainment = () => {
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2889,7 +1882,7 @@ const Entertainment = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - WITH PAGINATION */}
+          {/* Right Sidebar - Filter Section - Desktop Only */}
           <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
               
@@ -3073,6 +2066,17 @@ const Entertainment = () => {
           </div>
         </div>
       )}
+
+      {/* Vendor Details Modal */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="entertainment"
+      />
     </div>
   );
 };

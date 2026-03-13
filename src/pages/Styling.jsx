@@ -1,3 +1,4 @@
+// src/Pages/Styling.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bridalmakeup from '../assets/bridalmakeup.jpg';
@@ -12,6 +13,8 @@ import commercial from '../assets/groomattire.jpg';
 import stylingbanner1 from '../assets/stylebanner1.jpg';
 import stylingbanner2 from '../assets/stylebanner2.jpg';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
+import VendorDetails from '../Components/VendorDetails';
+import { stylingVendors } from '../data/stylingData'; // IMPORT VENDORS DATA
 
 const Styling = () => {
   const navigate = useNavigate();
@@ -46,6 +49,10 @@ const Styling = () => {
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // Vendor details modal states
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -210,540 +217,8 @@ const Styling = () => {
     });
   };
 
-  // Sample vendor data with extended fields matching form
-  const vendors = [
-    // Bridal Makeup
-    {
-      id: 1,
-      name: 'Glow Bridal Studio',
-      businessName: 'Glow Bridal Makeup & Styling',
-      businessCategory: 'Bridal Makeup',
-      serviceType: 'Bridal Makeup',
-      personName: 'Priya Sharma',
-      designation: 'Lead Makeup Artist',
-      description: 'Specializing in bridal makeup with 8+ years of experience',
-      services: ['Airbrush Makeup', 'Traditional Bridal Look', 'Contemporary Styles', 'Makeup for Events'],
-      bridalStyles: ['Airbrush Makeup', 'Traditional'],
-      groomServices: [],
-      productBrands: ['MAC', 'HUDA Beauty'],
-      logo: bridalmakeup,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹1,50,000',
-      experience: 8,
-      businessType: 'Studio/Salon',
-      teamSize: 5,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 2,
-      name: 'Royal Beauty Hub',
-      businessName: 'Royal Bridal Makeup Artists',
-      businessCategory: 'Bridal Makeup',
-      serviceType: 'Bridal Makeup',
-      personName: 'Anjali Mehta',
-      designation: 'Creative Director',
-      description: 'Creating timeless bridal looks with international quality products',
-      services: ['Bridal Makeup', 'Engagement Makeup', 'Reception Look', 'Trial Sessions'],
-      bridalStyles: ['HD Makeup', 'Celebrity / Theme-based'],
-      groomServices: [],
-      productBrands: ['Bobbi Brown', 'Kryolan'],
-      logo: bridalmakeup,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹30,000 - ₹2,00,000',
-      experience: 12,
-      businessType: 'Partnership',
-      teamSize: 8,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Bridal Accessories
-    {
-      id: 3,
-      name: 'Queen Accessories',
-      businessName: 'Queen Bridal Accessories',
-      businessCategory: 'Bridal Accessories',
-      serviceType: 'Bridal Accessories',
-      personName: 'Meera Reddy',
-      designation: 'Accessories Designer',
-      description: 'Exquisite bridal accessories including jewelry and ornaments',
-      services: ['Bridal Jewelry Sets', 'Hair Accessories', 'Maang Tikka', 'Traditional Ornaments'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: bridalaccessories,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹15,000 - ₹2,00,000',
-      experience: 6,
-      businessType: 'Proprietorship',
-      teamSize: 3,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'No',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 4,
-      name: 'Royal Ornaments',
-      businessName: 'Royal Bridal Ornaments',
-      businessCategory: 'Bridal Accessories',
-      serviceType: 'Bridal Accessories',
-      personName: 'Sneha Nair',
-      designation: 'Jewelry Consultant',
-      description: 'Premium bridal accessories with traditional and contemporary designs',
-      services: ['Temple Jewelry', 'Kundan Sets', 'Pearl Accessories', 'Custom Designs'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: bridalaccessories,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹20,000 - ₹3,00,000',
-      experience: 10,
-      businessType: 'Individual Artist',
-      teamSize: 2,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'No',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Hair Styling
-    {
-      id: 5,
-      name: 'Locks & Curls',
-      businessName: 'Locks & Curls Hair Studio',
-      businessCategory: 'Hair Styling',
-      serviceType: 'Hair Styling',
-      personName: 'Aisha Kapoor',
-      designation: 'Lead Hair Stylist',
-      description: 'Creating beautiful bridal hairstyles for all occasions',
-      services: ['Bridal Hairstyles', 'Hair Extensions', 'Flower Decorations', 'Traditional Plaits'],
-      bridalStyles: ['Traditional'],
-      groomServices: ['Hairstyling'],
-      productBrands: ['MAC', 'HUDA Beauty'],
-      logo: hairstyling,
-      location: 'Bangalore, Karnataka',
-      rating: 4.9,
-      priceRange: '₹10,000 - ₹50,000',
-      experience: 7,
-      businessType: 'Studio/Salon',
-      teamSize: 4,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 6,
-      name: 'Crown Glory',
-      businessName: 'Crown Glory Hair Design',
-      businessCategory: 'Hair Styling',
-      serviceType: 'Hair Styling',
-      personName: 'Fatima Khan',
-      designation: 'Hair Designer',
-      description: 'Specialized in traditional and contemporary wedding hairstyles',
-      services: ['Modern Hairstyles', 'Traditional Buns', 'Hair Accessories', 'Pre-wedding Hair Care'],
-      bridalStyles: ['Natural / Minimal'],
-      groomServices: ['Hairstyling'],
-      productBrands: ['Bobbi Brown'],
-      logo: hairstyling,
-      location: 'Hyderabad, Telangana',
-      rating: 4.8,
-      priceRange: '₹12,000 - ₹60,000',
-      experience: 9,
-      businessType: 'Individual Artist',
-      teamSize: 2,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Mehendi Art
-    {
-      id: 7,
-      name: 'Henna Expressions',
-      businessName: 'Henna Expressions Studio',
-      businessCategory: 'Mehendi Art',
-      serviceType: 'Mehendi Art',
-      personName: 'Zara Ahmed',
-      designation: 'Mehendi Artist',
-      description: 'Traditional and contemporary mehendi designs for weddings',
-      services: ['Bridal Mehendi', 'Arabic Designs', 'Rajasthani Patterns', 'Custom Designs'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: mehendiart,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹5,000 - ₹30,000',
-      experience: 5,
-      businessType: 'Individual Artist',
-      teamSize: 2,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'No',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'No',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 8,
-      name: 'Bridal Henna Art',
-      businessName: 'Bridal Henna Artists',
-      businessCategory: 'Mehendi Art',
-      serviceType: 'Mehendi Art',
-      personName: 'Kabir Singh',
-      designation: 'Lead Artist',
-      description: 'Creating intricate mehendi designs that tell your love story',
-      services: ['Full Hand Designs', 'Feet Mehendi', 'Groom Design', 'Guest Mehendi'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: mehendiart,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹8,000 - ₹40,000',
-      experience: 8,
-      businessType: 'Individual Artist',
-      teamSize: 3,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Traditional Attire Styling
-    {
-      id: 9,
-      name: 'Traditional Elegance',
-      businessName: 'Traditional Elegance Styling',
-      businessCategory: 'Traditional Attire Styling',
-      serviceType: 'Traditional Attire Styling',
-      personName: 'Lakshmi Iyer',
-      designation: 'Traditional Stylist',
-      description: 'Specializing in South Indian traditional wedding looks',
-      services: ['Traditional Attire Draping', 'Temple Jewelry', 'Classic Makeup', 'Traditional Hairstyles'],
-      bridalStyles: ['Traditional'],
-      groomServices: ['Costume Draping'],
-      productBrands: ['Other Premium Brands'],
-      logo: traditionalattire,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹35,000 - ₹2,50,000',
-      experience: 15,
-      businessType: 'Proprietorship',
-      teamSize: 4,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 10,
-      name: 'Heritage Looks',
-      businessName: 'Heritage Wedding Styling',
-      businessCategory: 'Traditional Attire Styling',
-      serviceType: 'Traditional Attire Styling',
-      personName: 'Radha Krishnan',
-      designation: 'Traditional Consultant',
-      description: 'Preserving and presenting traditional wedding styles with modern comfort',
-      services: ['Regional Traditional Styles', 'Antique Jewelry', 'Cultural Attire', 'Traditional Accessories'],
-      bridalStyles: ['Traditional'],
-      groomServices: ['Costume Draping'],
-      productBrands: ['Other Premium Brands'],
-      logo: traditionalattire,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹40,000 - ₹3,00,000',
-      experience: 12,
-      businessType: 'Individual Artist',
-      teamSize: 3,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Groom Makeup
-    {
-      id: 11,
-      name: 'Gentleman Grooming',
-      businessName: 'Gentleman Grooming Studio',
-      businessCategory: 'Groom Makeup',
-      serviceType: 'Groom Makeup',
-      personName: 'Rahul Verma',
-      designation: 'Groom Stylist',
-      description: 'Professional grooming services for modern grooms',
-      services: ['Groom Makeup', 'Beard Styling', 'Hair Grooming', 'Traditional Attire Styling'],
-      bridalStyles: [],
-      groomServices: ['Makeup', 'Beard / Grooming'],
-      productBrands: ['MAC', 'Other Premium Brands'],
-      logo: groommakeup,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹15,000 - ₹80,000',
-      experience: 6,
-      businessType: 'Studio/Salon',
-      teamSize: 3,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 12,
-      name: 'Dapper Grooms',
-      businessName: 'Dapper Groom Styling',
-      businessCategory: 'Groom Makeup',
-      serviceType: 'Groom Makeup',
-      personName: 'Arun Kumar',
-      designation: 'Style Consultant',
-      description: 'Transforming grooms into stylish gentlemen for their wedding day',
-      services: ['Complete Groom Package', 'Suit Styling', 'Traditional Look', 'Accessory Consultation'],
-      bridalStyles: [],
-      groomServices: ['Makeup', 'Beard / Grooming'],
-      productBrands: ['Bobbi Brown', 'Kryolan'],
-      logo: groommakeup,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹20,000 - ₹1,00,000',
-      experience: 8,
-      businessType: 'Individual Artist',
-      teamSize: 2,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Groom Hair Styling
-    {
-      id: 13,
-      name: 'Dapper Hair Studio',
-      businessName: 'Dapper Groom Hair Styling',
-      businessCategory: 'Groom Hair Styling',
-      serviceType: 'Groom Hair Styling',
-      personName: 'Arjun Singh',
-      designation: 'Hair Specialist',
-      description: 'Expert groom hair styling and grooming services',
-      services: ['Modern Hairstyles', 'Traditional Looks', 'Hair Color', 'Beard Shaping'],
-      bridalStyles: [],
-      groomServices: ['Hairstyling', 'Beard / Grooming'],
-      productBrands: ['HUDA Beauty', 'Other Premium Brands'],
-      logo: hairstyling,
-      location: 'Hyderabad, Telangana',
-      rating: 4.8,
-      priceRange: '₹8,000 - ₹40,000',
-      experience: 5,
-      businessType: 'Individual Artist',
-      teamSize: 2,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 14,
-      name: 'Style Cuts',
-      businessName: 'Style Cuts Grooming',
-      businessCategory: 'Groom Hair Styling',
-      serviceType: 'Groom Hair Styling',
-      personName: 'Vikram Seth',
-      designation: 'Creative Stylist',
-      description: 'Modern and traditional hairstyles for grooms and wedding parties',
-      services: ['Contemporary Cuts', 'Classic Styles', 'Beard Grooming', 'Hair Treatments'],
-      bridalStyles: [],
-      groomServices: ['Hairstyling', 'Beard / Grooming'],
-      productBrands: ['MAC', 'Other Premium Brands'],
-      logo: hairstyling,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹7,000 - ₹35,000',
-      experience: 7,
-      businessType: 'Studio/Salon',
-      teamSize: 4,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Groom Accessories
-    {
-      id: 15,
-      name: 'Royal Groom Accessories',
-      businessName: 'Royal Accessories for Grooms',
-      businessCategory: 'Groom Accessories',
-      serviceType: 'Groom Accessories',
-      personName: 'Vikram Patel',
-      designation: 'Accessory Consultant',
-      description: 'Premium groom accessories and finishing touches for weddings',
-      services: ['Turban & Safa', 'Brooches', 'Cufflinks', 'Traditional Accessories'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: accessoriesfinishing,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.6,
-      priceRange: '₹10,000 - ₹75,000',
-      experience: 9,
-      businessType: 'Proprietorship',
-      teamSize: 3,
-      ownKit: 'Yes',
-      backupArtist: 'No',
-      hygieneKits: 'Yes',
-      patchTest: 'No',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 16,
-      name: 'Grooming Essentials',
-      businessName: 'Essential Groom Accessories',
-      businessCategory: 'Groom Accessories',
-      serviceType: 'Groom Accessories',
-      personName: 'Rajesh Khanna',
-      designation: 'Style Advisor',
-      description: 'Complete accessory solutions for modern grooms',
-      services: ['Wedding Sets', 'Custom Accessories', 'Matching Sets', 'Rental Options'],
-      bridalStyles: [],
-      groomServices: [],
-      productBrands: ['Other Premium Brands'],
-      logo: accessoriesfinishing,
-      location: 'Delhi, Delhi',
-      rating: 4.7,
-      priceRange: '₹12,000 - ₹80,000',
-      experience: 11,
-      businessType: 'Partnership',
-      teamSize: 4,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    // Groom Attire Styling
-    {
-      id: 17,
-      name: 'Elite Groom Styling',
-      businessName: 'Elite Groom Attire Styling',
-      businessCategory: 'Groom Attire Styling',
-      serviceType: 'Groom Attire Styling',
-      personName: 'Karan Malhotra',
-      designation: 'Style Consultant',
-      description: 'Complete groom attire styling and coordination for weddings',
-      services: ['Sherwani Styling', 'Suit Selection', 'Traditional Attire', 'Color Coordination'],
-      bridalStyles: [],
-      groomServices: ['Costume Draping'],
-      productBrands: ['Other Premium Brands'],
-      logo: commercial,
-      location: 'Delhi, Delhi',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹1,50,000',
-      experience: 10,
-      businessType: 'Private Limited',
-      teamSize: 5,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    },
-    {
-      id: 18,
-      name: 'Royal Groom Wear',
-      businessName: 'Royal Groom Styling Studio',
-      businessCategory: 'Groom Attire Styling',
-      serviceType: 'Groom Attire Styling',
-      personName: 'Amit Shah',
-      designation: 'Fashion Director',
-      description: 'Luxury grooming and styling for discerning grooms',
-      services: ['Bespoke Sherwanis', 'Designer Suits', 'Indo-Western Fusion', 'Complete Look'],
-      bridalStyles: [],
-      groomServices: ['Costume Draping'],
-      productBrands: ['Other Premium Brands'],
-      logo: commercial,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹30,000 - ₹2,50,000',
-      experience: 15,
-      businessType: 'Partnership',
-      teamSize: 6,
-      ownKit: 'Yes',
-      backupArtist: 'Yes',
-      hygieneKits: 'Yes',
-      patchTest: 'Yes',
-      travelCharges: 'Yes',
-      advanceRequired: 'Yes',
-      hasGST: 'Yes',
-      hasPAN: 'Yes'
-    }
-  ];
+  // USE THE IMPORTED VENDORS DATA
+  const vendors = stylingVendors;
 
   // Enhanced filter function matching form fields
   const filteredVendors = vendors.filter(vendor => {
@@ -858,30 +333,7 @@ const Styling = () => {
               />
             </div>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Styling Type</label>
-            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {stylingTypes.map(type => (
-                <label key={type} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedStylingTypes.includes(type)}
-                    onChange={() => handleStylingTypeToggle(type)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{type}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Location",
-      content: (
-        <div className="space-y-3">
+          <div className="space-y-3">
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
             <select
@@ -900,7 +352,7 @@ const Styling = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City / District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -913,17 +365,8 @@ const Styling = () => {
               ))}
             </select>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
         </div>
       )
     },
@@ -1003,23 +446,12 @@ const Styling = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
             <input
               type="number"
               placeholder="Minimum years"
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Team Size</label>
-            <input
-              type="number"
-              placeholder="Minimum team members"
-              value={teamSize}
-              onChange={(e) => setTeamSize(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
@@ -1221,30 +653,7 @@ const mobileFilterPages = [
             />
           </div>
         </div>
-
-        <div>
-          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Styling Type</label>
-          <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-            {stylingTypes.map(type => (
-              <label key={type} className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="checkbox" 
-                  checked={selectedStylingTypes.includes(type)}
-                  onChange={() => handleStylingTypeToggle(type)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                <span className="truncate">{type}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-      </div>
-    )
-  },
-  {
-    title: "Location",
-    content: (
-      <div className="space-y-1.5">
+        <div className="space-y-1.5">
         <div>
           <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
           <select
@@ -1263,7 +672,7 @@ const mobileFilterPages = [
         </div>
 
         <div>
-          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City / District</label>
           <select
             value={selectedDistrict}
             onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -1276,17 +685,7 @@ const mobileFilterPages = [
             ))}
           </select>
         </div>
-
-        <div>
-          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
-          <input
-            type="text"
-            placeholder="Enter city"
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
-            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
-        </div>
+      </div>
       </div>
     )
   },
@@ -1366,23 +765,12 @@ const mobileFilterPages = [
         </div>
 
         <div>
-          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Experience (Years)</label>
+          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Years of Experience</label>
           <input
             type="number"
             placeholder="Min years"
             value={experience}
             onChange={(e) => setExperience(e.target.value)}
-            className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-          />
-        </div>
-
-        <div>
-          <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Team Size</label>
-          <input
-            type="number"
-            placeholder="Min team members"
-            value={teamSize}
-            onChange={(e) => setTeamSize(e.target.value)}
             className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
           />
         </div>
@@ -1677,6 +1065,14 @@ const mobileFilterPages = [
     if (hasGST) count++;
     if (hasPAN) count++;
     return count;
+  };
+
+  const handleViewDetails = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
   };
 
   return (
@@ -2286,7 +1682,11 @@ const mobileFilterPages = [
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" 
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2379,7 +1779,10 @@ const mobileFilterPages = [
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2642,6 +2045,17 @@ const mobileFilterPages = [
     </div>
   </div>
 )}
+
+      {/* Vendor Details Modal */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="styling"
+      />
     </div>
   );
 };

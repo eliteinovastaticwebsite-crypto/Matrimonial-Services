@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { ArrowLeft, Music, Volume2, Upload, Globe, Banknote, X, Pen, Trash2, Link as LinkIcon, Image as ImageIcon, Users, Sparkles } from "lucide-react";
+import { ArrowLeft, Music, Volume2, Upload, Globe, Banknote, X, Pen, Trash2, Link as LinkIcon, Image as ImageIcon, Users, Sparkles, DollarSign } from "lucide-react";
 
 // Form steps based on entertainment details
 const steps = [
@@ -66,6 +66,8 @@ export default function EntertainmentVendorRegistrationModal({ isOpen, onClose }
     contactPerson: "",
     selectedServices: [],
     otherService: "",
+    minBudget: "", // Added min budget
+    maxBudget: "", // Added max budget
     
     // Step 2
     mobile: "",
@@ -99,7 +101,7 @@ export default function EntertainmentVendorRegistrationModal({ isOpen, onClose }
     uniformProvided: "",
     setupIncluded: "",
     
-    // Step 7 - Service Coverage (UPDATED)
+    // Step 7 - Service Coverage
     preferredLocations: [],
     travelCharges: "",
     noiseRestrictions: "",
@@ -415,6 +417,38 @@ export default function EntertainmentVendorRegistrationModal({ isOpen, onClose }
                       />
                     </div>
                   </div>
+                </div>
+
+                {/* BUDGET RANGE SECTION - ADDED HERE */}
+                <div className="form-group mt-4 pt-2 border-t border-red-200">
+                  <label className="form-label flex items-center gap-2">
+                    <span>₹ Budget Range (Min - Max) *</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input 
+                        name="minBudget"
+                        value={formData.minBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Min Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        name="maxBudget"
+                        value={formData.maxBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Max Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Enter your typical price range for entertainment services
+                  </p>
                 </div>
               </div>
             )}
@@ -851,7 +885,7 @@ export default function EntertainmentVendorRegistrationModal({ isOpen, onClose }
               </div>
             )}
 
-            {/* STEP 7: Service Coverage (UPDATED SECTION) */}
+            {/* STEP 7: Service Coverage */}
             {step === 6 && (
               <div className="space-y-4">
                 <h3 className="text-red-800 font-bold text-center text-sm mb-3">

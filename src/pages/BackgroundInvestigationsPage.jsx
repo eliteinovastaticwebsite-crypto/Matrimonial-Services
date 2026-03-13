@@ -11,6 +11,8 @@ import employmentCheck from '../assets/employmentCheck.jpg';
 import financialCheck from '../assets/financialCheck.jpg';
 import familyBackground from '../assets/familyBackground.jpg';
 import socialMediaCheck from '../assets/socialMediaCheck.jpg';
+import VendorDetails from '../Components/VendorDetails';
+import { backgroundInvestigationVendors } from '../data/backgroundInvestigationsData';
 
 // Import images - add these to your assets folder
 const detective1 = "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80";
@@ -27,6 +29,8 @@ const BackgroundInvestigationsPage = () => {
   const [selectedLocation, setSelectedLocation] = useState('');
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
   
   // New filter states based on investigation form
   const [selectedServices, setSelectedServices] = useState([]);
@@ -43,6 +47,9 @@ const BackgroundInvestigationsPage = () => {
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // Use the imported vendors data
+  const agencies = backgroundInvestigationVendors;
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -146,6 +153,13 @@ const BackgroundInvestigationsPage = () => {
     "Social Media Screening"
   ];
 
+  const entityTypes = [
+    "Proprietorship",
+    "Partnership",
+    "LLP",
+    "Private Limited"
+  ];
+
   const businessTypes = [
     "Proprietorship",
     "Partnership",
@@ -220,297 +234,13 @@ const BackgroundInvestigationsPage = () => {
     });
   };
 
-  // Sample detective agencies data
-  const agencies = [
-    {
-      id: 1,
-      name: 'SecureVerify Investigations',
-      businessName: 'SecureVerify Private Detectives',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Comprehensive Background Check',
-      personName: 'Rajesh Kumar',
-      designation: 'Chief Investigator',
-      description: 'Professional detective agency with 15+ years experience in matrimonial background verification',
-      services: ['Identity Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification'],
-      logo: detective1,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹15,000 - ₹50,000',
-      licenseNumber: 'DET-TN-2023001',
-      yearsExperience: 15,
-      teamSize: 12,
-      businessType: 'Private Limited',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Both',
-      preferredStates: ['Tamil Nadu', 'Karnataka'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Identity Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification']
-    },
-    {
-      id: 2,
-      name: 'MatrimonySafe Agency',
-      businessName: 'MatrimonySafe Background Checks',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Marital Status Verification',
-      personName: 'Priya Sharma',
-      designation: 'Lead Investigator',
-      description: 'Specialized in matrimonial background verification with focus on authenticity and confidentiality',
-      services: ['Marital Status Check', 'Family Background', 'Social Media Screening', 'Residential Verification'],
-      logo: detective2,
-      location: 'Bangalore, Karnataka',
-      rating: 4.8,
-      priceRange: '₹12,000 - ₹45,000',
-      licenseNumber: 'DET-KA-2023002',
-      yearsExperience: 12,
-      teamSize: 8,
-      businessType: 'Proprietorship',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Digital Report',
-      preferredStates: ['Karnataka', 'Tamil Nadu'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Marital Status Check', 'Family Background', 'Social Media Screening', 'Residential Verification']
-    },
-    {
-      id: 3,
-      name: 'TruthFinders Detective Agency',
-      businessName: 'TruthFinders Investigation Services',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Complete Background Verification',
-      personName: 'Arun Mehta',
-      designation: 'Director',
-      description: 'Comprehensive background verification services with nationwide network of investigators',
-      services: ['Employment Verification', 'Financial Background', 'Court Case Check', 'Social Reputation Check'],
-      logo: detective1,
-      location: 'Hyderabad, Telangana',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹75,000',
-      licenseNumber: 'DET-TG-2023003',
-      yearsExperience: 18,
-      teamSize: 25,
-      businessType: 'Private Limited',
-      turnaroundTime: '8-14 days',
-      reportFormat: 'Both',
-      preferredStates: ['Telangana', 'Andhra Pradesh', 'Maharashtra'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Employment Verification', 'Financial Background', 'Court Case Check', 'Social Reputation Check']
-    },
-    {
-      id: 4,
-      name: 'SafeMatch Investigators',
-      businessName: 'SafeMatch Matrimonial Verification',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Matrimonial Verification',
-      personName: 'Sneha Reddy',
-      designation: 'Verification Specialist',
-      description: 'Dedicated to ensuring safe and verified matrimonial matches through thorough background checks',
-      services: ['Identity Documents', 'Education Certificates', 'Employment Records', 'Family History'],
-      logo: detective2,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹10,000 - ₹40,000',
-      licenseNumber: 'DET-TN-2023004',
-      yearsExperience: 10,
-      teamSize: 6,
-      businessType: 'Partnership',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Digital Report',
-      preferredStates: ['Tamil Nadu'],
-      hasTravelCharges: 'no',
-      selectedServices: ['Identity Verification', 'Education Verification', 'Employment Verification', 'Family Background']
-    },
-    {
-      id: 5,
-      name: 'AuthentiCheck Bureau',
-      businessName: 'AuthentiCheck Verification Bureau',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Document Verification',
-      personName: 'Vikram Singh',
-      designation: 'Verification Head',
-      description: 'Specializing in document authentication and identity verification for matrimonial purposes',
-      services: ['Document Verification', 'Certificate Authentication', 'Address Verification', 'Photo ID Check'],
-      logo: detective1,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹8,000 - ₹35,000',
-      licenseNumber: 'DET-MH-2023005',
-      yearsExperience: 14,
-      teamSize: 18,
-      businessType: 'Private Limited',
-      turnaroundTime: '1-3 days',
-      reportFormat: 'Online Dashboard',
-      preferredStates: ['Maharashtra', 'Gujarat'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Identity Verification', 'Residential Verification', 'Employment Verification']
-    },
-    {
-      id: 6,
-      name: 'FamilyTrust Investigators',
-      businessName: 'FamilyTrust Background Services',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Family Background Check',
-      personName: 'Anjali Nair',
-      designation: 'Family Investigation Specialist',
-      description: 'Focus on family background, social standing, and reputation verification for matrimonial matches',
-      services: ['Family History', 'Social Standing', 'Community Reputation', 'Caste Verification'],
-      logo: detective2,
-      location: 'Kochi, Kerala',
-      rating: 4.6,
-      priceRange: '₹15,000 - ₹60,000',
-      licenseNumber: 'DET-KL-2023006',
-      yearsExperience: 8,
-      teamSize: 7,
-      businessType: 'Proprietorship',
-      turnaroundTime: '8-14 days',
-      reportFormat: 'Physical Certificate',
-      preferredStates: ['Kerala'],
-      hasTravelCharges: 'no',
-      selectedServices: ['Family Background', 'Social Reputation Check', 'Marital Status Check']
-    },
-    {
-      id: 7,
-      name: 'LegalEagle Detectives',
-      businessName: 'LegalEagle Investigation Agency',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Legal & Criminal Check',
-      personName: 'Rahul Verma',
-      designation: 'Legal Investigator',
-      description: 'Specialized in legal and criminal background checks with access to legal databases',
-      services: ['Criminal Records', 'Court Cases', 'Litigation History', 'Police Records'],
-      logo: detective1,
-      location: 'Delhi, Delhi',
-      rating: 4.9,
-      priceRange: '₹25,000 - ₹80,000',
-      licenseNumber: 'DET-DL-2023007',
-      yearsExperience: 20,
-      teamSize: 15,
-      businessType: 'LLP',
-      turnaroundTime: '8-14 days',
-      reportFormat: 'Both',
-      preferredStates: ['Delhi', 'Maharashtra'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Criminal Record Check', 'Court Case / Litigation Check', 'Social Reputation Check']
-    },
-    {
-      id: 8,
-      name: 'FinCheck Investigators',
-      businessName: 'FinCheck Financial Verification',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Financial Background Verification',
-      personName: 'Meera Patel',
-      designation: 'Financial Investigator',
-      description: 'Comprehensive financial background verification including assets, liabilities, and income sources',
-      services: ['Income Verification', 'Asset Verification', 'Loan History', 'Financial Stability'],
-      logo: detective2,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.7,
-      priceRange: '₹18,000 - ₹65,000',
-      licenseNumber: 'DET-GJ-2023008',
-      yearsExperience: 11,
-      teamSize: 9,
-      businessType: 'Private Limited',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Digital Report',
-      preferredStates: ['Gujarat', 'Maharashtra'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Financial Background', 'Employment Verification']
-    },
-    {
-      id: 9,
-      name: 'SocialWatch Bureau',
-      businessName: 'SocialWatch Online Screening',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Social Media Screening',
-      personName: 'Aisha Khan',
-      designation: 'Digital Investigator',
-      description: 'Specialized in social media and online presence screening for comprehensive background checks',
-      services: ['Social Media Analysis', 'Online Reputation', 'Digital Footprint', 'Cyber Background'],
-      logo: detective1,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹12,000 - ₹45,000',
-      licenseNumber: 'DET-MH-2023009',
-      yearsExperience: 9,
-      teamSize: 11,
-      businessType: 'Partnership',
-      turnaroundTime: '1-3 days',
-      reportFormat: 'Online Dashboard',
-      preferredStates: ['Maharashtra', 'Karnataka'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Social Media Screening', 'Social Reputation Check']
-    },
-    {
-      id: 10,
-      name: 'EducationVerify Agency',
-      businessName: 'EducationVerify Certification Bureau',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Education Verification',
-      personName: 'Kabir Malhotra',
-      designation: 'Education Verification Specialist',
-      description: 'Thorough verification of educational qualifications, certificates, and academic records',
-      services: ['Degree Verification', 'Certificate Authentication', 'Academic Records', 'Institute Verification'],
-      logo: detective2,
-      location: 'Kolkata, West Bengal',
-      rating: 4.7,
-      priceRange: '₹7,000 - ₹30,000',
-      licenseNumber: 'DET-WB-2023010',
-      yearsExperience: 13,
-      teamSize: 14,
-      businessType: 'Proprietorship',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Both',
-      preferredStates: ['West Bengal'],
-      hasTravelCharges: 'no',
-      selectedServices: ['Education Verification', 'Identity Verification']
-    },
-    {
-      id: 11,
-      name: 'EmploymentCheck Bureau',
-      businessName: 'EmploymentCheck Verification Services',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Employment Verification',
-      personName: 'Sanjay Gupta',
-      designation: 'Employment Verification Head',
-      description: 'Detailed employment history and current job status verification with employer contacts',
-      services: ['Employment History', 'Current Employment', 'Salary Verification', 'Job Role Verification'],
-      logo: detective1,
-      location: 'Bengaluru, Karnataka',
-      rating: 4.8,
-      priceRange: '₹10,000 - ₹40,000',
-      licenseNumber: 'DET-KA-2023011',
-      yearsExperience: 12,
-      teamSize: 16,
-      businessType: 'Private Limited',
-      turnaroundTime: '4-7 days',
-      reportFormat: 'Digital Report',
-      preferredStates: ['Karnataka', 'Tamil Nadu'],
-      hasTravelCharges: 'yes',
-      selectedServices: ['Employment Verification', 'Financial Background']
-    },
-    {
-      id: 12,
-      name: 'ResidentialVerify Agency',
-      businessName: 'ResidentialVerify Location Services',
-      businessCategory: 'Background Investigations',
-      serviceType: 'Residential Verification',
-      personName: 'Neha Joshi',
-      designation: 'Residential Investigation Specialist',
-      description: 'Thorough residential address verification and neighborhood background checks',
-      services: ['Address Verification', 'Residence History', 'Neighborhood Check', 'Property Verification'],
-      logo: detective2,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.6,
-      priceRange: '₹8,000 - ₹35,000',
-      licenseNumber: 'DET-TN-2023012',
-      yearsExperience: 7,
-      teamSize: 8,
-      businessType: 'Individual',
-      turnaroundTime: '1-3 days',
-      reportFormat: 'Digital Report',
-      preferredStates: ['Tamil Nadu'],
-      hasTravelCharges: 'no',
-      selectedServices: ['Residential Verification', 'Identity Verification']
-    },
-  ];
+  const handleViewDetails = (vendorId) => {
+    const vendor = agencies.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
+  };
 
   // Filter agencies based on all selections
   const filteredAgencies = agencies.filter(agency => {
@@ -590,14 +320,39 @@ const BackgroundInvestigationsPage = () => {
     return true;
   });
 
-  // Desktop filter pages - UPDATED (Removed page 4 - Contact Person)
+  // Desktop filter pages
   const filterPages = [
     {
-      title: "Basic Agency Details",
+      title: "Agency Details",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Entity</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Types</option>
+              {entityTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Year of Establishment</label>
+            <input
+              type="number"
+              placeholder="YYYY"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1"> ₹ Budget Range (Min - Max) </label>
             <div className="flex gap-2">
               <input
                 type="number"
@@ -614,31 +369,6 @@ const BackgroundInvestigationsPage = () => {
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Business Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Year of Establishment</label>
-            <input
-              type="number"
-              placeholder="Enter year (YYYY)"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
           </div>
         </div>
       )
@@ -678,7 +408,7 @@ const BackgroundInvestigationsPage = () => {
           <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State(s) of Operation</label>
             <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
-              {states.slice(0, 6).map(state => (
+              {states.map(state => (
                 <label key={state} className="flex items-center gap-1 text-xs">
                   <input 
                     type="checkbox" 
@@ -691,27 +421,11 @@ const BackgroundInvestigationsPage = () => {
               ))}
             </div>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">License Validity</label>
-            <div className="flex gap-2">
-              <input
-                type="month"
-                placeholder="From"
-                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-              />
-              <input
-                type="month"
-                placeholder="To"
-                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-              />
-            </div>
-          </div>
         </div>
       )
     },
     {
-      title: "Office & Location",
+      title: "Office Location",
       content: (
         <div className="space-y-3">
           <div>
@@ -745,26 +459,6 @@ const BackgroundInvestigationsPage = () => {
               ))}
             </select>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Area / Locality</label>
-            <input
-              type="text"
-              placeholder="Enter area or locality"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">PIN Code</label>
-            <input
-              type="text"
-              placeholder="Enter PIN code"
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
         </div>
       )
     },
@@ -773,21 +467,7 @@ const BackgroundInvestigationsPage = () => {
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Main Service Type</label>
-            <select
-              value={selectedService}
-              onChange={(e) => setSelectedService(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Services</option>
-              {verificationServices.map((service) => (
-                <option key={service} value={service}>{service}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Additional Verification Services</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Matrimonial Verification Checks </label>
             <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto p-1 border border-red-100 rounded-md">
               {verificationServices.map(service => (
                 <label key={service} className="flex items-center gap-1 text-xs">
@@ -797,26 +477,17 @@ const BackgroundInvestigationsPage = () => {
                     onChange={() => handleServiceToggle(service)}
                     className="w-3.5 h-3.5 accent-red-600" 
                   /> 
-                  <span className="truncate">{service.split(' ')[0]}</span>
+                  <span className="truncate">{service.length > 15 ? service.substring(0, 15) + '...' : service}</span>
                 </label>
               ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Cities/Regions Covered</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Cities / Regions Covered</label>
             <input
               type="text"
               placeholder="Enter cities covered"
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Languages Supported</label>
-            <input
-              type="text"
-              placeholder="Enter languages"
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
@@ -851,57 +522,9 @@ const BackgroundInvestigationsPage = () => {
               ))}
             </select>
           </div>
-
+          <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Report Format</label>
-            <select
-              value={reportFormat}
-              onChange={(e) => setReportFormat(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">Any Format</option>
-              {reportFormats.map(format => (
-                <option key={format} value={format}>{format}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
-                  value="yes"
-                  checked={hasTravelCharges === "yes"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
-                  value="no"
-                  checked={hasTravelCharges === "no"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Experience & References",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience in Matrimonial Verification</label>
             <select
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
@@ -913,24 +536,81 @@ const BackgroundInvestigationsPage = () => {
               ))}
             </select>
           </div>
+        </div>
+        </div>
+
+        
+      )
+    }
+  ];
+
+  // Mobile filter pages
+  const mobileFilterPages = [
+    {
+      title: "Agency Details",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Entity</label>
+            <select
+              value={businessType}
+              onChange={(e) => setBusinessType(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All Types</option>
+              {entityTypes.map(type => (
+                <option key={type} value={type}>{type}</option>
+              ))}
+            </select>
+          </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Existing Clients (Matrimony Apps/Bureaus)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Year of Establishment</label>
             <input
-              type="text"
-              placeholder="Enter client names"
+              type="number"
+              placeholder="YYYY"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Reference Available</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max) </label>
+            <div className="flex gap-2">
+              <input
+                type="number"
+                placeholder="Min"
+                value={minBudget}
+                onChange={(e) => setMinBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+              <input
+                type="number"
+                placeholder="Max"
+                value={maxBudget}
+                onChange={(e) => setMaxBudget(e.target.value)}
+                className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "License & Legal",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">License Verified</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
                   type="radio" 
-                  name="referenceAvailable" 
+                  name="licenseVerifiedMobile" 
                   value="yes"
+                  checked={licenseVerified === "yes"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
                   className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 Yes
@@ -938,53 +618,153 @@ const BackgroundInvestigationsPage = () => {
               <label className="flex items-center gap-1">
                 <input 
                   type="radio" 
-                  name="referenceAvailable" 
+                  name="licenseVerifiedMobile" 
                   value="no"
+                  checked={licenseVerified === "no"}
+                  onChange={(e) => setLicenseVerified(e.target.value)}
                   className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 No
               </label>
             </div>
           </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State(s) of Operation</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {states.slice(0, 8).map(state => (
+                <label key={state} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={preferredStates.includes(state)}
+                    onChange={() => handleStateToggle(state)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  {state}
+                </label>
+              ))}
+            </div>
+          </div>
         </div>
       )
     },
     {
-      title: "Compliance & Documents",
+      title: "Office Location",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Compliance Declarations</label>
-            <div className="space-y-2 p-2 bg-gray-50 rounded-md">
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
-                Complies with local laws
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
-                Ethical investigation practices
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input type="checkbox" className="w-3.5 h-3.5 accent-red-600" />
-                Confidentiality maintained
-              </label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
+            <select
+              value={selectedState}
+              onChange={(e) => {
+                setSelectedState(e.target.value);
+                setSelectedDistrict('');
+              }}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">All States</option>
+              {states.map((state) => (
+                <option key={state} value={state}>{state}</option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">District / City</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={!selectedState}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100 disabled:text-gray-500"
+            >
+              <option value="">All Districts</option>
+              {selectedState && districts[selectedState]?.map((district) => (
+                <option key={district} value={district}>{district}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: "Services",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Verification Services</label>
+            <div className="grid grid-cols-2 gap-1.5 max-h-40 overflow-y-auto p-1 border border-red-100 rounded-md">
+              {verificationServices.slice(0, 8).map(service => (
+                <label key={service} className="flex items-center gap-1 text-xs">
+                  <input 
+                    type="checkbox" 
+                    checked={selectedServices.includes(service)}
+                    onChange={() => handleServiceToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600" 
+                  /> 
+                  <span className="truncate">{service.split(' ')[0]}</span>
+                </label>
+              ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Uploaded</label>
-            <div className="flex gap-2 text-xs">
-              <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">PAN Card</span>
-              <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full">GST</span>
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Cities Covered</label>
+            <input
+              type="text"
+              placeholder="Enter cities"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
+        </div>
+      )
+    },
+    {
+      title: "Operational",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Field Investigators</label>
+            <input
+              type="number"
+              placeholder="Min investigators"
+              value={teamSize}
+              onChange={(e) => setTeamSize(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Turnaround Time</label>
+            <select
+              value={turnaroundTime}
+              onChange={(e) => setTurnaroundTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any</option>
+              {turnaroundOptions.map(option => (
+                <option key={option} value={option}>{option}</option>
+              ))}
+            </select>
+          </div>
+          <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience in Matrimonial Verification </label>
+            <select
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            >
+              <option value="">Any</option>
+              {experienceOptions.map(option => (
+                <option key={option} value={option.replace('+', '')}>{option}</option>
+              ))}
+            </select>
+          </div>
+        </div>
         </div>
       )
     }
   ];
-
-  // Mobile filter pages - SAME CONTENT AS DESKTOP (also updated)
-  const mobileFilterPages = [...filterPages];
 
   // Auto change banner every 3 seconds
   useEffect(() => {
@@ -1365,7 +1145,7 @@ const BackgroundInvestigationsPage = () => {
                 </div>
               </div>
 
-              {/* Mobile Filters - Below Matrimony Card - UPDATED */}
+              {/* Mobile Filters - Below Matrimony Card */}
               <div className="mt-2 bg-white rounded-md shadow border border-red-200 overflow-hidden">
                 <div className="bg-gradient-to-r from-red-600 to-red-700 px-2 py-1.5">
                   <div className="flex items-center justify-between">
@@ -1382,7 +1162,7 @@ const BackgroundInvestigationsPage = () => {
                 </div>
 
                 <div className="p-2">
-                  {/* Filter Content - Using the same pages as desktop */}
+                  {/* Filter Content */}
                   {mobileFilterPages[currentMobileFilterPage].content}
 
                   {/* Pagination Buttons */}
@@ -1682,12 +1462,8 @@ const BackgroundInvestigationsPage = () => {
                             <span className="leading-tight font-medium">{agency.location}</span>
                           </div>
                           
-                          {/* Contact Details */}
+                          {/* Contact Details - Only business info, no personal */}
                           <div className="space-y-1.5 text-sm">
-                            <div className="flex items-start">
-                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Investigator:</span>
-                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.personName}</span>
-                            </div>
                             <div className="flex items-start">
                               <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Experience:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.yearsExperience} years</span>
@@ -1695,6 +1471,10 @@ const BackgroundInvestigationsPage = () => {
                             <div className="flex items-start">
                               <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>License:</span>
                               <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.licenseNumber}</span>
+                            </div>
+                            <div className="flex items-start">
+                              <span className="text-gray-600 font-semibold w-24 flex-shrink-0 contact-label" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>Business Type:</span>
+                              <span className="text-gray-800 leading-tight font-medium" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>{agency.businessType}</span>
                             </div>
                           </div>
                         </div>
@@ -1726,7 +1506,7 @@ const BackgroundInvestigationsPage = () => {
                           {/* View Details Button */}
                           <div className="mt-3">
                             <button 
-                              onClick={() => navigate(`/agency-details/${agency.id}`)}
+                              onClick={() => handleViewDetails(agency.id)}
                               className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm"
                               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
                             >
@@ -1784,12 +1564,8 @@ const BackgroundInvestigationsPage = () => {
                               <span className="leading-tight">{agency.location}</span>
                             </div>
                             
-                            {/* Contact Details */}
+                            {/* Contact Details - Only business info, no personal */}
                             <div className="space-y-0.5 text-[10px]">
-                              <div className="flex items-start">
-                                <span className="text-gray-600 font-bold w-16 flex-shrink-0">Investigator:</span>
-                                <span className="text-gray-800 leading-tight">{agency.personName}</span>
-                              </div>
                               <div className="flex items-start">
                                 <span className="text-gray-600 font-bold w-16 flex-shrink-0">Experience:</span>
                                 <span className="text-gray-800 leading-tight">{agency.yearsExperience} years</span>
@@ -1823,7 +1599,7 @@ const BackgroundInvestigationsPage = () => {
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
                             <button 
-                              onClick={() => navigate(`/agency-details/${agency.id}`)}
+                              onClick={() => handleViewDetails(agency.id)}
                               className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
                             >
                               <span>View Details</span>
@@ -2103,6 +1879,17 @@ const BackgroundInvestigationsPage = () => {
           </div>
         </div>
       )}
+
+      {/* Vendor Details Modal */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="background-investigations"
+      />
     </div>
   );
 };

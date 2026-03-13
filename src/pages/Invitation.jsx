@@ -11,6 +11,8 @@ import luxuryhampers from '../assets/luxuryhampers.jpg';
 import invitationbanner1 from '../assets/inbanner1.jpg';
 import invitationbanner2 from '../assets/inbanner2.jpg';
 import matrimonyBanner from '../assets/Matrimonybanner.jpg';
+import VendorDetails from '../Components/VendorDetails';
+import { invitationVendors } from '../data/invitationData';
 
 const Invitation = () => {
   const navigate = useNavigate();
@@ -24,8 +26,9 @@ const Invitation = () => {
   const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   
-  // Extended filter states matching registration form
+  // Extended filter states matching registration form - EXACT MATCH
   const [selectedServices, setSelectedServices] = useState([]);
+  const [otherService, setOtherService] = useState('');
   const [selectedInvitationTypes, setSelectedInvitationTypes] = useState([]);
   const [selectedPrintingOptions, setSelectedPrintingOptions] = useState([]);
   const [selectedGiftTypes, setSelectedGiftTypes] = useState([]);
@@ -42,13 +45,21 @@ const Invitation = () => {
   const [preferredLocations, setPreferredLocations] = useState([]);
   const [hasTravelCharges, setHasTravelCharges] = useState('');
   const [advanceRequired, setAdvanceRequired] = useState('');
+  const [advanceAmount, setAdvanceAmount] = useState('');
+  const [balanceTerms, setBalanceTerms] = useState('');
   const [hasGST, setHasGST] = useState('');
-  const [hasPAN, setHasPAN] = useState('');
   
   // Filter navigation
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // Vendor details modal state
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
+
+  // Use imported vendors data
+  const vendors = invitationVendors;
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -116,7 +127,7 @@ const Invitation = () => {
     'Luxury Hampers'
   ];
 
-  // Filter options from registration form
+  // Filter options from registration form - EXACT MATCH
   const serviceTypes = [
     "Wedding Invitation Printing",
     "Digital Invitations / E-Cards",
@@ -165,7 +176,15 @@ const Invitation = () => {
   ];
 
   const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi'];
-  const districts = ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Bangalore', 'Hyderabad', 'Mumbai', 'Delhi'];
+  const districts = {
+    'Tamil Nadu': ['Chennai', 'Coimbatore', 'Madurai', 'Salem', 'Trichy', 'Kanyakumari', 'Tirunelveli'],
+    'Kerala': ['Kochi', 'Thiruvananthapuram', 'Kozhikode', 'Thrissur', 'Kollam'],
+    'Karnataka': ['Bangalore', 'Mysore', 'Mangalore', 'Hubli', 'Belgaum'],
+    'Andhra Pradesh': ['Visakhapatnam', 'Vijayawada', 'Guntur', 'Nellore', 'Tirupati'],
+    'Telangana': ['Hyderabad', 'Warangal', 'Nizamabad', 'Karimnagar'],
+    'Maharashtra': ['Mumbai', 'Pune', 'Nagpur', 'Nashik', 'Aurangabad'],
+    'Delhi': ['New Delhi', 'South Delhi', 'North Delhi', 'East Delhi', 'West Delhi']
+  };
 
   const handleCategoryClick = (categoryName) => {
     let eventType = categoryName;
@@ -262,546 +281,6 @@ const Invitation = () => {
     });
   };
 
-  // Enhanced vendor data with extended fields
-  const vendors = [
-    // Digital Invites Vendors
-    {
-      id: 1,
-      name: 'Digital Wedding Cards',
-      businessName: 'Digital Wedding Invitations',
-      businessCategory: 'Digital Invites',
-      eventType: 'Digital Invites',
-      personName: 'Rajesh Kumar',
-      designation: 'Creative Director',
-      description: 'Professional digital invitation design services with interactive features and tracking',
-      services: ['Wedding Invitation Printing', 'Digital Invitations / E-Cards', 'Customized Invitation Design'],
-      logo: digitalinvites,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹5,000 - ₹50,000 per project',
-      experience: 8,
-      businessType: 'Studio',
-      invitationTypes: ['Digital / Video Invitations', 'Theme-based Cards'],
-      printingOptions: ['Digital'],
-      giftTypes: [],
-      minOrderQuantity: 50,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'no',
-      designApprovalTime: 3,
-      printingDeliveryTime: 5,
-      giftPreparationTime: 0,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 2,
-      name: 'E-Invite Masters',
-      businessName: 'E-Invite Masters Studio',
-      businessCategory: 'Digital Invites',
-      eventType: 'Digital Invites',
-      personName: 'Priya Sharma',
-      designation: 'Digital Designer',
-      description: 'Creating beautiful digital invitations with modern designs and user-friendly interfaces',
-      services: ['Digital Invitations / E-Cards', 'Customized Invitation Design'],
-      logo: digitalinvites,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹8,000 - ₹75,000 per project',
-      experience: 6,
-      businessType: 'Individual',
-      invitationTypes: ['Digital / Video Invitations', 'Theme-based Cards'],
-      printingOptions: [],
-      giftTypes: [],
-      minOrderQuantity: 25,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'no',
-      designApprovalTime: 2,
-      printingDeliveryTime: 3,
-      giftPreparationTime: 0,
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Luxury Cards Vendors
-    {
-      id: 3,
-      name: 'Luxury Invitation Studio',
-      businessName: 'Luxury Wedding Cards',
-      businessCategory: 'Luxury Cards',
-      eventType: 'Luxury Cards',
-      personName: 'Arun Mehta',
-      designation: 'Premium Designer',
-      description: 'Premium luxury wedding cards with exquisite materials and craftsmanship',
-      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
-      logo: luxurycards,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹200 - ₹1,000 per card',
-      experience: 12,
-      businessType: 'Partnership',
-      invitationTypes: ['Traditional Cards', 'Premium / Box Invitations'],
-      printingOptions: ['Offset', 'Letterpress', 'Foil / Embossing'],
-      giftTypes: [],
-      minOrderQuantity: 100,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 5,
-      printingDeliveryTime: 14,
-      giftPreparationTime: 0,
-      preferredLocations: ['Local', 'Within State', 'Outstation', 'International'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 4,
-      name: 'Royal Wedding Cards',
-      businessName: 'Royal Luxury Invitations',
-      businessCategory: 'Luxury Cards',
-      eventType: 'Luxury Cards',
-      personName: 'Sneha Reddy',
-      designation: 'Luxury Card Specialist',
-      description: 'Royal themed luxury wedding cards with premium finishes and elegant designs',
-      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
-      logo: luxurycards,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹300 - ₹1,500 per card',
-      experience: 10,
-      businessType: 'Private Limited',
-      invitationTypes: ['Traditional Cards', 'Theme-based Cards', 'Premium / Box Invitations'],
-      printingOptions: ['Foil / Embossing', 'Letterpress'],
-      giftTypes: [],
-      minOrderQuantity: 50,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 4,
-      printingDeliveryTime: 12,
-      giftPreparationTime: 0,
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Printed Cards Vendors
-    {
-      id: 5,
-      name: 'Print Masters',
-      businessName: 'Print Masters Invitations',
-      businessCategory: 'Printed Cards',
-      eventType: 'Printed Cards',
-      personName: 'Vikram Singh',
-      designation: 'Printing Specialist',
-      description: 'High-quality printed wedding cards with various paper options and finishes',
-      services: ['Wedding Invitation Printing', 'Customized Invitation Design'],
-      logo: printedcards,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹50 - ₹500 per card',
-      experience: 15,
-      businessType: 'Partnership',
-      invitationTypes: ['Traditional Cards', 'Theme-based Cards'],
-      printingOptions: ['Offset', 'Digital'],
-      giftTypes: [],
-      minOrderQuantity: 200,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 3,
-      printingDeliveryTime: 10,
-      giftPreparationTime: 0,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 6,
-      name: 'Traditional Prints',
-      businessName: 'Traditional Printed Cards',
-      businessCategory: 'Printed Cards',
-      eventType: 'Printed Cards',
-      personName: 'Anjali Nair',
-      designation: 'Print Manager',
-      description: 'Traditional and contemporary printed wedding cards with excellent print quality',
-      services: ['Wedding Invitation Printing'],
-      logo: printedcards,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹40 - ₹400 per card',
-      experience: 9,
-      businessType: 'Proprietorship',
-      invitationTypes: ['Traditional Cards', 'Eco-friendly Invitations'],
-      printingOptions: ['Offset'],
-      giftTypes: [],
-      minOrderQuantity: 150,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 4,
-      printingDeliveryTime: 8,
-      giftPreparationTime: 0,
-      preferredLocations: ['Within State'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Custom Designs Vendors
-    {
-      id: 7,
-      name: 'Custom Creations',
-      businessName: 'Custom Invitation Designs',
-      businessCategory: 'Custom Designs',
-      eventType: 'Custom Designs',
-      personName: 'Rahul Verma',
-      designation: 'Design Head',
-      description: 'Fully customized invitation designs created from scratch based on your vision',
-      services: ['Customized Invitation Design', 'Wedding Invitation Printing'],
-      logo: customdesigns,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹10,000 - ₹1,00,000 per project',
-      experience: 11,
-      businessType: 'Private Limited',
-      invitationTypes: ['Theme-based Cards', 'Premium / Box Invitations', 'Eco-friendly Invitations'],
-      printingOptions: ['Digital', 'Foil / Embossing'],
-      giftTypes: [],
-      minOrderQuantity: 25,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 7,
-      printingDeliveryTime: 14,
-      giftPreparationTime: 0,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 8,
-      name: 'Design Studio',
-      businessName: 'Design Studio Invitations',
-      businessCategory: 'Custom Designs',
-      eventType: 'Custom Designs',
-      personName: 'Meera Patel',
-      designation: 'Creative Designer',
-      description: 'Unique custom-designed invitations that tell your personal love story',
-      services: ['Customized Invitation Design'],
-      logo: customdesigns,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹15,000 - ₹1,20,000 per project',
-      experience: 7,
-      businessType: 'Individual',
-      invitationTypes: ['Theme-based Cards', 'Digital / Video Invitations'],
-      printingOptions: ['Letterpress'],
-      giftTypes: [],
-      minOrderQuantity: 20,
-      giftMinOrder: 0,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 5,
-      printingDeliveryTime: 10,
-      giftPreparationTime: 0,
-      preferredLocations: ['Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Return Gifts Vendors
-    {
-      id: 9,
-      name: 'Gift Solutions',
-      businessName: 'Wedding Return Gifts',
-      businessCategory: 'Return Gifts',
-      eventType: 'Return Gifts',
-      personName: 'Aisha Khan',
-      designation: 'Gift Consultant',
-      description: 'Beautiful and thoughtful return gifts for wedding guests',
-      services: ['Wedding Return Gifts', 'Wedding Favors', 'Corporate / Bulk Gifts'],
-      logo: returngifts,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹200 - ₹2,000 per gift',
-      experience: 8,
-      businessType: 'Private Limited',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Traditional Gifts', 'Customized Gifts', 'Edible Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 100,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 10,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 10,
-      name: 'Thank You Gifts',
-      businessName: 'Thank You Return Gifts',
-      businessCategory: 'Return Gifts',
-      eventType: 'Return Gifts',
-      personName: 'Kabir Malhotra',
-      designation: 'Gift Specialist',
-      description: 'Elegant return gifts that show appreciation to your wedding guests',
-      services: ['Wedding Return Gifts', 'Wedding Favors'],
-      logo: returngifts,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹150 - ₹1,500 per gift',
-      experience: 6,
-      businessType: 'Partnership',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Traditional Gifts', 'Eco-friendly Gifts', 'Customized Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 50,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 7,
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Gift Hampers Vendors
-    {
-      id: 11,
-      name: 'Hamper House',
-      businessName: 'Wedding Gift Hampers',
-      businessCategory: 'Gift Hampers',
-      eventType: 'Gift Hampers',
-      personName: 'Sanjay Gupta',
-      designation: 'Hamper Designer',
-      description: 'Beautifully curated gift hampers for wedding guests and family',
-      services: ['Hampers & Custom Packaging', 'Wedding Favors'],
-      logo: gifthampers,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹500 - ₹5,000 per hamper',
-      experience: 5,
-      businessType: 'Proprietorship',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Premium Hampers', 'Edible Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 20,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 5,
-      preferredLocations: ['Within State'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 12,
-      name: 'Premium Hampers',
-      businessName: 'Premium Gift Hampers',
-      businessCategory: 'Gift Hampers',
-      eventType: 'Gift Hampers',
-      personName: 'Neha Joshi',
-      designation: 'Premium Hamper Curator',
-      description: 'Luxury gift hampers with premium products and elegant packaging',
-      services: ['Hampers & Custom Packaging', 'Wedding Favors', 'Corporate / Bulk Gifts'],
-      logo: gifthampers,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹1,000 - ₹10,000 per hamper',
-      experience: 7,
-      businessType: 'Private Limited',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Premium Hampers', 'Edible Gifts', 'Customized Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 10,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 7,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Eco Gifts Vendors
-    {
-      id: 13,
-      name: 'Eco Gifts',
-      businessName: 'Eco-Friendly Wedding Gifts',
-      businessCategory: 'Eco Gifts',
-      eventType: 'Eco Gifts',
-      personName: 'Venkatesh Iyer',
-      designation: 'Eco Products Manager',
-      description: 'Environmentally friendly gift options for eco-conscious weddings',
-      services: ['Wedding Return Gifts', 'Wedding Favors'],
-      logo: ecogifts,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹100 - ₹1,000 per gift',
-      experience: 6,
-      businessType: 'Individual',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Eco-friendly Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 50,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 5,
-      preferredLocations: ['Local', 'Within State'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 14,
-      name: 'Green Gifts',
-      businessName: 'Green Wedding Gifts',
-      businessCategory: 'Eco Gifts',
-      eventType: 'Eco Gifts',
-      personName: 'Radha Krishnan',
-      designation: 'Sustainable Gift Expert',
-      description: 'Sustainable and eco-friendly gift options with minimal environmental impact',
-      services: ['Wedding Return Gifts', 'Hampers & Custom Packaging'],
-      logo: ecogifts,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹150 - ₹1,200 per gift',
-      experience: 4,
-      businessType: 'Proprietorship',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Eco-friendly Gifts', 'Traditional Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 30,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 6,
-      preferredLocations: ['Local'],
-      hasTravelCharges: 'no',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    // Luxury Hampers Vendors
-    {
-      id: 15,
-      name: 'Luxury Hampers',
-      businessName: 'Luxury Wedding Hampers',
-      businessCategory: 'Luxury Hampers',
-      eventType: 'Luxury Hampers',
-      personName: 'Pooja Mehta',
-      designation: 'Luxury Hamper Curator',
-      description: 'Ultra-premium luxury hampers for VIP guests and family members',
-      services: ['Hampers & Custom Packaging', 'Corporate / Bulk Gifts'],
-      logo: luxuryhampers,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹5,000 - ₹50,000 per hamper',
-      experience: 9,
-      businessType: 'Private Limited',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Premium Hampers', 'Customized Gifts'],
-      minOrderQuantity: 0,
-      giftMinOrder: 5,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 8,
-      preferredLocations: ['Local', 'Within State', 'Outstation'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    },
-    {
-      id: 16,
-      name: 'Royal Hampers',
-      businessName: 'Royal Luxury Hampers',
-      businessCategory: 'Luxury Hampers',
-      eventType: 'Luxury Hampers',
-      personName: 'David Wilson',
-      designation: 'Royal Hamper Specialist',
-      description: 'Royal themed luxury hampers with premium international brands',
-      services: ['Hampers & Custom Packaging'],
-      logo: luxuryhampers,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹10,000 - ₹1,00,000 per hamper',
-      experience: 12,
-      businessType: 'Partnership',
-      invitationTypes: [],
-      printingOptions: [],
-      giftTypes: ['Premium Hampers'],
-      minOrderQuantity: 0,
-      giftMinOrder: 3,
-      customizationAvailable: 'yes',
-      brandingAvailable: 'yes',
-      packingIncluded: 'yes',
-      designApprovalTime: 0,
-      printingDeliveryTime: 0,
-      giftPreparationTime: 10,
-      preferredLocations: ['Within State', 'Outstation', 'International'],
-      hasTravelCharges: 'yes',
-      advanceRequired: 'yes',
-      hasGST: 'yes',
-      hasPAN: 'yes'
-    }
-  ];
-
   // Enhanced filter function
   const filteredVendors = vendors.filter(vendor => {
     // Basic filters
@@ -825,6 +304,11 @@ const Invitation = () => {
         vendor.services.includes(service)
       );
       if (!hasMatchingService) return false;
+    }
+    
+    // Other service filter
+    if (otherService) {
+      // This would need custom logic based on how other service is stored
     }
     
     // Invitation types filter
@@ -914,63 +398,58 @@ const Invitation = () => {
     // Advance payment filter
     if (advanceRequired && vendor.advanceRequired !== advanceRequired) return false;
     
-    // Document filters
+    // Advance amount filter
+    if (advanceAmount) {
+      // This would need custom logic for percentage vs amount
+    }
+    
+    // Balance terms filter
+    if (balanceTerms) {
+      // This would need custom logic for text search
+    }
+    
+    // GST filter
     if (hasGST && vendor.hasGST !== hasGST) return false;
-    if (hasPAN && vendor.hasPAN !== hasPAN) return false;
     
     return true;
   });
 
-  // Desktop Filter Pages - Matching registration form structure
+  // Desktop Filter Pages - EXACTLY MATCHING FORM STRUCTURE AND HEADINGS
   const filterPages = [
+    // PAGE 1: Vendor Details
     {
-      title: "Services & Type",
+      title: "Vendor Details",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Service Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Service Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Services Offered</label>
-            <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Services Provided</label>
+            <div className="grid grid-cols-1 gap-1.5 max-h-36 overflow-y-auto p-1 border border-red-100 rounded-md">
               {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={service} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedServices.includes(service)}
                     onChange={() => handleServiceToggle(service)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{service}</span>
                 </label>
               ))}
             </div>
           </div>
-
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-2">
               <input
                 type="number"
-                placeholder="Min"
+                placeholder="Min Budget"
                 value={minBudget}
                 onChange={(e) => setMinBudget(e.target.value)}
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
               <input
                 type="number"
-                placeholder="Max"
+                placeholder="Max Budget"
                 value={maxBudget}
                 onChange={(e) => setMaxBudget(e.target.value)}
                 className="w-1/2 px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
@@ -980,21 +459,61 @@ const Invitation = () => {
         </div>
       )
     },
+
+    // PAGE 3: Business & Legal
+    {
+      title: "Business & Legal",
+      content: (
+        <div className="space-y-3">
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {businessTypes.map(type => (
+                <label key={type} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="radio"
+                    name="businessType"
+                    value={type}
+                    checked={businessType === type}
+                    onChange={(e) => setBusinessType(e.target.value)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
+            <input
+              type="number"
+              placeholder="Enter years"
+              value={experience}
+              onChange={(e) => setExperience(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 4: Invitation Details
     {
       title: "Invitation Details",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Invitation Types</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Invitation Types Offered</label>
             <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
               {invitationTypes.map(type => (
-                <label key={type} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={type} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedInvitationTypes.includes(type)}
                     onChange={() => handleInvitationTypeToggle(type)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{type}</span>
                 </label>
               ))}
@@ -1005,28 +524,17 @@ const Invitation = () => {
             <label className="block text-xs font-bold text-gray-700 mb-1">Printing Options</label>
             <div className="grid grid-cols-2 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
               {printingOptions.map(option => (
-                <label key={option} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={option} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedPrintingOptions.includes(option)}
                     onChange={() => handlePrintingOptionToggle(option)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{option}</span>
                 </label>
               ))}
             </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Order Quantity</label>
-            <input
-              type="number"
-              placeholder="Enter minimum quantity"
-              value={minOrderQuantity}
-              onChange={(e) => setMinOrderQuantity(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
           </div>
 
           <div>
@@ -1059,21 +567,23 @@ const Invitation = () => {
         </div>
       )
     },
+
+    // PAGE 5: Gift & Return Gifts
     {
-      title: "Gift Details",
+      title: "Gift & Return Gifts",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Types</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Types of Gifts Offered</label>
             <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
               {giftTypes.map(type => (
-                <label key={type} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
+                <label key={type} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
                     checked={selectedGiftTypes.includes(type)}
                     onChange={() => handleGiftTypeToggle(type)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{type}</span>
                 </label>
               ))}
@@ -1081,18 +591,7 @@ const Invitation = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Min. Order Quantity</label>
-            <input
-              type="number"
-              placeholder="Enter minimum gift quantity"
-              value={giftMinOrder}
-              onChange={(e) => setGiftMinOrder(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Branding Available</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Branding / Name Printing Available</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -1120,7 +619,7 @@ const Invitation = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Packing Included</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Packing & Wrapping Included</label>
             <div className="flex gap-3 text-xs">
               <label className="flex items-center gap-1">
                 <input 
@@ -1149,166 +648,48 @@ const Invitation = () => {
         </div>
       )
     },
+
+    // PAGE 6: Pricing & Payment Terms
     {
-      title: "Location & Coverage",
+      title: "Pricing & Payment Terms",
       content: (
         <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All States</option>
-              {states.map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
-            >
-              <option value="">All Districts</option>
-              {districts.map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Service Coverage</label>
-            <div className="grid grid-cols-2 gap-1.5">
-              {locations.map(location => (
-                <label key={location} className="flex items-center gap-1 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={preferredLocations.includes(location)}
-                    onChange={() => handleLocationToggle(location)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
-                  {location}
-                </label>
-              ))}
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Invitation Min Price</label>
+              <input
+                type="number"
+                placeholder="Min price"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Invitation Max Price</label>
+              <input
+                type="number"
+                placeholder="Max price"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
-                  value="yes"
-                  checked={hasTravelCharges === "yes"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
-                  value="no"
-                  checked={hasTravelCharges === "no"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No
-              </label>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Gift Min Price</label>
+              <input
+                type="number"
+                placeholder="Min price"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
             </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Timeline",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Design Approval (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Enter max days"
-              value={designApprovalTime}
-              onChange={(e) => setDesignApprovalTime(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Printing & Delivery (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Enter max days"
-              value={printingDeliveryTime}
-              onChange={(e) => setPrintingDeliveryTime(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Preparation (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Enter max days"
-              value={giftPreparationTime}
-              onChange={(e) => setGiftPreparationTime(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Business & Payment",
-      content: (
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Business Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
-            <input
-              type="number"
-              placeholder="Minimum years"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Gift Max Price</label>
+              <input
+                type="number"
+                placeholder="Max price"
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+              />
+            </div>
           </div>
 
           <div>
@@ -1339,302 +720,77 @@ const Invitation = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Documents Available</label>
-            <div className="space-y-1.5">
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasGST" 
-                  value="yes"
-                  checked={hasGST === "yes"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Has GST
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasGST" 
-                  value="no"
-                  checked={hasGST === "no"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No GST
-              </label>
-              <div className="border-t border-gray-200 my-1"></div>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-xs">
-                <input 
-                  type="radio" 
-                  name="hasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
-                No PAN
-              </label>
-            </div>
-          </div>
-        </div>
-      )
-    }
-  ];
-
-  // Mobile Filter Pages - IDENTICAL to desktop pages (with smaller font sizes)
-  const mobileFilterPages = [
-    {
-      title: "Services & Type",
-      content: (
-        <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Service Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Services Offered</label>
-            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {serviceTypes.map(service => (
-                <label key={service} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{service}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Budget Range (₹)</label>
-            <div className="flex gap-1">
+          {advanceRequired === "yes" && (
+            <div>
+              <label className="block text-xs font-bold text-gray-700 mb-1">Advance % / Amount</label>
               <input
-                type="number"
-                placeholder="Min"
-                value={minBudget}
-                onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+                type="text"
+                placeholder="Enter advance amount or percentage"
+                value={advanceAmount}
+                onChange={(e) => setAdvanceAmount(e.target.value)}
+                className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
               />
             </div>
-          </div>
+          )}
         </div>
       )
     },
+
+    // PAGE 7: Delivery Timeline
     {
-      title: "Invitation Details",
+      title: "Delivery Timeline",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Invitation Types</label>
-            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {invitationTypes.map(type => (
-                <label key={type} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedInvitationTypes.includes(type)}
-                    onChange={() => handleInvitationTypeToggle(type)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{type}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Printing Options</label>
-            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {printingOptions.map(option => (
-                <label key={option} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedPrintingOptions.includes(option)}
-                    onChange={() => handlePrintingOptionToggle(option)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{option}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Min. Order Quantity</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Design Approval (Days)</label>
             <input
               type="number"
-              placeholder="Min quantity"
-              value={minOrderQuantity}
-              onChange={(e) => setMinOrderQuantity(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              placeholder="Enter number of days"
+              value={designApprovalTime}
+              onChange={(e) => setDesignApprovalTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Customization</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileCustomizationAvailable" 
-                  value="yes"
-                  checked={customizationAvailable === "yes"}
-                  onChange={(e) => setCustomizationAvailable(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileCustomizationAvailable" 
-                  value="no"
-                  checked={customizationAvailable === "no"}
-                  onChange={(e) => setCustomizationAvailable(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-        </div>
-      )
-    },
-    {
-      title: "Gift Details",
-      content: (
-        <div className="space-y-1.5">
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Types</label>
-            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
-              {giftTypes.map(type => (
-                <label key={type} className="flex items-center gap-1 text-[9px]">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedGiftTypes.includes(type)}
-                    onChange={() => handleGiftTypeToggle(type)}
-                    className="w-2.5 h-2.5 accent-red-600" 
-                  /> 
-                  <span className="truncate">{type}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Min. Order Qty</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Printing & Delivery (Days)</label>
             <input
               type="number"
-              placeholder="Min gift qty"
-              value={giftMinOrder}
-              onChange={(e) => setGiftMinOrder(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              placeholder="Enter number of days"
+              value={printingDeliveryTime}
+              onChange={(e) => setPrintingDeliveryTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             />
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Branding Available</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileBrandingAvailable" 
-                  value="yes"
-                  checked={brandingAvailable === "yes"}
-                  onChange={(e) => setBrandingAvailable(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileBrandingAvailable" 
-                  value="no"
-                  checked={brandingAvailable === "no"}
-                  onChange={(e) => setBrandingAvailable(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Packing Included</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobilePackingIncluded" 
-                  value="yes"
-                  checked={packingIncluded === "yes"}
-                  onChange={(e) => setPackingIncluded(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobilePackingIncluded" 
-                  value="no"
-                  checked={packingIncluded === "no"}
-                  onChange={(e) => setPackingIncluded(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
-            </div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Gift Preparation (Days)</label>
+            <input
+              type="number"
+              placeholder="Enter number of days"
+              value={giftPreparationTime}
+              onChange={(e) => setGiftPreparationTime(e.target.value)}
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
+            />
           </div>
         </div>
       )
     },
+
+    // PAGE 8: Service Coverage
     {
-      title: "Location & Coverage",
+      title: "Service Coverage",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-3">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">State</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
             <select
               value={selectedState}
               onChange={(e) => {
                 setSelectedState(e.target.value);
                 setSelectedDistrict('');
               }}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             >
               <option value="">All States</option>
               {states.map((state) => (
@@ -1644,41 +800,30 @@ const Invitation = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City / District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
               disabled={!selectedState}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
+              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs disabled:bg-gray-100"
             >
               <option value="">All Districts</option>
-              {districts.map((district) => (
+              {selectedState && districts[selectedState]?.map((district) => (
                 <option key={district} value={district}>{district}</option>
               ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">City/Area</label>
-            <input
-              type="text"
-              placeholder="Enter city"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Service Coverage</label>
-            <div className="grid grid-cols-2 gap-1">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Service Coverage Locations</label>
+            <div className="grid grid-cols-2 gap-1.5">
               {locations.map(location => (
-                <label key={location} className="flex items-center gap-1 text-[9px]">
+                <label key={location} className="flex items-center gap-2 text-xs">
                   <input 
                     type="checkbox" 
                     checked={preferredLocations.includes(location)}
                     onChange={() => handleLocationToggle(location)}
-                    className="w-2.5 h-2.5 accent-red-600" 
+                    className="w-3.5 h-3.5 accent-red-600" 
                   /> 
                   {location}
                 </label>
@@ -1687,27 +832,27 @@ const Invitation = () => {
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Travel Charges</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
+            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
+            <div className="flex gap-3 text-xs">
+              <label className="flex items-center gap-1">
                 <input 
                   type="radio" 
-                  name="mobileHasTravelCharges" 
+                  name="hasTravelCharges" 
                   value="yes"
                   checked={hasTravelCharges === "yes"}
                   onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
+                  className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 Yes
               </label>
-              <label className="flex items-center gap-1 text-[9px]">
+              <label className="flex items-center gap-1">
                 <input 
                   type="radio" 
-                  name="mobileHasTravelCharges" 
+                  name="hasTravelCharges" 
                   value="no"
                   checked={hasTravelCharges === "no"}
                   onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
+                  className="w-3.5 h-3.5 accent-red-600" 
                 /> 
                 No
               </label>
@@ -1715,151 +860,252 @@ const Invitation = () => {
           </div>
         </div>
       )
-    },
+    }
+  ];
+
+  // Mobile Filter Pages - EXACTLY MATCHING FORM STRUCTURE AND HEADINGS (with smaller font sizes)
+  const mobileFilterPages = [
+    // PAGE 1: Vendor Details
     {
-      title: "Timeline",
+      title: "Vendor Details",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Design Approval (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Max days"
-              value={designApprovalTime}
-              onChange={(e) => setDesignApprovalTime(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Type of Services Provided</label>
+            <div className="grid grid-cols-1 gap-1 max-h-28 overflow-y-auto p-1 border border-red-100 rounded">
+              {serviceTypes.map(service => (
+                <label key={service} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedServices.includes(service)} onChange={() => handleServiceToggle(service)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span className="truncate">{service}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Printing & Delivery (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Max days"
-              value={printingDeliveryTime}
-              onChange={(e) => setPrintingDeliveryTime(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
-          </div>
-
-          <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Gift Preparation (Max Days)</label>
-            <input
-              type="number"
-              placeholder="Max days"
-              value={giftPreparationTime}
-              onChange={(e) => setGiftPreparationTime(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
+            <div className="flex gap-1">
+              <input type="number" placeholder="Min Budget" value={minBudget} onChange={(e) => setMinBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded" />
+              <input type="number" placeholder="Max Budget" value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
           </div>
         </div>
       )
     },
+
+    // PAGE 3: Business & Legal
     {
-      title: "Business & Payment",
+      title: "Business & Legal",
       content: (
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Types</option>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Business Type</label>
+            <div className="grid grid-cols-2 gap-1">
               {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+                <label key={type} className="flex items-center gap-1.5 text-xs">
+                  <input type="radio" name="mobileBusinessType" value={type} checked={businessType === type} onChange={(e) => setBusinessType(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span>{type}</span>
+                </label>
               ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Years of Experience</label>
+            <input type="number" placeholder="Enter years" value={experience} onChange={(e) => setExperience(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 4: Invitation Details
+    {
+      title: "Invitation Details",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Invitation Types Offered</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {invitationTypes.map(type => (
+                <label key={type} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedInvitationTypes.includes(type)} onChange={() => handleInvitationTypeToggle(type)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Printing Options</label>
+            <div className="grid grid-cols-2 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {printingOptions.map(option => (
+                <label key={option} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedPrintingOptions.includes(option)} onChange={() => handlePrintingOptionToggle(option)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span className="truncate">{option}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Customization Available</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="mobileCustomizationAvailable" value="yes" checked={customizationAvailable === "yes"} onChange={(e) => setCustomizationAvailable(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                Yes
+              </label>
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="mobileCustomizationAvailable" value="no" checked={customizationAvailable === "no"} onChange={(e) => setCustomizationAvailable(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 5: Gift & Return Gifts
+    {
+      title: "Gift & Return Gifts",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Types of Gifts Offered</label>
+            <div className="grid grid-cols-1 gap-1 max-h-24 overflow-y-auto p-1 border border-red-100 rounded">
+              {giftTypes.map(type => (
+                <label key={type} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={selectedGiftTypes.includes(type)} onChange={() => handleGiftTypeToggle(type)} className="w-3.5 h-3.5 accent-red-600" />
+                  <span className="truncate">{type}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Branding / Name Printing Available</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileBrandingAvailable" value="yes" checked={brandingAvailable === "yes"} onChange={(e) => setBrandingAvailable(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileBrandingAvailable" value="no" checked={brandingAvailable === "no"} onChange={(e) => setBrandingAvailable(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Packing & Wrapping Included</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobilePackingIncluded" value="yes" checked={packingIncluded === "yes"} onChange={(e) => setPackingIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobilePackingIncluded" value="no" checked={packingIncluded === "no"} onChange={(e) => setPackingIncluded(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 6: Pricing & Payment Terms
+    {
+      title: "Pricing & Payment Terms",
+      content: (
+        <div className="space-y-2">
+          <div className="grid grid-cols-2 gap-1">
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Invitation Min Price</label>
+              <input type="number" placeholder="Min" className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Invitation Max Price</label>
+              <input type="number" placeholder="Max" className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-1">
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Gift Min Price</label>
+              <input type="number" placeholder="Min" className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Gift Max Price</label>
+              <input type="number" placeholder="Max" className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Advance Payment Required</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileAdvanceRequired" value="yes" checked={advanceRequired === "yes"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileAdvanceRequired" value="no" checked={advanceRequired === "no"} onChange={(e) => setAdvanceRequired(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
+            </div>
+          </div>
+
+          {advanceRequired === "yes" && (
+            <div>
+              <label className="block text-[10px] font-bold text-gray-700 mb-1">Advance % / Amount</label>
+              <input type="text" placeholder="Enter advance amount or percentage" value={advanceAmount} onChange={(e) => setAdvanceAmount(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+            </div>
+          )}
+        </div>
+      )
+    },
+
+    // PAGE 7: Delivery Timeline
+    {
+      title: "Delivery Timeline",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Design Approval (Days)</label>
+            <input type="number" placeholder="Enter number of days" value={designApprovalTime} onChange={(e) => setDesignApprovalTime(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Printing & Delivery (Days)</label>
+            <input type="number" placeholder="Enter number of days" value={printingDeliveryTime} onChange={(e) => setPrintingDeliveryTime(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Gift Preparation (Days)</label>
+            <input type="number" placeholder="Enter number of days" value={giftPreparationTime} onChange={(e) => setGiftPreparationTime(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded" />
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 8: Service Coverage
+    {
+      title: "Service Coverage",
+      content: (
+        <div className="space-y-2">
+          <div>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">State</label>
+            <select value={selectedState} onChange={(e) => { setSelectedState(e.target.value); setSelectedDistrict(''); }} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded">
+              <option value="">All States</option>
+              {states.map((state) => <option key={state} value={state}>{state}</option>)}
             </select>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Experience (Years)</label>
-            <input
-              type="number"
-              placeholder="Min years"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-              className="w-full px-1.5 py-1 text-[10px] border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">City / District</label>
+            <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} disabled={!selectedState} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded disabled:bg-gray-100">
+              <option value="">All Districts</option>
+              {selectedState && districts[selectedState]?.map((district) => <option key={district} value={district}>{district}</option>)}
+            </select>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Advance Required</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileAdvanceRequired" 
-                  value="yes"
-                  checked={advanceRequired === "yes"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Yes
-              </label>
-              <label className="flex items-center gap-1 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileAdvanceRequired" 
-                  value="no"
-                  checked={advanceRequired === "no"}
-                  onChange={(e) => setAdvanceRequired(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Service Coverage Locations</label>
+            <div className="grid grid-cols-2 gap-1">
+              {locations.map(location => (
+                <label key={location} className="flex items-center gap-1.5 text-xs">
+                  <input type="checkbox" checked={preferredLocations.includes(location)} onChange={() => handleLocationToggle(location)} className="w-3.5 h-3.5 accent-red-600" />
+                  {location}
+                </label>
+              ))}
             </div>
           </div>
 
           <div>
-            <label className="block text-[9px] font-bold text-gray-700 mb-0.5">Documents</label>
-            <div className="space-y-1">
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasGST" 
-                  value="yes"
-                  checked={hasGST === "yes"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Has GST
-              </label>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasGST" 
-                  value="no"
-                  checked={hasGST === "no"}
-                  onChange={(e) => setHasGST(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No GST
-              </label>
-              <div className="border-t border-gray-200 my-0.5"></div>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="yes"
-                  checked={hasPAN === "yes"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                Has PAN
-              </label>
-              <label className="flex items-center gap-2 text-[9px]">
-                <input 
-                  type="radio" 
-                  name="mobileHasPAN" 
-                  value="no"
-                  checked={hasPAN === "no"}
-                  onChange={(e) => setHasPAN(e.target.value)}
-                  className="w-2.5 h-2.5 accent-red-600" 
-                /> 
-                No PAN
-              </label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Travel Charges Applicable</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileHasTravelCharges" value="yes" checked={hasTravelCharges === "yes"} onChange={(e) => setHasTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />Yes</label>
+              <label className="flex items-center gap-1.5 text-xs"><input type="radio" name="mobileHasTravelCharges" value="no" checked={hasTravelCharges === "no"} onChange={(e) => setHasTravelCharges(e.target.value)} className="w-3.5 h-3.5 accent-red-600" />No</label>
             </div>
           </div>
         </div>
@@ -1902,6 +1148,7 @@ const Invitation = () => {
     setSelectedDistrict('');
     setSelectedLocation('');
     setSelectedServices([]);
+    setOtherService('');
     setSelectedInvitationTypes([]);
     setSelectedPrintingOptions([]);
     setSelectedGiftTypes([]);
@@ -1918,8 +1165,9 @@ const Invitation = () => {
     setPreferredLocations([]);
     setHasTravelCharges('');
     setAdvanceRequired('');
+    setAdvanceAmount('');
+    setBalanceTerms('');
     setHasGST('');
-    setHasPAN('');
     setCurrentFilterPage(0);
     setCurrentMobileFilterPage(0);
     setShowMobileFilterDrawer(false);
@@ -1963,6 +1211,15 @@ const Invitation = () => {
     }
   };
 
+  // Handle view details
+  const handleViewDetails = (vendorId) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
+  };
+
   // Count active filters
   const getActiveFilterCount = () => {
     let count = 0;
@@ -1973,6 +1230,7 @@ const Invitation = () => {
     if (selectedDistrict) count++;
     if (selectedLocation) count++;
     if (selectedServices.length > 0) count++;
+    if (otherService) count++;
     if (selectedInvitationTypes.length > 0) count++;
     if (selectedPrintingOptions.length > 0) count++;
     if (selectedGiftTypes.length > 0) count++;
@@ -1989,8 +1247,9 @@ const Invitation = () => {
     if (preferredLocations.length > 0) count++;
     if (hasTravelCharges) count++;
     if (advanceRequired) count++;
+    if (advanceAmount) count++;
+    if (balanceTerms) count++;
     if (hasGST) count++;
-    if (hasPAN) count++;
     return count;
   };
 
@@ -2557,7 +1816,11 @@ const Invitation = () => {
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" 
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2671,7 +1934,10 @@ const Invitation = () => {
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -2934,6 +2200,17 @@ const Invitation = () => {
           </div>
         </div>
       )}
+
+      {/* Vendor Details Modal */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="invitation"
+      />
     </div>
   );
 };

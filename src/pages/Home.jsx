@@ -177,68 +177,136 @@ const Home = () => {
       </section>
 
       {/* Welcome Section - Mobile responsive */}
-      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
-            Welcome to Eliteinova Matrimonial Services
-          </h2>
-          <div className="bg-white rounded-lg md:rounded-xl shadow-md md:shadow-lg p-4 md:p-6 lg:p-8">
-            
-            {/* Three Login/Registration Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
-              
-              {/* Vendor Box */}
-              <div className="bg-gradient-to-br from-yellow-100 to-red-100 p-4 md:p-5 lg:p-6 rounded-lg border border-yellow-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Vendor Portal</h3>
-                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Partner services access</p>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => setShowVendorLogin(true)}
-                    className="flex-1 bg-yellow-600 text-red-900 px-3 py-2 rounded-lg text-sm hover:bg-yellow-700 transition-colors text-center"
-                  >
-                    Login
-                  </button>
-                  <Link to="/vendor-login" className="flex-1 bg-yellow-500 text-red-900 px-3 py-2 rounded-lg text-sm hover:bg-yellow-600 transition-colors text-center">
-                    Register
-                  </Link>
-                </div>
-              </div>
+<main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+  <div className="max-w-4xl mx-auto text-center">
+    <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-red-800 mb-4 md:mb-6">
+      Welcome to Eliteinova Matrimonial Services
+    </h2>
+  </div>
 
-              {/* Customer Box */}
-              <div className="bg-gradient-to-br from-red-100 to-yellow-100 p-4 md:p-5 lg:p-6 rounded-lg border border-red-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Customer Portal</h3>
-                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Access your profile</p>
-                <div className="flex gap-2">
-                  <Link to="/customer-login" className="flex-1 bg-red-600 text-white px-3 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors text-center">
-                    Login
-                  </Link>
-                  <Link to="/customer-registration" className="flex-1 bg-red-500 text-white px-3 py-2 rounded-lg text-sm hover:bg-red-600 transition-colors text-center">
-                    Register
-                  </Link>
-                </div>
-              </div>
+  {/* Portal Access Section - moved OUTSIDE the max-w-4xl div */}
+  <section id="portal-access" className="mb-24 scroll-mt-20">
+    <div className="text-center mb-12">
+      <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">
+        ✦ Access Your Account ✦
+      </p>
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+        Portal Login & Registration
+      </h2>
+      <div className="flex items-center justify-center gap-3">
+        <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-red-500" />
+        <div className="w-2 h-2 rounded-full bg-red-500" />
+        <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500" />
+      </div>
+    </div>
 
-              {/* Matrimony Box */}
-              <div className="bg-gradient-to-br from-pink-100 to-red-100 p-4 md:p-5 lg:p-6 rounded-lg border border-pink-200">
-                <h3 className="font-pacifico text-base md:text-lg lg:text-xl text-red-700 mb-2 md:mb-3">Matrimony Portal</h3>
-                <p className="text-gray-600 text-xs md:text-sm mb-3 md:mb-4">Find your perfect partner</p>
-                <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer" className="block bg-gradient-to-r from-red-600 to-pink-600 text-white px-4 py-2 rounded-lg text-sm hover:from-red-700 hover:to-pink-700 transition-all text-center">
-                  Matrimony Registration
-                </a>
-              </div>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
 
-            </div>
+      {/* Vendor Portal */}
+      <div className="group relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+        <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-amber-100">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl" />
+
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+
+          <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-amber-600 transition-colors">
+            Vendor Portal
+          </h3>
+          <p className="text-gray-500 text-sm mb-6">Partner services & business access</p>
+
+          <div className="flex gap-3">
+            <button onClick={() => setShowVendorLogin(true)}
+              className="flex-1 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 text-center">
+              Login
+            </button>
+            <button onClick={() => setShowComingSoon(true)}
+              className="flex-1 px-4 py-2.5 bg-amber-50 text-amber-700 text-sm font-semibold rounded-xl border border-amber-200 hover:bg-amber-100 hover:scale-105 transition-all duration-300 text-center">
+              Register
+            </button>
           </div>
         </div>
+      </div>
 
-        {/* Vendor Login Modal */}
-        {showVendorLogin && (
-          <VendorLoginForm 
-            onClose={() => setShowVendorLogin(false)}
-            showRegisterOptions={true}
-          />
-        )}
-      </main>
+      {/* Customer Portal */}
+      <div className="group relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+        <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-red-100">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-t-2xl" />
+
+          <div className="absolute -top-3 right-6 px-3 py-1 bg-gradient-to-r from-red-500 to-rose-500 text-white text-xs font-bold rounded-full shadow-lg">
+            Popular
+          </div>
+
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+
+          <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-red-600 transition-colors">
+            Customer Portal
+          </h3>
+          <p className="text-gray-500 text-sm mb-6">Access your profile & matches</p>
+
+          <div className="flex gap-3">
+            <button onClick={() => setShowComingSoon(true)}
+              className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 text-center">
+              Login
+            </button>
+            <button onClick={() => setShowComingSoon(true)}
+              className="flex-1 px-4 py-2.5 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-200 hover:bg-red-100 hover:scale-105 transition-all duration-300 text-center">
+              Register
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Matrimony Portal */}
+      <div className="group relative">
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+        <div className="relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-pink-100">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-600 rounded-t-2xl" />
+
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+
+          <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-pink-600 transition-colors">
+            Matrimony Portal
+          </h3>
+          <p className="text-gray-500 text-sm mb-6">Find your perfect life partner</p>
+
+          <div className="flex gap-3">
+            <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer"
+              className="flex-1 px-4 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 text-center">
+              Login
+            </a>
+            <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer"
+              className="flex-1 px-4 py-2.5 bg-pink-50 text-pink-700 text-sm font-semibold rounded-xl border border-pink-200 hover:bg-pink-100 hover:scale-105 transition-all duration-300 text-center">
+              Register
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  {/* Vendor Login Modal */}
+  {showVendorLogin && (
+    <VendorLoginForm
+      onClose={() => setShowVendorLogin(false)}
+      showRegisterOptions={true}
+    />
+  )}
+</main>
 
       {/* Categories Section - Mobile responsive */}
       <section className="container mx-auto px-3 md:px-4 py-6 md:py-8 lg:py-12">

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from "react";
-import { ArrowLeft, Palette, Scissors, Brush, Sparkles, Users, Heart, Globe, Banknote, X, Pen, Trash2, Upload, Link as LinkIcon, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Palette, Scissors, Brush, Sparkles, Users, Heart, Globe, Banknote, X, Pen, Trash2, Upload, Link as LinkIcon, Image as ImageIcon, DollarSign } from "lucide-react";
 
 // Form steps
 const steps = [
@@ -79,6 +79,8 @@ export default function StylingVendorRegistrationModal({ isOpen, onClose }) {
     leadStylist: "",
     selectedServices: [],
     otherService: "",
+    minBudget: "", // Added min budget
+    maxBudget: "", // Added max budget
     
     // Step 2
     mobile: "",
@@ -446,6 +448,38 @@ export default function StylingVendorRegistrationModal({ isOpen, onClose }) {
                       />
                     </div>
                   </div>
+                </div>
+
+                {/* BUDGET RANGE SECTION - ADDED HERE */}
+                <div className="form-group mt-4 pt-2 border-t border-red-200">
+                  <label className="form-label flex items-center gap-2">
+                    <span>₹ Budget Range (Min - Max) *</span>
+                  </label>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <input 
+                        name="minBudget"
+                        value={formData.minBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Min Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                    <div>
+                      <input 
+                        name="maxBudget"
+                        value={formData.maxBudget}
+                        onChange={handleInputChange}
+                        className="input-field" 
+                        placeholder="Max Budget (₹)" 
+                        type="number"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
+                    Enter your typical price range for styling services
+                  </p>
                 </div>
               </div>
             )}

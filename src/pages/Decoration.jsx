@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { decorationVendors } from '../data/decorationData';
+import VendorDetails from '../Components/VendorDetails'; // Import VendorDetails component
 import mandapdecor from '../assets/mandapdecor.jpg';
 import stagedecor from '../assets/stagedecor.jpg';
 import weddingdecor from '../assets/weddingdecor.jpg';
@@ -10,8 +12,7 @@ import themedecor from '../assets/themedecor.jpg';
 import lightingdecor from '../assets/lightingdecor.jpg';
 import decorationbanner1 from '../assets/mandapdecor.jpg';
 import decorationbanner2 from '../assets/receptiondecor.jpg';
-// Add a matrimony banner image
-import matrimonyBanner from '../assets/Matrimonybanner.jpg'; // Use the same image as Photography
+import matrimonyBanner from '../assets/Matrimonybanner.jpg';
 
 const Decoration = () => {
   const navigate = useNavigate();
@@ -30,10 +31,21 @@ const Decoration = () => {
   const [businessType, setBusinessType] = useState('');
   const [hasTravelCharges, setHasTravelCharges] = useState('');
   
+  // New filter states for additional pages
+  const [selectedDecorationStyles, setSelectedDecorationStyles] = useState([]);
+  const [selectedMaterials, setSelectedMaterials] = useState([]);
+  const [selectedServicesIncluded, setSelectedServicesIncluded] = useState([]);
+  const [selectedPreferredLocations, setSelectedPreferredLocations] = useState([]);
+  const [transportationCharges, setTransportationCharges] = useState('');
+  
   // Filter navigation
   const [currentFilterPage, setCurrentFilterPage] = useState(0);
   const [currentMobileFilterPage, setCurrentMobileFilterPage] = useState(0);
   const [showMobileFilterDrawer, setShowMobileFilterDrawer] = useState(false);
+
+  // Vendor details modal state
+  const [selectedVendor, setSelectedVendor] = useState(null);
+  const [showVendorDetails, setShowVendorDetails] = useState(false);
 
   // Check if there's a filter parameter in the URL
   useEffect(() => {
@@ -76,7 +88,7 @@ const Decoration = () => {
     { name: 'Entertainment', path: '/entertainment' },
     { name: 'Invitation & Gifts', path: '/invitation' },
     { name: 'Bridal Styling', path: '/styling' },
-    { name: 'Background Investigations', path: '/background-investigations' }, // Added new category
+    { name: 'Background Investigations', path: '/background-investigations' },
   ];
 
   const decorationCategories = [
@@ -103,14 +115,14 @@ const Decoration = () => {
 
   // Extended filter options
   const serviceTypes = [
-    "Wedding Setup",
-    "Stage Design",
+    "Wedding Stage Decoration",
     "Mandap Decoration",
-    "Reception Decor",
-    "Event Styling",
-    "Floral Arrangements",
-    "Theme Design",
-    "Lighting Setup"
+    "Floral Decoration",
+    "Reception Decoration",
+    "Engagement / Mehendi / Sangeet ",
+    "Theme Decoration",
+    "Balloon Decoration",
+    "LED / Lighting Decoration"
   ];
 
   const businessTypes = [
@@ -119,6 +131,11 @@ const Decoration = () => {
     "Partnership",
     "Private Limited"
   ];
+
+  const decorationStyles = ["Traditional", "Modern", "Royal", "Minimal", "Theme-based", "Customized"];
+  const materialsUsed = ["Fresh Flowers", "Artificial Flowers", "Fabrics & Drapes", "Props & Structures", "Lights & LEDs"];
+  const servicesIncluded = ["Stage Setup", "Mandap Setup", "Entrance Arch", "Dining Area Decoration", "Photo Booth", "Lighting Setup"];
+  const preferredLocations = ["Local", "Within District", "Outstation"];
 
   const states = ['Tamil Nadu', 'Kerala', 'Karnataka', 'Andhra Pradesh', 'Telangana', 'Maharashtra', 'Delhi', 'Gujarat'];
   const districts = {
@@ -186,340 +203,32 @@ const Decoration = () => {
     });
   };
 
-  // Sample vendor data - 2 vendors for each decoration type with enhanced fields
-  const vendors = [
-    // Wedding Decoration Vendors
-    {
-      id: 1,
-      name: 'Royal Wedding Decorators',
-      businessName: 'Royal Wedding Decoration Services',
-      businessCategory: 'Wedding Decoration',
-      eventType: 'Wedding Decoration',
-      personName: 'Rajesh Kumar',
-      designation: 'Creative Director',
-      description: 'Specializing in decorations with 10+ years of experience creating magical wedding setups',
-      services: ['Complete Wedding Setup', 'Entrance Decor', 'Seating Arrangements', 'Stage Design'],
-      logo: weddingdecor,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹50,000 - ₹5,00,000',
-      experience: 10,
-      businessType: 'Proprietorship',
-      teamSize: 15,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Wedding Setup', 'Stage Design', 'Theme Design']
-    },
-    {
-      id: 2,
-      name: 'Dream Wedding Decor',
-      businessName: 'Dream Wedding Decoration Studio',
-      businessCategory: 'Wedding Decoration',
-      eventType: 'Wedding Decoration',
-      personName: 'Priya Sharma',
-      designation: 'Head Designer',
-      description: 'Creating dream wedding decorations with artistic vision and modern design techniques',
-      services: ['Custom Wedding Themes', 'Destination Weddings', 'Traditional Decor', 'Complete Setup'],
-      logo: weddingdecor,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹75,000 - ₹6,00,000',
-      experience: 8,
-      businessType: 'Private Limited',
-      teamSize: 20,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Wedding Setup', 'Theme Design', 'Event Styling']
-    },
-    // Stage Decoration Vendors
-    {
-      id: 3,
-      name: 'Stage Masters Decor',
-      businessName: 'Stage Masters Decoration Services',
-      businessCategory: 'Stage Decoration',
-      eventType: 'Stage Decoration',
-      personName: 'Arun Mehta',
-      designation: 'Stage Designer',
-      description: 'Professional stage decoration for weddings and events with spectacular designs',
-      services: ['Main Stage Setup', 'Floral Stage Decor', 'LED Stage Effects', 'Custom Themes'],
-      logo: stagedecor,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹25,000 - ₹2,50,000',
-      experience: 6,
-      businessType: 'Individual',
-      teamSize: 8,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Stage Design', 'Theme Design', 'Lighting Setup']
-    },
-    {
-      id: 4,
-      name: 'Elevated Stages',
-      businessName: 'Elevated Stage Decoration',
-      businessCategory: 'Stage Decoration',
-      eventType: 'Stage Decoration',
-      personName: 'Sneha Reddy',
-      designation: 'Event Decorator',
-      description: 'Creating elevated stage designs that become the focal point of every celebration',
-      services: ['Multi-level Stages', 'Lighting Effects', 'Props and Sets', 'Quick Setup'],
-      logo: stagedecor,
-      location: 'Hyderabad, Telangana',
-      rating: 4.6,
-      priceRange: '₹30,000 - ₹3,00,000',
-      experience: 5,
-      businessType: 'Partnership',
-      teamSize: 10,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Stage Design', 'Lighting Setup', 'Event Styling']
-    },
-    // Mandap Decoration Vendors
-    {
-      id: 5,
-      name: 'Divine Mandap Decor',
-      businessName: 'Divine Mandap Decoration Services',
-      businessCategory: 'Mandap Decoration',
-      eventType: 'Mandap Decoration',
-      personName: 'Vikram Singh',
-      designation: 'Traditional Decor Specialist',
-      description: 'Traditional and modern mandap decorations for Hindu wedding ceremonies',
-      services: ['Traditional Mandaps', 'Floral Mandaps', 'Theme Mandaps', 'Custom Mandap Designs'],
-      logo: mandapdecor,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹40,000 - ₹4,00,000',
-      experience: 12,
-      businessType: 'Proprietorship',
-      teamSize: 12,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Mandap Decoration', 'Floral Arrangements', 'Theme Design']
-    },
-    {
-      id: 6,
-      name: 'Sacred Mandap Studio',
-      businessName: 'Sacred Mandap Decoration',
-      businessCategory: 'Mandap Decoration',
-      eventType: 'Mandap Decoration',
-      personName: 'Anjali Nair',
-      designation: 'Mandap Designer',
-      description: 'Creating sacred and beautiful mandap setups for traditional wedding ceremonies',
-      services: ['Wooden Mandaps', 'Floral Mandaps', 'Jeweled Mandaps', 'Traditional Themes', 'Complete Ceremony Decor'],
-      logo: mandapdecor,
-      location: 'Kochi, Kerala',
-      rating: 4.8,
-      priceRange: '₹35,000 - ₹3,50,000',
-      experience: 9,
-      businessType: 'Private Limited',
-      teamSize: 14,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Mandap Decoration', 'Theme Design', 'Floral Arrangements']
-    },
-    // Reception Decoration Vendors
-    {
-      id: 7,
-      name: 'Reception Elegance',
-      businessName: 'Reception Elegance Decoration',
-      businessCategory: 'Reception Decoration',
-      eventType: 'Reception Decoration',
-      personName: 'Rahul Verma',
-      designation: 'Reception Decor Manager',
-      description: 'Elegant reception decorations that create memorable party atmospheres',
-      services: ['Reception Entrance', 'Dance Floor Setup', 'Table Decorations', 'Bar Setup', 'Party Lighting'],
-      logo: receptiondecor,
-      location: 'Madurai, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹30,000 - ₹3,00,000',
-      experience: 7,
-      businessType: 'Individual',
-      teamSize: 9,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Reception Decor', 'Lighting Setup', 'Event Styling']
-    },
-    {
-      id: 8,
-      name: 'Celebration Reception',
-      businessName: 'Celebration Reception Decoration',
-      businessCategory: 'Reception Decoration',
-      eventType: 'Reception Decoration',
-      personName: 'Meera Patel',
-      designation: 'Party Decor Specialist',
-      description: 'Creating celebration-ready reception spaces with vibrant and elegant decorations',
-      services: ['Balloon Decor', 'Photo Booth Setup', 'Cake Table Decor', 'Guest Seating'],
-      logo: receptiondecor,
-      location: 'Ahmedabad, Gujarat',
-      rating: 4.6,
-      priceRange: '₹25,000 - ₹2,50,000',
-      experience: 5,
-      businessType: 'Partnership',
-      teamSize: 8,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Reception Decor', 'Event Styling']
-    },
-    // Event Decoration Vendors
-    {
-      id: 9,
-      name: 'Event Stylists',
-      businessName: 'Event Stylists Decoration Services',
-      businessCategory: 'Event Decoration',
-      eventType: 'Event Decoration',
-      personName: 'Aisha Khan',
-      designation: 'Event Stylist',
-      description: 'Comprehensive event decoration services for all types of celebrations and functions',
-      services: ['Corporate Events', 'Birthday Parties', 'Anniversary Celebrations', 'Festival Decor', 'Special Events'],
-      logo: eventdecor,
-      location: 'Mumbai, Maharashtra',
-      rating: 4.9,
-      priceRange: '₹20,000 - ₹2,00,000',
-      experience: 11,
-      businessType: 'Private Limited',
-      teamSize: 18,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Event Styling', 'Theme Design', 'Lighting Setup']
-    },
-    {
-      id: 10,
-      name: 'All Occasion Decor',
-      businessName: 'All Occasion Decoration',
-      businessCategory: 'Event Decoration',
-      eventType: 'Event Decoration',
-      personName: 'Kabir Malhotra',
-      designation: 'Event Manager',
-      description: 'Versatile decoration services for every type of event and celebration',
-      services: ['Theme Events', 'Outdoor Events', 'Indoor Events', 'Seasonal Decor', 'Quick Transformations'],
-      logo: eventdecor,
-      location: 'Delhi, Delhi',
-      rating: 4.8,
-      priceRange: '₹15,000 - ₹1,50,000',
-      experience: 8,
-      businessType: 'Proprietorship',
-      teamSize: 12,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Event Styling', 'Theme Design']
-    },
-    // Floral Decoration Vendors
-    {
-      id: 11,
-      name: 'Floral Artistry',
-      businessName: 'Floral Artistry Decoration',
-      businessCategory: 'Floral Decoration',
-      eventType: 'Floral Decoration',
-      personName: 'Sanjay Gupta',
-      designation: 'Floral Designer',
-      description: 'Exquisite floral decorations using fresh and premium quality flowers',
-      services: ['Fresh Flower Arrangements', 'Floral Arches', 'Flower Walls', 'Centerpieces', 'Bouquet Designs'],
-      logo: floraldecor,
-      location: 'Bangalore, Karnataka',
-      rating: 4.7,
-      priceRange: '₹25,000 - ₹3,00,000',
-      experience: 13,
-      businessType: 'Individual',
-      teamSize: 10,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Floral Arrangements', 'Wedding Setup']
-    },
-    {
-      id: 12,
-      name: 'Bloom & Petal',
-      businessName: 'Bloom & Petal Floral Decor',
-      businessCategory: 'Floral Decoration',
-      eventType: 'Floral Decoration',
-      personName: 'Neha Joshi',
-      designation: 'Floral Artist',
-      description: 'Creating stunning floral decorations with artistic arrangements and premium blooms',
-      services: ['Exotic Flower Arrangements', 'Seasonal Flowers', 'Floral Installations', 'Flower Crowns'],
-      logo: floraldecor,
-      location: 'Pune, Maharashtra',
-      rating: 4.8,
-      priceRange: '₹30,000 - ₹3,50,000',
-      experience: 9,
-      businessType: 'Partnership',
-      teamSize: 12,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Floral Arrangements', 'Wedding Setup', 'Event Styling']
-    },
-    // Theme-Based Decoration Vendors
-    {
-      id: 13,
-      name: 'Theme Creators',
-      businessName: 'Theme Creators Decoration Studio',
-      businessCategory: 'Theme-Based Decoration',
-      eventType: 'Theme-Based Decoration',
-      personName: 'Venkatesh Iyer',
-      designation: 'Theme Designer',
-      description: 'Complete theme-based decoration services that transform venues into magical spaces',
-      services: ['Beach Themes', 'Garden Themes', 'Cultural Themes', 'Custom Themes'],
-      logo: themedecor,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹50,000 - ₹5,00,000',
-      experience: 15,
-      businessType: 'Private Limited',
-      teamSize: 20,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Theme Design', 'Wedding Setup', 'Event Styling']
-    },
-    {
-      id: 14,
-      name: 'Concept Decor',
-      businessName: 'Concept Decoration Services',
-      businessCategory: 'Theme-Based Decoration',
-      eventType: 'Theme-Based Decoration',
-      personName: 'Radha Krishnan',
-      designation: 'Concept Designer',
-      description: 'Innovative concept-based decorations that tell your unique story',
-      services: ['Destination Themes', 'Color Themes', 'Era-based Themes', 'Fantasy Themes', 'Personalized Themes'],
-      logo: themedecor,
-      location: 'Kanyakumari, Tamil Nadu',
-      rating: 4.8,
-      priceRange: '₹45,000 - ₹4,50,000',
-      experience: 12,
-      businessType: 'Proprietorship',
-      teamSize: 16,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Theme Design', 'Wedding Setup', 'Stage Design']
-    },
-    // Lighting & Ambience Decoration Vendors
-    {
-      id: 15,
-      name: 'Light Masters',
-      businessName: 'Light Masters Decoration',
-      businessCategory: 'Lighting & Ambience Decoration',
-      eventType: 'Lighting & Ambience Decoration',
-      personName: 'Pooja Mehta',
-      designation: 'Lighting Designer',
-      description: 'Creating magical ambience with professional lighting decoration services',
-      services: ['LED Lighting', 'Fairy Lights', 'Spot Lighting', 'Color Lighting', 'Dance Floor Lighting'],
-      logo: lightingdecor,
-      location: 'Chennai, Tamil Nadu',
-      rating: 4.9,
-      priceRange: '₹15,000 - ₹1,50,000',
-      experience: 7,
-      businessType: 'Individual',
-      teamSize: 6,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Lighting Setup', 'Event Styling']
-    },
-    {
-      id: 16,
-      name: 'Ambience Experts',
-      businessName: 'Ambience Experts Lighting',
-      businessCategory: 'Lighting & Ambience Decoration',
-      eventType: 'Lighting & Ambience Decoration',
-      personName: 'David Wilson',
-      designation: 'Ambience Specialist',
-      description: 'Professional lighting and ambience decoration to create the perfect mood',
-      services: ['Mood Lighting', 'Projection Mapping', 'Chandeliers', 'Outdoor Lighting', 'Smart Lighting'],
-      logo: lightingdecor,
-      location: 'Coimbatore, Tamil Nadu',
-      rating: 4.7,
-      priceRange: '₹20,000 - ₹2,00,000',
-      experience: 5,
-      businessType: 'Partnership',
-      teamSize: 8,
-      hasTravelCharges: 'yes',
-      serviceTypes: ['Lighting Setup', 'Event Styling', 'Theme Design']
-    }
-  ];
+  const handleDecorationStyleToggle = (style) => {
+    setSelectedDecorationStyles(prev => 
+      prev.includes(style) ? prev.filter(x => x !== style) : [...prev, style]
+    );
+  };
+
+  const handleMaterialToggle = (material) => {
+    setSelectedMaterials(prev => 
+      prev.includes(material) ? prev.filter(x => x !== material) : [...prev, material]
+    );
+  };
+
+  const handleServiceIncludedToggle = (service) => {
+    setSelectedServicesIncluded(prev => 
+      prev.includes(service) ? prev.filter(x => x !== service) : [...prev, service]
+    );
+  };
+
+  const handlePreferredLocationToggle = (location) => {
+    setSelectedPreferredLocations(prev => 
+      prev.includes(location) ? prev.filter(x => x !== location) : [...prev, location]
+    );
+  };
 
   // Filter vendors based on selections
-  const filteredVendors = vendors.filter(vendor => {
+  const filteredVendors = decorationVendors.filter(vendor => {
     if (selectedEvent && vendor.eventType !== selectedEvent) return false;
     if (selectedState && !vendor.location.includes(selectedState)) return false;
     if (selectedDistrict && !vendor.location.includes(selectedDistrict)) return false;
@@ -528,8 +237,8 @@ const Decoration = () => {
     if (minBudget || maxBudget) {
       const minPrice = parseInt(minBudget) || 0;
       const maxPrice = parseInt(maxBudget) || Infinity;
-      const vendorPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').split('-')[0]) || 0;
-      if (vendorPrice < minPrice || vendorPrice > maxPrice) return false;
+      const vendorMinPrice = parseInt(vendor.priceRange.replace(/[^0-9]/g, '').substring(0, 5)) || 0;
+      if (vendorMinPrice < minPrice || vendorMinPrice > maxPrice) return false;
     }
 
     // Service types filter
@@ -552,18 +261,61 @@ const Decoration = () => {
 
     // Travel charges filter
     if (hasTravelCharges && vendor.hasTravelCharges !== hasTravelCharges) return false;
+
+    // Decoration styles filter
+    if (selectedDecorationStyles.length > 0) {
+      if (!vendor.decorationStyles) return false;
+      const hasMatchingStyle = selectedDecorationStyles.some(style => 
+        vendor.decorationStyles.includes(style)
+      );
+      if (!hasMatchingStyle) return false;
+    }
+
+    // Materials filter
+    if (selectedMaterials.length > 0) {
+      if (!vendor.materials) return false;
+      const hasMatchingMaterial = selectedMaterials.some(material => 
+        vendor.materials.includes(material)
+      );
+      if (!hasMatchingMaterial) return false;
+    }
+
+    // Services included filter
+    if (selectedServicesIncluded.length > 0) {
+      if (!vendor.servicesIncluded) return false;
+      const hasMatchingService = selectedServicesIncluded.some(service => 
+        vendor.servicesIncluded.includes(service)
+      );
+      if (!hasMatchingService) return false;
+    }
+
+    // Preferred locations filter
+    if (selectedPreferredLocations.length > 0) {
+      if (!vendor.preferredLocations) return false;
+      const hasMatchingLocation = selectedPreferredLocations.some(location => 
+        vendor.preferredLocations.includes(location)
+      );
+      if (!hasMatchingLocation) return false;
+    }
+
+    // Transportation charges filter
+    if (transportationCharges) {
+      if (transportationCharges === 'yes' && !vendor.transportationCharges) return false;
+      if (transportationCharges === 'no' && vendor.transportationCharges) return false;
+    }
     
     return true;
   });
 
   // Filter pages for desktop
   const filterPages = [
+    // PAGE 1 ── Basic Filters
     {
       title: "Basic Filters",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-2">
               <input
                 type="number"
@@ -583,27 +335,10 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Decoration Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
             <label className="block text-xs font-bold text-gray-700 mb-1">State</label>
             <select
               value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
+              onChange={(e) => { setSelectedState(e.target.value); setSelectedDistrict(''); }}
               className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
             >
               <option value="">All States</option>
@@ -614,7 +349,7 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">District</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">City / District</label>
             <select
               value={selectedDistrict}
               onChange={(e) => setSelectedDistrict(e.target.value)}
@@ -627,35 +362,26 @@ const Decoration = () => {
               ))}
             </select>
           </div>
-
-          <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Location/City</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            />
-          </div>
         </div>
       )
     },
+
+    // PAGE 2 ── Services & Expertise
     {
       title: "Services & Expertise",
       content: (
         <div className="space-y-3">
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Specific Services</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Type of Decoration Services</label>
             <div className="grid grid-cols-1 gap-1.5 max-h-32 overflow-y-auto p-1 border border-red-100 rounded-md">
               {serviceTypes.map(service => (
                 <label key={service} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     checked={selectedServices.includes(service)}
                     onChange={() => handleServiceToggle(service)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
                   <span className="truncate">{service}</span>
                 </label>
               ))}
@@ -663,7 +389,7 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Years of Experience</label>
             <input
               type="number"
               placeholder="Minimum years"
@@ -675,156 +401,197 @@ const Decoration = () => {
         </div>
       )
     },
+    // PAGE 4 ── Decoration Style & Materials
     {
-      title: "Business Details",
+      title: "Decoration Style & Materials",
       content: (
         <div className="space-y-3">
+          {/* Decoration Styles Offered */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-2 py-1.5 border border-red-300 rounded-md focus:outline-none focus:ring-1 focus:ring-red-500 text-xs"
-            >
-              <option value="">All Business Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Decoration Styles Offered</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {decorationStyles.map(style => (
+                <label key={style} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedDecorationStyles.includes(style)}
+                    onChange={() => handleDecorationStyleToggle(style)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{style}</span>
+                </label>
               ))}
-            </select>
+            </div>
           </div>
 
+          {/* Materials Used */}
           <div>
-            <label className="block text-xs font-bold text-gray-700 mb-1">Travel Charges</label>
-            <div className="flex gap-3 text-xs">
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
+            <label className="block text-xs font-bold text-gray-700 mb-1">Materials Used</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {materialsUsed.map(material => (
+                <label key={material} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedMaterials.includes(material)}
+                    onChange={() => handleMaterialToggle(material)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{material}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 5 ── Service Details
+    {
+      title: "Service Details",
+      content: (
+        <div className="space-y-3">
+          {/* Services Included */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Services Included</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {servicesIncluded.map(service => (
+                <label key={service} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedServicesIncluded.includes(service)}
+                    onChange={() => handleServiceIncludedToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{service}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+         <div className="space-y-3">
+  <div>
+    <label className="block text-xs font-bold text-gray-700 mb-1">Business Type </label>
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
+      {["Individual", "Proprietorship", "Partnership", "Private Limited"].map((type) => (
+        <label key={type} className="flex items-center gap-2 cursor-pointer">
+          <input
+            type="radio"
+            name="businessType"
+            value={type}
+            checked={businessType === type}
+            onChange={(e) => setBusinessType(e.target.value)}
+            className="accent-red-600 w-3.5 h-3.5"
+          />
+          <span className="text-xs text-gray-700">{type}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
+        </div>
+      )
+    },
+
+    // PAGE 6 ── Preferred Locations & Transport
+    {
+      title: "Locations & Transport",
+      content: (
+        <div className="space-y-3">
+          {/* Preferred Locations */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Locations</label>
+            <div className="grid grid-cols-2 gap-1.5">
+              {preferredLocations.map(location => (
+                <label key={location} className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedPreferredLocations.includes(location)}
+                    onChange={() => handlePreferredLocationToggle(location)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{location}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Transportation Charges */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Transportation Charges Applicable</label>
+            <div className="flex gap-4 text-xs">
+              <label className="flex items-center gap-1.5">
+                <input
+                  type="radio"
+                  name="transportationCharges"
                   value="yes"
-                  checked={hasTravelCharges === "yes"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                  checked={transportationCharges === "yes"}
+                  onChange={() => setTransportationCharges("yes")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
                 Yes
               </label>
-              <label className="flex items-center gap-1">
-                <input 
-                  type="radio" 
-                  name="hasTravelCharges" 
+              <label className="flex items-center gap-1.5">
+                <input
+                  type="radio"
+                  name="transportationCharges"
                   value="no"
-                  checked={hasTravelCharges === "no"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+                  checked={transportationCharges === "no"}
+                  onChange={() => setTransportationCharges("no")}
+                  className="w-3.5 h-3.5 accent-red-600"
+                />
                 No
               </label>
             </div>
           </div>
         </div>
       )
-    }
+    },
   ];
 
-  // Mobile filter pages - COMPLETE VERSION matching desktop
+  // MOBILE mobileFilterPages
   const mobileFilterPages = [
+    // PAGE 1 ── Basic Filters
     {
       title: "Basic Filters",
       content: (
         <div className="space-y-2">
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Budget Range (₹)</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">₹ Budget Range (Min - Max)</label>
             <div className="flex gap-1">
-              <input
-                type="number"
-                placeholder="Min"
-                value={minBudget}
-                onChange={(e) => setMinBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
-              <input
-                type="number"
-                placeholder="Max"
-                value={maxBudget}
-                onChange={(e) => setMaxBudget(e.target.value)}
-                className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-              />
+              <input type="number" placeholder="Min" value={minBudget} onChange={(e) => setMinBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500" />
+              <input type="number" placeholder="Max" value={maxBudget} onChange={(e) => setMaxBudget(e.target.value)} className="w-1/2 px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500" />
             </div>
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Decoration Type</label>
-            <select
-              value={selectedEvent}
-              onChange={(e) => setSelectedEvent(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Types</option>
-              {eventTypes.map((event) => (
-                <option key={event} value={event}>{event}</option>
-              ))}
-            </select>
-          </div>
-
-          <div>
             <label className="block text-[10px] font-bold text-gray-700 mb-1">State</label>
-            <select
-              value={selectedState}
-              onChange={(e) => {
-                setSelectedState(e.target.value);
-                setSelectedDistrict('');
-              }}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
+            <select value={selectedState} onChange={(e) => { setSelectedState(e.target.value); setSelectedDistrict(''); }} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500">
               <option value="">All States</option>
-              {states.map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
+              {states.map((state) => <option key={state} value={state}>{state}</option>)}
             </select>
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">District</label>
-            <select
-              value={selectedDistrict}
-              onChange={(e) => setSelectedDistrict(e.target.value)}
-              disabled={!selectedState}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100"
-            >
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">City / District</label>
+            <select value={selectedDistrict} onChange={(e) => setSelectedDistrict(e.target.value)} disabled={!selectedState} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500 disabled:bg-gray-100">
               <option value="">All Districts</option>
-              {selectedState && districts[selectedState]?.map((district) => (
-                <option key={district} value={district}>{district}</option>
-              ))}
+              {selectedState && districts[selectedState]?.map((district) => <option key={district} value={district}>{district}</option>)}
             </select>
-          </div>
-
-          <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Location/City</label>
-            <input
-              type="text"
-              placeholder="Enter city or area"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
           </div>
         </div>
       )
     },
+
+    // PAGE 2 ── Services & Expertise
     {
       title: "Services & Expertise",
       content: (
         <div className="space-y-2">
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Specific Services</label>
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Type of Decoration Services</label>
             <div className="grid grid-cols-1 gap-1 max-h-40 overflow-y-auto p-1 border border-red-100 rounded">
               {serviceTypes.map(service => (
                 <label key={service} className="flex items-center gap-2 text-xs">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedServices.includes(service)}
-                    onChange={() => handleServiceToggle(service)}
-                    className="w-3.5 h-3.5 accent-red-600" 
-                  /> 
+                  <input type="checkbox" checked={selectedServices.includes(service)} onChange={() => handleServiceToggle(service)} className="w-3.5 h-3.5 accent-red-600" />
                   <span>{service}</span>
                 </label>
               ))}
@@ -832,66 +599,142 @@ const Decoration = () => {
           </div>
 
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Min. Experience (Years)</label>
-            <input
-              type="number"
-              placeholder="Minimum years"
-              value={minExperience}
-              onChange={(e) => setMinExperience(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            />
+            <label className="block text-[10px] font-bold text-gray-700 mb-1">Years of Experience</label>
+            <input type="number" placeholder="Minimum years" value={minExperience} onChange={(e) => setMinExperience(e.target.value)} className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500" />
           </div>
         </div>
       )
     },
+
+    // PAGE 4 ── Decoration Style & Materials
     {
-      title: "Business Details",
+      title: "Decoration Style & Materials",
+      content: (
+        <div className="space-y-2">
+          {/* Decoration Styles */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Decoration Styles Offered</label>
+            <div className="grid grid-cols-2 gap-1">
+              {decorationStyles.map(style => (
+                <label key={style} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedDecorationStyles.includes(style)}
+                    onChange={() => handleDecorationStyleToggle(style)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{style}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Materials Used */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Materials Used</label>
+            <div className="grid grid-cols-2 gap-1">
+              {materialsUsed.map(material => (
+                <label key={material} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedMaterials.includes(material)}
+                    onChange={() => handleMaterialToggle(material)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{material}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    },
+
+    // PAGE 5 ── Service Details
+    {
+      title: "Service Details",
       content: (
         <div className="space-y-2">
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Business Type</label>
-            <select
-              value={businessType}
-              onChange={(e) => setBusinessType(e.target.value)}
-              className="w-full px-2 py-1.5 text-xs border border-red-300 rounded focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All Business Types</option>
-              {businessTypes.map(type => (
-                <option key={type} value={type}>{type}</option>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Services Included</label>
+            <div className="grid grid-cols-2 gap-1">
+              {servicesIncluded.map(service => (
+                <label key={service} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedServicesIncluded.includes(service)}
+                    onChange={() => handleServiceIncludedToggle(service)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{service}</span>
+                </label>
               ))}
-            </select>
+            </div>
+          </div>
+          <div className="space-y-2">
+           <div>
+    <label className="block text-xs font-bold text-gray-700 mb-1">Business Type </label>
+    <div className="grid grid-cols-2 gap-1">
+      {["Individual", "Proprietorship", "Partnership", "Private Limited"].map((type) => (
+        <label key={type} className="flex items-center gap-1.5 text-xs">
+          <input
+            type="radio"
+            name="businessType"
+            value={type}
+            checked={businessType === type}
+            onChange={(e) => setBusinessType(e.target.value)}
+            className="w-3.5 h-3.5 accent-red-600"
+          />
+          <span className="text-xs font text-gray-700">{type}</span>
+        </label>
+      ))}
+    </div>
+  </div>
+</div>
+        </div>
+      )
+    },
+
+    // PAGE 6 ── Preferred Locations & Transport
+    {
+      title: "Locations & Transport",
+      content: (
+        <div className="space-y-2">
+          {/* Preferred Locations */}
+          <div>
+            <label className="block text-xs font-bold text-gray-700 mb-1">Preferred Locations</label>
+            <div className="grid grid-cols-2 gap-1">
+              {preferredLocations.map(location => (
+                <label key={location} className="flex items-center gap-1.5 text-xs">
+                  <input
+                    type="checkbox"
+                    checked={selectedPreferredLocations.includes(location)}
+                    onChange={() => handlePreferredLocationToggle(location)}
+                    className="w-3.5 h-3.5 accent-red-600"
+                  />
+                  <span>{location}</span>
+                </label>
+              ))}
+            </div>
           </div>
 
+          {/* Transportation Charges */}
           <div>
-            <label className="block text-[10px] font-bold text-gray-700 mb-1">Travel Charges</label>
-            <div className="flex gap-2">
-              <label className="flex items-center gap-1 text-xs">
-                <input 
-                  type="radio" 
-                  name="mobileTravelCharges" 
-                  value="yes"
-                  checked={hasTravelCharges === "yes"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+            <label className="block text-xs font-bold text-gray-700 mb-1">Transportation Charges Applicable</label>
+            <div className="flex gap-3">
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="transportM" value="yes" checked={transportationCharges === "yes"} onChange={() => setTransportationCharges("yes")} className="w-3.5 h-3.5 accent-red-600" />
                 Yes
               </label>
-              <label className="flex items-center gap-1 text-xs">
-                <input 
-                  type="radio" 
-                  name="mobileTravelCharges" 
-                  value="no"
-                  checked={hasTravelCharges === "no"}
-                  onChange={(e) => setHasTravelCharges(e.target.value)}
-                  className="w-3.5 h-3.5 accent-red-600" 
-                /> 
+              <label className="flex items-center gap-1.5 text-xs">
+                <input type="radio" name="transportM" value="no" checked={transportationCharges === "no"} onChange={() => setTransportationCharges("no")} className="w-3.5 h-3.5 accent-red-600" />
                 No
               </label>
             </div>
           </div>
         </div>
       )
-    }
+    },
   ];
 
   // Auto change banner every 3 seconds
@@ -933,6 +776,11 @@ const Decoration = () => {
     setMinExperience('');
     setBusinessType('');
     setHasTravelCharges('');
+    setSelectedDecorationStyles([]);
+    setSelectedMaterials([]);
+    setSelectedServicesIncluded([]);
+    setSelectedPreferredLocations([]);
+    setTransportationCharges('');
     setCurrentFilterPage(0);
     setCurrentMobileFilterPage(0);
     setShowMobileFilterDrawer(false);
@@ -990,7 +838,21 @@ const Decoration = () => {
     if (minExperience) count++;
     if (businessType) count++;
     if (hasTravelCharges) count++;
+    if (selectedDecorationStyles.length > 0) count++;
+    if (selectedMaterials.length > 0) count++;
+    if (selectedServicesIncluded.length > 0) count++;
+    if (selectedPreferredLocations.length > 0) count++;
+    if (transportationCharges) count++;
     return count;
+  };
+
+  // Handle view details click
+  const handleViewDetails = (vendorId) => {
+    const vendor = decorationVendors.find(v => v.id === vendorId);
+    if (vendor) {
+      setSelectedVendor(vendor);
+      setShowVendorDetails(true);
+    }
   };
 
   return (
@@ -1065,7 +927,7 @@ const Decoration = () => {
             </div>
           ))}
 
-          {/* Navigation Buttons - Mobile Optimized */}
+          {/* Navigation Buttons */}
           <button
             onClick={() => goToBanner(currentBannerIndex === 0 ? banners.length - 1 : currentBannerIndex - 1)}
             className="absolute left-1 xs:left-2 sm:left-4 md:left-6 top-1/2 transform -translate-y-1/2 text-white bg-black/50 hover:bg-black/70 active:bg-black/80 p-1.5 xs:p-2 sm:p-2.5 md:p-3 rounded-full transition-all duration-300 z-20 touch-manipulation"
@@ -1380,6 +1242,22 @@ const Decoration = () => {
                       </button>
                     </span>
                   )}
+                  {selectedDecorationStyles.length > 0 && (
+                    <span className="inline-flex items-center bg-purple-100 text-purple-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Styles: {selectedDecorationStyles.length}
+                      <button onClick={() => setSelectedDecorationStyles([])} className="ml-0.5 text-purple-500 hover:text-purple-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
+                  {selectedMaterials.length > 0 && (
+                    <span className="inline-flex items-center bg-pink-100 text-pink-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      Materials: {selectedMaterials.length}
+                      <button onClick={() => setSelectedMaterials([])} className="ml-0.5 text-pink-500 hover:text-pink-700">
+                        ×
+                      </button>
+                    </span>
+                  )}
                   {getActiveFilterCount() > 3 && (
                     <span className="inline-flex items-center bg-gray-100 text-gray-700 text-[9px] px-1.5 py-0.5 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                       +{getActiveFilterCount() - 3} more
@@ -1444,6 +1322,22 @@ const Decoration = () => {
                         </button>
                       </span>
                     )}
+                    {selectedDecorationStyles.length > 0 && (
+                      <span className="inline-flex items-center bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Styles: {selectedDecorationStyles.length}
+                        <button onClick={() => setSelectedDecorationStyles([])} className="ml-1 text-purple-500 hover:text-purple-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {selectedMaterials.length > 0 && (
+                      <span className="inline-flex items-center bg-pink-100 text-pink-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                        Materials: {selectedMaterials.length}
+                        <button onClick={() => setSelectedMaterials([])} className="ml-1 text-pink-500 hover:text-pink-700">
+                          ×
+                        </button>
+                      </span>
+                    )}
                     {getActiveFilterCount() > 3 && (
                       <span className="inline-flex items-center bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                         +{getActiveFilterCount() - 3} more
@@ -1454,14 +1348,14 @@ const Decoration = () => {
               </section>
             </div>
 
-            {/* Vendor Profiles - UPDATED TO MATCH PHOTOGRAPHY PAGE */}
+            {/* Vendor Profiles */}
             <section className="py-1 md:py-2 vendor-profiles vendor-card">
               {filteredVendors.length > 0 ? (
                 <div className="space-y-2 md:space-y-4">
                   {filteredVendors.map((vendor) => (
                     <div key={vendor.id} className="bg-white rounded-md shadow border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow duration-300">
                       
-                      {/* DESKTOP VIEW - FIXED HEIGHT [280px] */}
+                      {/* DESKTOP VIEW */}
                       <div className="hidden md:flex md:flex-row w-full h-[280px]">
                         {/* Left Box - Image */}
                         <div className="w-[22%] p-0 flex items-stretch h-full">
@@ -1536,7 +1430,7 @@ const Decoration = () => {
                             Services Offered
                           </h4>
                           <ul className="space-y-1.5 mb-3">
-                            {vendor.services.map((service, index) => (
+                            {vendor.services.slice(0, 4).map((service, index) => (
                               <li key={index} className="flex items-start">
                                 <svg className="w-4 h-4 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1550,7 +1444,11 @@ const Decoration = () => {
 
                           {/* View Details Button */}
                           <div className="mt-3">
-                            <button className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-2.5 px-3 rounded-md font-semibold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-sm cursor-pointer"
+                              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+                            >
                               <span>View Details</span>
                               <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1560,7 +1458,7 @@ const Decoration = () => {
                         </div>
                       </div>
 
-                      {/* MOBILE VIEW - MATCHING PHOTOGRAPHY PAGE */}
+                      {/* MOBILE VIEW */}
                       <div className="md:hidden flex flex-col w-full">
                         {/* Top Section - Image and Details Side by Side */}
                         <div className="flex border-b border-gray-200">
@@ -1627,7 +1525,7 @@ const Decoration = () => {
                           {/* Services Offered */}
                           <h4 className="font-bold text-red-700 mb-1.5 text-sm">Services Offered</h4>
                           <ul className="space-y-0.5 mb-1">
-                            {vendor.services.map((service, index) => (
+                            {vendor.services.slice(0, 3).map((service, index) => (
                               <li key={index} className="flex items-start">
                                 <svg className="w-3 h-3 text-green-500 mr-1.5 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -1639,7 +1537,10 @@ const Decoration = () => {
 
                           {/* View Details Button in Right Bottom Corner */}
                           <div className="absolute bottom-2 right-2">
-                            <button className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs">
+                            <button 
+                              onClick={() => handleViewDetails(vendor.id)}
+                              className="bg-gradient-to-r from-red-600 to-red-700 text-white py-1.5 px-3 rounded-md font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow hover:shadow-md flex items-center justify-center text-xs cursor-pointer"
+                            >
                               <span>View Details</span>
                               <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -1718,7 +1619,7 @@ const Decoration = () => {
             </section>
           </div>
 
-          {/* Right Sidebar - Filter Section - Desktop Only - COMPLETELY STICKY WITH PAGINATION */}
+          {/* Right Sidebar - Filter Section - Desktop Only */}
           <div id="filter-section" className="hidden lg:block lg:w-80 flex-shrink-0">
             <div className="sticky top-20 space-y-4 max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pb-4">
               {/* Matrimony Registration Box */}
@@ -1901,6 +1802,17 @@ const Decoration = () => {
           </div>
         </div>
       )}
+
+      {/* Vendor Details Modal */}
+      <VendorDetails
+        isOpen={showVendorDetails}
+        onClose={() => {
+          setShowVendorDetails(false);
+          setSelectedVendor(null);
+        }}
+        vendor={selectedVendor}
+        category="decoration"
+      />
     </div>
   );
 };
