@@ -43,6 +43,46 @@ const StatCard = ({ label, value, color, icon, sub }) => (
   </div>
 );
 
+// ─── VENDOR SUBMENU CONFIG ───────────────────────────────
+// Each group has a highlighted header + its child items
+const vendorGroups = [
+  {
+    id: 'manage-service-providers',
+    emoji: '🏪',
+    label: 'Manage Service Providers',
+    children: [
+      'Photography',
+      'Catering',
+      'Decoration',
+      'Makeup Artists',
+      'Wedding Planners',
+      'Venues (Hall, Resort, Villa)',
+    ],
+  },
+  {
+    id: 'actions',
+    emoji: '⚙️',
+    label: 'Actions',
+    children: [
+      'Approve / Reject Vendor Registration',
+      'Verify Business Details',
+      'Manage Vendor Profiles',
+      'Activate / Deactivate Vendors',
+    ],
+  },
+  {
+    id: 'vendor-verification',
+    emoji: '✅',
+    label: 'Vendor Verification',
+    children: [
+      'Verify: Business License',
+      'Verify: GST Details',
+      'Verify: ID Proof',
+      'Assign: ✅ Verified Vendor Badge',
+    ],
+  },
+];
+
 // ─── SIDEBAR MENU CONFIG ─────────────────────────────────
 const menuConfig = [
   {
@@ -51,6 +91,7 @@ const menuConfig = [
     icon: ICONS.dashboard,
     color: 'text-red-600',
     submenus: [],
+    vendorStyle: false,
   },
   {
     id: 'customers',
@@ -58,36 +99,20 @@ const menuConfig = [
     icon: ICONS.customers,
     color: 'text-blue-600',
     submenus: [
-      'View all registered customers',
-      'Track booking history',
-      'Manage profiles and preferences',
-      'Handle complaints and support issues',
+      'View All Registered Customers',
+      'Track Booking History',
+      'Manage Profiles And Preferences',
+      'Handle Complaints And Support Issues',
     ],
+    vendorStyle: false,
   },
   {
     id: 'vendors',
     label: 'Vendor Management',
     icon: ICONS.vendors,
     color: 'text-amber-600',
-    submenus: [
-      '── Manage Service Providers ──',
-      'Photography',
-      'Catering',
-      'Decoration',
-      'Makeup Artists',
-      'Wedding Planners',
-      'Venues (Hall, Resort, Villa)',
-      '── Actions ──',
-      'Approve / Reject vendor registration',
-      'Verify business details',
-      'Manage vendor profiles',
-      'Activate / Deactivate vendors',
-      '── Vendor Verification ──',
-      'Verify: Business license',
-      'Verify: GST details',
-      'Verify: ID proof',
-      'Assign: ✅ Verified Vendor badge',
-    ],
+    submenus: [],
+    vendorStyle: true,
   },
   {
     id: 'bookings',
@@ -96,13 +121,14 @@ const menuConfig = [
     color: 'text-green-600',
     submenus: [
       'View all bookings',
-      'Track: Date, time, location',
-      'Track: Vendor assigned',
+      'Track: Date, Time, Location',
+      'Track: Vendor Assigned',
       'Status: Pending',
       'Status: Confirmed',
       'Status: Completed',
       'Status: Cancelled',
     ],
+    vendorStyle: false,
   },
   {
     id: 'payments',
@@ -110,12 +136,13 @@ const menuConfig = [
     icon: ICONS.payments,
     color: 'text-purple-600',
     submenus: [
-      'Track customer payments',
-      'Vendor payouts',
-      'Payment integration',
-      'Generate invoices',
-      'Refund management',
+      'Track Customer Payments',
+      'Vendor Payouts',
+      'Payment Integration',
+      'Generate Invoices',
+      'Refund Management',
     ],
+    vendorStyle: false,
   },
   {
     id: 'complaints',
@@ -123,11 +150,12 @@ const menuConfig = [
     icon: ICONS.complaints,
     color: 'text-rose-600',
     submenus: [
-      'Customer complaints',
-      'Vendor disputes',
-      'Resolution tracking',
-      'Admin actions',
+      'Customer Complaints',
+      'Vendor Disputes',
+      'Resolution Tracking',
+      'Admin Actions',
     ],
+    vendorStyle: false,
   },
   {
     id: 'analytics',
@@ -135,11 +163,12 @@ const menuConfig = [
     icon: ICONS.analytics,
     color: 'text-cyan-600',
     submenus: [
-      'Revenue reports',
-      'Vendor performance',
-      'Booking trends',
-      'Customer growth',
+      'Revenue Reports',
+      'Vendor Performance',
+      'Booking Trends',
+      'Customer Growth',
     ],
+    vendorStyle: false,
   },
   {
     id: 'roles',
@@ -152,6 +181,7 @@ const menuConfig = [
       'Finance Manager',
       'Support Team',
     ],
+    vendorStyle: false,
   },
   {
     id: 'notifications',
@@ -159,11 +189,12 @@ const menuConfig = [
     icon: ICONS.notifications,
     color: 'text-orange-500',
     submenus: [
-      'Booking alerts',
-      'Payment updates',
-      'Vendor approvals',
-      'Customer inquiries',
+      'Booking Alerts',
+      'Payment Updates',
+      'Vendor Approvals',
+      'Customer Inquiries',
     ],
+    vendorStyle: false,
   },
   {
     id: 'settings',
@@ -171,15 +202,16 @@ const menuConfig = [
     icon: ICONS.settings,
     color: 'text-gray-600',
     submenus: [
-      'Platform configuration',
-      'API integrations',
+      'Platform Configuration',
+      'API Integrations',
       'Terms & Privacy Policy',
-      'Notification settings',
+      'Notification Settings',
     ],
+    vendorStyle: false,
   },
 ];
 
-// ─── DASHBOARD STAT BUTTONS (right panel for Dashboard Overview) ─
+// ─── DASHBOARD STAT BUTTONS ──────────────────────────────
 const dashboardStats = [
   { label: 'Total Customers', value: '4,821', icon: '👥', color: 'border-red-500', sub: '+128 this month' },
   { label: 'Total Vendors', value: '326', icon: '🏢', color: 'border-amber-500', sub: '48 pending approval' },
@@ -196,7 +228,6 @@ const RightPanel = ({ activeMenu, activeSubmenu }) => {
   if (activeMenu === 'dashboard') {
     return (
       <div>
-        {/* Stats grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-8">
           {dashboardStats.map((s, i) => (
             <StatCard key={i} label={s.label} value={s.value} icon={s.icon} color={s.color} sub={s.sub} />
@@ -206,7 +237,6 @@ const RightPanel = ({ activeMenu, activeSubmenu }) => {
     );
   }
 
-  // Generic right panel for all other menus
   return (
     <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-64 flex flex-col items-center justify-center text-center">
       <div className="text-5xl mb-4">🚧</div>
@@ -225,6 +255,52 @@ const RightPanel = ({ activeMenu, activeSubmenu }) => {
   );
 };
 
+// ─── VENDOR SUBMENU SECTION ──────────────────────────────
+const VendorSubmenus = ({ activeSubmenu, activeMenu, onSelect }) => (
+  <div className="ml-4 mt-0.5 mb-1 border-l-2 border-gray-100 pl-3 space-y-1">
+    {vendorGroups.map((group) => (
+      <div key={group.id}>
+        {/* Gold highlighted group header */}
+        <div
+          className="flex items-center gap-1.5 px-2 py-1.5 mt-1 rounded-lg"
+          style={{
+            background: 'linear-gradient(90deg, #fef9ec 0%, #fffdf7 100%)',
+            border: '1px solid #f5d97a',
+          }}
+        >
+          <span style={{ fontSize: 13 }}>{group.emoji}</span>
+          <span
+            className="text-[11px] font-bold uppercase tracking-wider"
+            style={{ color: '#b8860b' }}
+          >
+            {group.label}
+          </span>
+        </div>
+
+        {/* Children of this group */}
+        <div className="ml-2 mt-0.5 space-y-0.5">
+          {group.children.map((child, idx) => {
+            const isActiveSub = activeSubmenu === child && activeMenu === 'vendors';
+            return (
+              <button
+                key={idx}
+                onClick={() => onSelect('vendors', child)}
+                className={`w-full text-left px-3 py-1.5 rounded-lg text-xs transition-all duration-150 ${
+                  isActiveSub
+                    ? 'bg-red-600 text-white font-semibold'
+                    : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                }`}
+              >
+                {child}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
 // ─── MAIN COMPONENT ──────────────────────────────────────
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -241,8 +317,6 @@ export default function AdminDashboard() {
   };
 
   const handleSubmenu = (menuId, sub) => {
-    // Skip separator lines
-    if (sub.startsWith('──')) return;
     setActiveMenu(menuId);
     setActiveSubmenu(sub);
   };
@@ -284,7 +358,7 @@ export default function AdminDashboard() {
           {menuConfig.map((item) => {
             const isActive = activeMenu === item.id;
             const isExpanded = expandedMenus[item.id];
-            const hasSubmenus = item.submenus.length > 0;
+            const hasSubmenus = item.submenus.length > 0 || item.vendorStyle;
 
             return (
               <div key={item.id}>
@@ -315,33 +389,38 @@ export default function AdminDashboard() {
                 </button>
 
                 {/* Submenus */}
-                {sidebarOpen && hasSubmenus && isExpanded && (
-                  <div className="ml-4 mt-0.5 mb-1 space-y-0.5 border-l-2 border-gray-100 pl-3">
-                    {item.submenus.map((sub, idx) => {
-                      const isSeparator = sub.startsWith('──');
-                      if (isSeparator) {
-                        return (
-                          <p key={idx} className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 py-1.5 mt-1">
-                            {sub.replace(/──/g, '').trim()}
-                          </p>
-                        );
-                      }
-                      const isActiveSub = activeSubmenu === sub && activeMenu === item.id;
-                      return (
-                        <button
-                          key={idx}
-                          onClick={() => handleSubmenu(item.id, sub)}
-                          className={`w-full text-left px-3 py-1.5 rounded-lg text-xs transition-all duration-150 ${
-                            isActiveSub
-                              ? 'bg-red-600 text-white font-semibold'
-                              : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
-                          }`}
-                        >
-                          {sub}
-                        </button>
-                      );
-                    })}
-                  </div>
+                {sidebarOpen && isExpanded && (
+                  <>
+                    {/* Vendor special grouped submenus */}
+                    {item.vendorStyle ? (
+                      <VendorSubmenus
+                        activeSubmenu={activeSubmenu}
+                        activeMenu={activeMenu}
+                        onSelect={handleSubmenu}
+                      />
+                    ) : (
+                      item.submenus.length > 0 && (
+                        <div className="ml-4 mt-0.5 mb-1 space-y-0.5 border-l-2 border-gray-100 pl-3">
+                          {item.submenus.map((sub, idx) => {
+                            const isActiveSub = activeSubmenu === sub && activeMenu === item.id;
+                            return (
+                              <button
+                                key={idx}
+                                onClick={() => handleSubmenu(item.id, sub)}
+                                className={`w-full text-left px-3 py-1.5 rounded-lg text-xs transition-all duration-150 ${
+                                  isActiveSub
+                                    ? 'bg-red-600 text-white font-semibold'
+                                    : 'text-gray-500 hover:bg-gray-100 hover:text-gray-700'
+                                }`}
+                              >
+                                {sub}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )
+                    )}
+                  </>
                 )}
               </div>
             );
