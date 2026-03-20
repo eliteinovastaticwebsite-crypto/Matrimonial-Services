@@ -319,7 +319,7 @@ const Header = ({ onOpenVendorForm }) => {
                 
                 <div className="text-yellow-50">
                   <h1 className="font-bold text-lg sm:text-xl md:text-2xl leading-tight text-yellow-300" style={{ fontFamily: 'Pacifico, cursive' }}>
-                    Eliteinova Matrimonial Services
+                    Eliteinova Wedding Services
                   </h1>
                   <p className="text-yellow-200 text-xs md:text-sm" style={{ fontFamily: 'Pacifico, cursive' }}>
                     Eliteinova Tech Pvt Ltd

@@ -40,54 +40,14 @@ const Home = () => {
   const goToBanner = (index) => setCurrentBannerIndex(index);
 
   const categories = [
-    {
-      name: 'Photography',
-      path: '/photography',
-      image: photography,
-      subcategories: ['Wedding Photography', 'Event Photography', 'Videography', 'Editing & Album Services', 'Fashion & Lifestyle', 'Commercial Photography', 'Religious & Cultural', 'Kids & Special Shoots'],
-    },
-    {
-      name: 'Catering & Foods',
-      path: '/catering',
-      image: catering,
-      subcategories: ['Traditional Catering', 'Vegetarian Catering', 'Non-Vegetarian Catering', 'Multi-cuisine Catering', 'Buffet Catering', 'Live Counter Catering', 'Theme-Based Catering', 'Snack & Beverage Catering'],
-    },
-    {
-      name: 'Wedding Halls',
-      path: '/wedding-halls',
-      image: weddinghalls,
-      subcategories: ['AC Wedding Halls', 'Non AC Wedding Halls', 'Luxury Wedding Halls', 'Mini Wedding Halls', 'Event Halls', 'Convention & Banquet Halls', 'Party & Reception Hall', 'Outdoor / Open-Air'],
-    },
-    {
-      name: 'Decorations',
-      path: '/decorations',
-      image: decoration,
-      subcategories: ['Wedding Decoration', 'Stage Decoration', 'Mandap Decoration', 'Reception Decoration', 'Event Decoration', 'Floral Decoration', 'Theme-Based Decoration', 'Lighting & Ambience'],
-    },
-    {
-      name: 'Entertainment',
-      path: '/entertainment',
-      image: entertainment,
-      subcategories: ['Wedding MCs', 'DJ & Remix', 'Dance Shows', 'Live Music', 'Photo Booths', 'LED Effects', 'Kids Entertainment'],
-    },
-    {
-      name: 'Invitation & Gifts',
-      path: '/invitation',
-      image: invitation,
-      subcategories: ['Digital Invites', 'Luxury Cards', 'Printed Cards', 'Custom Designs', 'Return Gifts', 'Eco Gifts', 'Gift Hampers', 'Luxury Hampers'],
-    },
-    {
-      name: 'Bridal Styling',
-      path: '/styling',
-      image: makeup,
-      subcategories: ['Bridal Makeup', 'Bridal Accessories', 'Hair Styling', 'Mehendi Art', 'Traditional Attire Styling', 'Groom Makeup', 'Groom Hair Styling', 'Groom Accessories'],
-    },
-    {
-      name: 'Pre-Matrimonial Verification',
-      path: '/pre-matrimonial-verification',
-      image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
-      subcategories: ['Identity & Character Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification', 'Employment Verification', 'Financial Background', 'Family Background', 'Social Media Screening'],
-    },
+    { name: 'Photography', path: '/photography', image: photography, subcategories: ['Wedding Photography', 'Event Photography', 'Videography', 'Editing & Album Services', 'Fashion & Lifestyle', 'Commercial Photography', 'Religious & Cultural', 'Kids & Special Shoots'] },
+    { name: 'Catering & Foods', path: '/catering', image: catering, subcategories: ['Traditional Catering', 'Vegetarian Catering', 'Non-Vegetarian Catering', 'Multi-cuisine Catering', 'Buffet Catering', 'Live Counter Catering', 'Theme-Based Catering', 'Snack & Beverage Catering'] },
+    { name: 'Wedding Halls', path: '/wedding-halls', image: weddinghalls, subcategories: ['AC Wedding Halls', 'Non AC Wedding Halls', 'Luxury Wedding Halls', 'Mini Wedding Halls', 'Event Halls', 'Convention & Banquet Halls', 'Party & Reception Hall', 'Outdoor / Open-Air'] },
+    { name: 'Decorations', path: '/decorations', image: decoration, subcategories: ['Wedding Decoration', 'Stage Decoration', 'Mandap Decoration', 'Reception Decoration', 'Event Decoration', 'Floral Decoration', 'Theme-Based Decoration', 'Lighting & Ambience'] },
+    { name: 'Entertainment', path: '/entertainment', image: entertainment, subcategories: ['Wedding MCs', 'DJ & Remix', 'Dance Shows', 'Live Music', 'Photo Booths', 'LED Effects', 'Kids Entertainment'] },
+    { name: 'Invitation & Gifts', path: '/invitation', image: invitation, subcategories: ['Digital Invites', 'Luxury Cards', 'Printed Cards', 'Custom Designs', 'Return Gifts', 'Eco Gifts', 'Gift Hampers', 'Luxury Hampers'] },
+    { name: 'Bridal Styling', path: '/styling', image: makeup, subcategories: ['Bridal Makeup', 'Bridal Accessories', 'Hair Styling', 'Mehendi Art', 'Traditional Attire Styling', 'Groom Makeup', 'Groom Hair Styling', 'Groom Accessories'] },
+    { name: 'Pre-Matrimonial Verification', path: '/pre-matrimonial-verification', image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', subcategories: ['Identity & Character Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification', 'Employment Verification', 'Financial Background', 'Family Background', 'Social Media Screening'] },
   ];
 
   return (
@@ -121,11 +81,14 @@ const Home = () => {
         </div>
       </section>
 
-      <main className="container mx-auto px-4 md:px-6 py-6 md:py-8 mt-4 md:mt-8">
+      {/* REDUCED: main outer padding mt-4→mt-2, py-6→py-4 */}
+      <main className="container mx-auto px-4 md:px-6 py-4 md:py-6 mt-2 md:mt-4">
 
-        {/* ─── PORTAL LOGIN & REGISTRATION — BIG like service page (2-col for Vendor+Customer, Matrimony full row) ─── */}
-        <section id="portal-access" className="mb-16 scroll-mt-20">
-          <div className="text-center mb-10">
+        {/* ─── PORTAL — all 3 in ONE ROW, original card size kept, only section mb reduced ─── */}
+        {/* REDUCED: mb-16→mb-8 */}
+        <section id="portal-access" className="mb-8 scroll-mt-20">
+          {/* REDUCED: mb-10→mb-6 */}
+          <div className="text-center mb-6">
             <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Access Your Account ✦</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
               Portal Login & Registration
@@ -137,10 +100,10 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Row 1: Vendor + Customer side by side (big cards, like service page image 1) */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-6">
+          {/* ALL 3 in one row — original card internals unchanged */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
-            {/* Vendor Portal */}
+            {/* Vendor Portal — original card size */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-amber-100">
@@ -161,7 +124,7 @@ const Home = () => {
                     className="flex-1 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
                     Login
                   </button>
-                  <button onClick={() => setShowComingSoon(true)}
+                  <button onClick={() => navigate('/vendor-login')}
                     className="flex-1 px-4 py-2.5 bg-amber-50 text-amber-700 text-sm font-semibold rounded-xl border border-amber-200 hover:bg-amber-100 hover:scale-105 transition-all duration-300">
                     Register
                   </button>
@@ -169,7 +132,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Customer Portal */}
+            {/* Customer Portal — original card size */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-red-100">
@@ -187,21 +150,19 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="flex gap-3">
-                  <button onClick={() => setShowComingSoon(true)}
+                  <button onClick={() => navigate('/customer-login')}
                     className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
                     Login
                   </button>
-                  <button onClick={() => setShowComingSoon(true)}
+                  <button onClick={() => navigate('/register-choice')}
                     className="flex-1 px-4 py-2.5 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-200 hover:bg-red-100 hover:scale-105 transition-all duration-300">
                     Register
                   </button>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Row 2: Matrimony Portal — centered */}
-          <div className="max-w-sm mx-auto">
+            {/* Matrimony Portal — original card size */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-pink-100">
@@ -233,7 +194,8 @@ const Home = () => {
         </section>
 
         {/* ─── ELITEINOVA WEDDING SERVICES HEADING ─── */}
-        <div className="text-center mb-6 md:mb-8">
+        {/* REDUCED: mb-6 md:mb-8 → mb-4 md:mb-5 */}
+        <div className="text-center mb-4 md:mb-5">
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-2 md:mb-3">✦ Complete Wedding Solutions ✦</p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4"
             style={{ background: "linear-gradient(135deg, #7f1d1d 0%, #b91c1c 40%, #92400e 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", fontFamily: "'Georgia', 'Times New Roman', serif" }}>
@@ -251,8 +213,9 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ─── ELITEINOVA WEDDING SERVICES CARD ─── */}
-        <div className="relative max-w-4xl mx-auto mb-10 md:mb-12">
+        {/* ─── ELITEINOVA WEDDING SERVICES CARD — original card size ─── */}
+        {/* REDUCED: mb-10 md:mb-12 → mb-6 md:mb-8 */}
+        <div className="relative max-w-4xl mx-auto mb-6 md:mb-8">
           <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-amber-500/10 rounded-3xl blur-2xl" />
           <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl"
             style={{ background: "linear-gradient(135deg, #ffffff 0%, #fffdf9 100%)", boxShadow: "0 4px 24px rgba(185,28,28,0.08)", border: "1px solid rgba(185,28,28,0.1)" }}>
@@ -274,9 +237,11 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ─── CELEBRATE YOUR WEDDING ─── */}
-        <section id="celebrate-wedding" className="mb-16 scroll-mt-20">
-          <div className="text-center mb-8">
+        {/* ─── CELEBRATE YOUR WEDDING — original card size ─── */}
+        {/* REDUCED: mb-16 → mb-8 */}
+        <section id="celebrate-wedding" className="mb-8 scroll-mt-20">
+          {/* REDUCED: mb-8 → mb-5 */}
+          <div className="text-center mb-5">
             <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Your Special Day ✦</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
               Celebrate Your Wedding with EliteInova
@@ -290,7 +255,7 @@ const Home = () => {
 
           <div className="relative max-w-4xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-amber-100/50 via-red-100/50 to-amber-100/50 rounded-3xl blur-3xl -z-10" />
-            {/* White card matching image 2 */}
+            {/* original card size */}
             <div className="relative bg-white rounded-3xl p-8 md:p-10 shadow-xl overflow-hidden"
               style={{ border: "1px solid rgba(185,28,28,0.1)", boxShadow: "0 4px 24px rgba(185,28,28,0.08)" }}>
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-red-500 to-amber-500 rounded-t-3xl" />
@@ -313,19 +278,19 @@ const Home = () => {
                     <span key={i} className="px-4 py-1.5 bg-white rounded-full text-xs md:text-sm font-medium text-red-700 border border-red-200">{tag}</span>
                   ))}
                 </div>
-                {/* NOTE: Explore button is intentionally removed here — moved below categories */}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Vendor Login Modal */}
         {showVendorLogin && <VendorLoginForm onClose={() => setShowVendorLogin(false)} showRegisterOptions={true} />}
       </main>
 
-      {/* ─── OUR CATEGORIES — SQUARE FLIP CARDS ─── */}
-      <section id="our-categories" className="container mx-auto px-3 md:px-4 py-8 md:py-12">
-        <div className="text-center mb-8 md:mb-10">
+      {/* ─── OUR CATEGORIES — original card size ─── */}
+      {/* REDUCED: py-8 md:py-12 → py-5 md:py-8 */}
+      <section id="our-categories" className="container mx-auto px-3 md:px-4 py-5 md:py-8">
+        {/* REDUCED: mb-8 md:mb-10 → mb-5 md:mb-7 */}
+        <div className="text-center mb-5 md:mb-7">
           <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Our Collections ✦</p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
             Service Categories
@@ -337,48 +302,27 @@ const Home = () => {
           </div>
         </div>
 
-        {/* Square flip card grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
           {categories.map((category, index) => (
-            <div
-              key={index}
-              className="relative cursor-pointer"
+            <div key={index} className="relative cursor-pointer"
               style={{ perspective: '1000px', height: '280px' }}
               onMouseEnter={() => setFlippedCard(index)}
               onMouseLeave={() => setFlippedCard(null)}
-              onTouchEnd={(e) => {
-                e.preventDefault();
-                setFlippedCard(flippedCard === index ? null : index);
-              }}
+              onTouchEnd={(e) => { e.preventDefault(); setFlippedCard(flippedCard === index ? null : index); }}
             >
-              {/* Flip wrapper */}
-              <div style={{
-                position: 'relative', width: '100%', height: '100%',
-                transformStyle: 'preserve-3d',
-                transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
-                transform: flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)',
-              }}>
+              <div style={{ position: 'relative', width: '100%', height: '100%', transformStyle: 'preserve-3d', transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)', transform: flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
 
-                {/* ── FRONT: Square image card with navigate button ── */}
+                {/* FRONT */}
                 <div style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'absolute', inset: 0 }}>
                   <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col overflow-hidden border border-gray-100">
-                    {/* Image - takes most of the card */}
                     <div className="flex-1 overflow-hidden">
-                      <img
-                        src={category.image}
-                        alt={category.name}
-                        className="w-full h-full object-cover transition-transform duration-500"
-                        style={{ transform: flippedCard === index ? 'scale(1)' : 'scale(1)' }}
-                        onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"; }}
-                      />
+                      <img src={category.image} alt={category.name} className="w-full h-full object-cover transition-transform duration-500"
+                        onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"; }} />
                     </div>
-                    {/* Bottom: name + button */}
                     <div className="p-3 bg-white">
                       <h3 className="text-center font-semibold text-gray-800 text-xs md:text-sm leading-tight mb-2 line-clamp-2">{category.name}</h3>
-                      <button
-                        onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
-                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1"
-                      >
+                      <button onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
+                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1">
                         View Services
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                       </button>
@@ -386,14 +330,11 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* ── BACK: Subcategories + navigate button ── */}
+                {/* BACK */}
                 <div style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'absolute', inset: 0, transform: 'rotateY(180deg)' }}>
                   <div className="relative bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl h-full border-2 border-red-200 flex flex-col shadow-xl overflow-hidden">
-                    {/* Top bar */}
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 via-amber-400 to-red-500" />
-
                     <div className="flex-1 p-3 pt-4 flex flex-col overflow-hidden">
-                      {/* Header */}
                       <div className="flex items-center gap-2 mb-2 pb-2 border-b border-red-200">
                         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center flex-shrink-0">
                           <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -402,8 +343,6 @@ const Home = () => {
                         </div>
                         <h4 className="font-bold text-red-800 text-xs leading-tight line-clamp-2">{category.name}</h4>
                       </div>
-
-                      {/* Subcategories list */}
                       <ul className="space-y-1 overflow-y-auto flex-1 custom-scrollbar pr-0.5">
                         {category.subcategories.map((sub, idx) => (
                           <li key={idx} className="flex items-start gap-1.5 text-xs">
@@ -413,13 +352,9 @@ const Home = () => {
                         ))}
                       </ul>
                     </div>
-
-                    {/* Bottom: Navigate button on back too */}
                     <div className="p-3 pt-0">
-                      <button
-                        onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
-                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1.5"
-                      >
+                      <button onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
+                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1.5">
                         View All Services
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                       </button>
@@ -432,24 +367,23 @@ const Home = () => {
           ))}
         </div>
 
-        {/* ─── EXPLORE BUTTON — below categories ─── */}
-        <div className="flex justify-center mt-10">
-          <button
-            onClick={() => setShowComingSoon(true)}
-            className="inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-red-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm md:text-base"
-          >
+        {/* Explore Button */}
+        {/* REDUCED: mt-10 → mt-6 */}
+        <div className="flex justify-center mt-6">
+          <button onClick={() => setShowComingSoon(true)}
+            className="inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-red-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm md:text-base">
             Explore Our Eliteinova Wedding Services Page
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </button>
         </div>
       </section>
 
-      {/* ─── WHY CHOOSE ELITEINOVA ─── */}
-      <section className="py-12 md:py-16 lg:py-20 mt-6" style={{ background: "linear-gradient(135deg, #fffbf0 0%, #fff8ee 50%, #fffdf5 100%)" }}>
+      {/* ─── WHY CHOOSE ELITEINOVA — original card size ─── */}
+      {/* REDUCED: py-12 md:py-16 lg:py-20 mt-6 → py-8 md:py-12 mt-2 */}
+      <section className="py-8 md:py-12 mt-2" style={{ background: "linear-gradient(135deg, #fffbf0 0%, #fff8ee 50%, #fffdf5 100%)" }}>
         <div className="container mx-auto px-4 md:px-6">
-          <div className="text-center mb-10 md:mb-14">
+          {/* REDUCED: mb-10 md:mb-14 → mb-7 md:mb-10 */}
+          <div className="text-center mb-7 md:mb-10">
             <span className="text-yellow-500 text-sm font-semibold tracking-widest uppercase">✦ Why Choose Us ✦</span>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-red-700 mt-3 mb-4" style={{ fontFamily: "'Georgia', serif" }}>Why Choose EliteInova?</h2>
             <div className="flex items-center justify-center gap-3">
@@ -458,6 +392,7 @@ const Home = () => {
               <div className="h-px w-16 md:w-24 bg-red-200 rounded-full" />
             </div>
           </div>
+          {/* original card size p-6 md:p-8 preserved */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
             {[
               { gradient: "linear-gradient(135deg, #f97316 0%, #dc2626 100%)", icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />, title: "Verified Profiles", desc: "All profiles are thoroughly verified for authenticity and reliability" },
