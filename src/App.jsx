@@ -32,6 +32,7 @@ import DecorationsVendorForm from './Components/DecorationsForm';
 import EntertainmentVendorForm from './Components/EntertainmentForm';
 import InvitationVendorForm from './Components/InvitationForm';
 import StylingVendorForm from './Components/StylingForm';
+import AdminDashboard from './pages/AdminDashboard';
 
 // Import Background Investigations components
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
@@ -139,6 +140,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+          {/* ── Admin Dashboard — full screen, NO Header ── */}
+          <Route path="/admin-panel" element={<AdminDashboard />} />
+          <Route path="/admin-panel/*" element={<AdminDashboard />} />
 
           {/* PRE-MATRIMONIAL VERIFICATION PAGE */}
           <Route path="/pre-matrimonial-verification" element={<PreMatrimonialVerification />} />
