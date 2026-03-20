@@ -59,7 +59,6 @@ export const weddingHallsVendors = [
       { id: 1, image: achall, title: 'Main Wedding Hall' },
       { id: 2, image: achall, title: 'Reception Area' },
       { id: 3, image: achall, title: 'Stage Setup' },
-      { id: 4, image: achall, title: 'Bridal Room' }
     ],
     packages: [
       {
@@ -146,7 +145,6 @@ export const weddingHallsVendors = [
       { id: 1, image: achall, title: 'Main Convention Hall' },
       { id: 2, image: achall, title: 'Reception Area' },
       { id: 3, image: achall, title: 'Stage Setup' },
-      { id: 4, image: achall, title: 'VIP Lounge' }
     ],
     packages: [
       {
@@ -383,7 +381,6 @@ export const weddingHallsVendors = [
       { id: 1, image: luxuryhall, title: 'Grand Ballroom' },
       { id: 2, image: luxuryhall, title: 'Bridal Suite' },
       { id: 3, image: luxuryhall, title: 'Poolside Venue' },
-      { id: 4, image: luxuryhall, title: 'VIP Lounge' }
     ],
     packages: [
       {

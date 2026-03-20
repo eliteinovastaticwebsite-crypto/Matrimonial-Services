@@ -58,7 +58,6 @@ export const decorationVendors = [
       { id: 1, image: weddingdecor, title: 'Wedding Setup' },
       { id: 2, image: weddingdecor, title: 'Mandap Design' },
       { id: 3, image: weddingdecor, title: 'Entrance Decor' },
-      { id: 4, image: weddingdecor, title: 'Stage Decoration' }
     ],
     packages: [
       {

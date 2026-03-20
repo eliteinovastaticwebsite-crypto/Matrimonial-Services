@@ -167,7 +167,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: weddingmc, title: 'Wedding Ceremony' },
-      { id: 2, image: weddingmc, title: 'Sangeet Night' }
+      { id: 2, image: weddingmc, title: 'Sangeet Night' },
+      { id: 3, image: weddingmc, title: 'Sangeet Night' }
     ],
     packages: [
       {
@@ -347,7 +348,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: dj, title: 'Wedding Reception' },
-      { id: 2, image: dj, title: 'Engagement Party' }
+      { id: 2, image: dj, title: 'Engagement Party' },
+      { id: 3, image: dj, title: 'Engagement Party' }
     ],
     packages: [
       {
@@ -528,7 +530,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: danceshow, title: 'Classical Dance' },
-      { id: 2, image: danceshow, title: 'Fusion Performance' }
+      { id: 2, image: danceshow, title: 'Fusion Performance' },
+      { id: 3, image: danceshow, title: 'Fusion Performance' }
     ],
     packages: [
       {
@@ -708,7 +711,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: livemusic, title: 'Wedding Ceremony' },
-      { id: 2, image: livemusic, title: 'Reception' }
+      { id: 2, image: livemusic, title: 'Reception' },
+      { id: 3, image: livemusic, title: 'Reception' }
     ],
     packages: [
       {
@@ -887,7 +891,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: photobooth, title: '360 Booth' },
-      { id: 2, image: photobooth, title: 'Green Screen' }
+      { id: 2, image: photobooth, title: 'Green Screen' },
+      { id: 3, image: photobooth, title: 'Green Screen' }
     ],
     packages: [
       {
@@ -1067,7 +1072,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: ledeffects, title: 'LED Dance Floor' },
-      { id: 2, image: ledeffects, title: 'Projection Mapping' }
+      { id: 2, image: ledeffects, title: 'Projection Mapping' },
+      { id: 3, image: ledeffects, title: 'Projection Mapping' }
     ],
     packages: [
       {
@@ -1246,7 +1252,8 @@ export const entertainmentVendors = [
     },
     portfolio: [
       { id: 1, image: kidsentertainment, title: 'Puppet Show' },
-      { id: 2, image: kidsentertainment, title: 'Treasure Hunt' }
+      { id: 2, image: kidsentertainment, title: 'Treasure Hunt' },
+      { id: 3, image: kidsentertainment, title: 'Treasure Hunt' }
     ],
     packages: [
       {

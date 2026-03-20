@@ -36,6 +36,8 @@ import StylingVendorForm from './Components/StylingForm';
 // Import Background Investigations components
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
 import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
+// Import Pre-Matrimonial Verification page
+import PreMatrimonialVerification from './pages/PreMatrimonialVerification';
 
 // NOTE: VendorDetails is now a modal component used inside each page.
 // It is NO LONGER used as a route here in App.jsx.
@@ -137,6 +139,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Home />} />
+
+          {/* PRE-MATRIMONIAL VERIFICATION PAGE */}
+          <Route path="/pre-matrimonial-verification" element={<PreMatrimonialVerification />} />
           
           {/* ============================================ */}
           {/* CUSTOMER AUTHENTICATION ROUTES */}

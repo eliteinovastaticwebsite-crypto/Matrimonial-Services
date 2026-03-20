@@ -57,7 +57,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalmakeup, title: 'Bridal Makeup' },
-      { id: 2, image: bridalmakeup, title: 'Engagement Look' }
+      { id: 2, image: bridalmakeup, title: 'Engagement Look' },
+      { id: 3, image: bridalmakeup, title: 'Engagement Look' }
     ],
     packages: [
       {
@@ -133,7 +134,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalmakeup, title: 'Bridal Makeup' },
-      { id: 2, image: bridalmakeup, title: 'Celebrity Look' }
+      { id: 2, image: bridalmakeup, title: 'Celebrity Look' },
+      { id: 3, image: bridalmakeup, title: 'Celebrity Look' }
     ],
     packages: [
       {
@@ -209,6 +211,7 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalmakeup, title: 'Natural Bridal' },
+      { id: 2, image: bridalmakeup, title: 'Soft Glam' },
       { id: 2, image: bridalmakeup, title: 'Soft Glam' }
     ],
     packages: [
@@ -285,7 +288,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalmakeup, title: 'Celebrity Bride' },
-      { id: 2, image: bridalmakeup, title: 'Destination Wedding' }
+      { id: 2, image: bridalmakeup, title: 'Destination Wedding' },
+      { id: 3, image: bridalmakeup, title: 'Destination Wedding' }
     ],
     packages: [
       {
@@ -363,7 +367,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalaccessories, title: 'Temple Jewelry' },
-      { id: 2, image: bridalaccessories, title: 'Contemporary Sets' }
+      { id: 2, image: bridalaccessories, title: 'Contemporary Sets' },
+      { id: 3, image: bridalaccessories, title: 'Contemporary Sets' }
     ],
     packages: [
       {
@@ -439,7 +444,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: bridalaccessories, title: 'Kundan Set' },
-      { id: 2, image: bridalaccessories, title: 'Temple Jewelry' }
+      { id: 2, image: bridalaccessories, title: 'Temple Jewelry' },
+      { id: 3, image: bridalaccessories, title: 'Temple Jewelry' }
     ],
     packages: [
       {
@@ -517,7 +523,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: hairstyling, title: 'Bridal Updo' },
-      { id: 2, image: hairstyling, title: 'Traditional Braid' }
+      { id: 2, image: hairstyling, title: 'Traditional Braid' },
+      { id: 3, image: hairstyling, title: 'Traditional Braid' }
     ],
     packages: [
       {
@@ -593,7 +600,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: hairstyling, title: 'Modern Updo' },
-      { id: 2, image: hairstyling, title: 'Traditional Bun' }
+      { id: 2, image: hairstyling, title: 'Traditional Bun' },
+      { id: 3, image: hairstyling, title: 'Traditional Bun' }
     ],
     packages: [
       {
@@ -671,7 +679,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: mehendiart, title: 'Bridal Mehendi' },
-      { id: 2, image: mehendiart, title: 'Arabic Design' }
+      { id: 2, image: mehendiart, title: 'Arabic Design' },
+      { id: 3, image: mehendiart, title: 'Arabic Design' }
     ],
     packages: [
       {
@@ -747,7 +756,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: mehendiart, title: 'Bridal Set' },
-      { id: 2, image: mehendiart, title: 'Custom Design' }
+      { id: 2, image: mehendiart, title: 'Custom Design' },
+      { id: 3, image: mehendiart, title: 'Custom Design' }
     ],
     packages: [
       {
@@ -825,7 +835,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: traditionalattire, title: 'Iyer Bride' },
-      { id: 2, image: traditionalattire, title: 'Kanjeevaram Draping' }
+      { id: 2, image: traditionalattire, title: 'Kanjeevaram Draping' },
+      { id: 3, image: traditionalattire, title: 'Kanjeevaram Draping' }
     ],
     packages: [
       {
@@ -901,7 +912,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: traditionalattire, title: 'Nair Bride' },
-      { id: 2, image: traditionalattire, title: 'Traditional Groom' }
+      { id: 2, image: traditionalattire, title: 'Traditional Groom' },
+      { id: 3, image: traditionalattire, title: 'Traditional Groom' }
     ],
     packages: [
       {
@@ -979,7 +991,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: groommakeup, title: 'Groom Makeup' },
-      { id: 2, image: groommakeup, title: 'Beard Styling' }
+      { id: 2, image: groommakeup, title: 'Beard Styling' },
+      { id: 3, image: groommakeup, title: 'Beard Styling' }
     ],
     packages: [
       {
@@ -1055,7 +1068,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: groommakeup, title: 'Groom Look' },
-      { id: 2, image: groommakeup, title: 'Traditional Groom' }
+      { id: 2, image: groommakeup, title: 'Traditional Groom' },
+      { id: 3, image: groommakeup, title: 'Traditional Groom' }
     ],
     packages: [
       {
@@ -1133,7 +1147,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: groomhairstyling, title: 'Modern Groom' },
-      { id: 2, image: groomhairstyling, title: 'Traditional Look' }
+      { id: 2, image: groomhairstyling, title: 'Traditional Look' },
+      { id: 3, image: groomhairstyling, title: 'Traditional Look' }
     ],
     packages: [
       {
@@ -1209,7 +1224,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: groomhairstyling, title: 'Contemporary Style' },
-      { id: 2, image: groomhairstyling, title: 'Classic Groom' }
+      { id: 2, image: groomhairstyling, title: 'Classic Groom' },
+      { id: 3, image: groomhairstyling, title: 'Classic Groom' }
     ],
     packages: [
       {
@@ -1287,7 +1303,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: accessoriesfinishing, title: 'Turban Collection' },
-      { id: 2, image: accessoriesfinishing, title: 'Brooches' }
+      { id: 2, image: accessoriesfinishing, title: 'Brooches' },
+      { id: 3, image: accessoriesfinishing, title: 'Brooches' }
     ],
     packages: [
       {
@@ -1363,7 +1380,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: accessoriesfinishing, title: 'Wedding Set' },
-      { id: 2, image: accessoriesfinishing, title: 'Custom Accessories' }
+      { id: 2, image: accessoriesfinishing, title: 'Custom Accessories' },
+      { id: 3, image: accessoriesfinishing, title: 'Custom Accessories' }
     ],
     packages: [
       {
@@ -1441,7 +1459,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: commercial, title: 'Sherwani Styling' },
-      { id: 2, image: commercial, title: 'Suit Selection' }
+      { id: 2, image: commercial, title: 'Suit Selection' },
+      { id: 3, image: commercial, title: 'Suit Selection' }
     ],
     packages: [
       {
@@ -1517,7 +1536,8 @@ export const stylingVendors = [
     },
     portfolio: [
       { id: 1, image: commercial, title: 'Bespoke Sherwani' },
-      { id: 2, image: commercial, title: 'Designer Suit' }
+      { id: 2, image: commercial, title: 'Designer Suit' },
+      { id: 3, image: commercial, title: 'Designer Suit' }
     ],
     packages: [
       {

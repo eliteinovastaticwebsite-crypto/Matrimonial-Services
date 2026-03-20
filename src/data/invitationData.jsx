@@ -68,9 +68,6 @@ export const invitationVendors = [
       { id: 1, image: digitalinvites, title: 'Animated Wedding E-Invite', description: 'Interactive animation with couple photos' },
       { id: 2, image: digitalinvites, title: 'Save the Date Video', description: 'Cinematic save the date video' },
       { id: 3, image: digitalinvites, title: 'QR Code Integration', description: 'Smart invitations with QR codes' },
-      { id: 4, image: digitalinvites, title: 'WhatsApp Invitation', description: 'Optimized for WhatsApp sharing' },
-      { id: 5, image: digitalinvites, title: 'RSVP Dashboard', description: 'Guest management system' },
-      { id: 6, image: digitalinvites, title: 'Multi-language Invite', description: 'Invitations in multiple languages' }
     ],
     packages: [
       {
@@ -162,9 +159,6 @@ export const invitationVendors = [
       { id: 1, image: digitalinvites, title: '3D Animated Invite', description: 'Stunning 3D animations' },
       { id: 2, image: digitalinvites, title: 'Interactive Wedding Website', description: 'Complete wedding website' },
       { id: 3, image: digitalinvites, title: 'Video Save the Date', description: 'Professional video announcements' },
-      { id: 4, image: digitalinvites, title: 'Social Media Templates', description: 'Instagram/Facebook ready designs' },
-      { id: 5, image: digitalinvites, title: 'Digital Thank You Cards', description: 'Post-wedding thank you notes' },
-      { id: 6, image: digitalinvites, title: 'Live Stream Integration', description: 'Zoom/YouTube live links' }
     ],
     packages: [
       {
@@ -250,11 +244,6 @@ export const invitationVendors = [
       { id: 1, image: luxurycards, title: 'Gold Foil Invitation', description: 'Handmade paper with 24K gold foiling' },
       { id: 2, image: luxurycards, title: 'Laser Cut Box Set', description: 'Intricate laser-cut wooden box with invitations' },
       { id: 3, image: luxurycards, title: 'Silk Ribbon Collection', description: 'Invitations with real silk ribbons and wax seals' },
-      { id: 4, image: luxurycards, title: 'Embossed Leather Invite', description: 'Premium leather-bound invitation suite' },
-      { id: 5, image: luxurycards, title: 'Crystal Embellished', description: 'Swarovski crystal embellished cards' },
-      { id: 6, image: luxurycards, title: 'Hand-painted Designs', description: 'Original watercolor artwork on each card' },
-      { id: 7, image: luxurycards, title: 'Marble Finish Collection', description: 'Premium marble finish with rose gold' },
-      { id: 8, image: luxurycards, title: 'Acrylic Invitations', description: 'Modern acrylic with engraved details' }
     ],
     packages: [
       {
@@ -338,9 +327,6 @@ export const invitationVendors = [
       { id: 1, image: luxurycards, title: 'Royal Scroll Invitation', description: 'Traditional scroll-style invitation' },
       { id: 2, image: luxurycards, title: 'Palatial Box Set', description: 'Multi-layer box with royal motifs' },
       { id: 3, image: luxurycards, title: 'Gold Embossed Cards', description: 'Heavy gold embossing on silk paper' },
-      { id: 4, image: luxurycards, title: 'Miniature Painting Style', description: 'Hand-painted miniature art invitations' },
-      { id: 5, image: luxurycards, title: 'Velvet Pouch Collection', description: 'Invitations in velvet pouches' },
-      { id: 6, image: luxurycards, title: 'Pearl Embellished', description: 'Real pearl accents on invitations' }
     ],
     packages: [
       {
@@ -426,11 +412,6 @@ export const invitationVendors = [
       { id: 1, image: printedcards, title: 'Offset Printed Cards', description: 'High-volume offset printing' },
       { id: 2, image: printedcards, title: 'Digital Print Collection', description: 'Quick turnaround digital prints' },
       { id: 3, image: printedcards, title: 'Textured Paper Range', description: 'Various paper textures and weights' },
-      { id: 4, image: printedcards, title: 'Foil Stamped Cards', description: 'Metallic foil stamping' },
-      { id: 5, image: printedcards, title: 'Embossed Designs', description: 'Raised embossing effects' },
-      { id: 6, image: printedcards, title: 'Die-cut Shapes', description: 'Custom shaped invitations' },
-      { id: 7, image: printedcards, title: 'Recycled Paper Line', description: 'Eco-friendly paper options' },
-      { id: 8, image: printedcards, title: 'Pocket Fold Cards', description: 'Multi-panel pocket designs' }
     ],
     packages: [
       {
@@ -513,9 +494,6 @@ export const invitationVendors = [
       { id: 1, image: printedcards, title: 'Malayalam Wedding Card', description: 'Traditional Kerala design' },
       { id: 2, image: printedcards, title: 'Tamil Wedding Collection', description: 'Classic Tamil invitation styles' },
       { id: 3, image: printedcards, title: 'Eco-friendly Range', description: 'Seed paper and recycled options' },
-      { id: 4, image: printedcards, title: 'Minimalist Designs', description: 'Contemporary minimalist cards' },
-      { id: 5, image: printedcards, title: 'Floral Pattern Series', description: 'Traditional floral motifs' },
-      { id: 6, image: printedcards, title: 'Temple Architecture', description: 'Designs inspired by temple art' }
     ],
     packages: [
       {
@@ -601,11 +579,6 @@ export const invitationVendors = [
       { id: 1, image: customdesigns, title: 'Custom Illustration Suite', description: 'Personalized couple illustrations' },
       { id: 2, image: customdesigns, title: 'Storybook Wedding', description: 'Narrative-style invitation book' },
       { id: 3, image: customdesigns, title: 'Map-themed Invitations', description: 'Custom illustrated venue maps' },
-      { id: 4, image: customdesigns, title: 'Watercolor Collection', description: 'Original watercolor artwork' },
-      { id: 5, image: customdesigns, title: 'Modern Typography', description: 'Bespoke typography designs' },
-      { id: 6, image: customdesigns, title: 'Cultural Fusion', description: 'Blending multiple cultural elements' },
-      { id: 7, image: customdesigns, title: 'Minimalist Luxury', description: 'Clean, sophisticated designs' },
-      { id: 8, image: customdesigns, title: 'Bold & Colorful', description: 'Vibrant, artistic invitations' }
     ],
     packages: [
       {
@@ -689,9 +662,6 @@ export const invitationVendors = [
       { id: 1, image: customdesigns, title: 'Love Story Timeline', description: 'Visual timeline of relationship' },
       { id: 2, image: customdesigns, title: 'Travel Theme Suite', description: 'Destination wedding story' },
       { id: 3, image: customdesigns, title: 'Botanical Illustrations', description: 'Custom plant and flower art' },
-      { id: 4, image: customdesigns, title: 'Geometric Patterns', description: 'Modern geometric designs' },
-      { id: 5, image: customdesigns, title: 'Hand-lettered Suite', description: 'Custom calligraphy throughout' },
-      { id: 6, image: customdesigns, title: 'Vintage Romance', description: 'Retro-inspired designs' }
     ],
     packages: [
       {
@@ -777,11 +747,6 @@ export const invitationVendors = [
       { id: 1, image: returngifts, title: 'Traditional Gift Box', description: 'Assorted traditional items' },
       { id: 2, image: returngifts, title: 'Personalized Coasters', description: 'Custom engraved coasters' },
       { id: 3, image: returngifts, title: 'Mini Planters', description: 'Succulent plant favors' },
-      { id: 4, image: returngifts, title: 'Scented Candles', description: 'Premium soy candles' },
-      { id: 5, image: returngifts, title: 'Custom Keychains', description: 'Personalized metal keychains' },
-      { id: 6, image: returngifts, title: 'Gourmet Treats', description: 'Premium chocolates and sweets' },
-      { id: 7, image: returngifts, title: 'Puja Sets', description: 'Miniature pooja items' },
-      { id: 8, image: returngifts, title: 'Photo Frames', description: 'Elegant silver-plated frames' }
     ],
     packages: [
       {
@@ -864,9 +829,6 @@ export const invitationVendors = [
       { id: 1, image: returngifts, title: 'Eco-friendly Seeds', description: 'Seed paper and plant kits' },
       { id: 2, image: returngifts, title: 'Custom Mugs', description: 'Personalized ceramic mugs' },
       { id: 3, image: returngifts, title: 'Mini Hamper', description: 'Assorted goodie boxes' },
-      { id: 4, image: returngifts, title: 'Brass Idols', description: 'Traditional brass figurines' },
-      { id: 5, image: returngifts, title: 'Aromatic Oils', description: 'Essential oil sets' },
-      { id: 6, image: returngifts, title: 'Handicraft Items', description: 'Artisanal crafts' }
     ],
     packages: [
       {
@@ -951,9 +913,6 @@ export const invitationVendors = [
       { id: 1, image: gifthampers, title: 'Gourmet Hamper', description: 'Premium food and wine' },
       { id: 2, image: gifthampers, title: 'Spa Hamper', description: 'Luxury wellness products' },
       { id: 3, image: gifthampers, title: 'Chocolate Delight', description: 'Assorted premium chocolates' },
-      { id: 4, image: gifthampers, title: 'Tea Lovers Hamper', description: 'Fine tea collection' },
-      { id: 5, image: gifthampers, title: 'Fruit Basket', description: 'Exotic fruit selection' },
-      { id: 6, image: gifthampers, title: 'Custom Corporate Hamper', description: 'Branded corporate gifts' }
     ],
     packages: [
       {
@@ -1036,11 +995,6 @@ export const invitationVendors = [
       { id: 1, image: gifthampers, title: 'Wine & Cheese', description: 'Premium wine and gourmet cheese' },
       { id: 2, image: gifthampers, title: 'International Snacks', description: 'Global gourmet snacks' },
       { id: 3, image: gifthampers, title: 'Luxury Bath Set', description: 'Premium bath products' },
-      { id: 4, image: gifthampers, title: 'Coffee Connoisseur', description: 'Specialty coffee collection' },
-      { id: 5, image: gifthampers, title: 'Dry Fruit Delight', description: 'Premium nuts and dried fruits' },
-      { id: 6, image: gifthampers, title: 'Champagne Celebration', description: 'Champagne and accompaniments' },
-      { id: 7, image: gifthampers, title: 'Wellness Hamper', description: 'Ayurvedic and organic products' },
-      { id: 8, image: gifthampers, title: 'Custom Designer Hamper', description: 'Bespoke luxury creations' }
     ],
     packages: [
       {
@@ -1125,11 +1079,6 @@ export const invitationVendors = [
       { id: 1, image: ecogifts, title: 'Seed Paper Bookmarks', description: 'Plantable bookmark favors' },
       { id: 2, image: ecogifts, title: 'Bamboo Products', description: 'Eco-friendly bamboo items' },
       { id: 3, image: ecogifts, title: 'Jute Bags', description: 'Custom printed jute bags' },
-      { id: 4, image: ecogifts, title: 'Terracotta Pots', description: 'Mini terracotta with succulents' },
-      { id: 5, image: ecogifts, title: 'Upcycled Glassware', description: 'Recycled glass products' },
-      { id: 6, image: ecogifts, title: 'Organic Soaps', description: 'Handmade organic soaps' },
-      { id: 7, image: ecogifts, title: 'Cotton Handkerchiefs', description: 'Organic cotton handkerchiefs' },
-      { id: 8, image: ecogifts, title: 'Wooden Utensils', description: 'Sustainable wooden kitchen items' }
     ],
     packages: [
       {
@@ -1212,9 +1161,6 @@ export const invitationVendors = [
       { id: 1, image: ecogifts, title: 'Coconut Shell Bowls', description: 'Handcrafted coconut bowls' },
       { id: 2, image: ecogifts, title: 'Metal Straw Sets', description: 'Stainless steel straws with case' },
       { id: 3, image: ecogifts, title: 'Cloth Bags', description: 'Custom printed cloth bags' },
-      { id: 4, image: ecogifts, title: 'Seed Bombs', description: 'Wildflower seed bombs' },
-      { id: 5, image: ecogifts, title: 'Bamboo Toothbrushes', description: 'Eco-friendly bamboo brushes' },
-      { id: 6, image: ecogifts, title: 'Candle Sets', description: 'Soy wax candles in glass' }
     ],
     packages: [
       {
@@ -1300,11 +1246,6 @@ export const invitationVendors = [
       { id: 1, image: luxuryhampers, title: 'Champagne & Caviar', description: 'Premium champagne and caviar set' },
       { id: 2, image: luxuryhampers, title: 'International Cheese Board', description: 'World\'s finest cheeses' },
       { id: 3, image: luxuryhampers, title: 'Single Malt Collection', description: 'Premium Scotch whiskeys' },
-      { id: 4, image: luxuryhampers, title: 'Luxury Spa Hamper', description: 'High-end skincare products' },
-      { id: 5, image: luxuryhampers, title: 'Gourmet Chocolate Box', description: 'Belgian and Swiss chocolates' },
-      { id: 6, image: luxuryhampers, title: 'Cigar & Whiskey Set', description: 'Premium cigars with whiskey' },
-      { id: 7, image: luxuryhampers, title: 'Designer Accessories', description: 'Luxury branded accessories' },
-      { id: 8, image: luxuryhampers, title: 'Custom Corporate Luxury', description: 'Bespoke corporate hampers' }
     ],
     packages: [
       {
@@ -1387,9 +1328,6 @@ export const invitationVendors = [
       { id: 1, image: luxuryhampers, title: 'Royal Wedding Hamper', description: 'Specially curated for wedding VIPs' },
       { id: 2, image: luxuryhampers, title: 'International Brand Collection', description: 'Global luxury brands' },
       { id: 3, image: luxuryhampers, title: 'Vintage Wine Selection', description: 'Rare vintage wines' },
-      { id: 4, image: luxuryhampers, title: 'Artisanal Food Basket', description: 'Handcrafted gourmet foods' },
-      { id: 5, image: luxuryhampers, title: 'Luxury Home Collection', description: 'Premium home accessories' },
-      { id: 6, image: luxuryhampers, title: 'Heritage Hamper', description: 'Traditional luxury items' }
     ],
     packages: [
       {

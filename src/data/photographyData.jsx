@@ -55,7 +55,6 @@ export const photographyVendors = [
       { id: 1, image: weddingphoto, title: 'Wedding Ceremony' },
       { id: 2, image: event, title: 'Reception' },
       { id: 3, image: fashion, title: 'Pre-wedding Shoot' },
-      { id: 4, image: kids, title: 'Candid Moments' }
     ],
     packages: [
       {
@@ -212,7 +211,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: event, title: 'Corporate Event' },
-      { id: 2, image: event, title: 'Conference' }
+      { id: 2, image: event, title: 'Conference' },
+      { id: 3, image: event, title: 'Conference' }
     ],
     packages: [
       {
@@ -285,7 +285,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: event, title: 'Anniversary' },
-      { id: 2, image: event, title: 'Birthday' }
+      { id: 2, image: event, title: 'Birthday' },
+      { id: 3, image: event, title: 'Birthday' }
     ],
     packages: [
       {
@@ -359,7 +360,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: videography, title: 'Wedding Film' },
-      { id: 2, image: videography, title: 'Corporate Video' }
+      { id: 2, image: videography, title: 'Corporate Video' },
+      { id: 3, image: videography, title: 'Corporate Video' }
     ],
     packages: [
       {
@@ -432,7 +434,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: videography, title: 'Short Film' },
-      { id: 2, image: videography, title: 'Music Video' }
+      { id: 2, image: videography, title: 'Music Video' },
+      { id: 3, image: videography, title: 'Music Video' }
     ],
     packages: [
       {
@@ -505,7 +508,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: album, title: 'Wedding Album' },
-      { id: 2, image: album, title: 'Photo Restoration' }
+      { id: 2, image: album, title: 'Photo Restoration' },
+      { id: 3, image: album, title: 'Photo Restoration' }
     ],
     packages: [
       {
@@ -578,7 +582,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: album, title: 'Coffee Table Book' },
-      { id: 2, image: album, title: 'Custom Album' }
+      { id: 2, image: album, title: 'Custom Album' },
+      { id: 3, image: album, title: 'Custom Album' }
     ],
     packages: [
       {
@@ -652,7 +657,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: fashion, title: 'Editorial Shoot' },
-      { id: 2, image: fashion, title: 'Lookbook' }
+      { id: 2, image: fashion, title: 'Lookbook' },
+      { id: 3, image: fashion, title: 'Lookbook' }
     ],
     packages: [
       {
@@ -725,7 +731,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: fashion, title: 'Street Photography' },
-      { id: 2, image: fashion, title: 'Lifestyle Shoot' }
+      { id: 2, image: fashion, title: 'Lifestyle Shoot' },
+      { id: 3, image: fashion, title: 'Lifestyle Shoot' }
     ],
     packages: [
       {
@@ -799,7 +806,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: commercial, title: 'Product Shoot' },
-      { id: 2, image: commercial, title: 'Corporate Headshots' }
+      { id: 2, image: commercial, title: 'Corporate Headshots' },
+      { id: 3, image: commercial, title: 'Corporate Headshots' }
     ],
     packages: [
       {
@@ -873,7 +881,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: commercial, title: 'Brand Campaign' },
-      { id: 2, image: commercial, title: 'Packaging' }
+      { id: 2, image: commercial, title: 'Packaging' },
+      { id: 3, image: commercial, title: 'Packaging' }
     ],
     packages: [
       {
@@ -946,7 +955,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: religious, title: 'Temple Festival' },
-      { id: 2, image: religious, title: 'Religious Ceremony' }
+      { id: 2, image: religious, title: 'Religious Ceremony' },
+      { id: 3, image: religious, title: 'Religious Ceremony' }
     ],
     packages: [
       {
@@ -1019,7 +1029,8 @@ export const photographyVendors = [
     },
     portfolio: [
       { id: 1, image: religious, title: 'Puja Ceremony' },
-      { id: 2, image: religious, title: 'Religious Procession' }
+      { id: 2, image: religious, title: 'Religious Procession' },
+      { id: 3, image: religious, title: 'Religious Procession' }
     ],
     packages: [
       {

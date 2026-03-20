@@ -60,6 +60,7 @@ const Header = ({ onOpenVendorForm }) => {
         { name: 'Bride & Groom Background Investigations', path: '/background-investigations', type: 'page' },
       ]
     },
+     { name: 'PRE MATRIMONIAL VERIFICATION', path: '/pre-matrimonial-verification', type: 'page' },
     { 
       name: 'VENDOR LOGIN', 
       path: '/vendor-login',

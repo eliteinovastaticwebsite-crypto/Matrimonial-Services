@@ -64,7 +64,6 @@ export const cateringVendors = [
       { id: 1, image: traditional, title: 'South Indian Wedding Feast' },
       { id: 2, image: traditional, title: 'North Indian Thali' },
       { id: 3, image: traditional, title: 'Traditional Sweets Spread' },
-      { id: 4, image: traditional, title: 'Banana Leaf Service' }
     ],
     packages: [
       {
