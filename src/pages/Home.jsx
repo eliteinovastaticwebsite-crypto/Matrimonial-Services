@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import VendorLoginForm from './VendorLoginForm';
 
@@ -21,6 +21,9 @@ const Home = () => {
   const [flippedCard, setFlippedCard] = useState(null);
   const [showComingSoon, setShowComingSoon] = useState(false);
   const navigate = useNavigate();
+
+  // Track whether a touch started on a button (to allow button taps through)
+  const touchOnButton = useRef(false);
 
   const banners = [
     { id: 1, image: banner1 },
@@ -47,8 +50,20 @@ const Home = () => {
     { name: 'Entertainment', path: '/entertainment', image: entertainment, subcategories: ['Wedding MCs', 'DJ & Remix', 'Dance Shows', 'Live Music', 'Photo Booths', 'LED Effects', 'Kids Entertainment'] },
     { name: 'Invitation & Gifts', path: '/invitation', image: invitation, subcategories: ['Digital Invites', 'Luxury Cards', 'Printed Cards', 'Custom Designs', 'Return Gifts', 'Eco Gifts', 'Gift Hampers', 'Luxury Hampers'] },
     { name: 'Bridal Styling', path: '/styling', image: makeup, subcategories: ['Bridal Makeup', 'Bridal Accessories', 'Hair Styling', 'Mehendi Art', 'Traditional Attire Styling', 'Groom Makeup', 'Groom Hair Styling', 'Groom Accessories'] },
-    { name: 'Pre-Matrimonial Verification', path: '/pre-matrimonial-verification', image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', subcategories: ['Identity & Character Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification', 'Employment Verification', 'Financial Background', 'Family Background', 'Social Media Screening'] },
+    { name: 'Pre-Matrimonial Verification', path: '/background-investigations', image: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', subcategories: ['Identity & Character Verification', 'Marital Status Check', 'Criminal Record Check', 'Education Verification', 'Employment Verification', 'Financial Background', 'Family Background', 'Social Media Screening'] },
   ];
+
+  // Handle card touch — only flip if touch did NOT start on a button
+  const handleCardTouchStart = (e) => {
+    touchOnButton.current = e.target.closest('button') !== null;
+  };
+
+  const handleCardTouchEnd = (e, index) => {
+    // If touch started on a button, let the button handle it — don't flip
+    if (touchOnButton.current) return;
+    e.preventDefault();
+    setFlippedCard(flippedCard === index ? null : index);
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-red-50 to-yellow-50">
@@ -81,13 +96,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* REDUCED: main outer padding mt-4→mt-2, py-6→py-4 */}
       <main className="container mx-auto px-4 md:px-6 py-4 md:py-6 mt-2 md:mt-4">
 
-        {/* ─── PORTAL — all 3 in ONE ROW, original card size kept, only section mb reduced ─── */}
-        {/* REDUCED: mb-16→mb-8 */}
+        {/* ─── PORTAL ─── */}
         <section id="portal-access" className="mb-8 scroll-mt-20">
-          {/* REDUCED: mb-10→mb-6 */}
           <div className="text-center mb-6">
             <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Access Your Account ✦</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
@@ -100,10 +112,9 @@ const Home = () => {
             </div>
           </div>
 
-          {/* ALL 3 in one row — original card internals unchanged */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
 
-            {/* Vendor Portal — original card size */}
+            {/* Vendor Portal */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-amber-100">
@@ -132,7 +143,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Customer Portal — original card size */}
+            {/* Customer Portal */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-red-100">
@@ -162,7 +173,7 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Matrimony Portal — original card size */}
+            {/* Matrimony Portal */}
             <div className="group relative">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-pink-100">
@@ -194,7 +205,6 @@ const Home = () => {
         </section>
 
         {/* ─── ELITEINOVA WEDDING SERVICES HEADING ─── */}
-        {/* REDUCED: mb-6 md:mb-8 → mb-4 md:mb-5 */}
         <div className="text-center mb-4 md:mb-5">
           <p className="text-xs md:text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-2 md:mb-3">✦ Complete Wedding Solutions ✦</p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4"
@@ -213,8 +223,7 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ─── ELITEINOVA WEDDING SERVICES CARD — original card size ─── */}
-        {/* REDUCED: mb-10 md:mb-12 → mb-6 md:mb-8 */}
+        {/* ─── ELITEINOVA WEDDING SERVICES CARD ─── */}
         <div className="relative max-w-4xl mx-auto mb-6 md:mb-8">
           <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-amber-500/10 rounded-3xl blur-2xl" />
           <div className="relative bg-white/80 backdrop-blur-xl rounded-3xl p-6 md:p-8 shadow-2xl"
@@ -237,10 +246,8 @@ const Home = () => {
           </div>
         </div>
 
-        {/* ─── CELEBRATE YOUR WEDDING — original card size ─── */}
-        {/* REDUCED: mb-16 → mb-8 */}
+        {/* ─── CELEBRATE YOUR WEDDING ─── */}
         <section id="celebrate-wedding" className="mb-8 scroll-mt-20">
-          {/* REDUCED: mb-8 → mb-5 */}
           <div className="text-center mb-5">
             <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Your Special Day ✦</p>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
@@ -252,10 +259,8 @@ const Home = () => {
               <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500" />
             </div>
           </div>
-
           <div className="relative max-w-4xl mx-auto">
             <div className="absolute inset-0 bg-gradient-to-r from-amber-100/50 via-red-100/50 to-amber-100/50 rounded-3xl blur-3xl -z-10" />
-            {/* original card size */}
             <div className="relative bg-white rounded-3xl p-8 md:p-10 shadow-xl overflow-hidden"
               style={{ border: "1px solid rgba(185,28,28,0.1)", boxShadow: "0 4px 24px rgba(185,28,28,0.08)" }}>
               <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-amber-500 via-red-500 to-amber-500 rounded-t-3xl" />
@@ -286,10 +291,8 @@ const Home = () => {
         {showVendorLogin && <VendorLoginForm onClose={() => setShowVendorLogin(false)} showRegisterOptions={true} />}
       </main>
 
-      {/* ─── OUR CATEGORIES — original card size ─── */}
-      {/* REDUCED: py-8 md:py-12 → py-5 md:py-8 */}
+      {/* ─── OUR CATEGORIES — FLIP CARDS ─── */}
       <section id="our-categories" className="container mx-auto px-3 md:px-4 py-5 md:py-8">
-        {/* REDUCED: mb-8 md:mb-10 → mb-5 md:mb-7 */}
         <div className="text-center mb-5 md:mb-7">
           <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Our Collections ✦</p>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
@@ -300,29 +303,46 @@ const Home = () => {
             <div className="w-2 h-2 rounded-full bg-red-500" />
             <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500" />
           </div>
+          {/* Mobile hint */}
+          <p className="text-xs text-gray-400 mt-2 md:hidden">Tap card to flip • Tap button to view</p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
           {categories.map((category, index) => (
-            <div key={index} className="relative cursor-pointer"
+            <div
+              key={index}
+              className="relative cursor-pointer"
               style={{ perspective: '1000px', height: '280px' }}
+              // Desktop: hover to flip
               onMouseEnter={() => setFlippedCard(index)}
               onMouseLeave={() => setFlippedCard(null)}
-              onTouchEnd={(e) => { e.preventDefault(); setFlippedCard(flippedCard === index ? null : index); }}
+              // Mobile: track if touch started on button
+              onTouchStart={handleCardTouchStart}
+              onTouchEnd={(e) => handleCardTouchEnd(e, index)}
             >
-              <div style={{ position: 'relative', width: '100%', height: '100%', transformStyle: 'preserve-3d', transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)', transform: flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)' }}>
+              <div style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                transformStyle: 'preserve-3d',
+                transition: 'transform 0.65s cubic-bezier(0.4,0,0.2,1)',
+                transform: flippedCard === index ? 'rotateY(180deg)' : 'rotateY(0deg)',
+              }}>
 
-                {/* FRONT */}
+                {/* ── FRONT ── */}
                 <div style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'absolute', inset: 0 }}>
                   <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 h-full flex flex-col overflow-hidden border border-gray-100">
                     <div className="flex-1 overflow-hidden">
-                      <img src={category.image} alt={category.name} className="w-full h-full object-cover transition-transform duration-500"
+                      <img src={category.image} alt={category.name} className="w-full h-full object-cover"
                         onError={(e) => { e.target.onerror = null; e.target.src = "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"; }} />
                     </div>
                     <div className="p-3 bg-white">
                       <h3 className="text-center font-semibold text-gray-800 text-xs md:text-sm leading-tight mb-2 line-clamp-2">{category.name}</h3>
-                      <button onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
-                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1">
+                      <button
+                        onTouchEnd={(e) => { e.stopPropagation(); window.scrollTo(0,0); navigate(category.path); }}
+                        onClick={(e) => { e.stopPropagation(); window.scrollTo(0,0); navigate(category.path); }}
+                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1"
+                      >
                         View Services
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
                       </button>
@@ -330,7 +350,7 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* BACK */}
+                {/* ── BACK ── */}
                 <div style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', position: 'absolute', inset: 0, transform: 'rotateY(180deg)' }}>
                   <div className="relative bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl h-full border-2 border-red-200 flex flex-col shadow-xl overflow-hidden">
                     <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-red-500 via-amber-400 to-red-500" />
@@ -353,8 +373,11 @@ const Home = () => {
                       </ul>
                     </div>
                     <div className="p-3 pt-0">
-                      <button onClick={(e) => { e.stopPropagation(); navigate(category.path); }}
-                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1.5">
+                      <button
+                        onTouchEnd={(e) => { e.stopPropagation(); window.scrollTo(0,0); navigate(category.path); }}
+                        onClick={(e) => { e.stopPropagation(); window.scrollTo(0,0); navigate(category.path); }}
+                        className="w-full py-1.5 bg-gradient-to-r from-red-600 to-amber-600 text-white text-xs font-bold rounded-lg hover:from-red-700 hover:to-amber-700 transition-all duration-300 flex items-center justify-center gap-1.5"
+                      >
                         View All Services
                         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                       </button>
@@ -368,7 +391,6 @@ const Home = () => {
         </div>
 
         {/* Explore Button */}
-        {/* REDUCED: mt-10 → mt-6 */}
         <div className="flex justify-center mt-6">
           <button onClick={() => setShowComingSoon(true)}
             className="inline-flex items-center gap-3 px-8 py-3.5 bg-gradient-to-r from-red-600 to-amber-600 text-white font-semibold rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-sm md:text-base">
@@ -378,11 +400,9 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ─── WHY CHOOSE ELITEINOVA — original card size ─── */}
-      {/* REDUCED: py-12 md:py-16 lg:py-20 mt-6 → py-8 md:py-12 mt-2 */}
+      {/* ─── WHY CHOOSE ELITEINOVA ─── */}
       <section className="py-8 md:py-12 mt-2" style={{ background: "linear-gradient(135deg, #fffbf0 0%, #fff8ee 50%, #fffdf5 100%)" }}>
         <div className="container mx-auto px-4 md:px-6">
-          {/* REDUCED: mb-10 md:mb-14 → mb-7 md:mb-10 */}
           <div className="text-center mb-7 md:mb-10">
             <span className="text-yellow-500 text-sm font-semibold tracking-widest uppercase">✦ Why Choose Us ✦</span>
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-red-700 mt-3 mb-4" style={{ fontFamily: "'Georgia', serif" }}>Why Choose EliteInova?</h2>
@@ -392,7 +412,6 @@ const Home = () => {
               <div className="h-px w-16 md:w-24 bg-red-200 rounded-full" />
             </div>
           </div>
-          {/* original card size p-6 md:p-8 preserved */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
             {[
               { gradient: "linear-gradient(135deg, #f97316 0%, #dc2626 100%)", icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />, title: "Verified Profiles", desc: "All profiles are thoroughly verified for authenticity and reliability" },

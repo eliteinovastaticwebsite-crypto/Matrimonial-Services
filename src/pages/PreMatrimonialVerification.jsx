@@ -318,6 +318,114 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
       <main className="relative px-4 sm:px-6 lg:px-8 py-10 md:py-14">
         <div className="relative max-w-7xl mx-auto">
 
+            {/* ─── PORTAL — all 3 in ONE ROW, original card size kept, only section mb reduced ─── */}
+        {/* REDUCED: mb-16→mb-8 */}
+        <section id="portal-access" className="mb-8 scroll-mt-20">
+          {/* REDUCED: mb-10→mb-6 */}
+          <div className="text-center mb-6">
+            <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Access Your Account ✦</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+              Portal Login & Registration
+            </h2>
+            <div className="flex items-center justify-center gap-3">
+              <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-red-500" />
+              <div className="w-2 h-2 rounded-full bg-red-500" />
+              <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500" />
+            </div>
+          </div>
+
+          {/* ALL 3 in one row — original card internals unchanged */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+            {/* Vendor Portal — original card size */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+              <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-amber-100">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl" />
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-amber-600 transition-colors">Vendor Portal</h3>
+                    <p className="text-gray-500 text-sm">Partner services & business access</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => setShowVendorLogin(true)}
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    Login
+                  </button>
+                  <button onClick={() => navigate('/vendor-login')}
+                    className="flex-1 px-4 py-2.5 bg-amber-50 text-amber-700 text-sm font-semibold rounded-xl border border-amber-200 hover:bg-amber-100 hover:scale-105 transition-all duration-300">
+                    Register
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Customer Portal — original card size */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+              <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-red-100">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-t-2xl" />
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-red-600 transition-colors">Customer Portal</h3>
+                    <p className="text-gray-500 text-sm">Access your profile & matches</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <button onClick={() => navigate('/customer-login')}
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-red-500 to-rose-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300">
+                    Login
+                  </button>
+                  <button onClick={() => navigate('/register-choice')}
+                    className="flex-1 px-4 py-2.5 bg-red-50 text-red-700 text-sm font-semibold rounded-xl border border-red-200 hover:bg-red-100 hover:scale-105 transition-all duration-300">
+                    Register
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Matrimony Portal — original card size */}
+            <div className="group relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+              <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-pink-100">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-600 rounded-t-2xl" />
+                <div className="flex items-center gap-4 mb-5">
+                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-gray-800 group-hover:text-pink-600 transition-colors">Matrimony Portal</h3>
+                    <p className="text-gray-500 text-sm">Find your perfect life partner</p>
+                  </div>
+                </div>
+                <div className="flex gap-3">
+                  <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer"
+                    className="flex-1 px-4 py-2.5 bg-gradient-to-r from-pink-500 to-rose-600 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300 text-center">
+                    Login
+                  </a>
+                  <a href="https://eliteinovamatrimony.com/" target="_blank" rel="noopener noreferrer"
+                    className="flex-1 px-4 py-2.5 bg-pink-50 text-pink-700 text-sm font-semibold rounded-xl border border-pink-200 hover:bg-pink-100 hover:scale-105 transition-all duration-300 text-center">
+                    Register
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
           {/* ─── ABOUT VERIFICATION ─── */}
           <section id="about-verification" className="mb-20 scroll-mt-20">
             <div className="text-center mb-10">
