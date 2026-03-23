@@ -1756,6 +1756,658 @@ const CATEGORY_PAGES = {
   'Assign: ✅ Verified Vendor Badge': VerifiedVendorBadgePage,
 };
 
+// ─── BOOKING MANAGEMENT PAGE ────────────────────────────────────
+const BookingManagementPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+
+  const bookingsData = [
+    { id: 'BK001', customer: 'Aarav Patel', service: 'Photography', vendor: 'LensArt Studio', bookingDate: '10 Jan 2024', eventDate: '15 Mar 2024', location: 'Mumbai', amount: '₹45,000', status: 'Completed', payment: 'Paid' },
+    { id: 'BK002', customer: 'Ishita Reddy', service: 'Catering', vendor: 'Royal Feast', bookingDate: '20 Feb 2024', eventDate: '25 Apr 2024', location: 'Delhi', amount: '₹1,20,000', status: 'Confirmed', payment: 'Partial' },
+    { id: 'BK003', customer: 'Rohan Deshmukh', service: 'Decorations', vendor: 'Dream Decor', bookingDate: '1 Mar 2024', eventDate: '10 May 2024', location: 'Chennai', amount: '₹65,000', status: 'Pending', payment: 'Pending' },
+    { id: 'BK004', customer: 'Neha Gupta', service: 'Wedding Halls', vendor: 'Grand Palace', bookingDate: '5 Apr 2024', eventDate: '20 Jun 2024', location: 'Bangalore', amount: '₹3,50,000', status: 'In Progress', payment: 'Paid' },
+    { id: 'BK005', customer: 'Vikram Singh', service: 'Bridal Styling', vendor: 'Glam Studio', bookingDate: '12 Apr 2024', eventDate: '5 Jul 2024', location: 'Pune', amount: '₹18,000', status: 'Cancelled', payment: 'Refunded' },
+    { id: 'BK006', customer: 'Meera Nair', service: 'Photography', vendor: 'Shutter Stories', bookingDate: '18 Apr 2024', eventDate: '12 Aug 2024', location: 'Hyderabad', amount: '₹55,000', status: 'Confirmed', payment: 'Paid' },
+    { id: 'BK007', customer: 'Arjun Mehta', service: 'Entertainment', vendor: 'DJ Rhythm Pro', bookingDate: '22 Apr 2024', eventDate: '1 Sep 2024', location: 'Mumbai', amount: '₹30,000', status: 'Pending', payment: 'Pending' },
+    { id: 'BK008', customer: 'Priya Sharma', service: 'Catering', vendor: "Nawab's Kitchen", bookingDate: '28 Apr 2024', eventDate: '15 Sep 2024', location: 'Lucknow', amount: '₹2,10,000', status: 'In Progress', payment: 'Partial' },
+  ];
+
+  const statCards = [
+    { label: 'Total Bookings', value: '10,843', icon: '📋', color: 'border-blue-400', filter: 'All' },
+    { label: 'Pending', value: '47', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Confirmed', value: '312', icon: '✅', color: 'border-green-400', filter: 'Confirmed' },
+    { label: 'In Progress', value: '845', icon: '🔄', color: 'border-purple-400', filter: 'In Progress' },
+    { label: 'Completed', value: '7,436', icon: '🎉', color: 'border-emerald-400', filter: 'Completed' },
+    { label: 'Cancelled', value: '203', icon: '❌', color: 'border-red-400', filter: 'Cancelled' },
+  ];
+
+  const filtered = bookingsData.filter(b => {
+    const matchStatus = activeFilter === 'All' || b.status === activeFilter;
+    const matchSearch = !search || 
+      b.customer.toLowerCase().includes(search.toLowerCase()) || 
+      b.vendor.toLowerCase().includes(search.toLowerCase()) || 
+      b.service.toLowerCase().includes(search.toLowerCase()) ||
+      b.id.toLowerCase().includes(search.toLowerCase()) ||
+      b.location.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">📅</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Booking Management</h3>
+            <p className="text-sm text-gray-500 mt-0.5">View, manage and track all vendor bookings with centralized dashboard controls</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-4 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-2xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[9px] text-red-500 font-bold mt-1">● Active</p>}
+              </div>
+              <div className="text-xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.booking} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Booking Overview</h3>
+                <p className="text-xs text-gray-400">{filtered.length} booking{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `— ${activeFilter}` : 'across all services'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100">✕ Clear</button>}
+              <button onClick={() => alert('Exporting bookings...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex-1 min-w-[200px] relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search by customer, vendor, service or location..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 bg-gray-50" />
+            </div>
+            {['All','Pending','Confirmed','In Progress','Completed','Cancelled'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>{f}</button>
+            ))}
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">
+              {['Booking ID','Customer','Service','Vendor','Location','Booking Date','Event Date','Amount','Status','Payment','Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}
+             </tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={11} className="px-4 py-12 text-center text-sm text-gray-400">No bookings found for "{activeFilter}" filter.</td></tr>
+              ) : filtered.map(b => (
+                <tr key={b.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-4 py-3 text-xs font-mono text-gray-500">{b.id}</td>
+                  <td className="px-4 py-3 text-sm font-semibold text-gray-700 whitespace-nowrap">{b.customer}</td>
+                  <td className="px-4 py-3"><span className="text-xs font-semibold bg-red-50 text-red-700 px-2 py-0.5 rounded-lg">{b.service}</span></td>
+                  <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{b.vendor}</td>
+                  <td className="px-4 py-3 text-xs text-gray-500">{b.location}</td>
+                  <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{b.bookingDate}</td>
+                  <td className="px-4 py-3 text-xs font-semibold text-gray-700 whitespace-nowrap">{b.eventDate}</td>
+                  <td className="px-4 py-3 text-xs font-bold text-gray-800">{b.amount}</td>
+                  <td className="px-4 py-3"><BookingBadge status={b.status} /></td>
+                  <td className="px-4 py-3"><PaymentBadge status={b.payment} /></td>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <button onClick={() => alert(`View booking ${b.id}`)} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Icon d={ICONS.eye} size={14} /></button>
+                      <button onClick={() => alert(`Edit booking ${b.id}`)} className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500"><Icon d={ICONS.edit} size={14} /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[
+          { emoji: '📊', title: 'Booking Overview Dashboard', accentColor: 'bg-blue-50', points: ['View all bookings with key details', 'Customer name & service type', 'Vendor assignment tracking', 'Booking date & event date view'] },
+          { emoji: '🔄', title: 'Status Management', accentColor: 'bg-amber-50', points: ['Update booking status in real-time', 'Track Pending → Confirmed → In Progress → Completed', 'Handle cancellations properly', 'Automated status notifications'] },
+          { emoji: '👥', title: 'Vendor Assignment', accentColor: 'bg-green-50', points: ['Assign vendors based on availability', 'Location & service requirement matching', 'Conflict-free scheduling', 'Calendar management integration'] },
+          { emoji: '💰', title: 'Payment & Refund Tracking', accentColor: 'bg-purple-50', points: ['Monitor paid/partial/pending status', 'Refund processing for cancellations', 'Invoice & billing management', 'Complete transaction history'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── PAYMENTS & TRANSACTIONS PAGE ────────────────────────────────────
+const PaymentsTransactionsPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+
+  const transactionsData = [
+    { id: 'TXN001', bookingId: 'BK001', customer: 'Aarav Patel', vendor: 'LensArt Studio', service: 'Photography', amount: '₹45,000', date: '10 Jan 2024', method: 'UPI', status: 'Paid', commission: '₹4,500', payout: '₹40,500' },
+    { id: 'TXN002', bookingId: 'BK002', customer: 'Ishita Reddy', vendor: 'Royal Feast', service: 'Catering', amount: '₹1,20,000', date: '20 Feb 2024', method: 'Credit Card', status: 'Partial', commission: '₹6,000', payout: '₹54,000' },
+    { id: 'TXN003', bookingId: 'BK003', customer: 'Rohan Deshmukh', vendor: 'Dream Decor', service: 'Decorations', amount: '₹65,000', date: '1 Mar 2024', method: 'Net Banking', status: 'Pending', commission: '₹0', payout: '₹0' },
+    { id: 'TXN004', bookingId: 'BK004', customer: 'Neha Gupta', vendor: 'Grand Palace', service: 'Wedding Halls', amount: '₹3,50,000', date: '5 Apr 2024', method: 'UPI', status: 'Paid', commission: '₹35,000', payout: '₹3,15,000' },
+    { id: 'TXN005', bookingId: 'BK005', customer: 'Vikram Singh', vendor: 'Glam Studio', service: 'Bridal Styling', amount: '₹18,000', date: '12 Apr 2024', method: 'PhonePe', status: 'Refunded', commission: '₹0', payout: '₹0' },
+    { id: 'TXN006', bookingId: 'BK006', customer: 'Meera Nair', vendor: 'Shutter Stories', service: 'Photography', amount: '₹55,000', date: '18 Apr 2024', method: 'Credit Card', status: 'Paid', commission: '₹5,500', payout: '₹49,500' },
+    { id: 'TXN007', bookingId: 'BK007', customer: 'Arjun Mehta', vendor: 'DJ Rhythm Pro', service: 'Entertainment', amount: '₹30,000', date: '22 Apr 2024', method: 'Google Pay', status: 'Pending', commission: '₹0', payout: '₹0' },
+    { id: 'TXN008', bookingId: 'BK008', customer: 'Priya Sharma', vendor: "Nawab's Kitchen", service: 'Catering', amount: '₹2,10,000', date: '28 Apr 2024', method: 'Net Banking', status: 'Partial', commission: '₹10,500', payout: '₹1,89,000' },
+  ];
+
+  const statCards = [
+    { label: 'Total Revenue', value: '₹8,93,000', icon: '💰', color: 'border-green-400', filter: 'All' },
+    { label: 'Commission Earned', value: '₹61,500', icon: '🏦', color: 'border-blue-400', filter: 'All' },
+    { label: 'Pending', value: '₹95,000', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Paid', value: '₹7,80,000', icon: '✅', color: 'border-emerald-400', filter: 'Paid' },
+    { label: 'Refunded', value: '₹18,000', icon: '🔄', color: 'border-red-400', filter: 'Refunded' },
+  ];
+
+  const filtered = transactionsData.filter(t => {
+    const matchStatus = activeFilter === 'All' || t.status === activeFilter;
+    const matchSearch = !search || 
+      t.customer.toLowerCase().includes(search.toLowerCase()) || 
+      t.vendor.toLowerCase().includes(search.toLowerCase()) ||
+      t.bookingId.toLowerCase().includes(search.toLowerCase()) ||
+      t.service.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">💰</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Payments & Transactions</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Track all payments, vendor payouts, commissions and transaction history</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-4 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[9px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.payments} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Transaction Overview</h3>
+                <p className="text-xs text-gray-400">{filtered.length} transaction{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `— ${activeFilter}` : 'all transactions'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100">✕ Clear</button>}
+              <button onClick={() => alert('Exporting transactions...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex-1 min-w-[200px] relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by customer, vendor, service or booking ID..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 bg-gray-50" />
+            </div>
+            {['All','Paid','Pending','Partial','Refunded'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>{f}</button>
+            ))}
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">
+              {['TXN ID','Booking ID','Customer','Vendor','Service','Amount','Date','Method','Status','Commission','Payout','Actions'].map(h => <th key={h} className="px-3 py-3 text-left text-[10px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}
+            </tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={12} className="px-4 py-12 text-center text-sm text-gray-400">No transactions found for "{activeFilter}" filter.</td></tr>
+              ) : filtered.map(t => (
+                <tr key={t.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-3 py-3 text-xs font-mono text-gray-500">{t.id}</td>
+                  <td className="px-3 py-3 text-xs font-mono text-gray-500">{t.bookingId}</td>
+                  <td className="px-3 py-3 text-sm font-semibold text-gray-700 whitespace-nowrap">{t.customer}</td>
+                  <td className="px-3 py-3 text-xs text-gray-600 whitespace-nowrap">{t.vendor}</td>
+                  <td className="px-3 py-3"><span className="text-xs font-semibold bg-red-50 text-red-700 px-2 py-0.5 rounded-lg">{t.service}</span></td>
+                  <td className="px-3 py-3 text-xs font-bold text-gray-800">{t.amount}</td>
+                  <td className="px-3 py-3 text-xs text-gray-400 whitespace-nowrap">{t.date}</td>
+                  <td className="px-3 py-3 text-xs text-gray-600">{t.method}</td>
+                  <td className="px-3 py-3"><PaymentBadge status={t.status} /></td>
+                  <td className="px-3 py-3 text-xs text-green-600 font-semibold">{t.commission}</td>
+                  <td className="px-3 py-3 text-xs font-semibold text-gray-700">{t.payout}</td>
+                  <td className="px-3 py-3">
+                    <div className="flex items-center gap-1.5">
+                      <button onClick={() => alert(`View transaction ${t.id}`)} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Icon d={ICONS.eye} size={14} /></button>
+                      <button onClick={() => alert(`Receipt for ${t.id}`)} className="p-1.5 rounded-lg hover:bg-green-50 text-green-500"><Icon d={ICONS.download} size={14} /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[
+          { emoji: '💳', title: 'Multiple Payment Methods', accentColor: 'bg-purple-50', points: ['UPI (Google Pay, PhonePe)', 'Credit/Debit Cards', 'Net Banking', 'Digital Wallets'] },
+          { emoji: '🏦', title: 'Vendor Payout Management', accentColor: 'bg-blue-50', points: ['Manage vendor payments', 'Commission deduction tracking', 'Payout schedule management', 'Real-time payout status'] },
+          { emoji: '📊', title: 'Commission Tracking', accentColor: 'bg-green-50', points: ['Auto-calculate platform commission', 'Track per transaction', 'Generate commission reports', 'Revenue analytics'] },
+          { emoji: '🔒', title: 'Fraud Detection & Security', accentColor: 'bg-red-50', points: ['Monitor suspicious transactions', 'Secure payment processing', 'Payment gateway integration', 'Transaction audit logs'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── COMPLAINTS & DISPUTES PAGE ────────────────────────────────────
+const ComplaintsDisputesPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+
+  const complaintsData = [
+    { id: 'CMP001', ticketId: 'TKT001', customer: 'Aarav Patel', vendor: 'LensArt Studio', type: 'Service Quality', issue: 'Vendor no-show on event day', priority: 'High', status: 'Open', created: '2 hrs ago', resolution: 'Pending review' },
+    { id: 'CMP002', ticketId: 'TKT002', customer: 'Ishita Reddy', vendor: 'Royal Feast', type: 'Payment', issue: 'Payment deducted but booking not confirmed', priority: 'Critical', status: 'In Progress', created: '5 hrs ago', resolution: 'Verifying with payment gateway' },
+    { id: 'CMP003', ticketId: 'TKT003', customer: 'Rohan Deshmukh', vendor: 'Dream Decor', type: 'Service Quality', issue: 'Decoration quality below expectations', priority: 'Medium', status: 'Resolved', created: '1 day ago', resolution: 'Partial refund issued' },
+    { id: 'CMP004', ticketId: 'TKT004', customer: 'Meera Nair', vendor: 'Shutter Stories', type: 'Technical', issue: 'Cannot upload event photos', priority: 'Low', status: 'Closed', created: '2 days ago', resolution: 'Issue fixed' },
+    { id: 'CMP005', ticketId: 'TKT005', customer: 'Neha Gupta', vendor: 'Grand Palace', type: 'Refund', issue: 'Refund not received after cancellation', priority: 'Critical', status: 'Escalated', created: '3 days ago', resolution: 'Escalated to finance team' },
+    { id: 'CMP006', ticketId: 'TKT006', customer: 'Vikram Singh', vendor: 'Glam Studio', type: 'Booking Dispute', issue: 'Wrong makeup artist assigned', priority: 'High', status: 'In Progress', created: '1 day ago', resolution: 'Investigating with vendor' },
+    { id: 'CMP007', ticketId: 'TKT007', customer: 'Priya Sharma', vendor: "Nawab's Kitchen", type: 'Service Quality', issue: 'Food quality and taste issues', priority: 'Medium', status: 'Open', created: '4 hrs ago', resolution: 'Awaiting vendor response' },
+  ];
+
+  const statCards = [
+    { label: 'Total Complaints', value: '47', icon: '🎫', color: 'border-blue-400', filter: 'All' },
+    { label: 'Open', value: '18', icon: '🟡', color: 'border-amber-400', filter: 'Open' },
+    { label: 'In Progress', value: '12', icon: '🔄', color: 'border-purple-400', filter: 'In Progress' },
+    { label: 'Resolved', value: '12', icon: '✅', color: 'border-green-400', filter: 'Resolved' },
+    { label: 'Escalated', value: '5', icon: '⚠️', color: 'border-red-400', filter: 'Escalated' },
+  ];
+
+  const priorityColors = { Critical: 'bg-red-50 text-red-700', High: 'bg-amber-50 text-amber-700', Medium: 'bg-blue-50 text-blue-700', Low: 'bg-gray-50 text-gray-500' };
+  const statusColors = { Open: 'bg-amber-50 text-amber-700 border-amber-200', 'In Progress': 'bg-purple-50 text-purple-700 border-purple-200', Resolved: 'bg-green-50 text-green-700 border-green-200', Escalated: 'bg-red-50 text-red-700 border-red-200', Closed: 'bg-gray-50 text-gray-500 border-gray-200' };
+
+  const filtered = complaintsData.filter(c => {
+    const matchStatus = activeFilter === 'All' || c.status === activeFilter;
+    const matchSearch = !search || 
+      c.customer.toLowerCase().includes(search.toLowerCase()) || 
+      c.vendor.toLowerCase().includes(search.toLowerCase()) ||
+      c.issue.toLowerCase().includes(search.toLowerCase()) ||
+      c.ticketId.toLowerCase().includes(search.toLowerCase()) ||
+      c.type.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-rose-50 to-red-50 border border-rose-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">⚖️</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Complaints & Disputes Management</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Handle customer complaints, vendor disputes and track resolution progress</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-4 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-2xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[9px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.complaints} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Support Ticket Management</h3>
+                <p className="text-xs text-gray-400">{filtered.length} ticket{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `— ${activeFilter}` : 'all tickets'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100">✕ Clear</button>}
+              <button onClick={() => alert('Exporting tickets...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3 flex-wrap">
+            <div className="flex-1 min-w-[200px] relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search by ticket ID, customer, vendor or issue type..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 bg-gray-50" />
+            </div>
+            {['All','Open','In Progress','Resolved','Escalated','Closed'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>{f}</button>
+            ))}
+          </div>
+        </div>
+        <div className="divide-y divide-gray-50">
+          {filtered.length === 0 ? (
+            <div className="px-5 py-12 text-center text-sm text-gray-400">No complaints found for "{activeFilter}" filter.</div>
+          ) : filtered.map(c => (
+            <div key={c.id} className="px-5 py-4 hover:bg-gray-50 transition-colors">
+              <div className="flex items-center gap-4 flex-wrap">
+                <span className="text-xs font-mono text-gray-400 flex-shrink-0">{c.ticketId}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-gray-800">{c.issue}</p>
+                  <div className="flex items-center gap-2 mt-1 flex-wrap">
+                    <span className="text-xs text-gray-500">{c.customer} vs {c.vendor}</span>
+                    <span className="text-xs text-gray-300">•</span>
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">{c.type}</span>
+                    <span className="text-xs text-gray-400">{c.created}</span>
+                  </div>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${priorityColors[c.priority]}`}>{c.priority}</span>
+                <span className={`text-[10px] font-semibold border px-2.5 py-0.5 rounded-full ${statusColors[c.status]}`}>{c.status}</span>
+                <div className="flex items-center gap-1.5 flex-shrink-0">
+                  <button onClick={() => alert(`View ticket ${c.ticketId}`)} className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Icon d={ICONS.eye} size={14} /></button>
+                  <button onClick={() => alert(`Update ticket ${c.ticketId}`)} className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500"><Icon d={ICONS.edit} size={14} /></button>
+                  <button onClick={() => alert(`Escalate ticket ${c.ticketId}`)} className="p-1.5 rounded-lg hover:bg-red-50 text-red-500"><Icon d={ICONS.alert} size={14} /></button>
+                </div>
+              </div>
+              {c.status !== 'Open' && c.status !== 'Closed' && (
+                <div className="mt-2 pt-2 border-t border-gray-50">
+                  <p className="text-[10px] text-gray-400"><span className="font-semibold">Resolution:</span> {c.resolution}</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[
+          { emoji: '🎫', title: 'Ticket Management System', accentColor: 'bg-blue-50', points: ['Generate unique ticket IDs', 'Categorize by issue type', 'Track complaint progress', 'Complete communication logs'] },
+          { emoji: '⚖️', title: 'Dispute Resolution Workflow', accentColor: 'bg-purple-50', points: ['Investigate issues thoroughly', 'Verify facts & evidence', 'Take appropriate actions', 'Issue warnings or penalties'] },
+          { emoji: '📈', title: 'Escalation Management', accentColor: 'bg-amber-50', points: ['Escalate critical issues', 'Route to senior admins', 'Priority-based handling', 'SLA breach monitoring'] },
+          { emoji: '📊', title: 'Reports & Insights', accentColor: 'bg-green-50', points: ['Analyze complaint trends', 'Track resolution time', 'Vendor performance issues', 'Improve service quality'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── ANALYTICS & REPORTS PAGE WITH GRAPHS ────────────────────────────────────
+const AnalyticsReportsPage = () => {
+  const [dateRange, setDateRange] = useState('This Month');
+  const [activeTab, setActiveTab] = useState('Revenue');
+  
+  const tabs = ['Revenue', 'Bookings', 'Vendors', 'Complaints'];
+  
+  const monthlyData = [
+    { month: 'Jan', revenue: 425000, bookings: 124, vendors: 28, complaints: 12 },
+    { month: 'Feb', revenue: 389000, bookings: 108, vendors: 31, complaints: 8 },
+    { month: 'Mar', revenue: 512000, bookings: 156, vendors: 35, complaints: 15 },
+    { month: 'Apr', revenue: 478000, bookings: 142, vendors: 38, complaints: 11 },
+    { month: 'May', revenue: 623000, bookings: 189, vendors: 42, complaints: 19 },
+    { month: 'Jun', revenue: 589000, bookings: 167, vendors: 45, complaints: 14 },
+  ];
+
+  const categoryData = [
+    { name: 'Photography', bookings: 1847, revenue: 831150, growth: 15 },
+    { name: 'Catering', bookings: 1562, revenue: 1874400, growth: 22 },
+    { name: 'Wedding Halls', bookings: 892, revenue: 3122000, growth: 8 },
+    { name: 'Entertainment', bookings: 1234, revenue: 3702000, growth: 18 },
+    { name: 'Decorations', bookings: 1045, revenue: 679250, growth: 12 },
+    { name: 'Bridal Styling', bookings: 978, revenue: 488000, growth: 25 },
+  ];
+
+  const vendorPerformance = [
+    { name: 'LensArt Studio', category: 'Photography', bookings: 124, rating: 4.9, revenue: 558000, growth: 18 },
+    { name: 'Royal Feast', category: 'Catering', bookings: 112, rating: 4.8, revenue: 1344000, growth: 22 },
+    { name: 'DJ Rhythm Pro', category: 'Entertainment', bookings: 134, rating: 4.9, revenue: 402000, growth: 15 },
+    { name: 'Grand Palace', category: 'Wedding Halls', bookings: 89, rating: 4.9, revenue: 3115000, growth: 12 },
+    { name: 'Dream Decor', category: 'Decorations', bookings: 94, rating: 4.8, revenue: 611000, growth: 8 },
+    { name: 'Glam Studio', category: 'Bridal Styling', bookings: 203, rating: 4.9, revenue: 365400, growth: 28 },
+  ];
+
+  const getMaxValue = () => {
+    if (activeTab === 'Revenue') return Math.max(...monthlyData.map(d => d.revenue));
+    if (activeTab === 'Bookings') return Math.max(...monthlyData.map(d => d.bookings));
+    if (activeTab === 'Vendors') return Math.max(...monthlyData.map(d => d.vendors));
+    if (activeTab === 'Complaints') return Math.max(...monthlyData.map(d => d.complaints));
+    return 100;
+  };
+
+  const getBarWidth = (value) => {
+    const max = getMaxValue();
+    return (value / max) * 100;
+  };
+
+  const getBarColor = () => {
+    if (activeTab === 'Revenue') return 'bg-green-500';
+    if (activeTab === 'Bookings') return 'bg-blue-500';
+    if (activeTab === 'Vendors') return 'bg-amber-500';
+    if (activeTab === 'Complaints') return 'bg-red-500';
+    return 'bg-gray-500';
+  };
+
+  const formatValue = (value) => {
+    if (activeTab === 'Revenue') return `₹${(value / 1000).toFixed(0)}K`;
+    if (activeTab === 'Bookings') return value.toString();
+    if (activeTab === 'Vendors') return value.toString();
+    if (activeTab === 'Complaints') return value.toString();
+    return value;
+  };
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-cyan-50 to-blue-50 border border-cyan-200">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-4">
+            <div className="text-4xl">📊</div>
+            <div>
+              <h3 className="text-xl font-bold text-gray-800">Analytics & Reports</h3>
+              <p className="text-sm text-gray-500 mt-0.5">Track platform performance, revenue trends and vendor insights</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <select value={dateRange} onChange={e => setDateRange(e.target.value)} className="px-4 py-2 text-sm border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-100">
+              <option>This Week</option>
+              <option>This Month</option>
+              <option>Last 3 Months</option>
+              <option>This Year</option>
+            </select>
+            <button onClick={() => alert('Generating full report...')} className="flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 transition-colors">
+              <Icon d={ICONS.download} size={14} /> Generate Report
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* KPI Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        {[
+          { label: 'Total Revenue', value: '₹28.45L', icon: '💰', color: 'border-green-400', change: '+12%', trend: 'up', sub: 'vs last month' },
+          { label: 'Total Bookings', value: '10,843', icon: '📅', color: 'border-blue-400', change: '+8%', trend: 'up', sub: 'vs last month' },
+          { label: 'Active Vendors', value: '271', icon: '🏢', color: 'border-amber-400', change: '+23', trend: 'up', sub: 'new this month' },
+          { label: 'Avg. Customer Rating', value: '4.8 ★', icon: '⭐', color: 'border-purple-400', change: '+0.2', trend: 'up', sub: 'across all services' },
+        ].map((s, i) => (
+          <div key={i} className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} hover:shadow-md transition-all duration-200`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-2xl font-bold text-gray-800">{s.value}</p>
+                <p className="text-xs text-green-600 mt-1 font-semibold">{s.change} {s.trend === 'up' ? '↑' : '↓'} {s.sub}</p>
+              </div>
+              <div className="text-3xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Tab Navigation */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="border-b border-gray-100">
+          <div className="flex gap-1 px-5 pt-3">
+            {tabs.map(tab => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-5 py-2.5 text-sm font-semibold rounded-t-xl transition-all duration-200 ${activeTab === tab ? 'bg-red-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}
+              >
+                {tab} {tab === 'Revenue' ? '📈' : tab === 'Bookings' ? '📊' : tab === 'Vendors' ? '👥' : '⚠️'}
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        {/* Chart Area */}
+        <div className="p-6">
+          <h4 className="font-bold text-gray-800 mb-6">{activeTab} Trend ({dateRange})</h4>
+          <div className="space-y-4">
+            {monthlyData.map((data, idx) => (
+              <div key={idx} className="group">
+                <div className="flex justify-between text-xs mb-1">
+                  <span className="font-semibold text-gray-600">{data.month}</span>
+                  <span className="font-bold text-gray-700">{formatValue(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints)}</span>
+                </div>
+                <div className="w-full bg-gray-100 rounded-full h-8 overflow-hidden">
+                  <div 
+                    className={`${getBarColor()} h-full rounded-full transition-all duration-500 ease-out flex items-center justify-end px-3 text-white text-xs font-bold`}
+                    style={{ width: `${getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints)}%` }}
+                  >
+                    {getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints) > 15 && (
+                      <span>{Math.round(getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints))}%</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Category Performance */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100">
+            <h4 className="font-bold text-gray-800">Category Performance</h4>
+            <p className="text-xs text-gray-400 mt-1">Bookings & revenue by service category</p>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead><tr className="bg-gray-50 border-b border-gray-100">
+                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Category</th>
+                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Bookings</th>
+                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Revenue</th>
+                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Growth</th>
+              </tr></thead>
+              <tbody className="divide-y divide-gray-50">
+                {categoryData.map((c, i) => (
+                  <tr key={i} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 text-sm font-semibold text-gray-700">{c.name}</td>
+                    <td className="px-4 py-3 text-sm text-gray-600">{c.bookings.toLocaleString()}</td>
+                    <td className="px-4 py-3 text-sm font-semibold text-gray-800">₹{(c.revenue / 1000).toFixed(0)}K</td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+{c.growth}%</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100">
+            <h4 className="font-bold text-gray-800">Top Performing Vendors</h4>
+            <p className="text-xs text-gray-400 mt-1">Highest rated and most booked vendors</p>
+          </div>
+          <div className="space-y-3 p-4">
+            {vendorPerformance.map((v, i) => (
+              <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br from-${i % 2 === 0 ? 'red' : 'amber'}-100 to-${i % 2 === 0 ? 'pink' : 'orange'}-100 flex items-center justify-center text-lg`}>
+                    {v.name[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{v.name}</p>
+                    <p className="text-[10px] text-gray-400">{v.category}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-bold text-gray-700">{v.bookings} bookings</p>
+                  <div className="flex items-center gap-1 mt-0.5">
+                    <span className="text-amber-400 text-xs">★</span>
+                    <span className="text-xs font-semibold text-gray-600">{v.rating}</span>
+                    <span className="text-xs text-green-600 ml-1">+{v.growth}%</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-2xl">📈</span>
+            <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-lg">+18%</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-800">1,847</p>
+          <p className="text-xs text-gray-500 mt-1">Photography Bookings</p>
+        </div>
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-100">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-2xl">🍽️</span>
+            <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-lg">+22%</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-800">1,562</p>
+          <p className="text-xs text-gray-500 mt-1">Catering Bookings</p>
+        </div>
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 border border-purple-100">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-2xl">🏛️</span>
+            <span className="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-lg">+8%</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-800">892</p>
+          <p className="text-xs text-gray-500 mt-1">Wedding Hall Bookings</p>
+        </div>
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-2xl">🎶</span>
+            <span className="text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-lg">+18%</span>
+          </div>
+          <p className="text-2xl font-bold text-gray-800">1,234</p>
+          <p className="text-xs text-gray-500 mt-1">Entertainment Bookings</p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[
+          { emoji: '📈', title: 'Revenue & Financial Reports', accentColor: 'bg-green-50', points: ['Total revenue tracking', 'Commission earned analysis', 'Vendor payout summaries', 'Payment trend insights'] },
+          { emoji: '👥', title: 'User & Customer Insights', accentColor: 'bg-blue-50', points: ['New registrations tracking', 'Active user metrics', 'Demographic analysis', 'Customer behavior trends'] },
+          { emoji: '🏆', title: 'Vendor Performance Reports', accentColor: 'bg-amber-50', points: ['Bookings per vendor', 'Ratings & reviews', 'Revenue generated', 'Service quality metrics'] },
+          { emoji: '📊', title: 'Custom Reports & Export', accentColor: 'bg-purple-50', points: ['Filter by date & category', 'Download CSV/Excel', 'Visual charts & graphs', 'Data export options'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
 // ─── CUSTOMER SECTIONS (keeping original) ────────────────────────────────────
 const sampleCustomers = [
   { id: 'CUS001', name: 'Aarav Patel', email: 'aarav.patel@email.com', phone: '+91 98765 43210', location: 'Mumbai', registered: '12 Jan 2024', status: 'Active', verified: true, bookings: 3 },
@@ -2929,10 +3581,10 @@ const menuConfig = [
   { id: 'dashboard', label: 'Dashboard Overview', icon: ICONS.dashboard, color: 'text-red-600', submenus: [], vendorStyle: false },
   { id: 'customers', label: 'Customer Management', icon: ICONS.customers, color: 'text-blue-600', submenus: ['View All Registered Customers', 'Track Booking History', 'Manage Profiles & Preferences', 'Handle Complaints & Support Issues'], vendorStyle: false },
   { id: 'vendors', label: 'Vendor Management', icon: ICONS.vendors, color: 'text-amber-600', submenus: [], vendorStyle: true },
-  { id: 'bookings', label: 'Booking Management', icon: ICONS.booking, color: 'text-green-600', submenus: ['View all bookings', 'Track: Date, Time, Location', 'Track: Vendor Assigned', 'Status: Pending', 'Status: Confirmed', 'Status: Completed', 'Status: Cancelled'], vendorStyle: false },
-  { id: 'payments', label: 'Payments & Transactions', icon: ICONS.payments, color: 'text-purple-600', submenus: ['Track Customer Payments', 'Vendor Payouts', 'Payment Integration', 'Generate Invoices', 'Refund Management'], vendorStyle: false },
-  { id: 'complaints', label: 'Complaints & Disputes', icon: ICONS.complaints, color: 'text-rose-600', submenus: ['Customer Complaints', 'Vendor Disputes', 'Resolution Tracking', 'Admin Actions'], vendorStyle: false },
-  { id: 'analytics', label: 'Analytics & Reports', icon: ICONS.analytics, color: 'text-cyan-600', submenus: ['Revenue Reports', 'Vendor Performance', 'Booking Trends', 'Customer Growth'], vendorStyle: false },
+  { id: 'bookings', label: 'Booking Management', icon: ICONS.booking, color: 'text-green-600', submenus: [], vendorStyle: false },
+  { id: 'payments', label: 'Payments & Transactions', icon: ICONS.payments, color: 'text-purple-600', submenus: [], vendorStyle: false },
+  { id: 'complaints', label: 'Complaints & Disputes', icon: ICONS.complaints, color: 'text-rose-600', submenus: [], vendorStyle: false },
+  { id: 'analytics', label: 'Analytics & Reports', icon: ICONS.analytics, color: 'text-cyan-600', submenus: [], vendorStyle: false },
   { id: 'roles', label: 'Admin Roles', icon: ICONS.roles, color: 'text-indigo-600', submenus: ['Super Admin', 'Operations Manager', 'Finance Manager', 'Support Team'], vendorStyle: false },
   { id: 'notifications', label: 'Notifications', icon: ICONS.notifications, color: 'text-orange-500', submenus: ['Booking Alerts', 'Payment Updates', 'Vendor Approvals', 'Customer Inquiries'], vendorStyle: false },
   { id: 'settings', label: 'Settings', icon: ICONS.settings, color: 'text-gray-600', submenus: ['Platform Configuration', 'API Integrations', 'Terms & Privacy Policy', 'Notification Settings'], vendorStyle: false },
@@ -2975,6 +3627,10 @@ const RightPanel = ({ activeMenu, activeSubmenu, onSelectCategory, onNavigate })
     if (Page) return <Page />;
     return <VendorOverview onSelectCategory={onSelectCategory} />;
   }
+  if (activeMenu === 'bookings') return <BookingManagementPage />;
+  if (activeMenu === 'payments') return <PaymentsTransactionsPage />;
+  if (activeMenu === 'complaints') return <ComplaintsDisputesPage />;
+  if (activeMenu === 'analytics') return <AnalyticsReportsPage />;
   return (
     <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-64 flex flex-col items-center justify-center text-center">
       <div className="text-5xl mb-4">🚧</div>
