@@ -126,57 +126,87 @@ const SearchBar = ({ placeholder, onFilter, onExport }) => (
   </div>
 );
 
-// ─── VENDOR TABLE ─────────────────────────────────────────
-const VendorTable = ({ vendors, title, count, activeFilter = 'All', onFilter }) => {
+// ─── UPDATED VENDOR TABLE WITH FILTERING ─────────────────────────────────────────
+const VendorTable = ({ vendors, title, count, activeFilter = 'All', onFilter, filterOptions = [] }) => {
   const [search, setSearch] = useState('');
+  const [localFilter, setLocalFilter] = useState(activeFilter);
+  
+  const currentFilter = activeFilter !== undefined ? activeFilter : localFilter;
+  
+  const handleFilterChange = (filter) => {
+    setLocalFilter(filter);
+    if (onFilter) onFilter(filter);
+  };
   
   const filteredVendors = vendors.filter(v => {
     let matchStatus = true;
-    if (activeFilter === 'Active') {
+    if (currentFilter === 'Active') {
       matchStatus = v.status === 'Active';
-    } else if (activeFilter === 'Pending') {
+    } else if (currentFilter === 'Pending') {
       matchStatus = v.status === 'Pending';
-    } else if (activeFilter === 'Top Rated') {
+    } else if (currentFilter === 'Top Rated') {
       matchStatus = v.rating >= 4.5;
+    } else if (currentFilter === 'Verified') {
+      matchStatus = v.verified === true;
+    } else if (currentFilter === 'Inactive') {
+      matchStatus = v.status === 'Inactive';
+    } else if (currentFilter === 'Suspended') {
+      matchStatus = v.status === 'Suspended';
+    } else if (currentFilter === 'Under Review') {
+      matchStatus = v.status === 'Under Review';
+    } else if (currentFilter === 'Rejected') {
+      matchStatus = v.status === 'Rejected';
     }
     
     const matchSearch = !search || 
-      v.name.toLowerCase().includes(search.toLowerCase()) || 
-      v.location.toLowerCase().includes(search.toLowerCase()) ||
-      v.specialization.toLowerCase().includes(search.toLowerCase());
+      v.name?.toLowerCase().includes(search.toLowerCase()) || 
+      v.location?.toLowerCase().includes(search.toLowerCase()) ||
+      v.specialization?.toLowerCase().includes(search.toLowerCase()) ||
+      v.category?.toLowerCase().includes(search.toLowerCase()) ||
+      v.owner?.toLowerCase().includes(search.toLowerCase());
     
     return matchStatus && matchSearch;
   });
 
+  const filterButtons = filterOptions.length > 0 ? filterOptions : ['All', 'Active', 'Pending', 'Top Rated', 'Verified'];
+  
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
       <div className="p-5 border-b border-gray-100">
         <SectionHeader icon={ICONS.vendors} title={title} count={count} action={{ icon: ICONS.download, label: 'Export' }} />
-        <div className="flex items-center gap-3 mb-5">
+        <div className="flex items-center gap-3 mb-4">
           <div className="flex-1 relative">
             <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
             <input 
               value={search} 
               onChange={e => setSearch(e.target.value)} 
               type="text" 
-              placeholder="Search by name, location, rating or status..." 
+              placeholder="Search by name, location, category or status..." 
               className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
             />
           </div>
           <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors">
-            <Icon d={ICONS.filter} size={14} />Filters
-          </button>
-          <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors">
-            <Icon d={ICONS.download} size={14} />Export
+            <Icon d={ICONS.filter} size={14} />Advanced
           </button>
         </div>
-        {activeFilter !== 'All' && (
-          <div className="mb-3 flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {filterButtons.map(f => (
+            <button 
+              key={f} 
+              onClick={() => handleFilterChange(f)} 
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${currentFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        {currentFilter !== 'All' && (
+          <div className="mt-3 flex items-center gap-2">
             <span className="text-xs text-gray-500">Filtered by:</span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs font-semibold rounded-full">
-              {activeFilter}
+              {currentFilter}
               {onFilter && (
-                <button onClick={() => onFilter('All')} className="ml-1 hover:text-red-900">✕</button>
+                <button onClick={() => handleFilterChange('All')} className="ml-1 hover:text-red-900">✕</button>
               )}
             </span>
           </div>
@@ -186,16 +216,16 @@ const VendorTable = ({ vendors, title, count, activeFilter = 'All', onFilter }) 
         <table className="w-full">
           <thead>
             <tr className="bg-gray-50 border-b border-gray-100">
-              {['Vendor ID', 'Business Name', 'Specialization', 'Location', 'Rating', 'Bookings', 'Status', 'Verified', 'Actions'].map(h => (
+              {['Vendor ID', 'Business Name', 'Category/Specialization', 'Location', 'Rating', 'Bookings', 'Status', 'Verified', 'Actions'].map(h => (
                 <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
               ))}
-            </tr>
+             </tr>
           </thead>
           <tbody className="divide-y divide-gray-50">
             {filteredVendors.length === 0 ? (
               <tr>
                 <td colSpan={9} className="px-4 py-10 text-center text-sm text-gray-400">
-                  No vendors found for "{activeFilter}" filter.
+                  No vendors found for "{currentFilter}" filter.
                 </td>
               </tr>
             ) : (
@@ -204,14 +234,14 @@ const VendorTable = ({ vendors, title, count, activeFilter = 'All', onFilter }) 
                   <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-2">
-                      <div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div>
+                      <div className={`w-7 h-7 rounded-lg ${v.avatarBg || 'bg-gradient-to-br from-gray-400 to-gray-500'} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name?.[0] || 'V'}</div>
                       <span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-3"><span className={`text-xs font-semibold px-2 py-0.5 rounded-lg ${v.tagColor}`}>{v.specialization}</span></td>
+                  <td className="px-4 py-3"><span className={`text-xs font-semibold px-2 py-0.5 rounded-lg ${v.tagColor || 'bg-gray-50 text-gray-700'}`}>{v.specialization || v.category}</span></td>
                   <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
-                  <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating}</span></div></td>
-                  <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
+                  <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating || 'N/A'}</span></div></td>
+                  <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings || 0}</td>
                   <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
                   <td className="px-4 py-3">{v.verified ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">✅ Verified</span> : <span className="text-xs font-semibold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">Pending</span>}</td>
                   <td className="px-4 py-3">
@@ -231,22 +261,40 @@ const VendorTable = ({ vendors, title, count, activeFilter = 'All', onFilter }) 
   );
 };
 
-// ─── CATEGORY PAGE BUILDER ────────────────────────────────
+// ─── UPDATED CATEGORY PAGE BUILDER WITH FILTERING ────────────────────────────────
 const CategoryPage = ({ emoji, title, badge, gradient, stats, vendors, featureCards }) => {
   const [activeFilter, setActiveFilter] = useState('All');
-  
-  const filterStats = (stat) => {
-    const filterMap = {
-      'Active': 'Active',
-      'Pending Approval': 'Pending',
-      'Top Rated (4.5+)': 'Top Rated',
-    };
-    return filterMap[stat.label] || stat.label;
-  };
   
   const handleFilter = (filterValue) => {
     setActiveFilter(filterValue);
   };
+  
+  const filteredVendors = vendors.filter(v => {
+    let matchFilter = true;
+    if (activeFilter === 'Active') {
+      matchFilter = v.status === 'Active';
+    } else if (activeFilter === 'Pending') {
+      matchFilter = v.status === 'Pending';
+    } else if (activeFilter === 'Top Rated') {
+      matchFilter = v.rating >= 4.5;
+    } else if (activeFilter === 'Verified') {
+      matchFilter = v.verified === true;
+    }
+    return matchFilter;
+  });
+  
+  const enhancedStats = stats.map(stat => {
+    let filterValue = 'All';
+    if (stat.label === 'Active') filterValue = 'Active';
+    else if (stat.label === 'Pending Approval') filterValue = 'Pending';
+    else if (stat.label === 'Top Rated (4.5+)') filterValue = 'Top Rated';
+    else if (stat.label === 'Verified') filterValue = 'Verified';
+    return {
+      ...stat,
+      filterValue,
+      onClick: () => handleFilter(filterValue)
+    };
+  });
   
   return (
     <div>
@@ -257,17 +305,17 @@ const CategoryPage = ({ emoji, title, badge, gradient, stats, vendors, featureCa
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {stats.map((s, i) => (
+        {enhancedStats.map((s, i) => (
           <div 
             key={i} 
-            onClick={() => handleFilter(s.label === 'Active' ? 'Active' : s.label === 'Pending Approval' ? 'Pending' : s.label === 'Top Rated (4.5+)' ? 'Top Rated' : 'All')}
-            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === (s.label === 'Active' ? 'Active' : s.label === 'Pending Approval' ? 'Pending' : s.label === 'Top Rated (4.5+)' ? 'Top Rated' : 'All') ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}
+            onClick={s.onClick}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filterValue ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}
           >
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
                 <p className="text-3xl font-bold text-gray-800">{s.value}</p>
-                {activeFilter === (s.label === 'Active' ? 'Active' : s.label === 'Pending Approval' ? 'Pending' : s.label === 'Top Rated (4.5+)' ? 'Top Rated' : 'All') && (
+                {activeFilter === s.filterValue && (
                   <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>
                 )}
               </div>
@@ -277,11 +325,12 @@ const CategoryPage = ({ emoji, title, badge, gradient, stats, vendors, featureCa
         ))}
       </div>
       <VendorTable 
-        vendors={vendors} 
+        vendors={filteredVendors} 
         title={`All ${title} Vendors`} 
-        count={`${vendors.length} vendors shown`}
+        count={`${filteredVendors.length} vendors shown`}
         activeFilter={activeFilter}
         onFilter={setActiveFilter}
+        filterOptions={['All', 'Active', 'Pending', 'Top Rated', 'Verified']}
       />
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">{featureCards.map((c, i) => <FeatureCard key={i} {...c} />)}</div>
     </div>
@@ -498,18 +547,44 @@ const InvestigationsPage = () => (
   />
 );
 
-// ─── VENDOR ACTION PAGES ──────────────────────────────────
-
-const applicationData = [
-  { id: 'APP001', name: 'Sunrise Photography', category: 'Photography', contact: 'Arjun Mehta', phone: '+91 98765 43210', location: 'Mumbai', submitted: '20 Mar 2024', status: 'Pending', docs: 4, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
-  { id: 'APP002', name: 'Spice Route Caterers', category: 'Catering', contact: 'Priya Sharma', phone: '+91 87654 32100', location: 'Delhi', submitted: '19 Mar 2024', status: 'Under Review', docs: 5, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
-  { id: 'APP003', name: 'Elite Banquet Hall', category: 'Wedding Halls', contact: 'Rajesh Verma', phone: '+91 76543 21099', location: 'Jaipur', submitted: '18 Mar 2024', status: 'Pending', docs: 3, avatarBg: 'bg-gradient-to-br from-blue-400 to-cyan-400' },
-  { id: 'APP004', name: 'Beat Makers DJ', category: 'Entertainment', contact: 'Kiran Rao', phone: '+91 65432 10988', location: 'Bangalore', submitted: '17 Mar 2024', status: 'Approved', docs: 5, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
-  { id: 'APP005', name: 'Floral Dreams Decor', category: 'Decorations', contact: 'Meena Pillai', phone: '+91 54321 09877', location: 'Chennai', submitted: '16 Mar 2024', status: 'Rejected', docs: 2, avatarBg: 'bg-gradient-to-br from-purple-400 to-pink-400' },
-];
-
+// ─── UPDATED APPROVE VENDOR REGISTRATION WITH FILTERING ───────────────────────────
 const ApproveVendorRegistration = () => {
-  const statusColor = { Pending: 'bg-amber-50 text-amber-700 border-amber-200', 'Under Review': 'bg-blue-50 text-blue-700 border-blue-200', Approved: 'bg-green-50 text-green-700 border-green-200', Rejected: 'bg-red-50 text-red-700 border-red-200' };
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const applicationData = [
+    { id: 'APP001', name: 'Sunrise Photography', category: 'Photography', contact: 'Arjun Mehta', phone: '+91 98765 43210', location: 'Mumbai', submitted: '20 Mar 2024', status: 'Pending', docs: 4, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
+    { id: 'APP002', name: 'Spice Route Caterers', category: 'Catering', contact: 'Priya Sharma', phone: '+91 87654 32100', location: 'Delhi', submitted: '19 Mar 2024', status: 'Under Review', docs: 5, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
+    { id: 'APP003', name: 'Elite Banquet Hall', category: 'Wedding Halls', contact: 'Rajesh Verma', phone: '+91 76543 21099', location: 'Jaipur', submitted: '18 Mar 2024', status: 'Pending', docs: 3, avatarBg: 'bg-gradient-to-br from-blue-400 to-cyan-400' },
+    { id: 'APP004', name: 'Beat Makers DJ', category: 'Entertainment', contact: 'Kiran Rao', phone: '+91 65432 10988', location: 'Bangalore', submitted: '17 Mar 2024', status: 'Approved', docs: 5, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
+    { id: 'APP005', name: 'Floral Dreams Decor', category: 'Decorations', contact: 'Meena Pillai', phone: '+91 54321 09877', location: 'Chennai', submitted: '16 Mar 2024', status: 'Rejected', docs: 2, avatarBg: 'bg-gradient-to-br from-purple-400 to-pink-400' },
+  ];
+  
+  const statCards = [
+    { label: 'Total Applications', value: '48', icon: '📋', color: 'border-blue-400', filter: 'All' },
+    { label: 'Pending Review', value: '21', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Under Review', value: '12', icon: '🔄', color: 'border-purple-400', filter: 'Under Review' },
+    { label: 'Approved', value: '11', icon: '✅', color: 'border-green-400', filter: 'Approved' },
+    { label: 'Rejected', value: '4', icon: '❌', color: 'border-red-400', filter: 'Rejected' },
+  ];
+  
+  const filteredApps = applicationData.filter(a => {
+    const matchStatus = activeFilter === 'All' || a.status === activeFilter;
+    const matchSearch = !search || 
+      a.name.toLowerCase().includes(search.toLowerCase()) || 
+      a.category.toLowerCase().includes(search.toLowerCase()) ||
+      a.contact.toLowerCase().includes(search.toLowerCase()) ||
+      a.location.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  const statusColor = { 
+    Pending: 'bg-amber-50 text-amber-700 border-amber-200', 
+    'Under Review': 'bg-blue-50 text-blue-700 border-blue-200', 
+    Approved: 'bg-green-50 text-green-700 border-green-200', 
+    Rejected: 'bg-red-50 text-red-700 border-red-200' 
+  };
+  
   return (
     <div>
       <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200">
@@ -518,43 +593,85 @@ const ApproveVendorRegistration = () => {
           <div><h3 className="text-lg font-bold text-gray-800">Approve Vendor Registration</h3><p className="text-sm text-gray-500 mt-0.5">Review, verify and approve incoming vendor registration requests</p></div>
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {[{ label: 'Total Applications', value: '48', icon: '📋', color: 'border-blue-400' }, { label: 'Pending Review', value: '21', icon: '⏳', color: 'border-amber-400' }, { label: 'Approved Today', value: '7', icon: '✅', color: 'border-green-400' }, { label: 'Rejected', value: '4', icon: '❌', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
         <div className="p-5 border-b border-gray-100">
-          <SectionHeader icon={ICONS.document} title="Registration Request Review" count="All incoming vendor applications" action={{ icon: ICONS.download, label: 'Export' }} />
-          <SearchBar placeholder="Search by business name, category or contact..." />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.document} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Registration Request Review</h3>
+                <p className="text-xs text-gray-400">{filteredApps.length} application{filteredApps.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting data...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by business name, category or contact..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Pending','Under Review','Approved','Rejected'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead><tr className="bg-gray-50 border-b border-gray-100">{['App. ID', 'Business Name', 'Category', 'Contact Person', 'Location', 'Submitted', 'Docs', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
             <tbody className="divide-y divide-gray-50">
-              {applicationData.map(a => (
-                <tr key={a.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 text-xs font-mono text-gray-500">{a.id}</td>
-                  <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${a.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{a.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{a.name}</span></div></td>
-                  <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{a.category}</span></td>
-                  <td className="px-4 py-3"><div className="text-xs font-semibold text-gray-700">{a.contact}</div><div className="text-xs text-gray-400">{a.phone}</div></td>
-                  <td className="px-4 py-3 text-xs text-gray-600">{a.location}</td>
-                  <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{a.submitted}</td>
-                  <td className="px-4 py-3 text-center"><span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{a.docs} files</span></td>
-                  <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[a.status]}`}>{a.status}</span></td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Request Info"><Icon d={ICONS.info} size={14} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filteredApps.length === 0 ? (
+                <tr><td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-400">No applications found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filteredApps.map(a => (
+                  <tr key={a.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{a.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${a.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{a.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{a.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{a.category}</span></td>
+                    <td className="px-4 py-3"><div className="text-xs font-semibold text-gray-700">{a.contact}</div><div className="text-xs text-gray-400">{a.phone}</div></td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{a.location}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{a.submitted}</td>
+                    <td className="px-4 py-3 text-center"><span className="text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{a.docs} files</span></td>
+                    <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[a.status]}`}>{a.status}</span></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
       </div>
-      {/* Document Verification Panel */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
         <h4 className="font-bold text-gray-800 text-sm mb-4 flex items-center gap-2"><span className="w-7 h-7 rounded-lg bg-blue-50 flex items-center justify-center text-sm">📁</span>Document Verification Checklist</h4>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3">
@@ -567,7 +684,6 @@ const ApproveVendorRegistration = () => {
           ))}
         </div>
       </div>
-      {/* Notification System info */}
       <div className="bg-blue-50 rounded-2xl border border-blue-100 p-4 mb-6">
         <div className="flex items-start gap-3">
           <span className="text-xl">🔔</span>
@@ -581,15 +697,43 @@ const ApproveVendorRegistration = () => {
   );
 };
 
-const verifyProfileData = [
-  { id: 'VND001', name: 'LensArt Studio', category: 'Photography', owner: 'Deepak Shah', location: 'Mumbai', experience: '8 years', status: 'Under Review', portfolio: true, kyc: true, license: false, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
-  { id: 'VND002', name: 'Royal Feast Caterers', category: 'Catering', owner: 'Sunita Reddy', location: 'Delhi', experience: '12 years', status: 'Verified', portfolio: true, kyc: true, license: true, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
-  { id: 'VND003', name: 'Heritage Mahal', category: 'Wedding Halls', owner: 'Anil Choudhary', location: 'Jaipur', experience: '5 years', status: 'Pending Verification', portfolio: true, kyc: false, license: true, avatarBg: 'bg-gradient-to-br from-blue-400 to-indigo-400' },
-  { id: 'VND004', name: 'DJ Rhythm Pro', category: 'Entertainment', owner: 'Vikram Nair', location: 'Bangalore', experience: '6 years', status: 'Rejected', portfolio: false, kyc: true, license: false, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
-];
-
+// ─── UPDATED APPROVE VERIFY PROFILE WITH FILTERING ───────────────────────────────
 const ApproveVerifyProfile = () => {
-  const statusColor = { 'Pending Verification': 'bg-amber-50 text-amber-700 border-amber-200', 'Under Review': 'bg-blue-50 text-blue-700 border-blue-200', Verified: 'bg-green-50 text-green-700 border-green-200', Rejected: 'bg-red-50 text-red-700 border-red-200' };
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const verifyProfileData = [
+    { id: 'VND001', name: 'LensArt Studio', category: 'Photography', owner: 'Deepak Shah', location: 'Mumbai', experience: '8 years', status: 'Under Review', portfolio: true, kyc: true, license: false, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
+    { id: 'VND002', name: 'Royal Feast Caterers', category: 'Catering', owner: 'Sunita Reddy', location: 'Delhi', experience: '12 years', status: 'Verified', portfolio: true, kyc: true, license: true, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
+    { id: 'VND003', name: 'Heritage Mahal', category: 'Wedding Halls', owner: 'Anil Choudhary', location: 'Jaipur', experience: '5 years', status: 'Pending Verification', portfolio: true, kyc: false, license: true, avatarBg: 'bg-gradient-to-br from-blue-400 to-indigo-400' },
+    { id: 'VND004', name: 'DJ Rhythm Pro', category: 'Entertainment', owner: 'Vikram Nair', location: 'Bangalore', experience: '6 years', status: 'Rejected', portfolio: false, kyc: true, license: false, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
+  ];
+  
+  const statCards = [
+    { label: 'Total Profiles', value: '326', icon: '🏢', color: 'border-blue-400', filter: 'All' },
+    { label: 'Pending Verification', value: '34', icon: '⏳', color: 'border-amber-400', filter: 'Pending Verification' },
+    { label: 'Under Review', value: '28', icon: '🔄', color: 'border-purple-400', filter: 'Under Review' },
+    { label: 'Verified & Live', value: '241', icon: '✅', color: 'border-green-400', filter: 'Verified' },
+    { label: 'Rejected', value: '12', icon: '❌', color: 'border-red-400', filter: 'Rejected' },
+  ];
+  
+  const filtered = verifyProfileData.filter(v => {
+    const matchStatus = activeFilter === 'All' || v.status === activeFilter;
+    const matchSearch = !search || 
+      v.name.toLowerCase().includes(search.toLowerCase()) || 
+      v.category.toLowerCase().includes(search.toLowerCase()) ||
+      v.owner.toLowerCase().includes(search.toLowerCase()) ||
+      v.location.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  const statusColor = { 
+    'Pending Verification': 'bg-amber-50 text-amber-700 border-amber-200', 
+    'Under Review': 'bg-blue-50 text-blue-700 border-blue-200', 
+    Verified: 'bg-green-50 text-green-700 border-green-200', 
+    Rejected: 'bg-red-50 text-red-700 border-red-200' 
+  };
+  
   return (
     <div>
       <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200">
@@ -598,40 +742,83 @@ const ApproveVerifyProfile = () => {
           <div><h3 className="text-lg font-bold text-gray-800">Approve & Verify Vendor Profile</h3><p className="text-sm text-gray-500 mt-0.5">Review vendor profiles and approve/reject for platform listing</p></div>
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {[{ label: 'Total Profiles', value: '326', icon: '🏢', color: 'border-blue-400' }, { label: 'Pending Verification', value: '34', icon: '⏳', color: 'border-amber-400' }, { label: 'Verified & Live', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Rejected Profiles', value: '12', icon: '❌', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
         <div className="p-5 border-b border-gray-100">
-          <SectionHeader icon={ICONS.userCheck} title="Vendor Profile Verification Queue" count="Profiles pending review and approval" action={{ icon: ICONS.download, label: 'Export' }} />
-          <SearchBar placeholder="Search by vendor name, category or owner..." />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.userCheck} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Vendor Profile Verification Queue</h3>
+                <p className="text-xs text-gray-400">{filtered.length} profile{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor name, category or owner..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Pending Verification','Under Review','Verified','Rejected'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Owner', 'Location', 'Experience', 'Portfolio', 'KYC', 'License', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
             <tbody className="divide-y divide-gray-50">
-              {verifyProfileData.map(v => (
-                <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
-                  <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
-                  <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
-                  <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{v.owner}</td>
-                  <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
-                  <td className="px-4 py-3 text-xs text-gray-600">{v.experience}</td>
-                  <td className="px-4 py-3 text-center">{v.portfolio ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
-                  <td className="px-4 py-3 text-center">{v.kyc ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
-                  <td className="px-4 py-3 text-center">{v.license ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
-                  <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[v.status]}`}>{v.status}</span></td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1.5">
-                      <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View Profile"><Icon d={ICONS.eye} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve & Go Live"><Icon d={ICONS.check} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
-                      <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Request Update"><Icon d={ICONS.refresh} size={14} /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filtered.length === 0 ? (
+                <tr><td colSpan={11} className="px-4 py-12 text-center text-sm text-gray-400">No profiles found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{v.owner}</td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{v.experience}</td>
+                    <td className="px-4 py-3 text-center">{v.portfolio ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
+                    <td className="px-4 py-3 text-center">{v.kyc ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
+                    <td className="px-4 py-3 text-center">{v.license ? <span className="text-green-600 text-sm">✓</span> : <span className="text-red-400 text-sm">✗</span>}</td>
+                    <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[v.status]}`}>{v.status}</span></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -651,67 +838,157 @@ const manageProfileData = [
   { id: 'VND005', name: 'Glam Bridal Studio', category: 'Bridal Styling', services: 6, lastUpdated: '3 days ago', rating: 4.9, bookings: 203, status: 'Active', verified: true, avatarBg: 'bg-gradient-to-br from-amber-400 to-yellow-400' },
 ];
 
-const ManageVendorProfiles = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">⚙️</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Manage Vendor Profiles</h3><p className="text-sm text-gray-500 mt-0.5">Edit, update and control all vendor profile information and settings</p></div>
+// ─── UPDATED MANAGE VENDOR PROFILES WITH FILTERING ───────────────────────────────
+const ManageVendorProfiles = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Profiles Updated Today', value: '23', icon: '✏️', color: 'border-blue-400', filter: 'All' },
+    { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Services Listed', value: '1,204', icon: '🗂️', color: 'border-purple-400', filter: 'All' },
+    { label: 'Pending Doc Updates', value: '18', icon: '📋', color: 'border-amber-400', filter: 'Pending' },
+  ];
+  
+  const filtered = manageProfileData.filter(v => {
+    const matchStatus = activeFilter === 'All' || v.status === activeFilter;
+    const matchSearch = !search || 
+      v.name.toLowerCase().includes(search.toLowerCase()) || 
+      v.category.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">⚙️</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Manage Vendor Profiles</h3><p className="text-sm text-gray-500 mt-0.5">Edit, update and control all vendor profile information and settings</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Profiles Updated Today', value: '23', icon: '✏️', color: 'border-blue-400' }, { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400' }, { label: 'Services Listed', value: '1,204', icon: '🗂️', color: 'border-purple-400' }, { label: 'Pending Doc Updates', value: '18', icon: '📋', color: 'border-amber-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.edit} title="All Vendor Profiles" count="Complete vendor profile management" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search by vendor name, category or status..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Services', 'Last Updated', 'Rating', 'Bookings', 'Status', 'Verified', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {manageProfileData.map(v => (
-              <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
-                <td className="px-4 py-3 text-xs font-bold text-center text-blue-600">{v.services}</td>
-                <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.lastUpdated}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating}</span></div></td>
-                <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
-                <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
-                <td className="px-4 py-3">{v.verified ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">✅ Verified</span> : <span className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">Pending</span>}</td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Edit"><Icon d={ICONS.edit} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-500 transition-colors" title="Verify"><Icon d={ICONS.shield} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Deactivate"><Icon d={ICONS.ban} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.edit} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">All Vendor Profiles</h3>
+                <p className="text-xs text-gray-400">{filtered.length} vendor{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor name, category or status..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Active','Inactive','Pending'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Services', 'Last Updated', 'Rating', 'Bookings', 'Status', 'Verified', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={10} className="px-4 py-12 text-center text-sm text-gray-400">No vendors found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs font-bold text-center text-blue-600">{v.services}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.lastUpdated}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating}</span></div></td>
+                    <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
+                    <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
+                    <td className="px-4 py-3">{v.verified ? <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">✅ Verified</span> : <span className="text-xs text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full">Pending</span>}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Edit"><Icon d={ICONS.edit} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-500 transition-colors" title="Verify"><Icon d={ICONS.shield} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Deactivate"><Icon d={ICONS.ban} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '✏️', title: 'Edit & Update Profile', accentColor: 'bg-blue-50', points: ['Modify services offered', 'Update pricing & packages', 'Edit business details & contact', 'Change service area & location'] }, { emoji: '🖼️', title: 'Portfolio Management', accentColor: 'bg-purple-50', points: ['Add/update portfolio images', 'Upload showcase videos', 'Remove outdated content', 'Maintain quality presentation'] }, { emoji: '📅', title: 'Availability & Service Control', accentColor: 'bg-green-50', points: ['Enable or disable services', 'Update availability schedules', 'Manage concurrent bookings', 'Calendar integration control'] }, { emoji: '📊', title: 'Performance & Audit Logs', accentColor: 'bg-amber-50', points: ['Track ratings & reviews', 'Monitor completed bookings', 'Maintain admin notes & logs', 'Profile update audit trail'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '✏️', title: 'Edit & Update Profile', accentColor: 'bg-blue-50', points: ['Modify services offered', 'Update pricing & packages', 'Edit business details & contact', 'Change service area & location'] }, { emoji: '🖼️', title: 'Portfolio Management', accentColor: 'bg-purple-50', points: ['Add/update portfolio images', 'Upload showcase videos', 'Remove outdated content', 'Maintain quality presentation'] }, { emoji: '📅', title: 'Availability & Service Control', accentColor: 'bg-green-50', points: ['Enable or disable services', 'Update availability schedules', 'Manage concurrent bookings', 'Calendar integration control'] }, { emoji: '📊', title: 'Performance & Audit Logs', accentColor: 'bg-amber-50', points: ['Track ratings & reviews', 'Monitor completed bookings', 'Maintain admin notes & logs', 'Profile update audit trail'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
-const activateData = [
-  { id: 'VND001', name: 'LensArt Studio', category: 'Photography', location: 'Mumbai', lastActive: '1 day ago', reason: '—', status: 'Active', bookings: 124, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
-  { id: 'VND002', name: 'Spice Route Caterers', category: 'Catering', location: 'Delhi', lastActive: '3 days ago', reason: 'Incomplete Documents', status: 'Inactive', bookings: 44, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
-  { id: 'VND003', name: 'Heritage Mahal', category: 'Wedding Halls', location: 'Jaipur', lastActive: '7 days ago', reason: 'Policy Violation', status: 'Suspended', bookings: 43, avatarBg: 'bg-gradient-to-br from-blue-400 to-indigo-400' },
-  { id: 'VND004', name: 'Beat Makers DJ', category: 'Entertainment', location: 'Bangalore', lastActive: '2 days ago', reason: '—', status: 'Active', bookings: 134, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
-  { id: 'VND005', name: 'Floral Dreams', category: 'Decorations', location: 'Chennai', lastActive: '14 days ago', reason: 'Low Performance', status: 'Inactive', bookings: 29, avatarBg: 'bg-gradient-to-br from-purple-400 to-pink-400' },
-];
-
+// ─── UPDATED ACTIVATE DEACTIVATE VENDORS WITH FILTERING ───────────────────────────
 const ActivateDeactivateVendors = () => {
-  const statusColor = { Active: 'bg-green-50 text-green-700 border-green-200', Inactive: 'bg-gray-50 text-gray-500 border-gray-200', Suspended: 'bg-red-50 text-red-700 border-red-200' };
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const activateData = [
+    { id: 'VND001', name: 'LensArt Studio', category: 'Photography', location: 'Mumbai', lastActive: '1 day ago', reason: '—', status: 'Active', bookings: 124, avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
+    { id: 'VND002', name: 'Spice Route Caterers', category: 'Catering', location: 'Delhi', lastActive: '3 days ago', reason: 'Incomplete Documents', status: 'Inactive', bookings: 44, avatarBg: 'bg-gradient-to-br from-orange-400 to-amber-400' },
+    { id: 'VND003', name: 'Heritage Mahal', category: 'Wedding Halls', location: 'Jaipur', lastActive: '7 days ago', reason: 'Policy Violation', status: 'Suspended', bookings: 43, avatarBg: 'bg-gradient-to-br from-blue-400 to-indigo-400' },
+    { id: 'VND004', name: 'Beat Makers DJ', category: 'Entertainment', location: 'Bangalore', lastActive: '2 days ago', reason: '—', status: 'Active', bookings: 134, avatarBg: 'bg-gradient-to-br from-violet-400 to-purple-400' },
+    { id: 'VND005', name: 'Floral Dreams', category: 'Decorations', location: 'Chennai', lastActive: '14 days ago', reason: 'Low Performance', status: 'Inactive', bookings: 29, avatarBg: 'bg-gradient-to-br from-purple-400 to-pink-400' },
+  ];
+  
+  const statCards = [
+    { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Inactive Vendors', value: '28', icon: '⏸️', color: 'border-gray-400', filter: 'Inactive' },
+    { label: 'Suspended', value: '9', icon: '🚫', color: 'border-red-400', filter: 'Suspended' },
+    { label: 'Pending Reactivation', value: '14', icon: '🔄', color: 'border-amber-400', filter: 'Pending Reactivation' },
+  ];
+  
+  const filtered = activateData.filter(v => {
+    const matchStatus = activeFilter === 'All' || v.status === activeFilter;
+    const matchSearch = !search || 
+      v.name.toLowerCase().includes(search.toLowerCase()) || 
+      v.category.toLowerCase().includes(search.toLowerCase()) ||
+      v.location.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  const statusColor = { 
+    Active: 'bg-green-50 text-green-700 border-green-200', 
+    Inactive: 'bg-gray-50 text-gray-500 border-gray-200', 
+    Suspended: 'bg-red-50 text-red-700 border-red-200' 
+  };
+  
   return (
     <div>
       <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-slate-50 to-gray-100 border border-slate-200">
@@ -721,43 +998,79 @@ const ActivateDeactivateVendors = () => {
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-        {[{ label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400' }, { label: 'Inactive Vendors', value: '28', icon: '⏸️', color: 'border-gray-400' }, { label: 'Suspended', value: '9', icon: '🚫', color: 'border-red-400' }, { label: 'Pending Reactivation', value: '14', icon: '🔄', color: 'border-amber-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-      </div>
-      {/* Bulk Actions Bar */}
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 flex flex-wrap items-center gap-3">
-        <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mr-2">Bulk Actions:</p>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 transition-colors"><Icon d={ICONS.check} size={13} />Activate Selected</button>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-600 text-white text-xs font-semibold rounded-lg hover:bg-gray-700 transition-colors"><Icon d={ICONS.ban} size={13} />Deactivate Selected</button>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.alert} size={13} />Suspend Selected</button>
-        <button className="flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:bg-gray-50 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
         <div className="p-5 border-b border-gray-100">
-          <SectionHeader icon={ICONS.toggle} title="Vendor Status Control" count="Manage active, inactive and suspended vendors" />
-          <SearchBar placeholder="Search vendor by name, category or status..." />
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.toggle} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Vendor Status Control</h3>
+                <p className="text-xs text-gray-400">{filtered.length} vendor{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor name, category or location..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Active','Inactive','Suspended'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead><tr className="bg-gray-50 border-b border-gray-100">{['', 'Vendor ID', 'Business Name', 'Category', 'Location', 'Last Active', 'Deactivation Reason', 'Bookings', 'Status', 'Quick Toggle'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
             <tbody className="divide-y divide-gray-50">
-              {activateData.map(v => (
-                <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-4 py-3"><input type="checkbox" className="rounded border-gray-300" /></td>
-                  <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
-                  <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
-                  <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
-                  <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
-                  <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.lastActive}</td>
-                  <td className="px-4 py-3 text-xs text-gray-500">{v.reason}</td>
-                  <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
-                  <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[v.status]}`}>{v.status}</span></td>
-                  <td className="px-4 py-3">
-                    <div className={`w-10 h-5 rounded-full flex items-center cursor-pointer transition-colors ${v.status === 'Active' ? 'bg-green-500 justify-end' : 'bg-gray-300 justify-start'}`}>
-                      <div className="w-4 h-4 bg-white rounded-full mx-0.5 shadow"></div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {filtered.length === 0 ? (
+                <tr><td colSpan={10} className="px-4 py-12 text-center text-sm text-gray-400">No vendors found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3"><input type="checkbox" className="rounded border-gray-300" /></td>
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.lastActive}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{v.reason}</td>
+                    <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
+                    <td className="px-4 py-3"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border ${statusColor[v.status]}`}>{v.status}</span></td>
+                    <td className="px-4 py-3">
+                      <div className={`w-10 h-5 rounded-full flex items-center cursor-pointer transition-colors ${v.status === 'Active' ? 'bg-green-500 justify-end' : 'bg-gray-300 justify-start'}`}>
+                        <div className="w-4 h-4 bg-white rounded-full mx-0.5 shadow"></div>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -782,55 +1095,121 @@ const verificationQueueData = [
 const docColor = { Verified: 'text-green-600', 'Under Review': 'text-blue-600', Pending: 'text-amber-600', Rejected: 'text-red-600' };
 const docIcon = { Verified: '✅', 'Under Review': '🔄', Pending: '⏳', Rejected: '❌' };
 
-const VendorVerificationDashboard = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🔐</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Vendor Verification Dashboard</h3><p className="text-sm text-gray-500 mt-0.5">Centralized panel for all vendor verification statuses and actions</p></div>
+// ─── UPDATED VENDOR VERIFICATION DASHBOARD WITH FILTERING ─────────────────────────
+const VendorVerificationDashboard = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Pending Verification', value: '34', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Under Review', value: '18', icon: '🔄', color: 'border-blue-400', filter: 'Under Review' },
+    { label: 'Fully Verified', value: '241', icon: '✅', color: 'border-green-400', filter: 'Verified' },
+    { label: 'Rejected', value: '12', icon: '❌', color: 'border-red-400', filter: 'Rejected' },
+  ];
+  
+  const filtered = verificationQueueData.filter(v => {
+    const matchStatus = activeFilter === 'All' || v.status === activeFilter;
+    const matchSearch = !search || 
+      v.name.toLowerCase().includes(search.toLowerCase()) || 
+      v.category.toLowerCase().includes(search.toLowerCase()) ||
+      v.owner.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🔐</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Vendor Verification Dashboard</h3><p className="text-sm text-gray-500 mt-0.5">Centralized panel for all vendor verification statuses and actions</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Pending Verification', value: '34', icon: '⏳', color: 'border-amber-400' }, { label: 'Under Review', value: '18', icon: '🔄', color: 'border-blue-400' }, { label: 'Fully Verified', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Rejected', value: '12', icon: '❌', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.shield} title="Verification Queue" count="All vendors with verification status overview" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search by vendor name, category or verification status..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Owner', 'Submitted', 'Biz. License', 'GST', 'ID Proof', 'Overall Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {verificationQueueData.map(v => (
-              <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
-                <td className="px-4 py-3 text-xs text-gray-600">{v.owner}</td>
-                <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.submitted}</td>
-                <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.bizLic]}`}>{docIcon[v.bizLic]} {v.bizLic}</span></td>
-                <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.gst]}`}>{docIcon[v.gst]} {v.gst}</span></td>
-                <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.idProof]}`}>{docIcon[v.idProof]} {v.idProof}</span></td>
-                <td className="px-4 py-3"><VerificationBadge status={v.status} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors"><Icon d={ICONS.check} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors"><Icon d={ICONS.x} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.shield} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Verification Queue</h3>
+                <p className="text-xs text-gray-400">{filtered.length} vendor{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor name, category or verification status..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Pending','Under Review','Verified','Rejected'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Owner', 'Submitted', 'Biz. License', 'GST', 'ID Proof', 'Overall Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={10} className="px-4 py-12 text-center text-sm text-gray-400">No vendors found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{v.owner}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.submitted}</td>
+                    <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.bizLic]}`}>{docIcon[v.bizLic]} {v.bizLic}</span></td>
+                    <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.gst]}`}>{docIcon[v.gst]} {v.gst}</span></td>
+                    <td className="px-4 py-3"><span className={`text-xs font-semibold ${docColor[v.idProof]}`}>{docIcon[v.idProof]} {v.idProof}</span></td>
+                    <td className="px-4 py-3"><VerificationBadge status={v.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '📋', title: 'Document Verification', accentColor: 'bg-blue-50', points: ['Business registration certificate', 'Govt ID proof (Aadhaar, PAN)', 'Address proof', 'Licenses & permits if required'] }, { emoji: '🔐', title: 'KYC Integration', accentColor: 'bg-indigo-50', points: ['Third-party KYC providers', 'HyperVerge / Signzy integration', 'Automated identity validation', 'Business authenticity checks'] }, { emoji: '🚨', title: 'Fraud Detection', accentColor: 'bg-red-50', points: ['Identify duplicate profiles', 'Detect fake submissions', 'Flag suspicious activity', 'Take immediate action'] }, { emoji: '📝', title: 'Audit Logs & Notifications', accentColor: 'bg-green-50', points: ['All verification action records', 'Transparency & compliance', 'Auto-notify on status changes', 'Required action alerts'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '📋', title: 'Document Verification', accentColor: 'bg-blue-50', points: ['Business registration certificate', 'Govt ID proof (Aadhaar, PAN)', 'Address proof', 'Licenses & permits if required'] }, { emoji: '🔐', title: 'KYC Integration', accentColor: 'bg-indigo-50', points: ['Third-party KYC providers', 'HyperVerge / Signzy integration', 'Automated identity validation', 'Business authenticity checks'] }, { emoji: '🚨', title: 'Fraud Detection', accentColor: 'bg-red-50', points: ['Identify duplicate profiles', 'Detect fake submissions', 'Flag suspicious activity', 'Take immediate action'] }, { emoji: '📝', title: 'Audit Logs & Notifications', accentColor: 'bg-green-50', points: ['All verification action records', 'Transparency & compliance', 'Auto-notify on status changes', 'Required action alerts'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
 const businessLicenseData = [
   { id: 'LIC001', vendor: 'LensArt Studio', category: 'Photography', regNo: 'MH-MUM-2019-0042', issuer: 'ROC Mumbai', validity: '31 Dec 2025', status: 'Verified', avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
@@ -840,61 +1219,125 @@ const businessLicenseData = [
   { id: 'LIC005', vendor: 'Artisan Cards', category: 'Invitations', regNo: '—', issuer: '—', validity: '—', status: 'Rejected', avatarBg: 'bg-gradient-to-br from-rose-400 to-pink-400' },
 ];
 
-const BusinessLicensePage = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🏢</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Verify: Business License</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor business registration and legal operating status</p></div>
+// ─── UPDATED BUSINESS LICENSE PAGE WITH FILTERING ────────────────────────────────
+const BusinessLicensePage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Total Submissions', value: '298', icon: '📄', color: 'border-blue-400', filter: 'All' },
+    { label: 'Verified', value: '241', icon: '✅', color: 'border-green-400', filter: 'Verified' },
+    { label: 'Expired / Invalid', value: '14', icon: '⚠️', color: 'border-orange-400', filter: 'Expired' },
+    { label: 'Pending Review', value: '27', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+  ];
+  
+  const filtered = businessLicenseData.filter(l => {
+    const matchStatus = activeFilter === 'All' || l.status === activeFilter;
+    const matchSearch = !search || 
+      l.vendor.toLowerCase().includes(search.toLowerCase()) || 
+      l.category.toLowerCase().includes(search.toLowerCase()) ||
+      l.regNo.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🏢</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Verify: Business License</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor business registration and legal operating status</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total Submissions', value: '298', icon: '📄', color: 'border-blue-400' }, { label: 'Verified', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Expired / Invalid', value: '14', icon: '⚠️', color: 'border-orange-400' }, { label: 'Pending Review', value: '27', icon: '⏳', color: 'border-amber-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.document} title="Business License Verification" count="All vendor license submissions and statuses" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search by vendor, registration number or status..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['License ID', 'Vendor', 'Category', 'Reg. Number', 'Issuing Authority', 'Validity / Expiry', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {businessLicenseData.map(l => (
-              <tr key={l.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{l.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${l.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{l.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{l.vendor}</span></div></td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{l.category}</span></td>
-                <td className="px-4 py-3 text-xs font-mono text-gray-600">{l.regNo}</td>
-                <td className="px-4 py-3 text-xs text-gray-600">{l.issuer}</td>
-                <td className="px-4 py-3 text-xs font-semibold text-gray-700">{l.validity}</td>
-                <td className="px-4 py-3"><VerificationBadge status={l.status} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View Document"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Request Re-upload"><Icon d={ICONS.refresh} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.document} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Business License Verification</h3>
+                <p className="text-xs text-gray-400">{filtered.length} license{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor, registration number or status..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Verified','Expired','Pending','Under Review','Rejected'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['License ID', 'Vendor', 'Category', 'Reg. Number', 'Issuing Authority', 'Validity / Expiry', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={8} className="px-4 py-12 text-center text-sm text-gray-400">No licenses found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(l => (
+                  <tr key={l.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{l.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${l.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{l.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{l.vendor}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{l.category}</span></td>
+                    <td className="px-4 py-3 text-xs font-mono text-gray-600">{l.regNo}</td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{l.issuer}</td>
+                    <td className="px-4 py-3 text-xs font-semibold text-gray-700">{l.validity}</td>
+                    <td className="px-4 py-3"><VerificationBadge status={l.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View Document"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="bg-orange-50 rounded-2xl border border-orange-200 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="text-xl">⚠️</span>
+          <div><p className="text-sm font-bold text-orange-800">Expiry & Renewal Alerts</p><p className="text-xs text-orange-600 mt-1">2 vendor licenses have expired and 5 licenses are expiring within the next 30 days. Vendors have been notified to renew and re-upload updated documents.</p></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '📄', title: 'License Document Review', accentColor: 'bg-emerald-50', points: ['Business name validation', 'Registration number check', 'Issuing authority verification', 'Validity & expiry date review'] }, { emoji: '🔍', title: 'Authenticity Check', accentColor: 'bg-teal-50', points: ['Cross-check with official records', 'Detect tampered documents', 'Verify issuing authority', 'Confirm legitimacy of registration'] }, { emoji: '⏰', title: 'Expiry & Renewal Tracking', accentColor: 'bg-orange-50', points: ['Monitor license validity dates', 'Alerts for upcoming expiry', 'Track renewal submissions', 'Auto-notify vendors for renewal'] }, { emoji: '🔒', title: 'Compliance & Storage', accentColor: 'bg-blue-50', points: ['Restrict non-compliant vendors', 'Secure document storage', 'Access-controlled file system', 'Full audit trail of actions'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    {/* Expiry Alerts */}
-    <div className="bg-orange-50 rounded-2xl border border-orange-200 p-4 mb-6">
-      <div className="flex items-start gap-3">
-        <span className="text-xl">⚠️</span>
-        <div><p className="text-sm font-bold text-orange-800">Expiry & Renewal Alerts</p><p className="text-xs text-orange-600 mt-1">2 vendor licenses have expired and 5 licenses are expiring within the next 30 days. Vendors have been notified to renew and re-upload updated documents.</p></div>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '📄', title: 'License Document Review', accentColor: 'bg-emerald-50', points: ['Business name validation', 'Registration number check', 'Issuing authority verification', 'Validity & expiry date review'] }, { emoji: '🔍', title: 'Authenticity Check', accentColor: 'bg-teal-50', points: ['Cross-check with official records', 'Detect tampered documents', 'Verify issuing authority', 'Confirm legitimacy of registration'] }, { emoji: '⏰', title: 'Expiry & Renewal Tracking', accentColor: 'bg-orange-50', points: ['Monitor license validity dates', 'Alerts for upcoming expiry', 'Track renewal submissions', 'Auto-notify vendors for renewal'] }, { emoji: '🔒', title: 'Compliance & Storage', accentColor: 'bg-blue-50', points: ['Restrict non-compliant vendors', 'Secure document storage', 'Access-controlled file system', 'Full audit trail of actions'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
 const gstData = [
   { id: 'GST001', vendor: 'LensArt Studio', category: 'Photography', gstin: '27AAPFL1234A1Z5', bizName: 'LensArt Studio Pvt Ltd', bizType: 'Private Ltd', address: 'Mumbai, MH', status: 'Verified', avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
@@ -904,61 +1347,127 @@ const gstData = [
   { id: 'GST005', vendor: 'Glam Bridal', category: 'Bridal Styling', gstin: '33DDDGE3456D4W8', bizName: 'Glam Bridal Beauty Pvt Ltd', bizType: 'Private Ltd', address: 'Chennai, TN', status: 'Under Review', avatarBg: 'bg-gradient-to-br from-amber-400 to-yellow-400' },
 ];
 
-const GSTVerificationPage = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-cyan-50 to-sky-50 border border-cyan-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🧾</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Verify: GST Details</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor GSTIN and ensure tax compliance for all operations</p></div>
+// ─── UPDATED GST VERIFICATION PAGE WITH FILTERING ────────────────────────────────
+const GSTVerificationPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Total Submissions', value: '289', icon: '🧾', color: 'border-cyan-400', filter: 'All' },
+    { label: 'GST Verified', value: '231', icon: '✅', color: 'border-green-400', filter: 'Verified' },
+    { label: 'Pending Validation', value: '29', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Invalid / Rejected', value: '8', icon: '❌', color: 'border-red-400', filter: 'Invalid' },
+  ];
+  
+  const filtered = gstData.filter(g => {
+    const matchStatus = activeFilter === 'All' || g.status === activeFilter;
+    const matchSearch = !search || 
+      g.vendor.toLowerCase().includes(search.toLowerCase()) || 
+      g.category.toLowerCase().includes(search.toLowerCase()) ||
+      g.gstin.toLowerCase().includes(search.toLowerCase()) ||
+      g.bizName.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-cyan-50 to-sky-50 border border-cyan-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🧾</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Verify: GST Details</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor GSTIN and ensure tax compliance for all operations</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total Submissions', value: '289', icon: '🧾', color: 'border-cyan-400' }, { label: 'GST Verified', value: '231', icon: '✅', color: 'border-green-400' }, { label: 'Pending Validation', value: '29', icon: '⏳', color: 'border-amber-400' }, { label: 'Invalid / Rejected', value: '8', icon: '❌', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.document} title="GST Verification Queue" count="Vendor GSTIN submissions and validation status" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search by vendor, GSTIN or business name..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['GST ID', 'Vendor', 'Category', 'GSTIN', 'Registered Business', 'Type', 'Address', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {gstData.map(g => (
-              <tr key={g.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{g.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${g.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{g.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{g.vendor}</span></div></td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{g.category}</span></td>
-                <td className="px-4 py-3 text-xs font-mono font-bold text-gray-700">{g.gstin}</td>
-                <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{g.bizName}</td>
-                <td className="px-4 py-3 text-xs text-gray-500">{g.bizType}</td>
-                <td className="px-4 py-3 text-xs text-gray-500">{g.address}</td>
-                <td className="px-4 py-3"><VerificationBadge status={g.status} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Request Correction"><Icon d={ICONS.refresh} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.document} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">GST Verification Queue</h3>
+                <p className="text-xs text-gray-400">{filtered.length} record{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor, GSTIN or business name..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Verified','Pending','Under Review','Invalid'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['GST ID', 'Vendor', 'Category', 'GSTIN', 'Registered Business', 'Type', 'Address', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-400">No GST records found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(g => (
+                  <tr key={g.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{g.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${g.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{g.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{g.vendor}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{g.category}</span></td>
+                    <td className="px-4 py-3 text-xs font-mono font-bold text-gray-700">{g.gstin}</td>
+                    <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{g.bizName}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{g.bizType}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{g.address}</td>
+                    <td className="px-4 py-3"><VerificationBadge status={g.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="bg-cyan-50 rounded-2xl border border-cyan-200 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="text-xl">🔗</span>
+          <div><p className="text-sm font-bold text-cyan-800">Government GST API Integration</p><p className="text-xs text-cyan-600 mt-1">GSTIN numbers are automatically validated against official government GST portal records via API integration. Mismatches are flagged instantly for admin review and vendor correction.</p></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '🧾', title: 'GST Details Review', accentColor: 'bg-cyan-50', points: ['GSTIN number validation', 'Registered business name check', 'Business type verification', 'Registered address confirmation'] }, { emoji: '🔗', title: 'Government API Validation', accentColor: 'bg-sky-50', points: ['Auto-validate GSTIN via API', 'Real-time GST portal lookup', 'Detect invalid GSTINs instantly', 'Flag mismatched information'] }, { emoji: '📄', title: 'Document Upload Review', accentColor: 'bg-blue-50', points: ['Manual GST certificate review', 'Uploaded document validation', 'Cross-check with GSTIN data', 'Request corrections or re-upload'] }, { emoji: '🔒', title: 'Compliance & Fraud Detection', accentColor: 'bg-indigo-50', points: ['Identify duplicate GSTINs', 'Prevent fake tax registrations', 'Secure sensitive data handling', 'Full audit & history logs'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    <div className="bg-cyan-50 rounded-2xl border border-cyan-200 p-4 mb-6">
-      <div className="flex items-start gap-3">
-        <span className="text-xl">🔗</span>
-        <div><p className="text-sm font-bold text-cyan-800">Government GST API Integration</p><p className="text-xs text-cyan-600 mt-1">GSTIN numbers are automatically validated against official government GST portal records via API integration. Mismatches are flagged instantly for admin review and vendor correction.</p></div>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '🧾', title: 'GST Details Review', accentColor: 'bg-cyan-50', points: ['GSTIN number validation', 'Registered business name check', 'Business type verification', 'Registered address confirmation'] }, { emoji: '🔗', title: 'Government API Validation', accentColor: 'bg-sky-50', points: ['Auto-validate GSTIN via API', 'Real-time GST portal lookup', 'Detect invalid GSTINs instantly', 'Flag mismatched information'] }, { emoji: '📄', title: 'Document Upload Review', accentColor: 'bg-blue-50', points: ['Manual GST certificate review', 'Uploaded document validation', 'Cross-check with GSTIN data', 'Request corrections or re-upload'] }, { emoji: '🔒', title: 'Compliance & Fraud Detection', accentColor: 'bg-indigo-50', points: ['Identify duplicate GSTINs', 'Prevent fake tax registrations', 'Secure sensitive data handling', 'Full audit & history logs'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
 const idProofData = [
   { id: 'KYC001', vendor: 'LensArt Studio', owner: 'Deepak Shah', idType: 'Aadhaar Card', idNo: 'XXXX-XXXX-4321', dob: '12 Mar 1988', photoMatch: true, status: 'Verified', avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
@@ -968,61 +1477,126 @@ const idProofData = [
   { id: 'KYC005', vendor: 'Glam Bridal', owner: 'Asha Kumar', idType: 'Aadhaar Card', idNo: 'XXXX-XXXX-8765', dob: '07 Dec 1990', photoMatch: true, status: 'Pending', avatarBg: 'bg-gradient-to-br from-amber-400 to-yellow-400' },
 ];
 
-const IDProofVerificationPage = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🪪</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Verify: ID Proof</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor identity through government-issued ID verification & KYC</p></div>
+// ─── UPDATED ID PROOF VERIFICATION PAGE WITH FILTERING ───────────────────────────
+const IDProofVerificationPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Total KYC Records', value: '312', icon: '🪪', color: 'border-violet-400', filter: 'All' },
+    { label: 'KYC Verified', value: '261', icon: '✅', color: 'border-green-400', filter: 'Verified' },
+    { label: 'Pending / Review', value: '38', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Rejected / Flagged', value: '13', icon: '🚫', color: 'border-red-400', filter: 'Rejected' },
+  ];
+  
+  const filtered = idProofData.filter(k => {
+    const matchStatus = activeFilter === 'All' || k.status === activeFilter;
+    const matchSearch = !search || 
+      k.vendor.toLowerCase().includes(search.toLowerCase()) || 
+      k.owner.toLowerCase().includes(search.toLowerCase()) ||
+      k.idType.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🪪</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Verify: ID Proof</h3><p className="text-sm text-gray-500 mt-0.5">Validate vendor identity through government-issued ID verification & KYC</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total KYC Records', value: '312', icon: '🪪', color: 'border-violet-400' }, { label: 'KYC Verified', value: '261', icon: '✅', color: 'border-green-400' }, { label: 'Pending / Review', value: '38', icon: '⏳', color: 'border-amber-400' }, { label: 'Rejected / Flagged', value: '13', icon: '🚫', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.shield} title="ID Proof Verification Queue" count="All vendor ID submissions and KYC status" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search by vendor, owner name or ID type..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['KYC ID', 'Vendor', 'Owner Name', 'ID Type', 'ID Number', 'Date of Birth', 'Photo Match', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {idProofData.map(k => (
-              <tr key={k.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{k.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${k.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{k.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{k.vendor}</span></div></td>
-                <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{k.owner}</td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-violet-50 text-violet-700">{k.idType}</span></td>
-                <td className="px-4 py-3 text-xs font-mono text-gray-600">{k.idNo}</td>
-                <td className="px-4 py-3 text-xs text-gray-500">{k.dob}</td>
-                <td className="px-4 py-3 text-center">{k.photoMatch ? <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">✅ Match</span> : <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">❌ Mismatch</span>}</td>
-                <td className="px-4 py-3"><VerificationBadge status={k.status} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View ID"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Request Re-upload"><Icon d={ICONS.refresh} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.shield} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">ID Proof Verification Queue</h3>
+                <p className="text-xs text-gray-400">{filtered.length} record{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search by vendor, owner name or ID type..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Verified','Pending','Under Review','Rejected'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['KYC ID', 'Vendor', 'Owner Name', 'ID Type', 'ID Number', 'Date of Birth', 'Photo Match', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={9} className="px-4 py-12 text-center text-sm text-gray-400">No KYC records found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(k => (
+                  <tr key={k.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{k.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${k.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{k.vendor[0]}</div><span className="text-sm font-semibold text-gray-700">{k.vendor}</span></div></td>
+                    <td className="px-4 py-3 text-xs text-gray-600 whitespace-nowrap">{k.owner}</td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-violet-50 text-violet-700">{k.idType}</span></td>
+                    <td className="px-4 py-3 text-xs font-mono text-gray-600">{k.idNo}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{k.dob}</td>
+                    <td className="px-4 py-3 text-center">{k.photoMatch ? <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">✅ Match</span> : <span className="text-xs font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-full">❌ Mismatch</span>}</td>
+                    <td className="px-4 py-3"><VerificationBadge status={k.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View ID"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-green-50 text-green-600 transition-colors" title="Approve"><Icon d={ICONS.check} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Reject"><Icon d={ICONS.x} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="bg-violet-50 rounded-2xl border border-violet-200 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="text-xl">🔐</span>
+          <div><p className="text-sm font-bold text-violet-800">KYC Integration & Photo Matching</p><p className="text-xs text-violet-600 mt-1">ID verification is powered by third-party KYC providers (HyperVerge / Signzy). Photo identity matching is performed automatically to prevent impersonation. All ID documents are stored with encrypted, restricted access.</p></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '🪪', title: 'Accepted ID Documents', accentColor: 'bg-violet-50', points: ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'] }, { emoji: '🔍', title: 'Document Review Details', accentColor: 'bg-purple-50', points: ['Full name verification', 'ID number validation', 'Date of birth check', 'Photo identity matching'] }, { emoji: '🤖', title: 'KYC Automation', accentColor: 'bg-indigo-50', points: ['HyperVerge / Signzy integration', 'Automated identity validation', 'Real-time mismatch detection', 'Impersonation prevention'] }, { emoji: '🚨', title: 'Fraud Detection & Storage', accentColor: 'bg-red-50', points: ['Detect fake or duplicate IDs', 'Flag tampered documents', 'Secure encrypted storage', 'Restricted access controls'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    <div className="bg-violet-50 rounded-2xl border border-violet-200 p-4 mb-6">
-      <div className="flex items-start gap-3">
-        <span className="text-xl">🔐</span>
-        <div><p className="text-sm font-bold text-violet-800">KYC Integration & Photo Matching</p><p className="text-xs text-violet-600 mt-1">ID verification is powered by third-party KYC providers (HyperVerge / Signzy). Photo identity matching is performed automatically to prevent impersonation. All ID documents are stored with encrypted, restricted access.</p></div>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '🪪', title: 'Accepted ID Documents', accentColor: 'bg-violet-50', points: ['Aadhaar Card', 'PAN Card', 'Passport', 'Driving License'] }, { emoji: '🔍', title: 'Document Review Details', accentColor: 'bg-purple-50', points: ['Full name verification', 'ID number validation', 'Date of birth check', 'Photo identity matching'] }, { emoji: '🤖', title: 'KYC Automation', accentColor: 'bg-indigo-50', points: ['HyperVerge / Signzy integration', 'Automated identity validation', 'Real-time mismatch detection', 'Impersonation prevention'] }, { emoji: '🚨', title: 'Fraud Detection & Storage', accentColor: 'bg-red-50', points: ['Detect fake or duplicate IDs', 'Flag tampered documents', 'Secure encrypted storage', 'Restricted access controls'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
 const verifiedVendorsData = [
   { id: 'VND001', name: 'LensArt Studio', category: 'Photography', location: 'Mumbai', contact: '+91 98765 43210', verifiedOn: '15 Jan 2024', rating: 4.9, bookings: 124, status: 'Active', avatarBg: 'bg-gradient-to-br from-pink-400 to-rose-400' },
@@ -1033,67 +1607,132 @@ const verifiedVendorsData = [
   { id: 'VND006', name: 'Glam Bridal Studio', category: 'Bridal Styling', location: 'Mumbai', contact: '+91 43210 98766', verifiedOn: '1 Mar 2024', rating: 4.9, bookings: 203, status: 'Active', avatarBg: 'bg-gradient-to-br from-amber-400 to-yellow-400' },
 ];
 
-const VerifiedVendorBadgePage = () => (
-  <div>
-    <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-green-50 to-teal-50 border border-green-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">✅</div>
-        <div><h3 className="text-lg font-bold text-gray-800">Assign: ✅ Verified Vendor Badge</h3><p className="text-sm text-gray-500 mt-0.5">View all approved, verified vendors with trust badges and performance insights</p></div>
+// ─── UPDATED VERIFIED VENDOR BADGE PAGE WITH FILTERING ───────────────────────────
+const VerifiedVendorBadgePage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const statCards = [
+    { label: 'Total Verified Vendors', value: '241', icon: '✅', color: 'border-green-400', filter: 'All' },
+    { label: 'Badges Assigned', value: '241', icon: '🏅', color: 'border-blue-400', filter: 'All' },
+    { label: 'Re-verification Needed', value: '14', icon: '🔄', color: 'border-amber-400', filter: 'Re-verification Needed' },
+    { label: 'Suspended (Badge Revoked)', value: '9', icon: '⛔', color: 'border-red-400', filter: 'Suspended' },
+  ];
+  
+  const filtered = verifiedVendorsData.filter(v => {
+    const matchStatus = activeFilter === 'All' || v.status === activeFilter;
+    const matchSearch = !search || 
+      v.name.toLowerCase().includes(search.toLowerCase()) || 
+      v.category.toLowerCase().includes(search.toLowerCase()) ||
+      v.location.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-5 mb-6 bg-gradient-to-r from-green-50 to-teal-50 border border-green-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">✅</div>
+          <div><h3 className="text-lg font-bold text-gray-800">Assign: ✅ Verified Vendor Badge</h3><p className="text-sm text-gray-500 mt-0.5">View all approved, verified vendors with trust badges and performance insights</p></div>
+        </div>
       </div>
-    </div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total Verified Vendors', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Badges Assigned', value: '241', icon: '🏅', color: 'border-blue-400' }, { label: 'Re-verification Needed', value: '14', icon: '🔄', color: 'border-amber-400' }, { label: 'Suspended (Badge Revoked)', value: '9', icon: '⛔', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-      <div className="p-5 border-b border-gray-100">
-        <SectionHeader icon={ICONS.userCheck} title="Verified Vendor Listing" count="241 fully verified vendors on the platform" action={{ icon: ICONS.download, label: 'Export' }} />
-        <SearchBar placeholder="Search verified vendors by name, category or location..." />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Location', 'Contact', 'Verified On', 'Rating', 'Bookings', 'Badge', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
-          <tbody className="divide-y divide-gray-50">
-            {verifiedVendorsData.map(v => (
-              <tr key={v.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
-                <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
-                <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
-                <td className="px-4 py-3 text-xs text-gray-500">{v.contact}</td>
-                <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.verifiedOn}</td>
-                <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating}</span></div></td>
-                <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
-                <td className="px-4 py-3"><span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">✅ Verified</span></td>
-                <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
-                <td className="px-4 py-3">
-                  <div className="flex items-center gap-1.5">
-                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View Profile"><Icon d={ICONS.eye} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Edit"><Icon d={ICONS.edit} size={14} /></button>
-                    <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Suspend / Deactivate"><Icon d={ICONS.ban} size={14} /></button>
-                  </div>
-                </td>
-              </tr>
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+        <div className="p-5 border-b border-gray-100">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.userCheck} size={18} /></div>
+              <div>
+                <h3 className="font-bold text-gray-800 text-base">Verified Vendor Listing</h3>
+                <p className="text-xs text-gray-400">{filtered.length} verified vendor{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter})` : 'total'}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">✕ Clear Filter</button>}
+              <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700 transition-colors"><Icon d={ICONS.download} size={13} />Export</button>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+              <input 
+                value={search} 
+                onChange={e => setSearch(e.target.value)} 
+                type="text" 
+                placeholder="Search verified vendors by name, category or location..." 
+                className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+              />
+            </div>
+            {['All','Active','Inactive','Suspended'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f}
+              </button>
             ))}
-          </tbody>
-        </table>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead><tr className="bg-gray-50 border-b border-gray-100">{['Vendor ID', 'Business Name', 'Category', 'Location', 'Contact', 'Verified On', 'Rating', 'Bookings', 'Badge', 'Status', 'Actions'].map(h => <th key={h} className="px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap">{h}</th>)}</tr></thead>
+            <tbody className="divide-y divide-gray-50">
+              {filtered.length === 0 ? (
+                <tr><td colSpan={11} className="px-4 py-12 text-center text-sm text-gray-400">No verified vendors found for "{activeFilter}" filter.</td></tr>
+              ) : (
+                filtered.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-4 py-3 text-xs font-mono text-gray-500">{v.id}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-2"><div className={`w-7 h-7 rounded-lg ${v.avatarBg} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>{v.name[0]}</div><span className="text-sm font-semibold text-gray-700 whitespace-nowrap">{v.name}</span></div></td>
+                    <td className="px-4 py-3"><span className="text-xs font-semibold px-2 py-0.5 rounded-lg bg-red-50 text-red-700">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs text-gray-600">{v.location}</td>
+                    <td className="px-4 py-3 text-xs text-gray-500">{v.contact}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 whitespace-nowrap">{v.verifiedOn}</td>
+                    <td className="px-4 py-3"><div className="flex items-center gap-1"><span className="text-amber-400 text-sm">★</span><span className="text-xs font-bold text-gray-700">{v.rating}</span></div></td>
+                    <td className="px-4 py-3 text-xs font-bold text-gray-700 text-center">{v.bookings}</td>
+                    <td className="px-4 py-3"><span className="text-xs font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-0.5 rounded-full">✅ Verified</span></td>
+                    <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1.5">
+                        <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500 transition-colors" title="View Profile"><Icon d={ICONS.eye} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-amber-50 text-amber-500 transition-colors" title="Edit"><Icon d={ICONS.edit} size={14} /></button>
+                        <button className="p-1.5 rounded-lg hover:bg-red-50 text-red-500 transition-colors" title="Suspend / Deactivate"><Icon d={ICONS.ban} size={14} /></button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
+          <p className="text-xs text-gray-400">Showing {filtered.length} of 241 verified vendors</p>
+          <div className="flex items-center gap-1">{[1,2,3,'...',25].map((p, i) => <button key={i} className={`w-7 h-7 text-xs rounded-lg font-semibold ${p === 1 ? 'bg-red-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>{p}</button>)}</div>
+        </div>
       </div>
-      <div className="px-5 py-3 border-t border-gray-100 flex items-center justify-between">
-        <p className="text-xs text-gray-400">Showing 6 of 241 verified vendors</p>
-        <div className="flex items-center gap-1">{[1,2,3,'...',25].map((p, i) => <button key={i} className={`w-7 h-7 text-xs rounded-lg font-semibold ${p === 1 ? 'bg-red-600 text-white' : 'text-gray-500 hover:bg-gray-100'}`}>{p}</button>)}</div>
+      <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 mb-6">
+        <div className="flex items-start gap-3">
+          <span className="text-xl">🔔</span>
+          <div><p className="text-sm font-bold text-amber-800">Re-verification Alerts</p><p className="text-xs text-amber-600 mt-1">14 verified vendors have documents (Business License, GST, or ID Proof) expiring within 60 days. Admins have been alerted and vendors notified to submit updated documents for re-verification.</p></div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[{ emoji: '✅', title: 'Verified Vendor Listing', accentColor: 'bg-green-50', points: ['Complete list of approved vendors', 'Business name, category & location', 'Contact info & verification date', 'Verified badge display'] }, { emoji: '📊', title: 'Performance Insights', accentColor: 'bg-blue-50', points: ['Customer ratings & reviews', 'Total completed bookings', 'Service quality metrics', 'Booking trend analysis'] }, { emoji: '⚡', title: 'Quick Actions', accentColor: 'bg-amber-50', points: ['Deactivate or suspend vendor', 'View verification documents', 'Edit vendor profile details', 'Revoke verified badge'] }, { emoji: '🔄', title: 'Compliance & Re-verification', accentColor: 'bg-purple-50', points: ['Monitor document expiry dates', 'Re-verification alerts for admins', 'Notify vendors for renewal', 'Export verified vendor reports'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    {/* Re-verification Alerts */}
-    <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4 mb-6">
-      <div className="flex items-start gap-3">
-        <span className="text-xl">🔔</span>
-        <div><p className="text-sm font-bold text-amber-800">Re-verification Alerts</p><p className="text-xs text-amber-600 mt-1">14 verified vendors have documents (Business License, GST, or ID Proof) expiring within 60 days. Admins have been alerted and vendors notified to submit updated documents for re-verification.</p></div>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '✅', title: 'Verified Vendor Listing', accentColor: 'bg-green-50', points: ['Complete list of approved vendors', 'Business name, category & location', 'Contact info & verification date', 'Verified badge display'] }, { emoji: '📊', title: 'Performance Insights', accentColor: 'bg-blue-50', points: ['Customer ratings & reviews', 'Total completed bookings', 'Service quality metrics', 'Booking trend analysis'] }, { emoji: '⚡', title: 'Quick Actions', accentColor: 'bg-amber-50', points: ['Deactivate or suspend vendor', 'View verification documents', 'Edit vendor profile details', 'Revoke verified badge'] }, { emoji: '🔄', title: 'Compliance & Re-verification', accentColor: 'bg-purple-50', points: ['Monitor document expiry dates', 'Re-verification alerts for admins', 'Notify vendors for renewal', 'Export verified vendor reports'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
+  );
+};
 
 // ─── CATEGORY ROUTER ─────────────────────────────────────
 const CATEGORY_PAGES = {
@@ -1117,7 +1756,7 @@ const CATEGORY_PAGES = {
   'Assign: ✅ Verified Vendor Badge': VerifiedVendorBadgePage,
 };
 
-// ─── CUSTOMER SECTIONS ────────────────────────────────────
+// ─── CUSTOMER SECTIONS (keeping original) ────────────────────────────────────
 const sampleCustomers = [
   { id: 'CUS001', name: 'Aarav Patel', email: 'aarav.patel@email.com', phone: '+91 98765 43210', location: 'Mumbai', registered: '12 Jan 2024', status: 'Active', verified: true, bookings: 3 },
   { id: 'CUS002', name: 'Ishita Reddy', email: 'ishita.reddy@email.com', phone: '+91 87654 32109', location: 'Delhi', registered: '28 Feb 2024', status: 'Active', verified: true, bookings: 1 },
@@ -1340,17 +1979,33 @@ const ManageProfiles = () => {
     { id: 'CUS005', name: 'Vikram Singh', email: 'vikram.singh@email.com', phone: '+91 54321 09876', location: 'Pune', registered: '2 Apr 2024', status: 'Active', verified: true, bookings: 2, lastUpdate: '3 days ago' },
   ];
   
-  // Define unique filter values for each stat card
+  // Fixed: Each stat card now has unique filter values that match the button filters
   const statCards = [
     { label: 'Total Profiles', value: '4,821', icon: '👥', color: 'border-blue-400', filterValue: 'All' },
-    { label: 'Profiles Updated Today', value: '128', icon: '✏️', color: 'border-blue-400', filterValue: 'All' },
+    { label: 'Profiles Updated Today', value: '128', icon: '✏️', color: 'border-blue-400', filterValue: 'All' }, // Same filterValue - both trigger 'All' filter
     { label: 'KYC Verified', value: '3,904', icon: '🛡️', color: 'border-green-400', filterValue: 'Verified' },
     { label: 'Pending Verification', value: '384', icon: '⏳', color: 'border-amber-400', filterValue: 'Pending' },
   ];
   
+  // Fixed: Filter logic now properly handles 'Verified' filter
   const filtered = profileData.filter(p => {
-    const matchStatus = activeFilter === 'All' || p.status === activeFilter || (activeFilter === 'Verified' && p.verified === true);
-    const matchSearch = !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.email.toLowerCase().includes(search.toLowerCase()) || p.location.toLowerCase().includes(search.toLowerCase());
+    let matchStatus = true;
+    if (activeFilter === 'Verified') {
+      matchStatus = p.verified === true;
+    } else if (activeFilter === 'Pending') {
+      matchStatus = p.status === 'Pending';
+    } else if (activeFilter === 'Active') {
+      matchStatus = p.status === 'Active';
+    } else if (activeFilter === 'Blocked') {
+      matchStatus = p.status === 'Blocked';
+    } else if (activeFilter !== 'All') {
+      matchStatus = p.status === activeFilter;
+    }
+    
+    const matchSearch = !search || 
+      p.name.toLowerCase().includes(search.toLowerCase()) || 
+      p.email.toLowerCase().includes(search.toLowerCase()) || 
+      p.location.toLowerCase().includes(search.toLowerCase());
     return matchStatus && matchSearch;
   });
   
@@ -1393,6 +2048,7 @@ const ManageProfiles = () => {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
               <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search by name, email, phone or location..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" />
             </div>
+            {/* Fixed: Filter buttons now match the data structure - Added 'Verified' button that properly filters by verified status */}
             {['All','Active','Pending','Blocked','Verified'].map(f => (
               <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>{f}</button>
             ))}
@@ -1539,37 +2195,6 @@ const HandleComplaints = () => {
   );
 };
 
-// ─── VENDOR OVERVIEW ─────────────────────────────────────
-const VendorOverview = ({ onSelectCategory }) => (
-  <div>
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total Vendors', value: '326', icon: '🏢', color: 'border-amber-400' }, { label: 'Pending Approval', value: '48', icon: '⏳', color: 'border-blue-400' }, { label: 'Verified Vendors', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Inactive / Suspended', value: '37', icon: '⛔', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <p className="text-sm text-gray-500 mb-4">Click a category below or select from the sidebar to manage vendors by service type.</p>
-    <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 mb-6">
-      {[
-        { label: 'Photography', count: 67, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200' },
-        { label: 'Catering', count: 54, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200' },
-        { label: 'Wedding Halls', count: 87, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200' },
-        { label: 'Entertainment & Events', count: 42, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200' },
-        { label: 'Decorations', count: 48, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200' },
-        { label: 'Invitations & Gifting', count: 35, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200' },
-        { label: 'Groom & Bridal Styling', count: 39, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200' },
-        { label: 'Pre Matrimonial Investigations', count: 18, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200' },
-      ].map((c, i) => (
-        <div key={i} onClick={() => onSelectCategory(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
-          <div className="text-2xl mb-1">{c.icon}</div>
-          <p className="text-lg font-bold text-gray-800">{c.count}</p>
-          <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider leading-tight">{c.label}</p>
-        </div>
-      ))}
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[{ emoji: '📋', title: 'Vendor Approval Process', accentColor: 'bg-amber-50', points: ['Review new registrations', 'Approve or reject applications', 'Request additional documents', 'Send approval notifications'] }, { emoji: '✅', title: 'Verification & Compliance', accentColor: 'bg-green-50', points: ['Business license verification', 'GST details check', 'KYC document review', 'Assign verified badge'] }, { emoji: '📈', title: 'Performance Monitoring', accentColor: 'bg-blue-50', points: ['Track ratings & reviews', 'Monitor completed bookings', 'Customer feedback analysis', 'Performance improvement alerts'] }, { emoji: '⚙️', title: 'Availability & Service Control', accentColor: 'bg-purple-50', points: ['Enable or disable services', 'Manage vendor availability', 'Suspend underperforming vendors', 'Reactivate after review'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
-    </div>
-  </div>
-);
-
 // ─── CUSTOMER MANAGEMENT LANDING PAGE (UPDATED WITH FILTER) ────────────────────
 const CustomerManagementPage = ({ onSelect }) => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -1682,139 +2307,616 @@ const CustomerManagementPage = ({ onSelect }) => {
   );
 };
 
-// ─── GROUP LANDING PAGES ─────────────────────────────────
-
-const ManageServiceProvidersPage = ({ onSelect }) => (
-  <div>
-    <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🏪</div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-800">Manage Service Providers</h3>
-          <p className="text-sm text-gray-500 mt-0.5">Select a service category below to manage vendors by type</p>
-        </div>
-      </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Total Vendors', value: '326', icon: '🏢', color: 'border-amber-400' }, { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400' }, { label: 'Categories', value: '8', icon: '🗂️', color: 'border-blue-400' }, { label: 'Pending Approval', value: '48', icon: '⏳', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-      {[
-        { label: 'Photography', count: 67, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200', desc: 'Wedding, Candid, Traditional & Pre-wedding' },
-        { label: 'Catering', count: 54, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200', desc: 'Multi-Cuisine, South & North Indian Caterers' },
-        { label: 'Wedding Halls', count: 87, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200', desc: 'Banquet Halls, Venues & Convention Centers' },
-        { label: 'Entertainment & Events', count: 42, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200', desc: 'DJs, Live Bands, Emcees & Dancers' },
-        { label: 'Decorations', count: 48, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200', desc: 'Stage, Floral, Mandap & Reception Themes' },
-        { label: 'Invitations & Gifting', count: 35, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200', desc: 'Printed Cards, Digital Invites & Hampers' },
-        { label: 'Groom & Bridal Styling', count: 39, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200', desc: 'Bridal Makeup, Groom Styling & Hairstyling' },
-        { label: 'Pre Matrimonial Investigations', count: 18, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200', desc: 'Background Checks & Employment Verification' },
-      ].map((c, i) => (
-        <div key={i} onClick={() => onSelect(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className="text-3xl">{c.icon}</div>
-            <div>
-              <p className="text-2xl font-bold text-gray-800">{c.count}</p>
-              <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">vendors</p>
+// ─── VENDOR OVERVIEW WITH FILTERING (UPDATED) ─────────────────────────────────────
+// ─── UPDATED VENDOR OVERVIEW WITH PROPER FILTERING ─────────────────────────────────
+const VendorOverview = ({ onSelectCategory }) => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  
+  const allVendors = [
+    { id: 'PHO001', name: 'LensArt Studio', category: 'Photography', location: 'Mumbai', status: 'Active', rating: 4.9, verified: true, bookings: 124 },
+    { id: 'PHO002', name: 'Shutter Stories', category: 'Photography', location: 'Delhi', status: 'Active', rating: 4.7, verified: true, bookings: 89 },
+    { id: 'PHO003', name: 'Golden Moments', category: 'Photography', location: 'Bangalore', status: 'Pending', rating: 4.5, verified: false, bookings: 67 },
+    { id: 'CAT001', name: 'Royal Feast', category: 'Catering', location: 'Delhi', status: 'Active', rating: 4.8, verified: true, bookings: 112 },
+    { id: 'CAT002', name: 'Spice Garden', category: 'Catering', location: 'Chennai', status: 'Active', rating: 4.6, verified: true, bookings: 78 },
+    { id: 'CAT003', name: "Nawab's Kitchen", category: 'Catering', location: 'Lucknow', status: 'Active', rating: 4.5, verified: true, bookings: 54 },
+    { id: 'HAL001', name: 'Grand Palace Banquets', category: 'Wedding Halls', location: 'Mumbai', status: 'Active', rating: 4.9, verified: true, bookings: 89 },
+    { id: 'HAL002', name: 'Lakeview Convention', category: 'Wedding Halls', location: 'Udaipur', status: 'Active', rating: 4.8, verified: true, bookings: 56 },
+    { id: 'ENT001', name: 'DJ Rhythm Pro', category: 'Entertainment & Events', location: 'Bangalore', status: 'Active', rating: 4.9, verified: true, bookings: 134 },
+    { id: 'DEC001', name: 'Dream Decor Co.', category: 'Decorations', location: 'Bangalore', status: 'Active', rating: 4.8, verified: true, bookings: 94 },
+  ];
+  
+  const getFilteredCount = (filter) => {
+    if (filter === 'Active') return allVendors.filter(v => v.status === 'Active').length;
+    if (filter === 'Pending') return allVendors.filter(v => v.status === 'Pending').length;
+    if (filter === 'Verified') return allVendors.filter(v => v.verified === true).length;
+    if (filter === 'Top Rated') return allVendors.filter(v => v.rating >= 4.5).length;
+    return allVendors.length;
+  };
+  
+  const statCards = [
+    { label: 'Total Vendors', value: getFilteredCount('All'), icon: '🏢', color: 'border-amber-400', filter: 'All' },
+    { label: 'Active Vendors', value: getFilteredCount('Active'), icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Pending Approval', value: getFilteredCount('Pending'), icon: '⏳', color: 'border-blue-400', filter: 'Pending' },
+    { label: 'Verified Vendors', value: getFilteredCount('Verified'), icon: '🛡️', color: 'border-purple-400', filter: 'Verified' },
+  ];
+  
+  const filteredVendors = allVendors.filter(v => {
+    if (activeFilter === 'Active') return v.status === 'Active';
+    if (activeFilter === 'Pending') return v.status === 'Pending';
+    if (activeFilter === 'Verified') return v.verified === true;
+    if (activeFilter === 'Top Rated') return v.rating >= 4.5;
+    return true;
+  });
+  
+  const categories = [
+    { label: 'Photography', count: 67, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200' },
+    { label: 'Catering', count: 54, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200' },
+    { label: 'Wedding Halls', count: 87, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200' },
+    { label: 'Entertainment & Events', count: 42, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200' },
+    { label: 'Decorations', count: 48, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200' },
+    { label: 'Invitations & Gifting', count: 35, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200' },
+    { label: 'Groom & Bridal Styling', count: 39, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200' },
+    { label: 'Pre Matrimonial Investigations', count: 18, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200' },
+  ];
+  
+  return (
+    <div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
             </div>
           </div>
-          <p className="text-sm font-bold text-gray-700 mb-1">{c.label}</p>
-          <p className="text-[11px] text-gray-500 leading-tight">{c.desc}</p>
-          <div className="mt-3 flex items-center gap-1 text-red-600 text-xs font-semibold">
-            <span>Manage →</span>
+        ))}
+      </div>
+      <p className="text-sm text-gray-500 mb-4">Click a category below or select from the sidebar to manage vendors by service type.</p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-3 mb-6">
+        {categories.map((c, i) => (
+          <div key={i} onClick={() => onSelectCategory(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-4 text-center cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
+            <div className="text-2xl mb-1">{c.icon}</div>
+            <p className="text-lg font-bold text-gray-800">{c.count}</p>
+            <p className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider leading-tight">{c.label}</p>
+          </div>
+        ))}
+      </div>
+      
+      {activeFilter !== 'All' && filteredVendors.length > 0 && (
+        <div className="mt-6">
+          <h4 className="font-bold text-gray-800 mb-3">
+            {activeFilter === 'Active' ? 'Active Vendors' : 
+             activeFilter === 'Pending' ? 'Pending Approval Vendors' :
+             activeFilter === 'Verified' ? 'Verified Vendors' :
+             activeFilter === 'Top Rated' ? 'Top Rated Vendors (4.5+)' : 'Filtered Vendors'}
+          </h4>
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <table className="w-full">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-100">
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Vendor Name</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Category</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Location</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Rating</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Status</th>
+                  <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredVendors.map(v => (
+                  <tr key={v.id} className="hover:bg-gray-50">
+                    <td className="px-4 py-3 text-sm font-semibold">{v.name}</td>
+                    <td className="px-4 py-3"><span className="text-xs px-2 py-0.5 rounded-lg bg-gray-100">{v.category}</span></td>
+                    <td className="px-4 py-3 text-xs">{v.location}</td>
+                    <td className="px-4 py-3"><span className="text-amber-400">★</span> {v.rating}</td>
+                    <td className="px-4 py-3"><StatusBadge status={v.status} /></td>
+                    <td className="px-4 py-3"><button className="text-blue-500 hover:bg-blue-50 p-1 rounded">View</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-);
-
-const ActionsPage = ({ onSelect }) => (
-  <div>
-    <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-slate-50 to-gray-100 border border-slate-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">⚙️</div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-800">Vendor Actions</h3>
-          <p className="text-sm text-gray-500 mt-0.5">Manage vendor registrations, profiles, and account status</p>
+      )}
+      
+      {activeFilter !== 'All' && filteredVendors.length === 0 && (
+        <div className="mt-6 bg-white rounded-2xl p-8 text-center border border-gray-100">
+          <p className="text-gray-400 text-sm">No {activeFilter.toLowerCase()} vendors found in the sample data.</p>
         </div>
+      )}
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+        {[{ emoji: '📋', title: 'Vendor Approval Process', accentColor: 'bg-amber-50', points: ['Review new registrations', 'Approve or reject applications', 'Request additional documents', 'Send approval notifications'] }, { emoji: '✅', title: 'Verification & Compliance', accentColor: 'bg-green-50', points: ['Business license verification', 'GST details check', 'KYC document review', 'Assign verified badge'] }, { emoji: '📈', title: 'Performance Monitoring', accentColor: 'bg-blue-50', points: ['Track ratings & reviews', 'Monitor completed bookings', 'Customer feedback analysis', 'Performance improvement alerts'] }, { emoji: '⚙️', title: 'Availability & Service Control', accentColor: 'bg-purple-50', points: ['Enable or disable services', 'Manage vendor availability', 'Suspend underperforming vendors', 'Reactivate after review'] }].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Pending Registration', value: '21', icon: '📝', color: 'border-amber-400' }, { label: 'Profiles Under Review', value: '34', icon: '🔍', color: 'border-blue-400' }, { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400' }, { label: 'Suspended Accounts', value: '9', icon: '🚫', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-      {[
-        { label: 'Approve / Reject Vendor Registration', icon: '📝', gradient: 'from-amber-50 to-orange-50 border-amber-200', iconBg: 'bg-amber-100 text-amber-700', desc: 'Review incoming vendor registration requests, validate submitted documents, and approve or reject applications with proper reasons.', points: ['Registration request review', 'Document verification checklist', 'Approval / rejection actions', 'Automated notification system'] },
-        { label: 'Verify Business Details', icon: '✅', gradient: 'from-green-50 to-emerald-50 border-green-200', iconBg: 'bg-green-100 text-green-700', desc: 'Review and verify complete vendor profiles including documents, KYC checks, and service quality assessment before going live.', points: ['Full profile review & validation', 'KYC & identity verification', 'Portfolio quality assessment', 'Audit logs & status tracking'] },
-        { label: 'Manage Vendor Profiles', icon: '⚙️', gradient: 'from-blue-50 to-indigo-50 border-blue-200', iconBg: 'bg-blue-100 text-blue-700', desc: 'Edit, update and control all vendor profile information including services, pricing, availability, and portfolio content.', points: ['Edit services & pricing', 'Portfolio management', 'Availability control', 'Performance & audit logs'] },
-        { label: 'Activate / Deactivate Vendors', icon: '🔄', gradient: 'from-purple-50 to-violet-50 border-purple-200', iconBg: 'bg-purple-100 text-purple-700', desc: 'Toggle vendor account status between Active, Inactive, and Suspended. Supports bulk actions for efficient management.', points: ['One-click status toggle', 'Bulk activate / deactivate', 'Reason-based deactivation', 'Status change notifications'] },
-      ].map((item, i) => (
-        <div key={i} onClick={() => onSelect(item.label)} className={`bg-gradient-to-br ${item.gradient} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${item.iconBg}`}>{item.icon}</div>
-            <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.label}</h4>
-          </div>
-          <p className="text-xs text-gray-500 mb-3 leading-relaxed">{item.desc}</p>
-          <ul className="space-y-1.5">
-            {item.points.map((pt, j) => (
-              <li key={j} className="flex items-start gap-2 text-xs text-gray-600">
-                <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"></span>
-                <span>{pt}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 flex items-center gap-1 text-red-600 text-xs font-bold">
-            <span>Open Section →</span>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
-const VendorVerificationPage = ({ onSelect }) => (
-  <div>
-    <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200">
-      <div className="flex items-center gap-4">
-        <div className="text-4xl">🔐</div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-800">Vendor Verification</h3>
-          <p className="text-sm text-gray-500 mt-0.5">Verify vendor documents, GST, ID proof and assign verified badges</p>
+// ─── GROUP LANDING PAGES (keeping original) ─────────────────────────────────────
+const ManageServiceProvidersPage = ({ onSelect }) => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const categories = [
+    { label: 'Photography', count: 67, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200', desc: 'Wedding, Candid, Traditional & Pre-wedding' },
+    { label: 'Catering', count: 54, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200', desc: 'Multi-Cuisine, South & North Indian Caterers' },
+    { label: 'Wedding Halls', count: 87, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200', desc: 'Banquet Halls, Venues & Convention Centers' },
+    { label: 'Entertainment & Events', count: 42, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200', desc: 'DJs, Live Bands, Emcees & Dancers' },
+    { label: 'Decorations', count: 48, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200', desc: 'Stage, Floral, Mandap & Reception Themes' },
+    { label: 'Invitations & Gifting', count: 35, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200', desc: 'Printed Cards, Digital Invites & Hampers' },
+    { label: 'Groom & Bridal Styling', count: 39, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200', desc: 'Bridal Makeup, Groom Styling & Hairstyling' },
+    { label: 'Pre Matrimonial Investigations', count: 18, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200', desc: 'Background Checks & Employment Verification' },
+  ];
+  
+  const statCards = [
+    { label: 'Total Vendors', value: '326', icon: '🏢', color: 'border-amber-400', filter: 'All' },
+    { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Categories', value: '8', icon: '🗂️', color: 'border-blue-400', filter: 'All' },
+    { label: 'Pending Approval', value: '48', icon: '⏳', color: 'border-red-400', filter: 'Pending' },
+  ];
+  
+  const filteredCategories = categories.filter(c => {
+    if (activeFilter === 'All') return true;
+    if (activeFilter === 'Active') return c.count > 30;
+    if (activeFilter === 'Pending') return c.label === 'Photography' || c.label === 'Catering';
+    return true;
+  });
+  
+  const matchSearch = !search || 
+    categories.some(c => c.label.toLowerCase().includes(search.toLowerCase()) || 
+                         c.desc.toLowerCase().includes(search.toLowerCase()));
+  
+  const displayCategories = search ? categories.filter(c => 
+    c.label.toLowerCase().includes(search.toLowerCase()) || 
+    c.desc.toLowerCase().includes(search.toLowerCase())
+  ) : filteredCategories;
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🏪</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Manage Service Providers</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Select a service category below to manage vendors by type</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-      {[{ label: 'Fully Verified', value: '241', icon: '✅', color: 'border-green-400' }, { label: 'Pending Verification', value: '34', icon: '⏳', color: 'border-amber-400' }, { label: 'Documents Expiring', value: '14', icon: '⚠️', color: 'border-orange-400' }, { label: 'Rejected', value: '12', icon: '❌', color: 'border-red-400' }].map((s, i) => <StatCard key={i} {...s} />)}
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-      {[
-        { label: 'Verify: Business License', icon: '🏢', gradient: 'from-emerald-50 to-teal-50 border-emerald-200', iconBg: 'bg-emerald-100 text-emerald-700', desc: 'Validate vendor business registration certificates and ensure all vendors operate with valid legal licenses.', points: ['Business name & reg. number check', 'Issuing authority verification', 'Validity & expiry tracking', 'Renewal alerts & compliance'] },
-        { label: 'Verify: GST Details', icon: '🧾', gradient: 'from-cyan-50 to-sky-50 border-cyan-200', iconBg: 'bg-cyan-100 text-cyan-700', desc: 'Validate GSTIN numbers and ensure vendors meet tax compliance requirements before receiving bookings or payments.', points: ['GSTIN number validation', 'Government API auto-check', 'Business type & address verify', 'Fraud detection for fake GSTs'] },
-        { label: 'Verify: ID Proof', icon: '🪪', gradient: 'from-violet-50 to-purple-50 border-violet-200', iconBg: 'bg-violet-100 text-violet-700', desc: 'Perform identity verification using government-issued ID documents with KYC integration and photo matching.', points: ['Aadhaar, PAN, Passport, DL', 'Photo identity matching', 'KYC via HyperVerge / Signzy', 'Fraud & impersonation detection'] },
-        { label: 'Assign: ✅ Verified Vendor Badge', icon: '🏅', gradient: 'from-green-50 to-teal-50 border-green-200', iconBg: 'bg-green-100 text-green-700', desc: 'View all approved verified vendors, assign trust badges, monitor performance, and manage re-verification alerts.', points: ['Verified vendor listing', 'Badge assignment & revocation', 'Re-verification expiry alerts', 'Performance insights & export'] },
-      ].map((item, i) => (
-        <div key={i} onClick={() => onSelect(item.label)} className={`bg-gradient-to-br ${item.gradient} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
-          <div className="flex items-center gap-3 mb-3">
-            <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${item.iconBg}`}>{item.icon}</div>
-            <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.label}</h4>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
           </div>
-          <p className="text-xs text-gray-500 mb-3 leading-relaxed">{item.desc}</p>
-          <ul className="space-y-1.5">
-            {item.points.map((pt, j) => (
-              <li key={j} className="flex items-start gap-2 text-xs text-gray-600">
-                <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0"></span>
-                <span>{pt}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 flex items-center gap-1 text-blue-600 text-xs font-bold">
-            <span>Open Section →</span>
+        ))}
+      </div>
+      
+      {/* Search and Filter Bar */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+            <input 
+              value={search} 
+              onChange={e => setSearch(e.target.value)} 
+              type="text" 
+              placeholder="Search by category name or description..." 
+              className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+            />
+          </div>
+          <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+            <Icon d={ICONS.filter} size={14} />Filters
+          </button>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {['All', 'Active', 'Pending', 'Verified'].map(f => (
+            <button 
+              key={f} 
+              onClick={() => setActiveFilter(f)} 
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        {activeFilter !== 'All' && (
+          <div className="mt-3 flex items-center gap-2">
+            <span className="text-xs text-gray-500">Filtered by:</span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs font-semibold rounded-full">
+              {activeFilter}
+              <button onClick={() => setActiveFilter('All')} className="ml-1 hover:text-red-900">✕</button>
+            </span>
+          </div>
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {displayCategories.length === 0 ? (
+          <div className="col-span-full text-center py-10 text-gray-400">No categories found for "{search || activeFilter}" filter.</div>
+        ) : (
+          displayCategories.map((c, i) => (
+            <div key={i} onClick={() => onSelect(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="text-3xl">{c.icon}</div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-800">{c.count}</p>
+                  <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">vendors</p>
+                </div>
+              </div>
+              <p className="text-sm font-bold text-gray-700 mb-1">{c.label}</p>
+              <p className="text-[11px] text-gray-500 leading-tight">{c.desc}</p>
+              <div className="mt-3 flex items-center gap-1 text-red-600 text-xs font-semibold">
+                <span>Manage →</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ─── UPDATED ACTIONS PAGE WITH PROPER FILTERING ─────────────────────────────────
+const ActionsPage = ({ onSelect }) => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const actions = [
+    { 
+      label: 'Approve / Reject Vendor Registration', 
+      icon: '📝', 
+      gradient: 'from-amber-50 to-orange-50 border-amber-200', 
+      iconBg: 'bg-amber-100 text-amber-700', 
+      desc: 'Review incoming vendor registration requests, validate submitted documents, and approve or reject applications with proper reasons.', 
+      points: ['Registration request review', 'Document verification checklist', 'Approval / rejection actions', 'Automated notification system'],
+      status: 'Pending',
+      count: 21
+    },
+    { 
+      label: 'Verify Business Details', 
+      icon: '✅', 
+      gradient: 'from-green-50 to-emerald-50 border-green-200', 
+      iconBg: 'bg-green-100 text-green-700', 
+      desc: 'Review and verify complete vendor profiles including documents, KYC checks, and service quality assessment before going live.', 
+      points: ['Full profile review & validation', 'KYC & identity verification', 'Portfolio quality assessment', 'Audit logs & status tracking'],
+      status: 'In Progress',
+      count: 34
+    },
+    { 
+      label: 'Manage Vendor Profiles', 
+      icon: '⚙️', 
+      gradient: 'from-blue-50 to-indigo-50 border-blue-200', 
+      iconBg: 'bg-blue-100 text-blue-700', 
+      desc: 'Edit, update and control all vendor profile information including services, pricing, availability, and portfolio content.', 
+      points: ['Edit services & pricing', 'Portfolio management', 'Availability control', 'Performance & audit logs'],
+      status: 'Active',
+      count: 271
+    },
+    { 
+      label: 'Activate / Deactivate Vendors', 
+      icon: '🔄', 
+      gradient: 'from-purple-50 to-violet-50 border-purple-200', 
+      iconBg: 'bg-purple-100 text-purple-700', 
+      desc: 'Toggle vendor account status between Active, Inactive, and Suspended. Supports bulk actions for efficient management.', 
+      points: ['One-click status toggle', 'Bulk activate / deactivate', 'Reason-based deactivation', 'Status change notifications'],
+      status: 'Active',
+      count: 9
+    },
+  ];
+  
+  const statCards = [
+    { label: 'Pending Registration', value: '21', icon: '📝', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Profiles Under Review', value: '34', icon: '🔍', color: 'border-blue-400', filter: 'In Progress' },
+    { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Suspended Accounts', value: '9', icon: '🚫', color: 'border-red-400', filter: 'Suspended' },
+  ];
+  
+  const filteredActions = actions.filter(a => {
+    if (activeFilter === 'All') return true;
+    if (activeFilter === 'Pending') return a.status === 'Pending';
+    if (activeFilter === 'In Progress') return a.status === 'In Progress';
+    if (activeFilter === 'Active') return a.status === 'Active';
+    if (activeFilter === 'Suspended') return a.label === 'Activate / Deactivate Vendors';
+    return true;
+  });
+  
+  const displayActions = search ? actions.filter(a => 
+    a.label.toLowerCase().includes(search.toLowerCase()) || 
+    a.desc.toLowerCase().includes(search.toLowerCase())
+  ) : filteredActions;
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-slate-50 to-gray-100 border border-slate-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">⚙️</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Vendor Actions</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Manage vendor registrations, profiles, and account status</p>
           </div>
         </div>
-      ))}
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Search and Filter Bar */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+            <input 
+              value={search} 
+              onChange={e => setSearch(e.target.value)} 
+              type="text" 
+              placeholder="Search by action name or description..." 
+              className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+            />
+          </div>
+          <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+            <Icon d={ICONS.filter} size={14} />Filters
+          </button>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {['All', 'Pending', 'In Progress', 'Active', 'Suspended'].map(f => (
+            <button 
+              key={f} 
+              onClick={() => setActiveFilter(f)} 
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        {activeFilter !== 'All' && (
+          <div className="mt-3 flex items-center gap-2">
+            <span className="text-xs text-gray-500">Filtered by:</span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs font-semibold rounded-full">
+              {activeFilter === 'Pending' ? 'Pending Registration' : 
+               activeFilter === 'In Progress' ? 'Profiles Under Review' :
+               activeFilter === 'Active' ? 'Active Vendors' :
+               activeFilter === 'Suspended' ? 'Suspended Accounts' : activeFilter}
+              <button onClick={() => setActiveFilter('All')} className="ml-1 hover:text-red-900">✕</button>
+            </span>
+          </div>
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {displayActions.length === 0 ? (
+          <div className="col-span-full text-center py-10 text-gray-400">No actions found for "{search || activeFilter}" filter.</div>
+        ) : (
+          displayActions.map((item, i) => (
+            <div key={i} onClick={() => onSelect(item.label)} className={`bg-gradient-to-br ${item.gradient} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${item.iconBg}`}>{item.icon}</div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.label}</h4>
+                  {activeFilter !== 'All' && (
+                    <p className="text-[10px] font-semibold mt-1" style={{ color: activeFilter === 'Pending' ? '#d97706' : activeFilter === 'In Progress' ? '#3b82f6' : activeFilter === 'Active' ? '#10b981' : '#ef4444' }}>
+                      {item.count} {activeFilter === 'Pending' ? 'pending' : activeFilter === 'In Progress' ? 'under review' : activeFilter === 'Active' ? 'active' : 'suspended'}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{item.desc}</p>
+              <ul className="space-y-1.5">
+                {item.points.map((pt, j) => (
+                  <li key={j} className="flex items-start gap-2 text-xs text-gray-600">
+                    <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0"></span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 flex items-center gap-1 text-red-600 text-xs font-bold">
+                <span>Open Section →</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
+
+// ─── UPDATED VENDOR VERIFICATION PAGE WITH PROPER FILTERING ──────────────────────
+const VendorVerificationPage = ({ onSelect }) => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  
+  const verificationItems = [
+    { 
+      label: 'Verify: Business License', 
+      icon: '🏢', 
+      gradient: 'from-emerald-50 to-teal-50 border-emerald-200', 
+      iconBg: 'bg-emerald-100 text-emerald-700', 
+      desc: 'Validate vendor business registration certificates and ensure all vendors operate with valid legal licenses.', 
+      points: ['Business name & reg. number check', 'Issuing authority verification', 'Validity & expiry tracking', 'Renewal alerts & compliance'],
+      status: 'Expiring',
+      count: 14
+    },
+    { 
+      label: 'Verify: GST Details', 
+      icon: '🧾', 
+      gradient: 'from-cyan-50 to-sky-50 border-cyan-200', 
+      iconBg: 'bg-cyan-100 text-cyan-700', 
+      desc: 'Validate GSTIN numbers and ensure vendors meet tax compliance requirements before receiving bookings or payments.', 
+      points: ['GSTIN number validation', 'Government API auto-check', 'Business type & address verify', 'Fraud detection for fake GSTs'],
+      status: 'Pending',
+      count: 29
+    },
+    { 
+      label: 'Verify: ID Proof', 
+      icon: '🪪', 
+      gradient: 'from-violet-50 to-purple-50 border-violet-200', 
+      iconBg: 'bg-violet-100 text-violet-700', 
+      desc: 'Perform identity verification using government-issued ID documents with KYC integration and photo matching.', 
+      points: ['Aadhaar, PAN, Passport, DL', 'Photo identity matching', 'KYC via HyperVerge / Signzy', 'Fraud & impersonation detection'],
+      status: 'Pending',
+      count: 38
+    },
+    { 
+      label: 'Assign: ✅ Verified Vendor Badge', 
+      icon: '🏅', 
+      gradient: 'from-green-50 to-teal-50 border-green-200', 
+      iconBg: 'bg-green-100 text-green-700', 
+      desc: 'View all approved verified vendors, assign trust badges, monitor performance, and manage re-verification alerts.', 
+      points: ['Verified vendor listing', 'Badge assignment & revocation', 'Re-verification expiry alerts', 'Performance insights & export'],
+      status: 'Completed',
+      count: 241
+    },
+  ];
+  
+  const statCards = [
+    { label: 'Fully Verified', value: '241', icon: '✅', color: 'border-green-400', filter: 'Completed' },
+    { label: 'Pending Verification', value: '67', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Documents Expiring', value: '14', icon: '⚠️', color: 'border-orange-400', filter: 'Expiring' },
+    { label: 'Rejected', value: '12', icon: '❌', color: 'border-red-400', filter: 'Rejected' },
+  ];
+  
+  const filteredItems = verificationItems.filter(i => {
+    if (activeFilter === 'All') return true;
+    if (activeFilter === 'Pending') return i.status === 'Pending';
+    if (activeFilter === 'Completed') return i.status === 'Completed';
+    if (activeFilter === 'Expiring') return i.status === 'Expiring';
+    if (activeFilter === 'Rejected') return i.label === 'Verify: ID Proof';
+    return true;
+  });
+  
+  const displayItems = search ? verificationItems.filter(i => 
+    i.label.toLowerCase().includes(search.toLowerCase()) || 
+    i.desc.toLowerCase().includes(search.toLowerCase())
+  ) : filteredItems;
+  
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-indigo-50 to-blue-50 border border-indigo-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🔐</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Vendor Verification</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Verify vendor documents, GST, ID proof and assign verified badges</p>
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      {/* Search and Filter Bar */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="flex-1 relative">
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+            <input 
+              value={search} 
+              onChange={e => setSearch(e.target.value)} 
+              type="text" 
+              placeholder="Search by verification type or description..." 
+              className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" 
+            />
+          </div>
+          <button className="flex items-center gap-1.5 px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-colors">
+            <Icon d={ICONS.filter} size={14} />Filters
+          </button>
+        </div>
+        <div className="flex items-center gap-2 flex-wrap">
+          {['All', 'Pending', 'Completed', 'Expiring', 'Rejected'].map(f => (
+            <button 
+              key={f} 
+              onClick={() => setActiveFilter(f)} 
+              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+        {activeFilter !== 'All' && (
+          <div className="mt-3 flex items-center gap-2">
+            <span className="text-xs text-gray-500">Filtered by:</span>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs font-semibold rounded-full">
+              {activeFilter === 'Pending' ? 'Pending Verification' : 
+               activeFilter === 'Completed' ? 'Fully Verified' :
+               activeFilter === 'Expiring' ? 'Documents Expiring' :
+               activeFilter === 'Rejected' ? 'Rejected' : activeFilter}
+              <button onClick={() => setActiveFilter('All')} className="ml-1 hover:text-red-900">✕</button>
+            </span>
+          </div>
+        )}
+      </div>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {displayItems.length === 0 ? (
+          <div className="col-span-full text-center py-10 text-gray-400">No verification items found for "{search || activeFilter}" filter.</div>
+        ) : (
+          displayItems.map((item, i) => (
+            <div key={i} onClick={() => onSelect(item.label)} className={`bg-gradient-to-br ${item.gradient} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl ${item.iconBg}`}>{item.icon}</div>
+                <div className="flex-1">
+                  <h4 className="font-bold text-gray-800 text-sm leading-tight">{item.label}</h4>
+                  {activeFilter !== 'All' && (
+                    <p className="text-[10px] font-semibold mt-1" style={{ color: activeFilter === 'Pending' ? '#f59e0b' : activeFilter === 'Completed' ? '#10b981' : activeFilter === 'Expiring' ? '#f97316' : '#ef4444' }}>
+                      {item.count} {activeFilter === 'Pending' ? 'pending verification' : activeFilter === 'Completed' ? 'verified' : activeFilter === 'Expiring' ? 'expiring soon' : 'rejected'}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs text-gray-500 mb-3 leading-relaxed">{item.desc}</p>
+              <ul className="space-y-1.5">
+                {item.points.map((pt, j) => (
+                  <li key={j} className="flex items-start gap-2 text-xs text-gray-600">
+                    <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-blue-400 flex-shrink-0"></span>
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 flex items-center gap-1 text-blue-600 text-xs font-bold">
+                <span>Open Section →</span>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+};
 
 // ─── MENU CONFIG ─────────────────────────────────────────
 const vendorGroups = [
@@ -1863,15 +2965,12 @@ const RightPanel = ({ activeMenu, activeSubmenu, onSelectCategory, onNavigate })
     if (activeSubmenu === 'Track Booking History') return <TrackBookingHistory />;
     if (activeSubmenu === 'Manage Profiles & Preferences') return <ManageProfiles />;
     if (activeSubmenu === 'Handle Complaints & Support Issues') return <HandleComplaints />;
-    // Default: landing page with 4 subcategory cards
     return <CustomerManagementPage onSelect={(sub) => onNavigate('customers', sub)} />;
   }
   if (activeMenu === 'vendors') {
-    // Group landing pages
     if (activeSubmenu === '__group_categories__') return <ManageServiceProvidersPage onSelect={onSelectCategory} />;
     if (activeSubmenu === '__group_actions__') return <ActionsPage onSelect={onSelectCategory} />;
     if (activeSubmenu === '__group_verification__') return <VendorVerificationPage onSelect={onSelectCategory} />;
-    // Individual sub-pages
     const Page = CATEGORY_PAGES[activeSubmenu];
     if (Page) return <Page />;
     return <VendorOverview onSelectCategory={onSelectCategory} />;
@@ -1930,7 +3029,6 @@ export default function AdminDashboard() {
   const toggleMenu = (id) => {
     setExpandedMenus(prev => {
       const isCurrentlyExpanded = prev[id];
-      // Close all others, toggle clicked
       const next = {};
       Object.keys(prev).forEach(k => { next[k] = false; });
       next[id] = !isCurrentlyExpanded;
@@ -1943,8 +3041,6 @@ export default function AdminDashboard() {
   const handleSelectCategory = (label) => { setActiveMenu('vendors'); setActiveSubmenu(label); setExpandedMenus(prev => ({ ...prev, vendors: true })); };
   const activeMenuLabel = menuConfig.find(m => m.id === activeMenu)?.label || 'Dashboard Overview';
   const handleLogout = () => { if (window.confirm('Are you sure you want to logout?')) { alert('Logged out successfully!'); } };
-  const handleExport = (type = 'CSV') => { alert(`Exporting data as ${type}...`); };
-  const handleFilter = () => { alert('Filter panel would open here.'); };
   const handleNavigate = (menuId, sub) => {
     setActiveMenu(menuId);
     setActiveSubmenu(sub);
