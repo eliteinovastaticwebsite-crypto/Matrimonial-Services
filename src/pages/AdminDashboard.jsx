@@ -2150,67 +2150,763 @@ const ComplaintsDisputesPage = () => {
   );
 };
 
-// ─── ANALYTICS & REPORTS PAGE WITH GRAPHS ────────────────────────────────────
+// ─── ANALYTICS & REPORTS PAGE WITH ENHANCED CHART COLORS ────────────────────────────────────
 const AnalyticsReportsPage = () => {
   const [dateRange, setDateRange] = useState('This Month');
-  const [activeTab, setActiveTab] = useState('Revenue');
-  
-  const tabs = ['Revenue', 'Bookings', 'Vendors', 'Complaints'];
-  
+  const [activeChart, setActiveChart] = useState('revenue');
+
+  const chartTypes = [
+    { id: 'revenue', label: 'Revenue', icon: '💰', type: 'line-area' },
+    { id: 'bookings', label: 'Bookings', icon: '📅', type: 'grouped-bar' },
+    { id: 'vendors', label: 'Vendors', icon: '👥', type: 'stacked-bar' },
+    { id: 'categories', label: 'Categories', icon: '📊', type: 'horizontal-bar' },
+    { id: 'complaints', label: 'Complaints', icon: '⚠️', type: 'donut' },
+    { id: 'growth', label: 'Growth', icon: '📈', type: 'radial-progress' },
+  ];
+
   const monthlyData = [
-    { month: 'Jan', revenue: 425000, bookings: 124, vendors: 28, complaints: 12 },
-    { month: 'Feb', revenue: 389000, bookings: 108, vendors: 31, complaints: 8 },
-    { month: 'Mar', revenue: 512000, bookings: 156, vendors: 35, complaints: 15 },
-    { month: 'Apr', revenue: 478000, bookings: 142, vendors: 38, complaints: 11 },
-    { month: 'May', revenue: 623000, bookings: 189, vendors: 42, complaints: 19 },
-    { month: 'Jun', revenue: 589000, bookings: 167, vendors: 45, complaints: 14 },
+    { month: 'Jan', revenue: 425000, bookings: 124, vendors: 28, complaints: 12, growth: 5, target: 400000 },
+    { month: 'Feb', revenue: 389000, bookings: 108, vendors: 31, complaints: 8, growth: -2, target: 410000 },
+    { month: 'Mar', revenue: 512000, bookings: 156, vendors: 35, complaints: 15, growth: 8, target: 450000 },
+    { month: 'Apr', revenue: 478000, bookings: 142, vendors: 38, complaints: 11, growth: 3, target: 470000 },
+    { month: 'May', revenue: 623000, bookings: 189, vendors: 42, complaints: 19, growth: 12, target: 500000 },
+    { month: 'Jun', revenue: 589000, bookings: 167, vendors: 45, complaints: 14, growth: 7, target: 550000 },
   ];
 
   const categoryData = [
-    { name: 'Photography', bookings: 1847, revenue: 831150, growth: 15 },
-    { name: 'Catering', bookings: 1562, revenue: 1874400, growth: 22 },
-    { name: 'Wedding Halls', bookings: 892, revenue: 3122000, growth: 8 },
-    { name: 'Entertainment', bookings: 1234, revenue: 3702000, growth: 18 },
-    { name: 'Decorations', bookings: 1045, revenue: 679250, growth: 12 },
-    { name: 'Bridal Styling', bookings: 978, revenue: 488000, growth: 25 },
+    { name: 'Photography', bookings: 1847, revenue: 831150, percentage: 22, color: '#f43f5e', trend: [120, 145, 168, 189, 205, 224, 241, 258, 275, 292] },
+    { name: 'Catering', bookings: 1562, revenue: 1874400, percentage: 19, color: '#f97316', trend: [98, 112, 128, 145, 162, 179, 195, 211, 228, 245] },
+    { name: 'Wedding Halls', bookings: 892, revenue: 3122000, percentage: 11, color: '#3b82f6', trend: [56, 62, 71, 79, 86, 93, 101, 108, 115, 122] },
+    { name: 'Entertainment', bookings: 1234, revenue: 3702000, percentage: 15, color: '#8b5cf6', trend: [78, 89, 102, 115, 128, 141, 154, 167, 180, 193] },
+    { name: 'Decorations', bookings: 1045, revenue: 679250, percentage: 13, color: '#ec489a', trend: [65, 74, 83, 92, 101, 110, 119, 128, 137, 146] },
+    { name: 'Bridal Styling', bookings: 978, revenue: 488000, percentage: 12, color: '#14b8a6', trend: [58, 67, 78, 89, 101, 112, 123, 135, 146, 158] },
   ];
 
   const vendorPerformance = [
-    { name: 'LensArt Studio', category: 'Photography', bookings: 124, rating: 4.9, revenue: 558000, growth: 18 },
-    { name: 'Royal Feast', category: 'Catering', bookings: 112, rating: 4.8, revenue: 1344000, growth: 22 },
-    { name: 'DJ Rhythm Pro', category: 'Entertainment', bookings: 134, rating: 4.9, revenue: 402000, growth: 15 },
-    { name: 'Grand Palace', category: 'Wedding Halls', bookings: 89, rating: 4.9, revenue: 3115000, growth: 12 },
-    { name: 'Dream Decor', category: 'Decorations', bookings: 94, rating: 4.8, revenue: 611000, growth: 8 },
-    { name: 'Glam Studio', category: 'Bridal Styling', bookings: 203, rating: 4.9, revenue: 365400, growth: 28 },
+    { name: 'LensArt Studio', category: 'Photography', bookings: 124, rating: 4.9, revenue: 558000, growth: 18, trend: [65, 72, 78, 85, 92, 98, 105, 112, 118, 124] },
+    { name: 'Royal Feast', category: 'Catering', bookings: 112, rating: 4.8, revenue: 1344000, growth: 22, trend: [45, 52, 61, 70, 78, 85, 94, 101, 107, 112] },
+    { name: 'DJ Rhythm Pro', category: 'Entertainment', bookings: 134, rating: 4.9, revenue: 402000, growth: 15, trend: [68, 74, 82, 89, 96, 104, 112, 119, 127, 134] },
+    { name: 'Grand Palace', category: 'Wedding Halls', bookings: 89, rating: 4.9, revenue: 3115000, growth: 12, trend: [42, 48, 54, 59, 65, 71, 76, 81, 85, 89] },
+    { name: 'Dream Decor', category: 'Decorations', bookings: 94, rating: 4.8, revenue: 611000, growth: 8, trend: [56, 61, 65, 70, 74, 79, 83, 87, 91, 94] },
+    { name: 'Glam Studio', category: 'Bridal Styling', bookings: 203, rating: 4.9, revenue: 365400, growth: 28, trend: [88, 102, 118, 134, 151, 167, 179, 189, 197, 203] },
   ];
 
-  const getMaxValue = () => {
-    if (activeTab === 'Revenue') return Math.max(...monthlyData.map(d => d.revenue));
-    if (activeTab === 'Bookings') return Math.max(...monthlyData.map(d => d.bookings));
-    if (activeTab === 'Vendors') return Math.max(...monthlyData.map(d => d.vendors));
-    if (activeTab === 'Complaints') return Math.max(...monthlyData.map(d => d.complaints));
-    return 100;
+  const getMaxRevenue = () => Math.max(...monthlyData.map(d => d.revenue));
+  const getMaxBookings = () => Math.max(...monthlyData.map(d => d.bookings));
+
+  // ==================== REVENUE: VIBRANT LINE + AREA CHART ====================
+  const RevenueLineAreaChart = () => {
+    const maxRevenue = getMaxRevenue();
+    
+    return (
+      <div>
+        <div className="relative h-64 mb-4">
+          <svg viewBox="0 0 600 240" className="w-full h-full">
+            {/* Grid lines */}
+            {[0, 25, 50, 75, 100].map((percent, i) => (
+              <g key={i}>
+                <line x1="0" y1={240 - (percent / 100) * 200} x2="600" y2={240 - (percent / 100) * 200} stroke="#e2e8f0" strokeWidth="0.5" strokeDasharray="4" />
+                <text x="585" y={240 - (percent / 100) * 200 - 3} fontSize="8" fill="#94a3b8">
+                  ₹{(maxRevenue * (percent / 100) / 1000).toFixed(0)}K
+                </text>
+              </g>
+            ))}
+            
+            {/* Vibrant Area fill - Gradient from vibrant green to light green */}
+            <polygon
+              fill="url(#revenueGradient)"
+              stroke="none"
+              points={`0,240 ${monthlyData.map((d, i) => `${(i * 600) / (monthlyData.length - 1)},${240 - (d.revenue / maxRevenue) * 200}`).join(' ')} 600,240`}
+            />
+            
+            {/* Bold Gradient Line */}
+            <polyline
+              fill="none"
+              stroke="url(#revenueLineGradient)"
+              strokeWidth="3.5"
+              points={monthlyData.map((d, i) => `${(i * 600) / (monthlyData.length - 1)},${240 - (d.revenue / maxRevenue) * 200}`).join(' ')}
+            />
+            
+            {/* Data points with glow effect */}
+            {monthlyData.map((d, i) => (
+              <g key={i}>
+                <circle cx={(i * 600) / (monthlyData.length - 1)} cy={240 - (d.revenue / maxRevenue) * 200} r="5" fill="#10b981" stroke="white" strokeWidth="2" />
+                <circle cx={(i * 600) / (monthlyData.length - 1)} cy={240 - (d.revenue / maxRevenue) * 200} r="2" fill="#ffffff" />
+                <text x={(i * 600) / (monthlyData.length - 1)} y={240 - (d.revenue / maxRevenue) * 200 - 10} fontSize="9" textAnchor="middle" fill="#10b981" fontWeight="bold">
+                  ₹{(d.revenue / 1000).toFixed(0)}K
+                </text>
+              </g>
+            ))}
+            
+            <defs>
+              <linearGradient id="revenueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.4" />
+                <stop offset="50%" stopColor="#34d399" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#d1fae5" stopOpacity="0.05" />
+              </linearGradient>
+              <linearGradient id="revenueLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="50%" stopColor="#34d399" />
+                <stop offset="100%" stopColor="#059669" />
+              </linearGradient>
+            </defs>
+          </svg>
+          
+          {/* X-axis labels */}
+          <div className="flex justify-between mt-2">
+            {monthlyData.map(d => (
+              <div key={d.month} className="text-center flex-1">
+                <p className="text-xs font-semibold text-gray-600">{d.month}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Target vs Actual Comparison with vibrant colors */}
+        <div className="mt-4 pt-4 border-t border-gray-100">
+          <p className="text-xs font-semibold text-gray-700 mb-3">📊 Revenue vs Target</p>
+          <div className="space-y-2">
+            {monthlyData.map((d, idx) => {
+              const percentOfTarget = (d.revenue / d.target) * 100;
+              return (
+                <div key={idx}>
+                  <div className="flex justify-between text-[10px] mb-0.5">
+                    <span className="text-gray-500">{d.month}</span>
+                    <span className="font-semibold text-emerald-600">{Math.round(percentOfTarget)}% of target</span>
+                  </div>
+                  <div className="flex gap-1 h-4">
+                    <div 
+                      className="bg-gradient-to-r from-emerald-500 to-green-500 rounded-l-full transition-all"
+                      style={{ width: `${Math.min(percentOfTarget, 100)}%` }}
+                    />
+                    {percentOfTarget > 100 && (
+                      <div 
+                        className="bg-emerald-300 rounded-r-full transition-all"
+                        style={{ width: `${percentOfTarget - 100}%` }}
+                      />
+                    )}
+                    <div 
+                      className="bg-gray-200 rounded-r-full transition-all"
+                      style={{ width: `${Math.max(0, 100 - percentOfTarget)}%` }}
+                    />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  const getBarWidth = (value) => {
-    const max = getMaxValue();
-    return (value / max) * 100;
+  // ==================== BOOKINGS: VIBRANT GROUPED BAR CHART ====================
+  const BookingsGroupedBarChart = () => {
+    const maxBookings = getMaxBookings();
+    const previousYearData = [112, 98, 142, 128, 165, 148];
+    
+    return (
+      <div>
+        <div className="relative h-80">
+          <svg viewBox="0 0 700 280" className="w-full h-full">
+            {/* Y-axis grid */}
+            {[0, 50, 100, 150, 200].map((value, i) => (
+              <g key={i}>
+                <line x1="40" y1={280 - (value / 200) * 240} x2="680" y2={280 - (value / 200) * 240} stroke="#e2e8f0" strokeWidth="0.5" />
+                <text x="30" y={280 - (value / 200) * 240 + 3} fontSize="9" fill="#94a3b8">{value}</text>
+              </g>
+            ))}
+            
+            {monthlyData.map((d, idx) => {
+              const x = 60 + (idx * 100);
+              const barWidth = 35;
+              const currentHeight = (d.bookings / maxBookings) * 240;
+              const previousHeight = (previousYearData[idx] / maxBookings) * 240;
+              
+              return (
+                <g key={idx}>
+                  {/* Current year bar - Vibrant Blue Gradient */}
+                  <rect 
+                    x={x} 
+                    y={280 - currentHeight} 
+                    width={barWidth} 
+                    height={currentHeight} 
+                    fill="url(#currentGradient)" 
+                    rx="4"
+                    className="transition-all duration-500 cursor-pointer hover:opacity-90"
+                  >
+                    <title>{d.bookings} bookings in {d.month}</title>
+                  </rect>
+                  {/* Previous year bar - Soft Blue Gradient */}
+                  <rect 
+                    x={x + barWidth + 5} 
+                    y={280 - previousHeight} 
+                    width={barWidth} 
+                    height={previousHeight} 
+                    fill="url(#previousGradient)" 
+                    rx="4"
+                    className="transition-all duration-500"
+                  >
+                    <title>{previousYearData[idx]} bookings last year</title>
+                  </rect>
+                  
+                  {/* Value labels */}
+                  <text x={x + barWidth/2} y={280 - currentHeight - 5} fontSize="8" textAnchor="middle" fill="#2563eb" fontWeight="bold">
+                    {d.bookings}
+                  </text>
+                  <text x={x + barWidth + 5 + barWidth/2} y={280 - previousHeight - 5} fontSize="8" textAnchor="middle" fill="#60a5fa">
+                    {previousYearData[idx]}
+                  </text>
+                  
+                  {/* Month label */}
+                  <text x={x + barWidth + 5 + barWidth/2} y={275} fontSize="9" textAnchor="middle" fill="#374151" fontWeight="semibold">
+                    {d.month}
+                  </text>
+                </g>
+              );
+            })}
+            
+            <defs>
+              <linearGradient id="currentGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="50%" stopColor="#2563eb" />
+                <stop offset="100%" stopColor="#1e40af" />
+              </linearGradient>
+              <linearGradient id="previousGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#93c5fd" />
+                <stop offset="100%" stopColor="#60a5fa" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        
+        {/* Legend */}
+        <div className="flex justify-center gap-6 mt-3">
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-gradient-to-b from-blue-500 to-blue-800"></div>
+            <span className="text-xs text-gray-600">Current Year</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-4 h-4 rounded bg-gradient-to-b from-blue-300 to-blue-400"></div>
+            <span className="text-xs text-gray-600">Previous Year</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-0.5 bg-gradient-to-r from-green-400 to-emerald-500"></div>
+            <span className="text-xs text-gray-600">Growth Trend</span>
+          </div>
+        </div>
+        
+        {/* Growth indicator */}
+        <div className="mt-4 p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-100">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-semibold text-blue-800">📈 Year-over-Year Growth</span>
+            <span className="text-sm font-bold text-blue-600">+12.8%</span>
+          </div>
+          <div className="w-full bg-blue-200 rounded-full h-1.5 mt-2">
+            <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-1.5 rounded-full" style={{ width: '68%' }}></div>
+          </div>
+          <p className="text-[10px] text-blue-600 mt-2">June bookings increased by 13% compared to last year</p>
+        </div>
+      </div>
+    );
   };
 
-  const getBarColor = () => {
-    if (activeTab === 'Revenue') return 'bg-green-500';
-    if (activeTab === 'Bookings') return 'bg-blue-500';
-    if (activeTab === 'Vendors') return 'bg-amber-500';
-    if (activeTab === 'Complaints') return 'bg-red-500';
-    return 'bg-gray-500';
+  // ==================== VENDORS: VIBRANT DETAILED MULTI-METRIC CHART ====================
+  const VendorsStackedBarChart = () => {
+    const [vendorView, setVendorView] = useState('overview');
+    
+    const monthlyData = [
+      { month: 'Jan', vendors: 28, newVendors: 5, pending: 3, rejected: 1, verified: 22, applications: 9 },
+      { month: 'Feb', vendors: 31, newVendors: 4, pending: 4, rejected: 2, verified: 25, applications: 10 },
+      { month: 'Mar', vendors: 35, newVendors: 6, pending: 2, rejected: 1, verified: 30, applications: 9 },
+      { month: 'Apr', vendors: 38, newVendors: 5, pending: 5, rejected: 2, verified: 32, applications: 12 },
+      { month: 'May', vendors: 42, newVendors: 7, pending: 3, rejected: 1, verified: 37, applications: 11 },
+      { month: 'Jun', vendors: 45, newVendors: 6, pending: 4, rejected: 2, verified: 40, applications: 12 },
+    ];
+
+    const categoryWiseVendors = [
+      { name: 'Photography', total: 67, active: 54, pending: 8, verified: 48, growth: 15, rating: 4.7, revenue: '₹8.3L' },
+      { name: 'Catering', total: 54, active: 41, pending: 9, verified: 38, growth: 12, rating: 4.6, revenue: '₹18.7L' },
+      { name: 'Wedding Halls', total: 87, active: 71, pending: 11, verified: 62, growth: 8, rating: 4.8, revenue: '₹31.2L' },
+      { name: 'Entertainment', total: 42, active: 33, pending: 6, verified: 29, growth: 18, rating: 4.7, revenue: '₹37.0L' },
+      { name: 'Decorations', total: 48, active: 37, pending: 7, verified: 34, growth: 10, rating: 4.6, revenue: '₹6.8L' },
+      { name: 'Bridal Styling', total: 39, active: 31, pending: 5, verified: 28, growth: 22, rating: 4.8, revenue: '₹4.9L' },
+    ];
+
+    const topVendors = [
+      { name: 'LensArt Studio', category: 'Photography', bookings: 124, rating: 4.9, completion: 98, revenue: '₹5.6L', growth: 18 },
+      { name: 'Royal Feast', category: 'Catering', bookings: 112, rating: 4.8, completion: 96, revenue: '₹13.4L', growth: 22 },
+      { name: 'DJ Rhythm Pro', category: 'Entertainment', bookings: 134, rating: 4.9, completion: 99, revenue: '₹4.0L', growth: 15 },
+      { name: 'Grand Palace', category: 'Wedding Halls', bookings: 89, rating: 4.9, completion: 97, revenue: '₹31.2L', growth: 12 },
+      { name: 'Dream Decor', category: 'Decorations', bookings: 94, rating: 4.8, completion: 95, revenue: '₹6.1L', growth: 8 },
+      { name: 'Glam Studio', category: 'Bridal Styling', bookings: 203, rating: 4.9, completion: 99, revenue: '₹3.7L', growth: 28 },
+    ];
+
+    const maxVendors = Math.max(...monthlyData.map(d => d.vendors));
+
+    // Overview: Stacked Bar with additional metrics - Vibrant Colors
+    const OverviewChart = () => (
+      <div>
+        <div className="relative h-72">
+          <svg viewBox="0 0 700 280" className="w-full h-full">
+            {[0, 15, 30, 45].map((value, i) => (
+              <line key={i} x1="45" y1={280 - (value / 50) * 240} x2="680" y2={280 - (value / 50) * 240} stroke="#e2e8f0" strokeWidth="0.5" strokeDasharray="4" />
+            ))}
+            
+            {monthlyData.map((d, idx) => {
+              const x = 60 + (idx * 100);
+              const barWidth = 55;
+              const activeHeight = (d.vendors / maxVendors) * 240;
+              const newHeight = (d.newVendors / maxVendors) * 240;
+              
+              return (
+                <g key={idx}>
+                  <rect x={x} y={280 - activeHeight} width={barWidth} height={activeHeight} fill="url(#activeGradient)" rx="4" />
+                  <rect x={x} y={280 - newHeight} width={barWidth} height={newHeight} fill="url(#newGradient)" rx="4" />
+                  <text x={x + barWidth/2} y={280 - activeHeight - 5} fontSize="9" textAnchor="middle" fill="#2563eb" fontWeight="bold">
+                    {d.vendors}
+                  </text>
+                  <text x={x + barWidth/2} y={275} fontSize="10" textAnchor="middle" fill="#374151" fontWeight="semibold">
+                    {d.month}
+                  </text>
+                  {newHeight > 20 && (
+                    <text x={x + barWidth/2} y={280 - newHeight + 15} fontSize="8" textAnchor="middle" fill="white" fontWeight="bold">
+                      +{d.newVendors}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+            
+            <defs>
+              <linearGradient id="activeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#3b82f6" />
+                <stop offset="50%" stopColor="#2563eb" />
+                <stop offset="100%" stopColor="#1e40af" />
+              </linearGradient>
+              <linearGradient id="newGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#f59e0b" />
+                <stop offset="50%" stopColor="#d97706" />
+                <stop offset="100%" stopColor="#b45309" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        
+        <div className="flex justify-between items-center mt-4">
+          <div className="flex gap-6">
+            <div className="flex items-center gap-2"><div className="w-4 h-4 rounded bg-gradient-to-b from-blue-500 to-blue-800"></div><span className="text-xs">Active Vendors</span></div>
+            <div className="flex items-center gap-2"><div className="w-4 h-4 rounded bg-gradient-to-b from-amber-500 to-orange-600"></div><span className="text-xs">New Registrations</span></div>
+            <div className="flex items-center gap-2"><div className="w-8 h-2 bg-gradient-to-r from-purple-400 to-purple-600 rounded"></div><span className="text-xs">Pending Approval</span></div>
+          </div>
+          <div className="text-xs text-gray-500">Total Vendors: <span className="font-bold text-blue-600">45</span> | Growth: <span className="font-bold text-green-600">+17</span></div>
+        </div>
+        
+        <div className="grid grid-cols-2 gap-4 mt-5 pt-4 border-t border-gray-100">
+          <div>
+            <p className="text-xs font-semibold text-gray-700 mb-2">⏳ Pending Approval Trend</p>
+            <div className="flex items-end gap-1 h-14">
+              {monthlyData.map((d, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center">
+                  <div className="w-full bg-gradient-to-t from-purple-400 to-purple-500 rounded-t transition-all" style={{ height: `${(d.pending / 6) * 40}px` }}></div>
+                  <span className="text-[9px] mt-1 text-gray-500">{d.month}</span>
+                  <span className="text-[10px] font-bold text-purple-600">{d.pending}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-gray-700 mb-2">❌ Rejected Applications</p>
+            <div className="flex items-end gap-1 h-14">
+              {monthlyData.map((d, i) => (
+                <div key={i} className="flex-1 flex flex-col items-center">
+                  <div className="w-full bg-gradient-to-t from-red-400 to-red-500 rounded-t transition-all" style={{ height: `${(d.rejected / 3) * 40}px` }}></div>
+                  <span className="text-[9px] mt-1 text-gray-500">{d.month}</span>
+                  <span className="text-[10px] font-bold text-red-600">{d.rejected}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Growth Chart: Vibrant Line Chart
+    const GrowthChart = () => (
+      <div>
+        <div className="relative h-64">
+          <svg viewBox="0 0 700 240" className="w-full h-full">
+            {[0, 10, 20, 30].map((val, i) => (
+              <line key={i} x1="50" y1={240 - (val / 35) * 200} x2="680" y2={240 - (val / 35) * 200} stroke="#e2e8f0" strokeWidth="0.5" />
+            ))}
+            
+            <polygon fill="url(#growthAreaVibrant)" points={`50,240 ${monthlyData.map((d, i) => `${60 + (i * 100)},${240 - ((d.vendors - 20) / 30) * 200}`).join(' ')} 680,240`} />
+            
+            <polyline fill="none" stroke="url(#growthLineGradient)" strokeWidth="3.5" points={monthlyData.map((d, i) => `${60 + (i * 100)},${240 - ((d.vendors - 20) / 30) * 200}`).join(' ')} />
+            
+            {monthlyData.map((d, i) => (
+              <g key={i}>
+                <circle cx={60 + (i * 100)} cy={240 - ((d.vendors - 20) / 30) * 200} r="5" fill="url(#growthPointGradient)" stroke="white" strokeWidth="2" />
+                <text x={60 + (i * 100)} y={240 - ((d.vendors - 20) / 30) * 200 - 8} fontSize="8" textAnchor="middle" fill="#059669" fontWeight="bold">
+                  {d.vendors}
+                </text>
+                <text x={60 + (i * 100)} y={255} fontSize="9" textAnchor="middle" fill="#6b7280">{d.month}</text>
+              </g>
+            ))}
+            
+            <defs>
+              <linearGradient id="growthAreaVibrant" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
+                <stop offset="100%" stopColor="#10b981" stopOpacity="0.02" />
+              </linearGradient>
+              <linearGradient id="growthLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="50%" stopColor="#34d399" />
+                <stop offset="100%" stopColor="#059669" />
+              </linearGradient>
+              <linearGradient id="growthPointGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#059669" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        
+        <div className="mt-4 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
+          <div className="flex justify-between items-center">
+            <span className="text-xs font-semibold text-green-800">📈 Vendor Growth Rate</span>
+            <span className="text-sm font-bold text-green-600">+60.7% YTD</span>
+          </div>
+          <div className="w-full bg-green-200 rounded-full h-1.5 mt-2">
+            <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-1.5 rounded-full" style={{ width: '61%' }}></div>
+          </div>
+          <div className="flex justify-between text-[10px] text-green-600 mt-2">
+            <span>Jan: 28 vendors</span>
+            <span>Jun: 45 vendors</span>
+            <span>+17 new vendors</span>
+          </div>
+        </div>
+      </div>
+    );
+
+    // Category-wise distribution with vibrant colors
+    const CategoryChart = () => (
+      <div className="space-y-4">
+        {categoryWiseVendors.map((cat, idx) => {
+          const activePercent = (cat.active / cat.total) * 100;
+          const pendingPercent = (cat.pending / cat.total) * 100;
+          return (
+            <div key={idx}>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="font-semibold text-gray-700">{cat.name}</span>
+                <div className="flex gap-3">
+                  <span className="text-gray-500">{cat.active}/{cat.total}</span>
+                  <span className="text-emerald-600 font-semibold">+{cat.growth}%</span>
+                </div>
+              </div>
+              <div className="relative h-8 bg-gray-100 rounded-lg overflow-hidden">
+                <div className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-l-lg transition-all" style={{ width: `${activePercent}%` }}>
+                  <span className="text-white text-[10px] font-bold absolute right-1 top-1.5">{Math.round(activePercent)}%</span>
+                </div>
+                <div className="absolute inset-y-0 bg-gradient-to-r from-amber-400 to-orange-500 transition-all" style={{ width: `${pendingPercent}%`, left: `${activePercent}%` }}>
+                  <span className="text-white text-[10px] font-bold absolute right-1 top-1.5">{Math.round(pendingPercent)}%</span>
+                </div>
+              </div>
+              <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+                <span>⭐ {cat.rating} ★</span>
+                <span>💰 {cat.revenue}</span>
+                <span>✅ {cat.verified} verified</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+
+    // Performance Metrics Chart with vibrant colors
+    const PerformanceChart = () => (
+      <div className="space-y-4">
+        {topVendors.slice(0, 5).map((vendor, idx) => (
+          <div key={idx} className="p-3 bg-gradient-to-r from-gray-50 to-white rounded-xl hover:shadow-md transition-all border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-sm font-bold text-white shadow-sm">
+                  {vendor.name[0]}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">{vendor.name}</p>
+                  <p className="text-[10px] text-gray-400">{vendor.category}</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-bold text-gray-800">{vendor.bookings} bookings</p>
+                <div className="flex items-center gap-1">
+                  <span className="text-amber-400 text-xs">★</span>
+                  <span className="text-xs font-semibold">{vendor.rating}</span>
+                  <span className="text-xs text-emerald-600 ml-1">+{vendor.growth}%</span>
+                </div>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-2 mt-2">
+              <div className="text-center">
+                <p className="text-[10px] text-gray-400">Completion</p>
+                <p className="text-xs font-bold text-emerald-600">{vendor.completion}%</p>
+                <div className="w-full bg-gray-200 rounded-full h-1 mt-1">
+                  <div className="bg-gradient-to-r from-emerald-500 to-green-500 h-1 rounded-full" style={{ width: `${vendor.completion}%` }}></div>
+                </div>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-gray-400">Revenue</p>
+                <p className="text-xs font-bold text-gray-700">{vendor.revenue}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[10px] text-gray-400">Growth</p>
+                <p className="text-xs font-bold text-orange-600">+{vendor.growth}%</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+
+    return (
+      <div>
+        <div className="flex gap-2 mb-5 border-b border-gray-100 pb-2">
+          {[
+            { id: 'overview', label: '📊 Overview', icon: '📊' },
+            { id: 'growth', label: '📈 Growth Trend', icon: '📈' },
+            { id: 'category', label: '🏷️ Category Wise', icon: '🏷️' },
+            { id: 'performance', label: '🏆 Top Performers', icon: '🏆' }
+          ].map(tab => (
+            <button key={tab.id} onClick={() => setVendorView(tab.id)} className={`px-4 py-1.5 text-xs font-semibold rounded-lg transition-all ${vendorView === tab.id ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+        
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+          <div className="bg-blue-50 rounded-xl p-3 text-center border border-blue-100">
+            <p className="text-2xl font-bold text-blue-600">{monthlyData[5].vendors}</p>
+            <p className="text-[10px] text-gray-500">Total Vendors</p>
+            <p className="text-[9px] text-green-600">+{monthlyData[5].vendors - monthlyData[0].vendors} this year</p>
+          </div>
+          <div className="bg-green-50 rounded-xl p-3 text-center border border-green-100">
+            <p className="text-2xl font-bold text-green-600">{monthlyData.reduce((sum, d) => sum + d.newVendors, 0)}</p>
+            <p className="text-[10px] text-gray-500">New Vendors</p>
+            <p className="text-[9px] text-green-600">+{monthlyData[5].newVendors - monthlyData[0].newVendors} from Jan</p>
+          </div>
+          <div className="bg-purple-50 rounded-xl p-3 text-center border border-purple-100">
+            <p className="text-2xl font-bold text-purple-600">{monthlyData[5].pending}</p>
+            <p className="text-[10px] text-gray-500">Pending Approval</p>
+            <p className="text-[9px] text-amber-600">+1 this month</p>
+          </div>
+          <div className="bg-amber-50 rounded-xl p-3 text-center border border-amber-100">
+            <p className="text-2xl font-bold text-amber-600">{monthlyData.reduce((sum, d) => sum + d.verified, 0)}</p>
+            <p className="text-[10px] text-gray-500">Verified Vendors</p>
+            <p className="text-[9px] text-green-600">82% verification rate</p>
+          </div>
+        </div>
+        
+        {vendorView === 'overview' && OverviewChart()}
+        {vendorView === 'growth' && GrowthChart()}
+        {vendorView === 'category' && CategoryChart()}
+        {vendorView === 'performance' && PerformanceChart()}
+        
+        <div className="mt-5 pt-4 border-t border-gray-100 grid grid-cols-2 gap-3 text-center">
+          <div className="bg-gray-50 rounded-lg p-2">
+            <p className="text-xs font-semibold text-gray-600">Verification Rate</p>
+            <div className="flex items-center justify-center gap-2 mt-1">
+              <div className="w-24 bg-gray-200 rounded-full h-1.5">
+                <div className="bg-gradient-to-r from-green-500 to-emerald-500 h-1.5 rounded-full" style={{ width: '82%' }}></div>
+              </div>
+              <span className="text-xs font-bold text-green-600">82%</span>
+            </div>
+          </div>
+          <div className="bg-gray-50 rounded-lg p-2">
+            <p className="text-xs font-semibold text-gray-600">Avg. Vendor Rating</p>
+            <p className="text-lg font-bold text-amber-500">4.7 ★</p>
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  const formatValue = (value) => {
-    if (activeTab === 'Revenue') return `₹${(value / 1000).toFixed(0)}K`;
-    if (activeTab === 'Bookings') return value.toString();
-    if (activeTab === 'Vendors') return value.toString();
-    if (activeTab === 'Complaints') return value.toString();
-    return value;
+  // ==================== CATEGORIES: VIBRANT HORIZONTAL BAR CHART ====================
+  const CategoriesHorizontalBarChart = () => {
+    const maxBookings = Math.max(...categoryData.map(c => c.bookings));
+    
+    return (
+      <div className="space-y-4">
+        {categoryData.map((cat, idx) => {
+          const percent = (cat.bookings / maxBookings) * 100;
+          return (
+            <div key={idx} className="group">
+              <div className="flex justify-between text-xs mb-1">
+                <span className="font-semibold flex items-center gap-2">
+                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: cat.color }}></div>
+                  {cat.name}
+                </span>
+                <span className="font-bold text-gray-700">{cat.bookings.toLocaleString()}</span>
+              </div>
+              <div className="relative h-10 bg-gray-100 rounded-xl overflow-hidden">
+                <div 
+                  className="absolute inset-y-0 left-0 rounded-xl transition-all duration-700 flex items-center justify-end px-3 text-white text-xs font-bold shadow-inner"
+                  style={{ width: `${percent}%`, background: `linear-gradient(90deg, ${cat.color}, ${cat.color}dd)` }}
+                >
+                  {percent > 20 && `${Math.round(percent)}%`}
+                </div>
+                {/* Sparkline overlay */}
+                <div className="absolute inset-y-0 right-0 flex items-center gap-0.5 px-2 opacity-50 group-hover:opacity-100 transition-opacity">
+                  {cat.trend.slice(-6).map((val, i) => (
+                    <div key={i} className="w-1 bg-white rounded-full" style={{ height: `${(val / 300) * 24}px` }}></div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex justify-between text-[10px] text-gray-400 mt-1">
+                <span>₹{(cat.revenue / 1000).toFixed(0)}K revenue</span>
+                <span>+{cat.percentage}% of total</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  // ==================== COMPLAINTS: VIBRANT DONUT CHART ====================
+  const ComplaintsDonutChart = () => {
+    const totalComplaints = monthlyData.reduce((sum, d) => sum + d.complaints, 0);
+    const vibrantColors = ['#f43f5e', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6'];
+    
+    let cumulativeAngle = 0;
+    const segments = monthlyData.map((d, idx) => {
+      const angle = (d.complaints / totalComplaints) * 360;
+      const start = cumulativeAngle;
+      cumulativeAngle += angle;
+      return { ...d, start, angle, color: vibrantColors[idx % vibrantColors.length] };
+    });
+
+    return (
+      <div className="flex flex-col lg:flex-row gap-6 items-center">
+        <div className="relative w-52 h-52">
+          <svg viewBox="0 0 100 100" className="transform -rotate-90">
+            {segments.map((segment, idx) => {
+              const startRad = (segment.start * Math.PI) / 180;
+              const endRad = ((segment.start + segment.angle) * Math.PI) / 180;
+              const x1 = 50 + 38 * Math.cos(startRad);
+              const y1 = 50 + 38 * Math.sin(startRad);
+              const x2 = 50 + 38 * Math.cos(endRad);
+              const y2 = 50 + 38 * Math.sin(endRad);
+              const largeArc = segment.angle > 180 ? 1 : 0;
+              const path = `M 50 50 L ${x1} ${y1} A 38 38 0 ${largeArc} 1 ${x2} ${y2} Z`;
+              return <path key={idx} d={path} fill={segment.color} stroke="white" strokeWidth="2" />;
+            })}
+            <circle cx="50" cy="50" r="24" fill="white" />
+          </svg>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <p className="text-2xl font-bold text-gray-800">{totalComplaints}</p>
+              <p className="text-[9px] text-gray-400">Total Complaints</p>
+            </div>
+          </div>
+        </div>
+        <div className="flex-1 grid grid-cols-2 gap-3">
+          {segments.map((d, idx) => (
+            <div key={idx} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: d.color }}></div>
+                <span className="text-xs font-medium text-gray-600">{d.month}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-bold text-gray-700">{d.complaints}</span>
+                <span className="text-[10px] text-gray-400">({Math.round((d.complaints / totalComplaints) * 100)}%)</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  // ==================== GROWTH: VIBRANT RADIAL PROGRESS CHART ====================
+  const GrowthRadialChart = () => {
+    const overallGrowth = ((monthlyData[monthlyData.length - 1].revenue - monthlyData[0].revenue) / monthlyData[0].revenue) * 100;
+    const circumference = 2 * Math.PI * 38;
+    const offset = circumference - (Math.min(overallGrowth, 100) / 100) * circumference;
+    
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="flex flex-col items-center">
+          <div className="relative w-44 h-44">
+            <svg viewBox="0 0 100 100" className="transform -rotate-90">
+              <circle cx="50" cy="50" r="38" fill="none" stroke="#e5e7eb" strokeWidth="8" />
+              <circle 
+                cx="50" cy="50" r="38" fill="none" stroke="url(#radialGradient)" strokeWidth="8" 
+                strokeDasharray={circumference} strokeDashoffset={offset} strokeLinecap="round"
+                className="transition-all duration-1000"
+              />
+              <defs>
+                <radialGradient id="radialGradient" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#10b981" />
+                  <stop offset="50%" stopColor="#34d399" />
+                  <stop offset="100%" stopColor="#3b82f6" />
+                </radialGradient>
+              </defs>
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-2xl font-bold text-gray-800">{Math.round(overallGrowth)}%</p>
+                <p className="text-[10px] text-gray-400">Growth Rate</p>
+              </div>
+            </div>
+          </div>
+          <div className="mt-3 text-center">
+            <p className="text-xs text-emerald-600 font-semibold">↑ Revenue increased by {Math.round(overallGrowth)}% since Jan</p>
+          </div>
+        </div>
+        <div className="space-y-4">
+          <p className="text-xs font-semibold text-gray-700 mb-2">📈 Category Growth Rates</p>
+          {categoryData.slice(0, 5).map((cat, idx) => (
+            <div key={idx}>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-gray-600">{cat.name}</span>
+                <span className="text-emerald-600 font-semibold">+{cat.trend[cat.trend.length - 1] - cat.trend[0]}%</span>
+              </div>
+              <div className="w-full bg-gray-100 rounded-full h-1.5">
+                <div 
+                  className="bg-gradient-to-r from-emerald-500 to-green-500 h-1.5 rounded-full transition-all"
+                  style={{ width: `${((cat.trend[cat.trend.length - 1] - cat.trend[0]) / 100) * 100}%` }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const renderChart = () => {
+    switch(activeChart) {
+      case 'revenue': return <RevenueLineAreaChart />;
+      case 'bookings': return <BookingsGroupedBarChart />;
+      case 'vendors': return <VendorsStackedBarChart />;
+      case 'categories': return <CategoriesHorizontalBarChart />;
+      case 'complaints': return <ComplaintsDonutChart />;
+      case 'growth': return <GrowthRadialChart />;
+      default: return <RevenueLineAreaChart />;
+    }
+  };
+
+  const getChartDescription = () => {
+    switch(activeChart) {
+      case 'revenue': return 'Line + Area combination chart with gradient colors showing revenue trends with target comparison';
+      case 'bookings': return 'Grouped bar chart with vibrant gradients comparing current year vs previous year bookings';
+      case 'vendors': return 'Stacked bar chart with gradient colors showing active vendors and new registrations';
+      case 'categories': return 'Horizontal bar chart with color-coded gradients and sparkline trends';
+      case 'complaints': return 'Donut chart with vibrant colors displaying complaint distribution across months';
+      case 'growth': return 'Radial progress chart with gradient colors showing overall growth with category-wise indicators';
+      default: return '';
+    }
   };
 
   return (
@@ -2221,109 +2917,68 @@ const AnalyticsReportsPage = () => {
             <div className="text-4xl">📊</div>
             <div>
               <h3 className="text-xl font-bold text-gray-800">Analytics & Reports</h3>
-              <p className="text-sm text-gray-500 mt-0.5">Track platform performance, revenue trends and vendor insights</p>
+              <p className="text-sm text-gray-500 mt-0.5">Interactive multi-chart analytics dashboard</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <select value={dateRange} onChange={e => setDateRange(e.target.value)} className="px-4 py-2 text-sm border border-gray-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-red-100">
-              <option>This Week</option>
-              <option>This Month</option>
-              <option>Last 3 Months</option>
-              <option>This Year</option>
+            <select value={dateRange} onChange={e => setDateRange(e.target.value)} className="px-4 py-2 text-sm border border-gray-200 rounded-xl bg-white focus:ring-2 focus:ring-cyan-200">
+              <option>This Week</option><option>This Month</option><option>Last 3 Months</option><option>This Year</option>
             </select>
             <button onClick={() => alert('Generating full report...')} className="flex items-center gap-1.5 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700 transition-colors">
-              <Icon d={ICONS.download} size={14} /> Generate Report
+              <Icon d={ICONS.download} size={14} /> Export Report
             </button>
           </div>
         </div>
       </div>
       
-      {/* KPI Cards */}
+      {/* KPI Cards - UNCHANGED */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
         {[
-          { label: 'Total Revenue', value: '₹28.45L', icon: '💰', color: 'border-green-400', change: '+12%', trend: 'up', sub: 'vs last month' },
-          { label: 'Total Bookings', value: '10,843', icon: '📅', color: 'border-blue-400', change: '+8%', trend: 'up', sub: 'vs last month' },
-          { label: 'Active Vendors', value: '271', icon: '🏢', color: 'border-amber-400', change: '+23', trend: 'up', sub: 'new this month' },
-          { label: 'Avg. Customer Rating', value: '4.8 ★', icon: '⭐', color: 'border-purple-400', change: '+0.2', trend: 'up', sub: 'across all services' },
+          { label: 'Total Revenue', value: '₹28.45L', icon: '💰', color: 'border-green-400', change: '+12%' },
+          { label: 'Total Bookings', value: '10,843', icon: '📅', color: 'border-blue-400', change: '+8%' },
+          { label: 'Active Vendors', value: '271', icon: '👥', color: 'border-amber-400', change: '+23' },
+          { label: 'Avg. Rating', value: '4.8 ★', icon: '⭐', color: 'border-purple-400', change: '+0.2' },
         ].map((s, i) => (
-          <div key={i} className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} hover:shadow-md transition-all duration-200`}>
+          <div key={i} className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} hover:shadow-md transition-all`}>
             <div className="flex items-start justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
-                <p className="text-2xl font-bold text-gray-800">{s.value}</p>
-                <p className="text-xs text-green-600 mt-1 font-semibold">{s.change} {s.trend === 'up' ? '↑' : '↓'} {s.sub}</p>
-              </div>
+              <div><p className="text-xs font-semibold uppercase text-gray-400 mb-1">{s.label}</p><p className="text-2xl font-bold text-gray-800">{s.value}</p><p className="text-xs text-green-600 mt-1">↑ {s.change}</p></div>
               <div className="text-3xl">{s.icon}</div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Tab Navigation */}
+      {/* Chart Type Selector */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-6">
-        <div className="border-b border-gray-100">
-          <div className="flex gap-1 px-5 pt-3">
-            {tabs.map(tab => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-5 py-2.5 text-sm font-semibold rounded-t-xl transition-all duration-200 ${activeTab === tab ? 'bg-red-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}
-              >
-                {tab} {tab === 'Revenue' ? '📈' : tab === 'Bookings' ? '📊' : tab === 'Vendors' ? '👥' : '⚠️'}
+        <div className="border-b border-gray-100 px-5 pt-4">
+          <div className="flex gap-1 overflow-x-auto pb-2">
+            {chartTypes.map(chart => (
+              <button key={chart.id} onClick={() => setActiveChart(chart.id)} className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-2 ${activeChart === chart.id ? 'bg-red-600 text-white shadow-md' : 'text-gray-500 hover:bg-gray-100'}`}>
+                <span>{chart.icon}</span><span>{chart.label}</span><span className={`text-[10px] ${activeChart === chart.id ? 'text-white' : 'text-gray-400'}`}>{chart.type}</span>
               </button>
             ))}
           </div>
         </div>
         
-        {/* Chart Area */}
         <div className="p-6">
-          <h4 className="font-bold text-gray-800 mb-6">{activeTab} Trend ({dateRange})</h4>
-          <div className="space-y-4">
-            {monthlyData.map((data, idx) => (
-              <div key={idx} className="group">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="font-semibold text-gray-600">{data.month}</span>
-                  <span className="font-bold text-gray-700">{formatValue(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints)}</span>
-                </div>
-                <div className="w-full bg-gray-100 rounded-full h-8 overflow-hidden">
-                  <div 
-                    className={`${getBarColor()} h-full rounded-full transition-all duration-500 ease-out flex items-center justify-end px-3 text-white text-xs font-bold`}
-                    style={{ width: `${getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints)}%` }}
-                  >
-                    {getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints) > 15 && (
-                      <span>{Math.round(getBarWidth(activeTab === 'Revenue' ? data.revenue : activeTab === 'Bookings' ? data.bookings : activeTab === 'Vendors' ? data.vendors : data.complaints))}%</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-6">
+            <div><h4 className="font-bold text-gray-800 capitalize">{activeChart} Analytics</h4><p className="text-xs text-gray-400 mt-1">{getChartDescription()}</p></div>
+            <div className="flex items-center gap-2"><span className="text-[10px] text-gray-400">Chart Type: </span><span className="text-xs font-semibold px-2 py-1 bg-gray-100 rounded-lg capitalize">{chartTypes.find(c => c.id === activeChart)?.type}</span></div>
           </div>
+          {renderChart()}
         </div>
       </div>
 
-      {/* Category Performance */}
+      {/* Category Performance and Top Vendors - UNCHANGED */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-5 border-b border-gray-100">
-            <h4 className="font-bold text-gray-800">Category Performance</h4>
-            <p className="text-xs text-gray-400 mt-1">Bookings & revenue by service category</p>
-          </div>
+          <div className="p-5 border-b"><h4 className="font-bold text-gray-800">📊 Category Performance</h4><p className="text-xs text-gray-400">Bookings & revenue by service category</p></div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead><tr className="bg-gray-50 border-b border-gray-100">
-                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Category</th>
-                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Bookings</th>
-                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Revenue</th>
-                <th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Growth</th>
-              </tr></thead>
-              <tbody className="divide-y divide-gray-50">
+              <thead><tr className="bg-gray-50"><th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Category</th><th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Bookings</th><th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Revenue</th><th className="px-4 py-3 text-left text-[11px] font-bold text-gray-400">Share</th> </tr></thead>
+              <tbody className="divide-y">
                 {categoryData.map((c, i) => (
-                  <tr key={i} className="hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm font-semibold text-gray-700">{c.name}</td>
-                    <td className="px-4 py-3 text-sm text-gray-600">{c.bookings.toLocaleString()}</td>
-                    <td className="px-4 py-3 text-sm font-semibold text-gray-800">₹{(c.revenue / 1000).toFixed(0)}K</td>
-                    <td className="px-4 py-3"><span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-0.5 rounded-full">+{c.growth}%</span></td>
-                  </tr>
+                  <tr key={i} className="hover:bg-gray-50"><td className="px-4 py-3 text-sm font-semibold flex items-center gap-2"><div className="w-3 h-3 rounded-full" style={{ backgroundColor: c.color }}></div>{c.name}</td><td className="px-4 py-3 text-sm">{c.bookings.toLocaleString()}</td><td className="px-4 py-3 text-sm font-semibold">₹{(c.revenue / 1000).toFixed(0)}K</td><td className="px-4 py-3"><div className="flex items-center gap-2"><div className="w-16 bg-gray-100 rounded-full h-1.5"><div className="h-1.5 rounded-full" style={{ width: `${c.percentage}%`, backgroundColor: c.color }}></div></div><span className="text-xs text-gray-500">{c.percentage}%</span></div></td></tr>
                 ))}
               </tbody>
             </table>
@@ -2331,78 +2986,680 @@ const AnalyticsReportsPage = () => {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-5 border-b border-gray-100">
-            <h4 className="font-bold text-gray-800">Top Performing Vendors</h4>
-            <p className="text-xs text-gray-400 mt-1">Highest rated and most booked vendors</p>
-          </div>
-          <div className="space-y-3 p-4">
-            {vendorPerformance.map((v, i) => (
-              <div key={i} className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-xl transition-colors">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br from-${i % 2 === 0 ? 'red' : 'amber'}-100 to-${i % 2 === 0 ? 'pink' : 'orange'}-100 flex items-center justify-center text-lg`}>
-                    {v.name[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-800">{v.name}</p>
-                    <p className="text-[10px] text-gray-400">{v.category}</p>
-                  </div>
+          <div className="p-5 border-b"><h4 className="font-bold text-gray-800">🏆 Top Performing Vendors</h4><p className="text-xs text-gray-400">Monthly booking trends with sparkline charts</p></div>
+          <div className="space-y-4 p-4">
+            {vendorPerformance.slice(0, 5).map((v, i) => (
+              <div key={i} className="p-3 hover:bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-100 to-amber-100 flex items-center justify-center text-lg font-bold">{v.name[0]}</div><div><p className="text-sm font-semibold">{v.name}</p><p className="text-[10px] text-gray-400">{v.category}</p></div></div>
+                  <div className="text-right"><p className="text-sm font-bold">{v.bookings} bookings</p><div className="flex items-center gap-1"><span className="text-amber-400 text-xs">★</span><span className="text-xs font-semibold">{v.rating}</span><span className="text-xs text-green-600 ml-1">+{v.growth}%</span></div></div>
                 </div>
-                <div className="text-right">
-                  <p className="text-xs font-bold text-gray-700">{v.bookings} bookings</p>
-                  <div className="flex items-center gap-1 mt-0.5">
-                    <span className="text-amber-400 text-xs">★</span>
-                    <span className="text-xs font-semibold text-gray-600">{v.rating}</span>
-                    <span className="text-xs text-green-600 ml-1">+{v.growth}%</span>
-                  </div>
-                </div>
+                <div className="flex items-center gap-0.5 mt-2">{v.trend.map((val, idx) => (<div key={idx} className="flex-1"><div className="bg-gradient-to-t from-blue-400 to-blue-600 rounded-sm transition-all" style={{ height: `${(val / 210) * 24}px` }}></div></div>))}</div>
+                <div className="flex justify-between text-[9px] text-gray-400 mt-1"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span></div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Quick Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl">📈</span>
-            <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-lg">+18%</span>
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[
+          { emoji: '📈', title: 'Revenue Analytics', accentColor: 'bg-green-50', points: ['Line + Area combination chart', 'Target vs actual comparison', 'Year-over-year trends', 'Monthly revenue breakdown'] },
+          { emoji: '📊', title: 'Bookings Analysis', accentColor: 'bg-blue-50', points: ['Grouped bar chart (YoY)', 'Seasonal trend detection', 'Category-wise distribution', 'Peak period identification'] },
+          { emoji: '🏆', title: 'Vendor Performance', accentColor: 'bg-amber-50', points: ['Stacked bar visualization', 'New vs active vendors', 'Growth rate tracking', 'Performance metrics'] },
+          { emoji: '🎨', title: 'Multi-Chart Dashboard', accentColor: 'bg-purple-50', points: ['Donut chart for complaints', 'Horizontal bars for categories', 'Radial progress for growth', 'Sparkline trend lines'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── ADMIN ROLES PAGE ─────────────────────────────────────────────
+const AdminRolesPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  const [selectedRole, setSelectedRole] = useState(null);
+
+  const rolesData = [
+    { id: 'ROLE001', name: 'Super Admin', users: 2, permissions: 'Full Access', status: 'Active', lastModified: '15 Jan 2024', description: 'Complete system access with all privileges' },
+    { id: 'ROLE002', name: 'Vendor Manager', users: 4, permissions: 'Vendor Management Only', status: 'Active', lastModified: '20 Feb 2024', description: 'Manage vendor onboarding, verification, and profiles' },
+    { id: 'ROLE003', name: 'Booking Manager', users: 6, permissions: 'Booking Management', status: 'Active', lastModified: '10 Mar 2024', description: 'Handle bookings, scheduling, and vendor assignments' },
+    { id: 'ROLE004', name: 'Support Executive', users: 8, permissions: 'Customer Support Only', status: 'Active', lastModified: '5 Mar 2024', description: 'Manage customer queries, complaints, and disputes' },
+    { id: 'ROLE005', name: 'Finance Admin', users: 3, permissions: 'Payments & Transactions', status: 'Active', lastModified: '12 Apr 2024', description: 'Handle payments, transactions, refunds, and reports' },
+  ];
+
+  const permissionModules = [
+    { module: 'Customer Management', permissions: ['View', 'Edit', 'Delete', 'Block'] },
+    { module: 'Vendor Management', permissions: ['View', 'Edit', 'Verify', 'Approve', 'Deactivate'] },
+    { module: 'Booking Management', permissions: ['View', 'Edit', 'Cancel', 'Reschedule'] },
+    { module: 'Payments & Transactions', permissions: ['View', 'Process', 'Refund', 'Export'] },
+    { module: 'Complaints & Support', permissions: ['View', 'Respond', 'Escalate', 'Resolve'] },
+    { module: 'Reports & Analytics', permissions: ['View', 'Export', 'Schedule'] },
+  ];
+
+  const statCards = [
+    { label: 'Total Roles', value: '8', icon: '👥', color: 'border-blue-400', filter: 'All' },
+    { label: 'Active Roles', value: '6', icon: '✅', color: 'border-green-400', filter: 'Active' },
+    { label: 'Total Admin Users', value: '23', icon: '👤', color: 'border-purple-400', filter: 'All' },
+    { label: 'Pending Requests', value: '2', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+  ];
+
+  const filtered = rolesData.filter(r => {
+    const matchStatus = activeFilter === 'All' || r.status === activeFilter;
+    const matchSearch = !search || 
+      r.name.toLowerCase().includes(search.toLowerCase()) || 
+      r.description.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">👥</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Admin Roles & Access Management</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Create, configure and manage admin roles with permission-based access control</p>
           </div>
-          <p className="text-2xl font-bold text-gray-800">1,847</p>
-          <p className="text-xs text-gray-500 mt-1">Photography Bookings</p>
-        </div>
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-5 border border-green-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl">🍽️</span>
-            <span className="text-xs font-bold text-green-600 bg-green-100 px-2 py-1 rounded-lg">+22%</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-800">1,562</p>
-          <p className="text-xs text-gray-500 mt-1">Catering Bookings</p>
-        </div>
-        <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-5 border border-purple-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl">🏛️</span>
-            <span className="text-xs font-bold text-purple-600 bg-purple-100 px-2 py-1 rounded-lg">+8%</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-800">892</p>
-          <p className="text-xs text-gray-500 mt-1">Wedding Hall Bookings</p>
-        </div>
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-2xl">🎶</span>
-            <span className="text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-lg">+18%</span>
-          </div>
-          <p className="text-2xl font-bold text-gray-800">1,234</p>
-          <p className="text-xs text-gray-500 mt-1">Entertainment Bookings</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Roles List */}
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.roles} size={18} /></div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-base">Admin Roles</h3>
+                  <p className="text-xs text-gray-400">{filtered.length} role{filtered.length !== 1 ? 's' : ''} configured</p>
+                </div>
+              </div>
+              <button onClick={() => alert('Create new role')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">
+                + Create New Role
+              </button>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+                <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search roles..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 bg-gray-50" />
+              </div>
+            </div>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {filtered.map(role => (
+              <div key={role.id} onClick={() => setSelectedRole(role)} className={`px-5 py-4 hover:bg-gray-50 cursor-pointer transition-colors ${selectedRole?.id === role.id ? 'bg-red-50' : ''}`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-bold text-gray-800">{role.name}</p>
+                    <p className="text-xs text-gray-500 mt-0.5">{role.description}</p>
+                    <div className="flex items-center gap-3 mt-2">
+                      <span className="text-[10px] text-gray-400">{role.users} users</span>
+                      <span className="text-[10px] text-gray-400">Updated: {role.lastModified}</span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <StatusBadge status={role.status} />
+                    <p className="text-[10px] text-gray-400 mt-1">{role.permissions}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Role Details & Permissions */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100">
+            <h3 className="font-bold text-gray-800 text-base flex items-center gap-2">
+              <Icon d={ICONS.shield} size={16} /> Role Permissions
+            </h3>
+            {selectedRole ? (
+              <p className="text-xs text-gray-500 mt-1">Configuring: <span className="font-semibold text-gray-700">{selectedRole.name}</span></p>
+            ) : (
+              <p className="text-xs text-gray-400 mt-1">Select a role to configure permissions</p>
+            )}
+          </div>
+          {selectedRole ? (
+            <div className="p-5 space-y-4">
+              {permissionModules.map((module, idx) => (
+                <div key={idx} className="border-b border-gray-100 pb-3 last:border-0">
+                  <p className="text-xs font-bold text-gray-700 mb-2">{module.module}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {module.permissions.map((perm, pIdx) => (
+                      <label key={pIdx} className="flex items-center gap-1.5">
+                        <input type="checkbox" className="rounded border-gray-300 text-red-600 focus:ring-red-500" defaultChecked={perm === 'View'} />
+                        <span className="text-[11px] text-gray-600">{perm}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <div className="flex gap-2 pt-3">
+                <button className="flex-1 py-2 bg-red-600 text-white text-xs font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+                <button className="px-3 py-2 border border-gray-200 text-gray-600 text-xs font-semibold rounded-lg hover:bg-gray-50">Reset</button>
+              </div>
+            </div>
+          ) : (
+            <div className="p-8 text-center">
+              <div className="text-4xl mb-3">🔐</div>
+              <p className="text-sm text-gray-400">Select a role from the list to view and edit permissions</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
         {[
-          { emoji: '📈', title: 'Revenue & Financial Reports', accentColor: 'bg-green-50', points: ['Total revenue tracking', 'Commission earned analysis', 'Vendor payout summaries', 'Payment trend insights'] },
-          { emoji: '👥', title: 'User & Customer Insights', accentColor: 'bg-blue-50', points: ['New registrations tracking', 'Active user metrics', 'Demographic analysis', 'Customer behavior trends'] },
-          { emoji: '🏆', title: 'Vendor Performance Reports', accentColor: 'bg-amber-50', points: ['Bookings per vendor', 'Ratings & reviews', 'Revenue generated', 'Service quality metrics'] },
-          { emoji: '📊', title: 'Custom Reports & Export', accentColor: 'bg-purple-50', points: ['Filter by date & category', 'Download CSV/Excel', 'Visual charts & graphs', 'Data export options'] }
+          { emoji: '👥', title: 'Role Creation & Management', accentColor: 'bg-indigo-50', points: ['Create Super Admin, Manager, Support roles', 'Define custom roles with specific access', 'Clone existing roles for efficiency', 'Role deletion & archiving'] },
+          { emoji: '🔐', title: 'Permission-Based Access Control', accentColor: 'bg-purple-50', points: ['Module-level access restrictions', 'Granular permission settings', 'View/Edit/Delete/Approve controls', 'Sensitive data access limits'] },
+          { emoji: '👤', title: 'User Assignment', accentColor: 'bg-blue-50', points: ['Assign admin users to roles', 'Manage user responsibilities', 'Track role assignments', 'Revoke access when required'] },
+          { emoji: '📊', title: 'Activity Monitoring & Audit', accentColor: 'bg-green-50', points: ['Login history tracking', 'Changes & approvals log', 'Complete audit trail', 'Security & transparency'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── NOTIFICATIONS PAGE ─────────────────────────────────────────
+const NotificationsPage = () => {
+  const [activeFilter, setActiveFilter] = useState('All');
+  const [search, setSearch] = useState('');
+  const [selectedTemplate, setSelectedTemplate] = useState(null);
+
+  const notificationsData = [
+    { id: 'NOT001', title: 'Welcome to Wedding Services', type: 'Email', audience: 'All Users', status: 'Sent', sentDate: '15 Mar 2024', openRate: '68%', content: 'Welcome message for new users...' },
+    { id: 'NOT002', title: 'Booking Confirmation', type: 'Push', audience: 'Customers', status: 'Sent', sentDate: '16 Mar 2024', openRate: '92%', content: 'Your booking has been confirmed...' },
+    { id: 'NOT003', title: 'Vendor Approval', type: 'SMS', audience: 'Vendors', status: 'Pending', sentDate: 'Scheduled', openRate: '-', content: 'Your vendor profile has been approved...' },
+    { id: 'NOT004', title: 'Payment Success', type: 'Email', audience: 'All Users', status: 'Sent', sentDate: '17 Mar 2024', openRate: '75%', content: 'Payment received successfully...' },
+    { id: 'NOT005', title: 'Summer Offer 2024', type: 'Push', audience: 'Selected Users', status: 'Draft', sentDate: '-', openRate: '-', content: 'Get 20% off on all services...' },
+  ];
+
+  const templates = [
+    { id: 'TPL001', name: 'Booking Confirmation', type: 'Email', lastUsed: '2 days ago' },
+    { id: 'TPL002', name: 'Payment Receipt', type: 'Email', lastUsed: '3 days ago' },
+    { id: 'TPL003', name: 'Vendor Approval', type: 'Push/SMS', lastUsed: '5 days ago' },
+    { id: 'TPL004', name: 'Welcome Message', type: 'Email', lastUsed: '1 week ago' },
+  ];
+
+  const statCards = [
+    { label: 'Total Sent', value: '12,847', icon: '📨', color: 'border-blue-400', filter: 'Sent' },
+    { label: 'Pending', value: '47', icon: '⏳', color: 'border-amber-400', filter: 'Pending' },
+    { label: 'Open Rate', value: '74%', icon: '👁️', color: 'border-green-400', filter: 'All' },
+    { label: 'Failed', value: '23', icon: '❌', color: 'border-red-400', filter: 'Failed' },
+  ];
+
+  const filtered = notificationsData.filter(n => {
+    const matchStatus = activeFilter === 'All' || n.status === activeFilter;
+    const matchSearch = !search || n.title.toLowerCase().includes(search.toLowerCase());
+    return matchStatus && matchSearch;
+  });
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-orange-50 to-amber-50 border border-orange-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">🔔</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Notification Management</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Send, schedule and manage multi-channel notifications across the platform</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+        {statCards.map((s, i) => (
+          <div key={i} onClick={() => setActiveFilter(s.filter)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+            <div className="flex items-start justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
+                <p className="text-3xl font-bold text-gray-800">{s.value}</p>
+                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+              </div>
+              <div className="text-2xl">{s.icon}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Create Notification Card */}
+      <div className="bg-gradient-to-r from-red-50 to-amber-50 rounded-2xl p-5 mb-6 border border-red-200">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div className="flex items-center gap-3">
+            <div className="text-3xl">✉️</div>
+            <div>
+              <p className="text-sm font-bold text-gray-800">Create New Notification</p>
+              <p className="text-xs text-gray-500">Send push, email or SMS notifications to your audience</p>
+            </div>
+          </div>
+          <button onClick={() => alert('Create notification wizard')} className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-xl hover:bg-red-700">
+            + Create Notification
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Notifications List */}
+        <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-5 border-b border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.notifications} size={18} /></div>
+                <div>
+                  <h3 className="font-bold text-gray-800 text-base">Notification History</h3>
+                  <p className="text-xs text-gray-400">{filtered.length} notification{filtered.length !== 1 ? 's' : ''}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {activeFilter !== 'All' && <button onClick={() => setActiveFilter('All')} className="text-xs text-red-600 font-semibold px-2 py-1 bg-red-50 rounded-lg">✕ Clear</button>}
+                <button onClick={() => alert('Exporting...')} className="flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-lg"><Icon d={ICONS.download} size={13} />Export</button>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <div className="flex-1 relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
+                <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search notifications..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl bg-gray-50" />
+              </div>
+            </div>
+          </div>
+          <div className="divide-y divide-gray-50">
+            {filtered.map(notif => (
+              <div key={notif.id} className="px-5 py-4 hover:bg-gray-50 transition-colors">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold text-gray-800">{notif.title}</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                        notif.type === 'Email' ? 'bg-blue-50 text-blue-700' : 
+                        notif.type === 'Push' ? 'bg-green-50 text-green-700' : 'bg-amber-50 text-amber-700'
+                      }`}>{notif.type}</span>
+                      <span className="text-[10px] text-gray-400">{notif.audience}</span>
+                      <span className="text-[10px] text-gray-400">{notif.sentDate}</span>
+                      {notif.openRate !== '-' && <span className="text-[10px] text-green-600">Open: {notif.openRate}</span>}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <StatusBadge status={notif.status} />
+                    <button className="p-1.5 rounded-lg hover:bg-blue-50 text-blue-500"><Icon d={ICONS.eye} size={14} /></button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Templates & Settings */}
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-4 border-b border-gray-100">
+              <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
+                <span className="text-lg">📋</span> Notification Templates
+              </h3>
+            </div>
+            <div className="divide-y divide-gray-50">
+              {templates.map(tpl => (
+                <div key={tpl.id} className="px-4 py-3 hover:bg-gray-50 cursor-pointer" onClick={() => setSelectedTemplate(tpl)}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-semibold text-gray-700">{tpl.name}</p>
+                      <p className="text-[10px] text-gray-400">{tpl.type}</p>
+                    </div>
+                    <button className="text-red-500 text-xs font-semibold">Use</button>
+                  </div>
+                </div>
+              ))}
+              <div className="px-4 py-3">
+                <button className="w-full text-center text-xs text-red-600 font-semibold py-1">+ Create New Template</button>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-4 border-b border-gray-100">
+              <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">
+                <span className="text-lg">⚙️</span> Channel Configuration
+              </h3>
+            </div>
+            <div className="p-4 space-y-3">
+              {[
+                { name: 'Push Notifications (Firebase)', status: 'Connected', icon: '📱' },
+                { name: 'SMS Gateway (Twilio)', status: 'Active', icon: '💬' },
+                { name: 'Email Server', status: 'Configured', icon: '✉️' },
+              ].map((ch, i) => (
+                <div key={i} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    <span>{ch.icon}</span>
+                    <span className="text-xs text-gray-600">{ch.name}</span>
+                  </div>
+                  <span className="text-[10px] text-green-600 font-semibold">{ch.status}</span>
+                </div>
+              ))}
+              <button className="w-full text-center text-xs text-blue-600 font-semibold py-1 mt-2">Configure Channels</button>
+            </div>
+          </div>
+
+          <div className="bg-amber-50 rounded-2xl border border-amber-200 p-4">
+            <div className="flex items-start gap-3">
+              <span className="text-xl">📊</span>
+              <div>
+                <p className="text-xs font-bold text-amber-800">Delivery Tracking</p>
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="flex-1 h-1.5 bg-gray-200 rounded-full">
+                    <div className="w-[74%] h-1.5 bg-green-500 rounded-full"></div>
+                  </div>
+                  <span className="text-[10px] font-semibold text-green-600">74%</span>
+                </div>
+                <p className="text-[10px] text-amber-600 mt-2">Delivered: 9,507 | Failed: 23 | Pending: 47</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+        {[
+          { emoji: '📱', title: 'Multi-Channel Notifications', accentColor: 'bg-orange-50', points: ['Push Notifications (Mobile App)', 'SMS (OTP & alerts via Twilio)', 'Email Notifications', 'In-app notifications'] },
+          { emoji: '⚡', title: 'Event-Based Triggers', accentColor: 'bg-amber-50', points: ['User registration & verification', 'Booking confirmation & updates', 'Payment success or failure', 'Vendor approval or rejection'] },
+          { emoji: '🎯', title: 'Audience Targeting', accentColor: 'bg-green-50', points: ['All users', 'Customers only', 'Vendors only', 'Selected users'] },
+          { emoji: '📅', title: 'Scheduling & Templates', accentColor: 'bg-blue-50', points: ['Schedule notifications', 'Reusable templates', 'Real-time alerts', 'User preferences control'] }
+        ].map((c, i) => <FeatureCard key={i} {...c} />)}
+      </div>
+    </div>
+  );
+};
+
+// ─── SETTINGS PAGE ─────────────────────────────────────────
+const SettingsPage = () => {
+  const [activeTab, setActiveTab] = useState('general');
+  
+  const tabs = [
+    { id: 'general', label: 'General Settings', icon: '⚙️' },
+    { id: 'users', label: 'User Settings', icon: '👥' },
+    { id: 'vendors', label: 'Vendor Settings', icon: '🏢' },
+    { id: 'payments', label: 'Payment Settings', icon: '💰' },
+    { id: 'notifications', label: 'Notification Settings', icon: '🔔' },
+    { id: 'kyc', label: 'KYC & Verification', icon: '🛡️' },
+    { id: 'booking', label: 'Booking Settings', icon: '📅' },
+    { id: 'security', label: 'Security Settings', icon: '🔒' },
+    { id: 'content', label: 'Content Management', icon: '📄' },
+    { id: 'commission', label: 'Commission & Pricing', icon: '🏷️' },
+  ];
+
+  return (
+    <div>
+      <div className="rounded-2xl p-6 mb-6 bg-gradient-to-r from-gray-100 to-slate-100 border border-gray-200">
+        <div className="flex items-center gap-4">
+          <div className="text-4xl">⚙️</div>
+          <div>
+            <h3 className="text-xl font-bold text-gray-800">Settings & Configuration</h3>
+            <p className="text-sm text-gray-500 mt-0.5">Manage platform settings, user preferences, vendor rules, and integrations</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="border-b border-gray-100 overflow-x-auto">
+          <div className="flex gap-1 p-2 min-w-max">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 text-sm font-semibold rounded-lg transition-all whitespace-nowrap flex items-center gap-2 ${activeTab === tab.id ? 'bg-red-600 text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                <span>{tab.icon}</span> {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="p-6">
+          {/* General Settings */}
+          {activeTab === 'general' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Platform Details</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">App Name</label><input type="text" defaultValue="Wedding Services Platform" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" /></div>
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">Company Name</label><input type="text" defaultValue="Wedding Services Pvt Ltd" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" /></div>
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">Contact Email</label><input type="email" defaultValue="support@weddingservices.com" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" /></div>
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">Contact Phone</label><input type="text" defaultValue="+91 98765 43210" className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm" /></div>
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">Time Zone</label><select className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"><option>Asia/Kolkata (IST)</option></select></div>
+                  <div><label className="block text-xs font-semibold text-gray-600 mb-1">Default Language</label><select className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm"><option>English</option><option>Hindi</option></select></div>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* User Settings */}
+          {activeTab === 'users' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Registration & Login Settings</h4>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">Allow new user registration</span></label>
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">Enable OTP verification via SMS (Twilio)</span></label>
+                  <label className="flex items-center gap-3"><input type="checkbox" className="rounded border-gray-300" /><span className="text-sm text-gray-600">Enable social login (Google/Facebook)</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Profile Settings</h4>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">Allow users to edit profile</span></label>
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">Enable profile visibility controls</span></label>
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Vendor Settings */}
+          {activeTab === 'vendors' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Vendor Registration</h4>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3"><input type="radio" name="approval" defaultChecked className="text-red-600" /><span className="text-sm text-gray-600">Manual approval required</span></label>
+                  <label className="flex items-center gap-3"><input type="radio" name="approval" className="text-red-600" /><span className="text-sm text-gray-600">Auto-approve new vendors</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Required Documents</h4>
+                <div className="space-y-2">
+                  {['Business Registration Certificate', 'Government ID Proof', 'Address Proof', 'GST Certificate', 'Service Portfolio'].map(doc => (
+                    <label key={doc} className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">{doc}</span></label>
+                  ))}
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Payment Settings */}
+          {activeTab === 'payments' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Payment Gateways</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><div className="flex items-center gap-2"><span className="text-lg">💰</span><span className="text-sm font-semibold">Razorpay</span></div><span className="text-xs text-green-600">Connected</span><button className="text-xs text-red-600">Configure</button></div>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><div className="flex items-center gap-2"><span className="text-lg">💳</span><span className="text-sm font-semibold">Stripe</span></div><span className="text-xs text-gray-400">Not Connected</span><button className="text-xs text-blue-600">Connect</button></div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Currency & Tax</h4>
+                <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-gray-600 mb-1">Currency</label><select className="w-full px-3 py-2 border rounded-lg text-sm"><option>INR (₹)</option><option>USD ($)</option></select></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">GST Rate (%)</label><input type="number" defaultValue="18" className="w-full px-3 py-2 border rounded-lg text-sm" /></div></div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Notification Settings */}
+          {activeTab === 'notifications' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">SMS Gateway (Twilio)</h4>
+                <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-gray-600 mb-1">Account SID</label><input type="text" placeholder="Enter Account SID" className="w-full px-3 py-2 border rounded-lg text-sm" /></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">Auth Token</label><input type="password" placeholder="Enter Auth Token" className="w-full px-3 py-2 border rounded-lg text-sm" /></div></div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Email Server</h4>
+                <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-gray-600 mb-1">SMTP Host</label><input type="text" placeholder="smtp.gmail.com" className="w-full px-3 py-2 border rounded-lg text-sm" /></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">SMTP Port</label><input type="text" placeholder="587" className="w-full px-3 py-2 border rounded-lg text-sm" /></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">Email Username</label><input type="email" placeholder="noreply@weddingservices.com" className="w-full px-3 py-2 border rounded-lg text-sm" /></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">Email Password</label><input type="password" placeholder="********" className="w-full px-3 py-2 border rounded-lg text-sm" /></div></div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Push Notifications (Firebase)</h4>
+                <div><label className="block text-xs font-semibold text-gray-600 mb-1">Server Key</label><input type="text" placeholder="Enter Firebase server key" className="w-full px-3 py-2 border rounded-lg text-sm" /></div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save & Test</button>
+              </div>
+            </div>
+          )}
+
+          {/* KYC & Verification Settings */}
+          {activeTab === 'kyc' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">KYC Integration</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><div className="flex items-center gap-2"><span className="text-lg">🤖</span><span className="text-sm font-semibold">HyperVerge</span></div><span className="text-xs text-green-600">Integrated</span><button className="text-xs text-blue-600">Configure</button></div>
+                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"><div className="flex items-center gap-2"><span className="text-lg">🔐</span><span className="text-sm font-semibold">Signzy</span></div><span className="text-xs text-gray-400">Available</span><button className="text-xs text-blue-600">Setup</button></div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Required KYC Documents</h4>
+                <div className="space-y-2">
+                  {['Vendor KYC (ID Proof)', 'Business License', 'GST Certificate', 'Address Proof'].map(doc => (
+                    <label key={doc} className="flex items-center gap-3"><input type="checkbox" defaultChecked className="rounded border-gray-300" /><span className="text-sm text-gray-600">{doc}</span></label>
+                  ))}
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Booking Settings */}
+          {activeTab === 'booking' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Booking Flow</h4>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3"><input type="radio" name="approval" defaultChecked /><span className="text-sm text-gray-600">Require admin approval for all bookings</span></label>
+                  <label className="flex items-center gap-3"><input type="radio" name="approval" /><span className="text-sm text-gray-600">Auto-confirm bookings</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Cancellation & Rescheduling</h4>
+                <div><label className="block text-xs font-semibold text-gray-600 mb-1">Cancellation window (hours before event)</label><input type="number" defaultValue="48" className="w-32 px-3 py-2 border rounded-lg text-sm" /></div>
+                <div className="mt-3"><label className="block text-xs font-semibold text-gray-600 mb-1">Rescheduling fee (%)</label><input type="number" defaultValue="10" className="w-32 px-3 py-2 border rounded-lg text-sm" /></div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Security Settings */}
+          {activeTab === 'security' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Password Policies</h4>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked /><span className="text-sm text-gray-600">Require strong password (min 8 chars, mix of letters/numbers/symbols)</span></label>
+                  <label className="flex items-center gap-3"><input type="checkbox" defaultChecked /><span className="text-sm text-gray-600">Password expiry (90 days)</span></label>
+                  <label className="flex items-center gap-3"><input type="checkbox" /><span className="text-sm text-gray-600">Enforce 2FA for admin accounts</span></label>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Login Attempts</h4>
+                <div className="grid grid-cols-2 gap-4"><div><label className="block text-xs font-semibold text-gray-600 mb-1">Max failed attempts</label><input type="number" defaultValue="5" className="w-32 px-3 py-2 border rounded-lg text-sm" /></div><div><label className="block text-xs font-semibold text-gray-600 mb-1">Lockout duration (minutes)</label><input type="number" defaultValue="30" className="w-32 px-3 py-2 border rounded-lg text-sm" /></div></div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Content Management */}
+          {activeTab === 'content' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Static Pages</h4>
+                <div className="space-y-3">
+                  {['Privacy Policy', 'Terms & Conditions', 'About Us', 'FAQs'].map(page => (
+                    <div key={page} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <span className="text-sm font-semibold">{page}</span>
+                      <button className="text-xs text-blue-600">Edit</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save All Changes</button>
+              </div>
+            </div>
+          )}
+
+          {/* Commission & Pricing */}
+          {activeTab === 'commission' && (
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Platform Commission</h4>
+                <div><label className="block text-xs font-semibold text-gray-600 mb-1">Default Commission Rate (%)</label><input type="number" defaultValue="10" className="w-32 px-3 py-2 border rounded-lg text-sm" /></div>
+              </div>
+              <div>
+                <h4 className="font-bold text-gray-800 text-sm mb-4">Subscription Plans</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[{ name: 'Silver', price: '₹750', features: 'Basic features' }, { name: 'Gold', price: '₹1500', features: 'Priority support' }, { name: 'Diamond', price: '₹2000', features: 'Premium placement' }].map(plan => (
+                    <div key={plan.name} className="border rounded-xl p-3">
+                      <p className="text-sm font-bold">{plan.name}</p>
+                      <p className="text-lg font-bold text-red-600">{plan.price}</p>
+                      <p className="text-[10px] text-gray-400">{plan.features}</p>
+                      <button className="mt-2 text-xs text-blue-600">Edit</button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="pt-4 border-t border-gray-100">
+                <button className="px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700">Save Changes</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6">
+        {[
+          { emoji: '⚙️', title: 'Platform Configuration', accentColor: 'bg-gray-100', points: ['App name, logo & branding', 'Company details & contact', 'Time zone & language settings', 'Regional preferences'] },
+          { emoji: '🔌', title: 'API Integrations', accentColor: 'bg-blue-50', points: ['Payment gateway (Razorpay)', 'SMS provider (Twilio)', 'Push notifications (Firebase)', 'KYC services (HyperVerge/Signzy)'] },
+          { emoji: '📄', title: 'Content Management', accentColor: 'bg-green-50', points: ['Privacy Policy & Terms', 'About Us & FAQs', 'Static page editor', 'Version control'] },
+          { emoji: '💰', title: 'Pricing & Commission', accentColor: 'bg-amber-50', points: ['Vendor commission settings', 'Subscription plans', 'Service fees', 'Tax (GST) configuration'] }
         ].map((c, i) => <FeatureCard key={i} {...c} />)}
       </div>
     </div>
@@ -2631,17 +3888,18 @@ const ManageProfiles = () => {
     { id: 'CUS005', name: 'Vikram Singh', email: 'vikram.singh@email.com', phone: '+91 54321 09876', location: 'Pune', registered: '2 Apr 2024', status: 'Active', verified: true, bookings: 2, lastUpdate: '3 days ago' },
   ];
   
-  // Fixed: Each stat card now has unique filter values that match the button filters
+  // FIXED: Each stat card now has unique filter values
   const statCards = [
     { label: 'Total Profiles', value: '4,821', icon: '👥', color: 'border-blue-400', filterValue: 'All' },
-    { label: 'Profiles Updated Today', value: '128', icon: '✏️', color: 'border-blue-400', filterValue: 'All' }, // Same filterValue - both trigger 'All' filter
+    { label: 'Profiles Updated Today', value: '128', icon: '✏️', color: 'border-teal-400', filterValue: 'Updated Today' },  // ← Changed from 'All' to 'Updated Today'
     { label: 'KYC Verified', value: '3,904', icon: '🛡️', color: 'border-green-400', filterValue: 'Verified' },
     { label: 'Pending Verification', value: '384', icon: '⏳', color: 'border-amber-400', filterValue: 'Pending' },
   ];
   
-  // Fixed: Filter logic now properly handles 'Verified' filter
+  // FIXED: Updated filter logic to handle 'Updated Today' filter
   const filtered = profileData.filter(p => {
     let matchStatus = true;
+    
     if (activeFilter === 'Verified') {
       matchStatus = p.verified === true;
     } else if (activeFilter === 'Pending') {
@@ -2650,6 +3908,9 @@ const ManageProfiles = () => {
       matchStatus = p.status === 'Active';
     } else if (activeFilter === 'Blocked') {
       matchStatus = p.status === 'Blocked';
+    } else if (activeFilter === 'Updated Today') {
+      // Filter profiles updated within the last day
+      matchStatus = p.lastUpdate === '1 day ago' || p.lastUpdate === '2 days ago';
     } else if (activeFilter !== 'All') {
       matchStatus = p.status === activeFilter;
     }
@@ -2658,6 +3919,7 @@ const ManageProfiles = () => {
       p.name.toLowerCase().includes(search.toLowerCase()) || 
       p.email.toLowerCase().includes(search.toLowerCase()) || 
       p.location.toLowerCase().includes(search.toLowerCase());
+    
     return matchStatus && matchSearch;
   });
   
@@ -2687,7 +3949,7 @@ const ManageProfiles = () => {
               <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center text-red-600"><Icon d={ICONS.edit} size={18} /></div>
               <div>
                 <h3 className="font-bold text-gray-800 text-base">Customer Profiles</h3>
-                <p className="text-xs text-gray-400">{filtered.length} profile{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter === 'Verified' ? 'KYC Verified' : activeFilter === 'Pending' ? 'Pending Verification' : activeFilter})` : 'total'}</p>
+                <p className="text-xs text-gray-400">{filtered.length} profile{filtered.length !== 1 ? 's' : ''} {activeFilter !== 'All' ? `(filtered: ${activeFilter === 'Verified' ? 'KYC Verified' : activeFilter === 'Updated Today' ? 'Recently Updated' : activeFilter === 'Pending' ? 'Pending Verification' : activeFilter})` : 'total'}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -2700,9 +3962,11 @@ const ManageProfiles = () => {
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"><Icon d={ICONS.search} size={15} /></span>
               <input value={search} onChange={e => setSearch(e.target.value)} type="text" placeholder="Search by name, email, phone or location..." className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-300 bg-gray-50" />
             </div>
-            {/* Fixed: Filter buttons now match the data structure - Added 'Verified' button that properly filters by verified status */}
-            {['All','Active','Pending','Blocked','Verified'].map(f => (
-              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>{f}</button>
+            {/* FIXED: Added 'Updated Today' button to match the stat card */}
+            {['All','Active','Pending','Blocked','Verified','Updated Today'].map(f => (
+              <button key={f} onClick={() => setActiveFilter(f)} className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}>
+                {f === 'Updated Today' ? '📅 Updated Today' : f}
+              </button>
             ))}
           </div>
         </div>
@@ -3090,38 +4354,49 @@ const VendorOverview = ({ onSelectCategory }) => {
 };
 
 // ─── GROUP LANDING PAGES (keeping original) ─────────────────────────────────────
+// ─── GROUP LANDING PAGES (keeping original) ─────────────────────────────────────
 const ManageServiceProvidersPage = ({ onSelect }) => {
   const [activeFilter, setActiveFilter] = useState('All');
   const [search, setSearch] = useState('');
   
   const categories = [
-    { label: 'Photography', count: 67, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200', desc: 'Wedding, Candid, Traditional & Pre-wedding' },
-    { label: 'Catering', count: 54, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200', desc: 'Multi-Cuisine, South & North Indian Caterers' },
-    { label: 'Wedding Halls', count: 87, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200', desc: 'Banquet Halls, Venues & Convention Centers' },
-    { label: 'Entertainment & Events', count: 42, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200', desc: 'DJs, Live Bands, Emcees & Dancers' },
-    { label: 'Decorations', count: 48, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200', desc: 'Stage, Floral, Mandap & Reception Themes' },
-    { label: 'Invitations & Gifting', count: 35, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200', desc: 'Printed Cards, Digital Invites & Hampers' },
-    { label: 'Groom & Bridal Styling', count: 39, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200', desc: 'Bridal Makeup, Groom Styling & Hairstyling' },
-    { label: 'Pre Matrimonial Investigations', count: 18, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200', desc: 'Background Checks & Employment Verification' },
+    { id: 'CAT001', label: 'Photography', count: 67, activeCount: 54, pendingCount: 8, icon: '📸', color: 'from-pink-50 to-red-50 border-pink-200', desc: 'Wedding, Candid, Traditional & Pre-wedding', status: 'Active', lastUpdated: '2 days ago', growth: '+15%', rating: 4.7 },
+    { id: 'CAT002', label: 'Catering', count: 54, activeCount: 41, pendingCount: 9, icon: '🍽️', color: 'from-orange-50 to-amber-50 border-orange-200', desc: 'Multi-Cuisine, South & North Indian Caterers', status: 'Active', lastUpdated: '5 days ago', growth: '+12%', rating: 4.6 },
+    { id: 'CAT003', label: 'Wedding Halls', count: 87, activeCount: 71, pendingCount: 11, icon: '🏛️', color: 'from-blue-50 to-cyan-50 border-blue-200', desc: 'Banquet Halls, Venues & Convention Centers', status: 'Active', lastUpdated: '1 day ago', growth: '+8%', rating: 4.8 },
+    { id: 'CAT004', label: 'Entertainment & Events', count: 42, activeCount: 33, pendingCount: 6, icon: '🎶', color: 'from-violet-50 to-purple-50 border-violet-200', desc: 'DJs, Live Bands, Emcees & Dancers', status: 'Active', lastUpdated: '3 days ago', growth: '+18%', rating: 4.7 },
+    { id: 'CAT005', label: 'Decorations', count: 48, activeCount: 37, pendingCount: 7, icon: '🎊', color: 'from-purple-50 to-pink-50 border-purple-200', desc: 'Stage, Floral, Mandap & Reception Themes', status: 'Pending', lastUpdated: '1 day ago', growth: '+10%', rating: 4.6 },
+    { id: 'CAT006', label: 'Invitations & Gifting', count: 35, activeCount: 27, pendingCount: 5, icon: '🎁', color: 'from-rose-50 to-pink-50 border-rose-200', desc: 'Printed Cards, Digital Invites & Hampers', status: 'Active', lastUpdated: '7 days ago', growth: '+14%', rating: 4.5 },
+    { id: 'CAT007', label: 'Groom & Bridal Styling', count: 39, activeCount: 31, pendingCount: 5, icon: '💄', color: 'from-amber-50 to-yellow-50 border-amber-200', desc: 'Bridal Makeup, Groom Styling & Hairstyling', status: 'Active', lastUpdated: '2 days ago', growth: '+22%', rating: 4.8 },
+    { id: 'CAT008', label: 'Pre Matrimonial Investigations', count: 18, activeCount: 14, pendingCount: 3, icon: '🔍', color: 'from-slate-50 to-gray-50 border-slate-200', desc: 'Background Checks & Employment Verification', status: 'Pending', lastUpdated: '4 days ago', growth: '+5%', rating: 4.4 },
   ];
   
+  // Calculate totals for stat cards
+  const totalVendors = categories.reduce((sum, cat) => sum + cat.count, 0);
+  const totalActive = categories.reduce((sum, cat) => sum + cat.activeCount, 0);
+  const totalPending = categories.reduce((sum, cat) => sum + cat.pendingCount, 0);
+  const totalCategories = categories.length;
+  const recentlyUpdated = categories.filter(c => c.lastUpdated === '1 day ago' || c.lastUpdated === '2 days ago').length;
+  
+  // Stat cards with UNIQUE filter values
   const statCards = [
-    { label: 'Total Vendors', value: '326', icon: '🏢', color: 'border-amber-400', filter: 'All' },
-    { label: 'Active Vendors', value: '271', icon: '✅', color: 'border-green-400', filter: 'Active' },
-    { label: 'Categories', value: '8', icon: '🗂️', color: 'border-blue-400', filter: 'All' },
-    { label: 'Pending Approval', value: '48', icon: '⏳', color: 'border-red-400', filter: 'Pending' },
+    { label: 'Total Vendors', value: totalVendors, icon: '🏢', color: 'border-amber-400', filterValue: 'All' },
+    { label: 'Active Vendors', value: totalActive, icon: '✅', color: 'border-green-400', filterValue: 'Active' },
+    { label: 'Total Categories', value: totalCategories, icon: '🗂️', color: 'border-blue-400', filterValue: 'AllCategories' },
+    { label: 'Updated Today', value: recentlyUpdated, icon: '📅', color: 'border-teal-400', filterValue: 'Updated Today' },
+    { label: 'Pending Approval', value: totalPending, icon: '⏳', color: 'border-red-400', filterValue: 'Pending' },
   ];
   
+  // Filter logic for categories
   const filteredCategories = categories.filter(c => {
     if (activeFilter === 'All') return true;
-    if (activeFilter === 'Active') return c.count > 30;
-    if (activeFilter === 'Pending') return c.label === 'Photography' || c.label === 'Catering';
+    if (activeFilter === 'AllCategories') return true;
+    if (activeFilter === 'Active') return c.status === 'Active';
+    if (activeFilter === 'Pending') return c.status === 'Pending';
+    if (activeFilter === 'Updated Today') {
+      return c.lastUpdated === '1 day ago' || c.lastUpdated === '2 days ago';
+    }
     return true;
   });
-  
-  const matchSearch = !search || 
-    categories.some(c => c.label.toLowerCase().includes(search.toLowerCase()) || 
-                         c.desc.toLowerCase().includes(search.toLowerCase()));
   
   const displayCategories = search ? categories.filter(c => 
     c.label.toLowerCase().includes(search.toLowerCase()) || 
@@ -3139,15 +4414,19 @@ const ManageServiceProvidersPage = ({ onSelect }) => {
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+      
+      {/* Stat Cards Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
         {statCards.map((s, i) => (
-          <div key={i} onClick={() => setActiveFilter(s.filter)}
-            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filter ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
+          <div key={i} onClick={() => setActiveFilter(s.filterValue)}
+            className={`bg-white rounded-2xl p-5 shadow-sm border-l-4 ${s.color} cursor-pointer transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 ${activeFilter === s.filterValue ? 'ring-2 ring-offset-1 ring-red-400 shadow-md' : ''}`}>
             <div className="flex items-start justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-1">{s.label}</p>
                 <p className="text-3xl font-bold text-gray-800">{s.value}</p>
-                {activeFilter === s.filter && <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>}
+                {activeFilter === s.filterValue && (
+                  <p className="text-[10px] text-red-500 font-bold mt-1">● Active Filter</p>
+                )}
               </div>
               <div className="text-2xl">{s.icon}</div>
             </div>
@@ -3172,45 +4451,129 @@ const ManageServiceProvidersPage = ({ onSelect }) => {
             <Icon d={ICONS.filter} size={14} />Filters
           </button>
         </div>
+        
+        {/* Filter buttons matching stat cards */}
         <div className="flex items-center gap-2 flex-wrap">
-          {['All', 'Active', 'Pending', 'Verified'].map(f => (
-            <button 
-              key={f} 
-              onClick={() => setActiveFilter(f)} 
-              className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === f ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
-            >
-              {f}
-            </button>
-          ))}
+          <button 
+            onClick={() => setActiveFilter('All')} 
+            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === 'All' ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+          >
+            🏢 All Vendors
+          </button>
+          <button 
+            onClick={() => setActiveFilter('Active')} 
+            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === 'Active' ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+          >
+            ✅ Active
+          </button>
+          <button 
+            onClick={() => setActiveFilter('AllCategories')} 
+            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === 'AllCategories' ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+          >
+            🗂️ All Categories
+          </button>
+          <button 
+            onClick={() => setActiveFilter('Updated Today')} 
+            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === 'Updated Today' ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+          >
+            📅 Updated Today
+          </button>
+          <button 
+            onClick={() => setActiveFilter('Pending')} 
+            className={`px-3 py-1.5 text-xs font-semibold rounded-xl transition-colors whitespace-nowrap ${activeFilter === 'Pending' ? 'bg-red-600 text-white' : 'border border-gray-200 text-gray-600 hover:bg-gray-50'}`}
+          >
+            ⏳ Pending Approval
+          </button>
         </div>
-        {activeFilter !== 'All' && (
+        
+        {/* Active filter indicator */}
+        {activeFilter !== 'All' && activeFilter !== 'AllCategories' && (
           <div className="mt-3 flex items-center gap-2">
             <span className="text-xs text-gray-500">Filtered by:</span>
             <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-red-50 text-red-700 text-xs font-semibold rounded-full">
-              {activeFilter}
+              {activeFilter === 'Updated Today' ? '📅 Recently Updated Categories' : 
+               activeFilter === 'Active' ? '✅ Active Categories' : 
+               activeFilter === 'Pending' ? '⏳ Pending Categories' : 
+               activeFilter}
               <button onClick={() => setActiveFilter('All')} className="ml-1 hover:text-red-900">✕</button>
             </span>
           </div>
         )}
+        
+        {/* Show total count info */}
+        <div className="mt-3 pt-2 border-t border-gray-100">
+          <p className="text-xs text-gray-400">
+            Showing {displayCategories.length} of {categories.length} categories
+            {activeFilter !== 'All' && activeFilter !== 'AllCategories' && ` (filtered by ${activeFilter})`}
+          </p>
+        </div>
       </div>
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+      {/* Categories Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         {displayCategories.length === 0 ? (
-          <div className="col-span-full text-center py-10 text-gray-400">No categories found for "{search || activeFilter}" filter.</div>
+          <div className="col-span-full text-center py-16 bg-white rounded-2xl border border-gray-100">
+            <div className="text-5xl mb-3">🔍</div>
+            <p className="text-gray-400 text-sm">No categories found for "{search || activeFilter}" filter.</p>
+            <button 
+              onClick={() => { setActiveFilter('All'); setSearch(''); }} 
+              className="mt-3 text-red-600 text-xs font-semibold hover:underline"
+            >
+              Clear all filters
+            </button>
+          </div>
         ) : (
           displayCategories.map((c, i) => (
-            <div key={i} onClick={() => onSelect(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-5 cursor-pointer hover:shadow-md transition-all hover:-translate-y-0.5`}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="text-3xl">{c.icon}</div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-800">{c.count}</p>
-                  <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider">vendors</p>
+            <div key={c.id} onClick={() => onSelect(c.label)} className={`bg-gradient-to-br ${c.color} border rounded-2xl p-5 cursor-pointer hover:shadow-lg transition-all hover:-translate-y-1 group`}>
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-4xl">{c.icon}</div>
+                <div className="flex items-center gap-1">
+                  {c.rating && (
+                    <div className="flex items-center gap-0.5 bg-white/50 rounded-full px-2 py-0.5">
+                      <span className="text-amber-500 text-xs">★</span>
+                      <span className="text-[10px] font-bold text-gray-700">{c.rating}</span>
+                    </div>
+                  )}
                 </div>
               </div>
-              <p className="text-sm font-bold text-gray-700 mb-1">{c.label}</p>
-              <p className="text-[11px] text-gray-500 leading-tight">{c.desc}</p>
-              <div className="mt-3 flex items-center gap-1 text-red-600 text-xs font-semibold">
-                <span>Manage →</span>
+              
+              <div className="mb-2">
+                <div className="flex items-center justify-between">
+                  <p className="text-lg font-bold text-gray-800">{c.label}</p>
+                  <p className="text-2xl font-bold text-gray-800">{c.count}</p>
+                </div>
+                <p className="text-[10px] text-gray-400 -mt-1">vendors</p>
+              </div>
+              
+              <p className="text-[11px] text-gray-500 leading-tight mb-3">{c.desc}</p>
+              
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                    <span className="text-[9px] text-gray-500">{c.activeCount} active</span>
+                  </div>
+                  {c.pendingCount > 0 && (
+                    <div className="flex items-center gap-1">
+                      <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+                      <span className="text-[9px] text-gray-500">{c.pendingCount} pending</span>
+                    </div>
+                  )}
+                </div>
+                <div className="text-red-600 text-xs font-semibold group-hover:translate-x-1 transition-transform">
+                  Manage →
+                </div>
+              </div>
+              
+              <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between">
+                {c.growth && (
+                  <span className="text-[10px] font-semibold text-green-600">{c.growth} growth</span>
+                )}
+                {c.lastUpdated && (
+                  <span className="text-[9px] text-gray-400 flex items-center gap-1">
+                    <span>🕐</span> {c.lastUpdated}
+                  </span>
+                )}
               </div>
             </div>
           ))
@@ -3585,9 +4948,9 @@ const menuConfig = [
   { id: 'payments', label: 'Payments & Transactions', icon: ICONS.payments, color: 'text-purple-600', submenus: [], vendorStyle: false },
   { id: 'complaints', label: 'Complaints & Disputes', icon: ICONS.complaints, color: 'text-rose-600', submenus: [], vendorStyle: false },
   { id: 'analytics', label: 'Analytics & Reports', icon: ICONS.analytics, color: 'text-cyan-600', submenus: [], vendorStyle: false },
-  { id: 'roles', label: 'Admin Roles', icon: ICONS.roles, color: 'text-indigo-600', submenus: ['Super Admin', 'Operations Manager', 'Finance Manager', 'Support Team'], vendorStyle: false },
-  { id: 'notifications', label: 'Notifications', icon: ICONS.notifications, color: 'text-orange-500', submenus: ['Booking Alerts', 'Payment Updates', 'Vendor Approvals', 'Customer Inquiries'], vendorStyle: false },
-  { id: 'settings', label: 'Settings', icon: ICONS.settings, color: 'text-gray-600', submenus: ['Platform Configuration', 'API Integrations', 'Terms & Privacy Policy', 'Notification Settings'], vendorStyle: false },
+  { id: 'roles', label: 'Admin Roles', icon: ICONS.roles, color: 'text-indigo-600', submenus: [], vendorStyle: false },
+  { id: 'notifications', label: 'Notifications', icon: ICONS.notifications, color: 'text-orange-500', submenus: [], vendorStyle: false },
+  { id: 'settings', label: 'Settings', icon: ICONS.settings, color: 'text-gray-600', submenus: [], vendorStyle: false },
 ];
 
 const dashboardStats = [
@@ -3631,6 +4994,9 @@ const RightPanel = ({ activeMenu, activeSubmenu, onSelectCategory, onNavigate })
   if (activeMenu === 'payments') return <PaymentsTransactionsPage />;
   if (activeMenu === 'complaints') return <ComplaintsDisputesPage />;
   if (activeMenu === 'analytics') return <AnalyticsReportsPage />;
+  if (activeMenu === 'roles') return <AdminRolesPage />;
+  if (activeMenu === 'notifications') return <NotificationsPage />;
+  if (activeMenu === 'settings') return <SettingsPage />;
   return (
     <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 min-h-64 flex flex-col items-center justify-center text-center">
       <div className="text-5xl mb-4">🚧</div>
