@@ -33,7 +33,6 @@ const CustomerProfile = () => {
       dateOfBirth: editForm.dateOfBirth,
       age: '28 Years',
       gender: editForm.gender,
-      maritalStatus: 'Never Married',
       religion: editForm.religion,
       caste: editForm.caste,
       motherTongue: 'Tamil',
@@ -107,75 +106,47 @@ const CustomerProfile = () => {
     { id: 'services', title: 'Wedding Services', emoji: '💒' },
   ];
 
-  const Field = ({ label, children, emoji }) => (
-    <div className="group mb-4 transform transition-all duration-300 hover:translate-x-1">
-      <h4 className="text-xs font-bold text-gray-600 mb-1 flex items-center gap-1">
-        {emoji && <span className="text-sm">{emoji}</span>}
-        <span className="group-hover:text-red-600 transition-colors duration-300">{label}</span>
-      </h4>
-      <div className="min-h-[20px] bg-white/50 rounded-lg p-2 group-hover:bg-white group-hover:shadow-md transition-all duration-300 border border-transparent group-hover:border-red-200">
-        {children}
+  const InfoField = ({ label, value, icon }) => (
+    <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition">
+      <div className="bg-white p-2 rounded-lg shadow-sm flex-shrink-0">
+        <span className="text-base">{icon}</span>
+      </div>
+      <div className="flex-1 min-w-0">
+        <label className="block text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wide">
+          {label}
+        </label>
+        <div className="p-2 text-sm text-gray-800 bg-white rounded-lg border border-gray-200 font-medium">
+          {value || 'Not specified'}
+        </div>
       </div>
     </div>
-  );
-
-  const Val = ({ children }) => (
-    <p className="text-sm font-medium text-gray-800 flex items-center gap-1">
-      {children}
-    </p>
   );
 
   const renderSectionContent = () => {
     switch (activeSection) {
       case 'personal':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Full Name" emoji="✨">
-                <Val>{customerData.personalDetails.fullName}</Val>
-              </Field>
-              <Field label="Date of Birth" emoji="🎂">
-                <Val>{customerData.personalDetails.dateOfBirth}</Val>
-              </Field>
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="Age" emoji="📅">
-                  <Val>{customerData.personalDetails.age}</Val>
-                </Field>
-                <Field label="Gender" emoji="⚥">
-                  <Val>{customerData.personalDetails.gender}</Val>
-                </Field>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-red-600 mr-3 rounded-full"></div>
+              Personal Details
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <InfoField label="Full Name" value={customerData.personalDetails.fullName} icon="✨" />
+                <InfoField label="Date of Birth" value={customerData.personalDetails.dateOfBirth} icon="🎂" />
+                <InfoField label="Age" value={customerData.personalDetails.age} icon="📅" />
+                <InfoField label="Gender" value={customerData.personalDetails.gender} icon="⚥" />
+                <InfoField label="Marital Status" value={customerData.personalDetails.maritalStatus} icon="💍" />
+                <InfoField label="Mother Tongue" value={customerData.personalDetails.motherTongue} icon="🗣️" />
               </div>
-            </div>
-            <div className="space-y-4">
-              <Field label="Marital Status" emoji="💍">
-                <Val>{customerData.personalDetails.maritalStatus}</Val>
-              </Field>
-              <div className="grid grid-cols-2 gap-4">
-                <Field label="Religion" emoji="🕉️">
-                  <Val>{customerData.personalDetails.religion}</Val>
-                </Field>
-                <Field label="Caste" emoji="👥">
-                  <Val>{customerData.personalDetails.caste}</Val>
-                </Field>
-              </div>
-              <Field label="Mother Tongue" emoji="🗣️">
-                <Val>{customerData.personalDetails.motherTongue}</Val>
-              </Field>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 pt-4 border-t border-red-200">
-                <Field label="Height" emoji="📏">
-                  <Val>{customerData.personalDetails.height}</Val>
-                </Field>
-                <Field label="Weight" emoji="⚖️">
-                  <Val>{customerData.personalDetails.weight}</Val>
-                </Field>
-                <Field label="Body Type" emoji="💪">
-                  <Val>{customerData.personalDetails.bodyType}</Val>
-                </Field>
-                <Field label="Complexion" emoji="🌟">
-                  <Val>{customerData.personalDetails.complexion}</Val>
-                </Field>
+              <div className="space-y-3">
+                <InfoField label="Religion" value={customerData.personalDetails.religion} icon="🕉️" />
+                <InfoField label="Caste" value={customerData.personalDetails.caste} icon="👥" />
+                <InfoField label="Height" value={customerData.personalDetails.height} icon="📏" />
+                <InfoField label="Weight" value={customerData.personalDetails.weight} icon="⚖️" />
+                <InfoField label="Body Type" value={customerData.personalDetails.bodyType} icon="💪" />
+                <InfoField label="Complexion" value={customerData.personalDetails.complexion} icon="🌟" />
               </div>
             </div>
           </div>
@@ -183,42 +154,23 @@ const CustomerProfile = () => {
 
       case 'contact':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Mobile Number" emoji="📱">
-                <Val>{customerData.contactInfo.mobile}</Val>
-              </Field>
-              <Field label="Alternate Mobile" emoji="📲">
-                <Val>{customerData.contactInfo.alternateMobile}</Val>
-              </Field>
-            </div>
-            <div className="space-y-4">
-              <Field label="Email ID" emoji="✉️">
-                <Val>{customerData.contactInfo.email}</Val>
-              </Field>
-              <Field label="Address" emoji="🏠">
-                <Val className="break-words">{customerData.contactInfo.address}</Val>
-              </Field>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-red-200">
-                <Field label="City / District" emoji="🏙️">
-                  <Val>{customerData.contactInfo.cityDistrict}</Val>
-                </Field>
-                <Field label="State" emoji="🗺️">
-                  <Val>{customerData.contactInfo.state}</Val>
-                </Field>
-                <Field label="PIN Code" emoji="📍">
-                  <Val>{customerData.contactInfo.pinCode}</Val>
-                </Field>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-yellow-500 mr-3 rounded-full"></div>
+              Contact Information
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <InfoField label="Mobile Number" value={customerData.contactInfo.mobile} icon="📱" />
+                <InfoField label="Alternate Mobile" value={customerData.contactInfo.alternateMobile} icon="📲" />
+                <InfoField label="Email ID" value={customerData.contactInfo.email} icon="✉️" />
+                <InfoField label="Address" value={customerData.contactInfo.address} icon="🏠" />
               </div>
-              <div className="pt-4">
-                <Field label="Current Location" emoji="🌍">
-                  <p className="text-sm font-medium text-gray-800 flex items-center">
-                    <span className="mr-1.5">📍</span>
-                    {customerData.contactInfo.currentLocation}
-                  </p>
-                </Field>
+              <div className="space-y-3">
+                <InfoField label="City / District" value={customerData.contactInfo.cityDistrict} icon="🏙️" />
+                <InfoField label="State" value={customerData.contactInfo.state} icon="🗺️" />
+                <InfoField label="PIN Code" value={customerData.contactInfo.pinCode} icon="📍" />
+                <InfoField label="Current Location" value={customerData.contactInfo.currentLocation} icon="🌍" />
               </div>
             </div>
           </div>
@@ -226,37 +178,23 @@ const CustomerProfile = () => {
 
       case 'family':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Father's Name" emoji="👨">
-                <Val>{customerData.familyDetails.fatherName}</Val>
-              </Field>
-              <Field label="Father's Occupation" emoji="💼">
-                <Val>{customerData.familyDetails.fatherOccupation}</Val>
-              </Field>
-            </div>
-            <div className="space-y-4">
-              <Field label="Mother's Name" emoji="👩">
-                <Val>{customerData.familyDetails.motherName}</Val>
-              </Field>
-              <Field label="Mother's Occupation" emoji="👗">
-                <Val>{customerData.familyDetails.motherOccupation}</Val>
-              </Field>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-red-200">
-                <Field label="Siblings" emoji="👫">
-                  <Val>{customerData.familyDetails.siblings}</Val>
-                </Field>
-                <Field label="Family Type" emoji="🏡">
-                  <Val>{customerData.familyDetails.familyType}</Val>
-                </Field>
-                <Field label="Family Status" emoji="💰">
-                  <Val>{customerData.familyDetails.familyStatus}</Val>
-                </Field>
-                <Field label="Family Values" emoji="💝">
-                  <Val>{customerData.familyDetails.familyValues}</Val>
-                </Field>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-red-500 mr-3 rounded-full"></div>
+              Family Details
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <InfoField label="Father's Name" value={customerData.familyDetails.fatherName} icon="👨" />
+                <InfoField label="Father's Occupation" value={customerData.familyDetails.fatherOccupation} icon="💼" />
+                <InfoField label="Mother's Name" value={customerData.familyDetails.motherName} icon="👩" />
+                <InfoField label="Mother's Occupation" value={customerData.familyDetails.motherOccupation} icon="👗" />
+              </div>
+              <div className="space-y-3">
+                <InfoField label="Siblings" value={customerData.familyDetails.siblings} icon="👫" />
+                <InfoField label="Family Type" value={customerData.familyDetails.familyType} icon="🏡" />
+                <InfoField label="Family Status" value={customerData.familyDetails.familyStatus} icon="💰" />
+                <InfoField label="Family Values" value={customerData.familyDetails.familyValues} icon="💝" />
               </div>
             </div>
           </div>
@@ -264,33 +202,21 @@ const CustomerProfile = () => {
 
       case 'education':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Highest Education" emoji="🎓">
-                <Val>{customerData.educationCareer.highestEducation}</Val>
-              </Field>
-              <Field label="College / University" emoji="🏛️">
-                <Val>{customerData.educationCareer.college}</Val>
-              </Field>
-            </div>
-            <div className="space-y-4">
-              <Field label="Occupation" emoji="💻">
-                <Val>{customerData.educationCareer.occupation}</Val>
-              </Field>
-              <Field label="Company" emoji="🏢">
-                <Val>{customerData.educationCareer.company}</Val>
-              </Field>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-red-200">
-                <Field label="Annual Income" emoji="💰">
-                  <p className="text-sm font-bold text-green-700 flex items-center gap-1">
-                    <span>💵</span> {customerData.educationCareer.annualIncome}
-                  </p>
-                </Field>
-                <Field label="Work Location" emoji="🏢">
-                  <Val>{customerData.educationCareer.workLocation}</Val>
-                </Field>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-yellow-500 mr-3 rounded-full"></div>
+              Education & Career
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <InfoField label="Highest Education" value={customerData.educationCareer.highestEducation} icon="🎓" />
+                <InfoField label="College / University" value={customerData.educationCareer.college} icon="🏛️" />
+                <InfoField label="Occupation" value={customerData.educationCareer.occupation} icon="💻" />
+              </div>
+              <div className="space-y-3">
+                <InfoField label="Company" value={customerData.educationCareer.company} icon="🏢" />
+                <InfoField label="Annual Income" value={customerData.educationCareer.annualIncome} icon="💰" />
+                <InfoField label="Work Location" value={customerData.educationCareer.workLocation} icon="📍" />
               </div>
             </div>
           </div>
@@ -298,42 +224,24 @@ const CustomerProfile = () => {
 
       case 'partner':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Preferred Age Range" emoji="📊">
-                <Val>{customerData.partnerPreferences.ageRange}</Val>
-              </Field>
-              <Field label="Preferred Height Range" emoji="📏">
-                <Val>{customerData.partnerPreferences.heightRange}</Val>
-              </Field>
-            </div>
-            <div className="space-y-4">
-              <Field label="Marital Status" emoji="💍">
-                <Val>{customerData.partnerPreferences.maritalStatus}</Val>
-              </Field>
-              <Field label="Religion" emoji="🕉️">
-                <Val>{customerData.partnerPreferences.religion}</Val>
-              </Field>
-            </div>
-            <div className="col-span-1 md:col-span-2">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-red-200">
-                <Field label="Caste" emoji="👥">
-                  <Val>{customerData.partnerPreferences.caste}</Val>
-                </Field>
-                <Field label="Education" emoji="🎓">
-                  <Val>{customerData.partnerPreferences.education}</Val>
-                </Field>
-                <Field label="Occupation" emoji="💼">
-                  <Val>{customerData.partnerPreferences.occupation}</Val>
-                </Field>
-                <Field label="Annual Income" emoji="💰">
-                  <Val>{customerData.partnerPreferences.annualIncome}</Val>
-                </Field>
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-yellow-500 mr-3 rounded-full"></div>
+              Partner Preferences
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <div className="space-y-3">
+                <InfoField label="Preferred Age Range" value={customerData.partnerPreferences.ageRange} icon="📊" />
+                <InfoField label="Preferred Height Range" value={customerData.partnerPreferences.heightRange} icon="📏" />
+                <InfoField label="Marital Status" value={customerData.partnerPreferences.maritalStatus} icon="💍" />
+                <InfoField label="Religion" value={customerData.partnerPreferences.religion} icon="🕉️" />
+                <InfoField label="Caste" value={customerData.partnerPreferences.caste} icon="👥" />
               </div>
-              <div className="pt-4 border-t border-red-200">
-                <Field label="Preferred Location" emoji="🌍">
-                  <Val>{customerData.partnerPreferences.location}</Val>
-                </Field>
+              <div className="space-y-3">
+                <InfoField label="Education" value={customerData.partnerPreferences.education} icon="🎓" />
+                <InfoField label="Occupation" value={customerData.partnerPreferences.occupation} icon="💼" />
+                <InfoField label="Annual Income" value={customerData.partnerPreferences.annualIncome} icon="💰" />
+                <InfoField label="Preferred Location" value={customerData.partnerPreferences.location} icon="🌍" />
               </div>
             </div>
           </div>
@@ -341,80 +249,94 @@ const CustomerProfile = () => {
 
       case 'hobbies':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-4">
-              <Field label="Hobbies" emoji="🎯">
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
-                    <span key={i} className="inline-flex items-center bg-gradient-to-r from-red-50 to-golden-50 text-red-700 text-xs px-3 py-1.5 rounded-full border border-red-200 hover:shadow-md transform hover:scale-105 transition-all duration-300">
-                      <span className="mr-1">
-                        {hobby === 'Reading' && '📚'}
-                        {hobby === 'Cooking' && '🍳'}
-                        {hobby === 'Travel' && '✈️'}
-                        {hobby === 'Music' && '🎵'}
-                        {hobby === 'Yoga' && '🧘'}
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-red-500 mr-3 rounded-full"></div>
+              Hobbies & Interests
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-xl">
+                <div className="bg-white p-2 rounded-lg shadow-sm flex-shrink-0"><span>🎯</span></div>
+                <div className="flex-1">
+                  <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Hobbies</label>
+                  <div className="flex flex-wrap gap-2">
+                    {customerData.hobbiesInterests.hobbies.map((hobby, i) => (
+                      <span key={i} className="inline-flex items-center bg-red-50 text-red-700 text-sm px-3 py-1.5 rounded-full border border-red-200 hover:shadow-md transform hover:scale-105 transition-all duration-300">
+                        <span className="mr-1">
+                          {hobby === 'Reading' && '📚'}
+                          {hobby === 'Cooking' && '🍳'}
+                          {hobby === 'Travel' && '✈️'}
+                          {hobby === 'Music' && '🎵'}
+                          {hobby === 'Yoga' && '🧘'}
+                        </span>
+                        {hobby}
                       </span>
-                      {hobby}
-                    </span>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </Field>
-            </div>
-            <div className="space-y-4">
-              <Field label="Interests" emoji="💫">
-                <div className="flex flex-wrap gap-1.5 mt-1">
-                  {customerData.hobbiesInterests.interests.map((interest, i) => (
-                    <span key={i} className="inline-flex items-center bg-gradient-to-r from-golden-50 to-yellow-50 text-golden-700 text-xs px-3 py-1.5 rounded-full border border-golden-200 hover:shadow-md transform hover:scale-105 transition-all duration-300">
-                      <span className="mr-1">
-                        {interest === 'Technology' && '💻'}
-                        {interest === 'Photography' && '📸'}
-                        {interest === 'Food' && '🍜'}
-                        {interest === 'Fitness' && '💪'}
+              </div>
+              <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-xl">
+                <div className="bg-white p-2 rounded-lg shadow-sm flex-shrink-0"><span>💫</span></div>
+                <div className="flex-1">
+                  <label className="block text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Interests</label>
+                  <div className="flex flex-wrap gap-2">
+                    {customerData.hobbiesInterests.interests.map((interest, i) => (
+                      <span key={i} className="inline-flex items-center bg-yellow-50 text-yellow-700 text-sm px-3 py-1.5 rounded-full border border-yellow-200 hover:shadow-md transform hover:scale-105 transition-all duration-300">
+                        <span className="mr-1">
+                          {interest === 'Technology' && '💻'}
+                          {interest === 'Photography' && '📸'}
+                          {interest === 'Food' && '🍜'}
+                          {interest === 'Fitness' && '💪'}
+                        </span>
+                        {interest}
                       </span>
-                      {interest}
-                    </span>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </Field>
+              </div>
             </div>
           </div>
         );
 
       case 'services':
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Object.entries(customerData.servicesInterested).map(([service, interested]) => (
-              <div key={service} className={`group p-4 rounded-lg border-2 transform hover:scale-105 transition-all duration-300 ${
-                interested 
-                  ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 hover:shadow-lg hover:border-green-400' 
-                  : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-200 hover:shadow-md hover:border-gray-300'
-              }`}>
-                <div className="flex items-center justify-between">
-                  <h4 className="text-sm font-bold text-gray-800 capitalize flex items-center gap-2">
-                    <span>
-                      {service === 'photography' && '📸'}
-                      {service === 'catering' && '🍽️'}
-                      {service === 'weddingHalls' && '🏰'}
-                      {service === 'decorations' && '🎨'}
-                      {service === 'entertainment' && '🎭'}
-                      {service === 'invitation' && '💌'}
-                      {service === 'styling' && '💇'}
-                    </span>
-                    {service.replace(/([A-Z])/g, ' $1').trim()}
-                  </h4>
-                  {interested ? (
-                    <span className="text-green-600 group-hover:scale-110 transition-transform duration-300">✅</span>
-                  ) : (
-                    <span className="text-gray-400 group-hover:scale-110 transition-transform duration-300">❌</span>
-                  )}
-                </div>
-                <p className={`text-xs mt-2 font-medium ${
-                  interested ? 'text-green-600' : 'text-gray-500'
+          <div>
+            <h2 className="text-xl font-bold text-gray-800 mb-5 flex items-center">
+              <div className="w-1.5 h-7 bg-blue-500 mr-3 rounded-full"></div>
+              Wedding Services Interested
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {Object.entries(customerData.servicesInterested).map(([service, interested]) => (
+                <div key={service} className={`group p-4 rounded-xl border-2 transform hover:scale-105 transition-all duration-300 ${
+                  interested
+                    ? 'bg-green-50 border-green-300 hover:shadow-lg hover:border-green-400'
+                    : 'bg-gray-50 border-gray-200 hover:shadow-md hover:border-gray-300'
                 }`}>
-                  {interested ? '✓ Interested' : '✗ Not Interested'}
-                </p>
-              </div>
-            ))}
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-sm font-bold text-gray-800 capitalize flex items-center gap-2">
+                      <span>
+                        {service === 'photography' && '📸'}
+                        {service === 'catering' && '🍽️'}
+                        {service === 'weddingHalls' && '🏰'}
+                        {service === 'decorations' && '🎨'}
+                        {service === 'entertainment' && '🎭'}
+                        {service === 'invitation' && '💌'}
+                        {service === 'styling' && '💇'}
+                      </span>
+                      {service.replace(/([A-Z])/g, ' $1').trim()}
+                    </h4>
+                    {interested ? (
+                      <span className="text-green-600 group-hover:scale-110 transition-transform duration-300">✅</span>
+                    ) : (
+                      <span className="text-gray-400 group-hover:scale-110 transition-transform duration-300">❌</span>
+                    )}
+                  </div>
+                  <p className={`text-xs mt-2 font-medium ${interested ? 'text-green-600' : 'text-gray-500'}`}>
+                    {interested ? '✓ Interested' : '✗ Not Interested'}
+                  </p>
+                </div>
+              ))}
+            </div>
           </div>
         );
 
@@ -424,21 +346,17 @@ const CustomerProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-white to-golden-50">
-      {/* EDIT MODAL */}
+    <div className="min-h-screen bg-gray-100">
+      {/* Edit Modal */}
       {showEditModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden transform animate-fadeIn">
-            <div className="bg-gradient-to-r from-red-600 to-golden-600 px-6 py-4 flex items-center justify-between">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg mx-4 overflow-hidden">
+            <div className="bg-gradient-to-r from-red-800 to-red-600 px-6 py-4 flex items-center justify-between">
               <h2 className="text-white text-lg font-bold flex items-center gap-2">
-                <span>✏️</span>
-                Edit Profile
+                <span>✏️</span> Edit Profile
               </h2>
-              <button onClick={() => setShowEditModal(false)} className="text-white/80 hover:text-white transition-all hover:scale-110">
-                <span className="text-xl">❌</span>
-              </button>
+              <button onClick={() => setShowEditModal(false)} className="text-white/80 hover:text-white text-xl">✕</button>
             </div>
-
             <div className="px-6 py-5 space-y-4 max-h-[60vh] overflow-y-auto">
               {[
                 { name: 'fullName', label: 'Full Name', emoji: '✨' },
@@ -453,33 +371,25 @@ const CustomerProfile = () => {
                 { name: 'state', label: 'State', emoji: '🗺️' },
                 { name: 'pinCode', label: 'PIN Code', emoji: '📍' },
               ].map((field) => (
-                <div key={field.name} className="space-y-1 group">
+                <div key={field.name} className="space-y-1">
                   <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider flex items-center gap-1">
-                    <span>{field.emoji}</span>
-                    {field.label}
+                    <span>{field.emoji}</span> {field.label}
                   </label>
                   <input
                     type={field.type || 'text'}
                     name={field.name}
                     value={editForm[field.name]}
                     onChange={handleEditChange}
-                    className="w-full border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-100 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none transition-all group-hover:border-red-300"
+                    className="w-full border border-gray-300 focus:border-red-500 focus:ring-2 focus:ring-red-100 rounded-lg px-3 py-2 text-sm text-gray-800 outline-none transition-all"
                   />
                 </div>
               ))}
             </div>
-
-            <div className="px-6 py-4 bg-gradient-to-r from-red-50 to-golden-50 border-t border-gray-200 flex justify-end gap-3">
-              <button 
-                onClick={() => setShowEditModal(false)} 
-                className="px-5 py-2 rounded-lg border-2 border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-100 hover:border-gray-400 transition-all transform hover:scale-105"
-              >
+            <div className="px-6 py-4 bg-gray-50 border-t border-gray-200 flex justify-end gap-3">
+              <button onClick={() => setShowEditModal(false)} className="px-5 py-2 rounded-lg border-2 border-gray-300 text-gray-700 text-sm font-semibold hover:bg-gray-100 transition-all">
                 Cancel
               </button>
-              <button 
-                onClick={handleSave} 
-                className="px-5 py-2 rounded-lg bg-gradient-to-r from-red-600 to-golden-600 text-white text-sm font-bold hover:from-red-700 hover:to-golden-700 transition-all transform hover:scale-105 shadow-lg"
-              >
+              <button onClick={handleSave} className="px-5 py-2 rounded-lg bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all shadow-lg">
                 💾 Save Changes
               </button>
             </div>
@@ -487,188 +397,115 @@ const CustomerProfile = () => {
         </div>
       )}
 
-      {/* PAGE BODY */}
-      <div className="container mx-auto px-2 md:px-4 py-3 md:py-6">
-        {/* Breadcrumb */}
-        <nav className="mb-3 md:mb-6">
-          <ol className="flex items-center space-x-1 md:space-x-2 text-xs md:text-sm">
-            <li><a href="/" className="text-red-600 hover:text-red-800 hover:underline flex items-center gap-1">🏠 Home</a></li>
-            <li className="text-golden-600">›</li>
-            <li className="text-gray-600 font-medium flex items-center gap-1">👤 Customer Profile</li>
-          </ol>
-        </nav>
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-6 max-w-6xl">
 
-        {/* Main Profile Card */}
-        <div className="bg-white rounded-lg md:rounded-xl shadow-2xl border border-red-200 overflow-hidden mb-4 md:mb-8 transform hover:shadow-3xl transition-all duration-500">
-          {/* Profile Header */}
-          <div className="relative bg-gradient-to-r from-red-600 via-red-500 to-golden-600 p-4 md:p-6">
-            {/* Edit Profile button */}
-            <div className="flex justify-end mb-3">
-              <button
-                onClick={() => setShowEditModal(true)}
-                className="bg-white text-red-700 hover:bg-gradient-to-r hover:from-golden-400 hover:to-yellow-400 hover:text-red-800 px-4 py-2 rounded-md text-xs md:text-sm font-bold flex items-center gap-1.5 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 group"
-              >
-                <span className="group-hover:rotate-12 transition-transform duration-300">✏️</span>
-                Edit Profile
-              </button>
-            </div>
-
-            {/* Profile Photo + Info */}
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
-              <div className="w-20 h-20 md:w-28 md:h-28 rounded-full border-4 border-white shadow-xl overflow-hidden bg-gradient-to-br from-red-100 to-golden-100 flex-shrink-0 transform hover:scale-105 transition-all duration-300">
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-200">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+            {/* Photo */}
+            <div className="relative flex-shrink-0">
+              <div className="w-36 h-36 rounded-2xl overflow-hidden border-4 border-red-100 shadow-lg bg-gradient-to-br from-red-100 to-red-200">
                 {customerData.profilePhoto ? (
                   <img src={customerData.profilePhoto} alt={customerData.personalDetails.fullName} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-red-200 to-golden-200">
-                    <span className="text-4xl md:text-5xl">👤</span>
+                  <div className="w-full h-full flex items-center justify-center text-red-600 text-6xl font-bold">
+                    {customerData.personalDetails.fullName.charAt(0)}
                   </div>
                 )}
               </div>
+              <button
+                onClick={() => setShowEditModal(true)}
+                className="absolute bottom-2 right-2 w-8 h-8 bg-red-600 hover:bg-red-700 text-white rounded-full flex items-center justify-center shadow-lg transition-all hover:scale-110 text-sm"
+              >
+                ✏️
+              </button>
+            </div>
 
-              <div className="flex-1 min-w-0">
-                <h1 className="text-lg md:text-3xl font-bold text-white flex items-center gap-2">
-                  {customerData.personalDetails.fullName}
-                  <span className="text-2xl">✨</span>
-                </h1>
+            {/* Info */}
+            <div className="flex-1 text-center md:text-left">
+              <h1 className="text-3xl font-bold text-gray-800 mb-1">{customerData.personalDetails.fullName}</h1>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-gray-500 text-sm mb-4">
+                <span className="flex items-center gap-1"><span>📍</span>{customerData.contactInfo.currentLocation}</span>
+                <span className="flex items-center gap-1"><span>💼</span>{customerData.educationCareer.occupation} at {customerData.educationCareer.company}</span>
+              </div>
 
-                <span className="inline-flex items-center gap-1.5 mt-1.5 mb-2 bg-gradient-to-r from-golden-400 to-yellow-400 text-red-800 px-4 py-1.5 rounded-full text-xs md:text-sm font-bold shadow-lg transform hover:scale-105 transition-all duration-300">
-                  <span>🆔</span>
-                  Customer ID: {customerData.id}
+              {/* Badges */}
+              <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                <span className="flex items-center gap-1.5 bg-red-100 text-red-800 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                  <span>🆔</span> {customerData.id}
                 </span>
-
-                <div className="text-white/90 text-sm md:text-base space-y-1">
-                  <div className="flex items-center group hover:translate-x-1 transition-transform duration-300">
-                    <span className="mr-1.5">📍</span>
-                    <span>{customerData.contactInfo.currentLocation}</span>
-                  </div>
-                  <div className="flex items-center group hover:translate-x-1 transition-transform duration-300">
-                    <span className="mr-1.5">💼</span>
-                    <span>{customerData.educationCareer.occupation} at {customerData.educationCareer.company}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mt-3">
-                  <button className="bg-white text-red-700 hover:bg-gradient-to-r hover:from-golden-400 hover:to-yellow-400 hover:text-red-800 px-4 py-2 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
-                    <span>📞</span>
-                    {customerData.contactInfo.mobile}
-                  </button>
-                  <button className="bg-white text-red-700 hover:bg-gradient-to-r hover:from-golden-400 hover:to-yellow-400 hover:text-red-800 px-4 py-2 rounded-md text-xs font-bold flex items-center gap-1.5 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
-                    <span>✉️</span>
-                    {customerData.contactInfo.email}
-                  </button>
-                </div>
+                {/* <span className="flex items-center gap-1.5 bg-yellow-100 text-yellow-800 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                  <span>💍</span> {customerData.personalDetails.maritalStatus}
+                </span> */}
+                <span className="flex items-center gap-1.5 bg-purple-100 text-purple-800 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                  <span>⚥</span> {customerData.personalDetails.gender}, {customerData.personalDetails.age}
+                </span>
+                {/* <span className="flex items-center gap-1.5 bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                  <span>🎓</span> {customerData.educationCareer.highestEducation}
+                </span> */}
+                {/* <span className="flex items-center gap-1.5 bg-green-100 text-green-800 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                  <span>💰</span> {customerData.educationCareer.annualIncome}
+                </span> */}
               </div>
-            </div>
-          </div>
 
-          {/* Contact Section */}
-          <div className="p-3 md:p-6 bg-gradient-to-r from-red-50 via-white to-golden-50 border-b border-red-200">
-            <div className="bg-white p-4 rounded-lg shadow-lg border border-golden-200 transform hover:shadow-xl transition-all duration-300">
-              <h3 className="text-sm md:text-base font-bold text-red-700 mb-3 flex items-center gap-2">
-                <span className="text-lg">📬</span>
-                Contact Information
-                <span className="text-golden-500">✨</span>
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="flex items-center gap-2 group hover:translate-x-1 transition-transform duration-300">
-                  <span className="text-red-500">📱</span>
-                  <span className="text-sm font-medium text-gray-800">{customerData.contactInfo.mobile}</span>
-                </div>
-                <div className="flex items-center gap-2 group hover:translate-x-1 transition-transform duration-300">
-                  <span className="text-red-500">✉️</span>
-                  <span className="text-sm font-medium text-gray-800">{customerData.contactInfo.email}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Section Navigation + Content */}
-          <div className="border-t border-red-200">
-            {/* Mobile tabs */}
-            <div className="md:hidden overflow-x-auto">
-              <div className="flex space-x-1 px-3 py-2 border-b border-red-200 bg-gradient-to-r from-red-50 to-golden-50">
-                {sections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`flex-shrink-0 px-4 py-2 rounded-md text-xs font-medium transition-all duration-300 whitespace-nowrap transform hover:scale-105 ${
-                      activeSection === section.id
-                        ? 'bg-gradient-to-r from-red-600 to-golden-600 text-white shadow-lg'
-                        : 'bg-white text-gray-700 hover:bg-gradient-to-r hover:from-red-100 hover:to-golden-100 border border-red-200'
-                    }`}
-                  >
-                    <span className="mr-1">{section.emoji}</span>
-                    {section.title}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Desktop tabs */}
-            <div className="hidden md:grid grid-cols-2 lg:grid-cols-4 border-b border-red-200">
-              {sections.slice(0, 4).map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`p-4 text-sm font-medium transition-all duration-300 border-r border-red-200 last:border-r-0 transform hover:scale-105 ${
-                    activeSection === section.id
-                      ? 'bg-gradient-to-r from-red-600 to-golden-600 text-white shadow-lg'
-                      : 'bg-gradient-to-r from-red-50 to-golden-50 text-gray-700 hover:from-red-100 hover:to-golden-100'
-                  }`}
-                >
-                  <span className="mr-2 text-lg">{section.emoji}</span>
-                  {section.title}
+              {/* Contact Buttons */}
+              <div className="flex flex-wrap gap-2 mt-3 justify-center md:justify-start">
+                <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                  <span>📞</span> {customerData.contactInfo.mobile}
                 </button>
-              ))}
-              {sections.slice(4, 7).map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`p-4 text-sm font-medium transition-all duration-300 border-r border-red-200 last:border-r-0 transform hover:scale-105 ${
-                    activeSection === section.id
-                      ? 'bg-gradient-to-r from-red-600 to-golden-600 text-white shadow-lg'
-                      : 'bg-gradient-to-r from-red-50 to-golden-50 text-gray-700 hover:from-red-100 hover:to-golden-100'
-                  }`}
-                >
-                  <span className="mr-2 text-lg">{section.emoji}</span>
-                  {section.title}
+                <button className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                  <span>✉️</span> {customerData.contactInfo.email}
                 </button>
-              ))}
-            </div>
-
-            {/* Active section content */}
-            <div className="p-4 md:p-6">
-              <div className="flex items-center mb-4">
-                <h3 className="text-base md:text-lg font-bold text-red-800 flex items-center gap-2">
-                  <span className="text-2xl">{sections.find((s) => s.id === activeSection)?.emoji}</span>
-                  {sections.find((s) => s.id === activeSection)?.title}
-                </h3>
-                <div className="ml-2 w-8 h-1 bg-gradient-to-r from-red-600 to-golden-500 rounded-full animate-pulse"></div>
               </div>
-              <div className="bg-gradient-to-br from-red-50 via-white to-golden-50 p-4 md:p-6 rounded-lg border border-red-200 shadow-inner">
-                {renderSectionContent()}
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="p-4 md:p-6 border-t border-red-200 bg-gradient-to-r from-red-50 via-white to-golden-50">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <button className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-3 px-4 rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 group">
-                <span className="group-hover:rotate-12 transition-transform">🔍</span>
-                Find Matches
-              </button>
-              <button className="flex-1 bg-gradient-to-r from-golden-500 to-yellow-500 text-red-900 py-3 px-4 rounded-lg font-bold hover:from-golden-600 hover:to-yellow-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 group">
-                <span className="group-hover:rotate-12 transition-transform">🛍️</span>
-                Browse Vendors
-              </button>
-              <button className="flex-1 bg-white border-2 border-red-600 text-red-700 py-3 px-4 rounded-lg font-bold hover:bg-gradient-to-r hover:from-red-50 hover:to-golden-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center gap-2 group">
-                <span className="group-hover:rotate-12 transition-transform">📅</span>
-                My Events
-              </button>
             </div>
           </div>
         </div>
+
+        {/* Tab Navigation — all 7 sections, exact titles from original code */}
+        <div className="bg-white rounded-2xl shadow-sm p-2 mb-6 border border-gray-200">
+          <div className="flex overflow-x-auto gap-1">
+            {sections.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveSection(tab.id)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition whitespace-nowrap ${
+                  activeSection === tab.id
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'text-gray-600 hover:bg-gray-100'
+                }`}
+              >
+                <span>{tab.emoji}</span>
+                {tab.title}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 mb-6">
+          {renderSectionContent()}
+        </div>
+
+        {/* Quick Actions */}
+        {/* <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
+          <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center">
+            <div className="w-1.5 h-6 bg-red-600 mr-3 rounded-full"></div>
+            Quick Actions
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button className="flex-1 bg-red-600 hover:bg-red-700 text-white py-3 px-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group">
+              <span className="group-hover:rotate-12 transition-transform">🔍</span> Find Matches
+            </button>
+            <button className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white py-3 px-4 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group">
+              <span className="group-hover:rotate-12 transition-transform">🛍️</span> Browse Vendors
+            </button>
+            <button className="flex-1 bg-white border-2 border-red-600 text-red-700 py-3 px-4 rounded-xl font-bold hover:bg-red-50 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2 group">
+              <span className="group-hover:rotate-12 transition-transform">📅</span> My Events
+            </button>
+          </div>
+        </div> */}
+
       </div>
     </div>
   );
