@@ -23,6 +23,29 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
     return () => cancelAnimationFrame(animRef.current);
   }, [hovered]);
 
+  // Animation observers for scroll-triggered animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const fadeElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-in');
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animated');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    fadeElements.forEach(el => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
   const verificationCategories = [
     {
       number: "01",
@@ -215,11 +238,11 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
       {/* Hero Section - No Banner, Styled Hero Instead */}
       <div className="relative bg-gradient-to-br from-red-800 via-red-700 to-amber-700 overflow-hidden">
-        {/* Decorative background patterns */}
+        {/* Decorative background patterns with animation */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-72 h-72 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-300 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl" />
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-amber-300 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl" />
+          <div className="absolute top-0 left-0 w-72 h-72 bg-yellow-400 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-red-300 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl animate-pulse" style={{ animationDelay: "1s" }} />
+          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-amber-300 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl animate-pulse" style={{ animationDelay: "0.5s" }} />
         </div>
         {/* Dot pattern */}
         <div
@@ -232,49 +255,49 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
           <div className="text-center">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/20 rounded-full text-yellow-200 text-xs font-semibold mb-3 backdrop-blur-sm">
-              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {/* Badge with animation */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 border border-white/20 rounded-full text-yellow-200 text-xs font-semibold mb-3 backdrop-blur-sm animate-bounce-in">
+              <svg className="w-3 h-3 animate-spin-slow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               Trust & Transparency ✦ EliteInova Exclusive
             </div>
 
-            {/* Title */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 leading-tight">
+            {/* Title with fade up animation */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 leading-tight animate-fade-up">
               Pre-Matrimonial
-              <span className="block text-yellow-300">Verification Services</span>
+              <span className="block text-yellow-300 animate-slide-up">Verification Services</span>
             </h1>
 
-            <p className="text-sm md:text-base text-white/80 max-w-2xl mx-auto mb-4">
+            <p className="text-sm md:text-base text-white/80 max-w-2xl mx-auto mb-4 animate-fade-up animation-delay-200">
               Trusted verification for confident marriages. We help families and individuals verify important details before proceeding with a matrimonial alliance.
             </p>
 
-            {/* Stats Row */}
+            {/* Stats Row with staggered animation */}
             <div className="flex flex-wrap justify-center gap-6 md:gap-12 mb-4">
               {[
                 { value: "100%", label: "Confidential" },
                 { value: "9+", label: "Verification Types" },
                 { value: "24/7", label: "Support" },
               ].map((stat, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-xl md:text-2xl font-bold text-yellow-300">{stat.value}</div>
+                <div key={i} className="text-center animate-scale-up" style={{ animationDelay: `${i * 0.15}s` }}>
+                  <div className="text-xl md:text-2xl font-bold text-yellow-300 animate-count-up">{stat.value}</div>
                   <div className="text-white/70 text-xs mt-0.5">{stat.label}</div>
                 </div>
               ))}
             </div>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons with hover animation */}
             <div className="flex flex-wrap justify-center gap-3">
               <button
                 onClick={() => scrollToSection("register-now")}
-                className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-amber-500 text-red-900 font-bold text-sm rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="px-6 py-2 bg-gradient-to-r from-yellow-500 to-amber-500 text-red-900 font-bold text-sm rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 animate-pulse-gentle"
               >
                 Get Verified Now
               </button>
               <button
                 onClick={() => scrollToSection("about-verification")}
-                className="px-6 py-2 bg-white/10 border border-white/30 text-white font-semibold text-sm rounded-xl hover:bg-white/20 transition-all duration-300 backdrop-blur-sm"
+                className="px-6 py-2 bg-white/10 border border-white/30 text-white font-semibold text-sm rounded-xl hover:bg-white/20 hover:scale-105 transition-all duration-300 backdrop-blur-sm animate-fade-up animation-delay-300"
               >
                 Learn More
               </button>
@@ -304,9 +327,9 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
               <button
                 key={i}
                 onClick={() => scrollToSection(link.id)}
-                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-200 bg-red-50/50 text-red-600 text-xs sm:text-sm font-medium hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-200 whitespace-nowrap"
+                className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-red-200 bg-red-50/50 text-red-600 text-xs sm:text-sm font-medium hover:bg-red-500 hover:text-white hover:border-red-500 transition-all duration-200 whitespace-nowrap hover:scale-105"
               >
-                <span className="w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0"></span>
+                <span className="w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0 animate-pulse"></span>
                 {link.label}
               </button>
             ))}
@@ -322,29 +345,28 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
         {/* REDUCED: mb-16→mb-8 */}
         <section id="portal-access" className="mb-8 scroll-mt-20">
           {/* REDUCED: mb-10→mb-6 */}
-          <div className="text-center mb-6">
-            <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Access Your Account ✦</p>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+          <div className="text-center mb-6 fade-up">
+            <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ Access Your Account ✦</p>
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
               Portal Login & Registration
             </h2>
             <div className="flex items-center justify-center gap-3">
-              <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-red-500" />
-              <div className="w-2 h-2 rounded-full bg-red-500" />
-              <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500" />
+              <div className="h-px w-12 md:w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+              <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <div className="h-px w-12 md:w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
             </div>
           </div>
 
           {/* ALL 3 in one row — original card internals unchanged */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
-
             {/* Vendor Portal — original card size */}
-            <div className="group relative">
+            <div className="group relative fade-up animation-delay-100">
               <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-amber-100">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-500 to-orange-500 rounded-t-2xl animate-slide-right" />
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-500 to-orange-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-7 h-7 text-white animate-bounce-gentle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                     </svg>
                   </div>
@@ -367,13 +389,13 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
             </div>
 
             {/* Customer Portal — original card size */}
-            <div className="group relative">
+            <div className="group relative fade-up animation-delay-200">
               <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-red-100">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-500 to-rose-500 rounded-t-2xl animate-slide-right" />
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-7 h-7 text-white animate-bounce-gentle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                     </svg>
                   </div>
@@ -396,13 +418,13 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
             </div>
 
             {/* Matrimony Portal — original card size */}
-            <div className="group relative">
+            <div className="group relative fade-up animation-delay-300">
               <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-rose-400 rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
               <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-pink-100">
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-600 rounded-t-2xl" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-pink-500 to-rose-600 rounded-t-2xl animate-slide-right" />
                 <div className="flex items-center gap-4 mb-5">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
-                    <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-7 h-7 text-white animate-bounce-gentle" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                   </div>
@@ -428,39 +450,39 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
           {/* ─── ABOUT VERIFICATION ─── */}
           <section id="about-verification" className="mb-20 scroll-mt-20">
-            <div className="text-center mb-10">
-              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Trust & Transparency ✦</p>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            <div className="text-center mb-10 fade-up">
+              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ Trust & Transparency ✦</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
                 Pre-Matrimonial Verification Services
               </h2>
-              <p className="text-lg md:text-xl text-amber-700 font-medium">Trusted Verification for Confident Marriages</p>
+              <p className="text-lg md:text-xl text-amber-700 font-medium animate-fade-up animation-delay-100">Trusted Verification for Confident Marriages</p>
               <div className="flex items-center justify-center gap-3 mt-4">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500" />
-                <div className="w-2 h-2 rounded-full bg-red-500" />
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500" />
+                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
               </div>
             </div>
 
             {/* Description Card */}
-            <div className="relative max-w-4xl mx-auto mb-12">
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-amber-500/10 rounded-3xl blur-2xl" />
+            <div className="relative max-w-4xl mx-auto mb-12 fade-up animation-delay-100">
+              <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-amber-500/10 rounded-3xl blur-2xl animate-pulse" />
               <div
-                className="relative bg-white rounded-3xl p-8 md:p-10 shadow-2xl"
+                className="relative bg-white rounded-3xl p-8 md:p-10 shadow-2xl hover:shadow-3xl transition-all duration-500"
                 style={{
                   background: "linear-gradient(135deg, #ffffff 0%, #fffdf9 100%)",
                   boxShadow: "0 4px 24px rgba(185,28,28,0.08), 0 1px 4px rgba(0,0,0,0.04)",
                   border: "1px solid rgba(185,28,28,0.1)",
                 }}
               >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 rounded-t-3xl" />
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-600 via-amber-500 to-red-600 rounded-t-3xl animate-slide-right" />
                 <div className="space-y-5">
-                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed hover:translate-x-1 transition-transform duration-300">
                     At <span className="font-semibold text-red-800">EliteInova</span>, we understand that marriage is one of the most important decisions in life. Trust and transparency are essential when choosing a life partner.
                   </p>
-                  <p className="text-gray-700 text-base md:text-lg leading-relaxed">
+                  <p className="text-gray-700 text-base md:text-lg leading-relaxed hover:translate-x-1 transition-transform duration-300">
                     Our Pre-Matrimonial Verification Services help families and individuals verify important details before proceeding with a matrimonial alliance. Through professional investigation and careful verification, we help ensure that the information provided is accurate and reliable.
                   </p>
-                  <p className="text-gray-700 text-base md:text-lg font-medium">
+                  <p className="text-gray-700 text-base md:text-lg font-medium hover:translate-x-1 transition-transform duration-300">
                     Our goal is to give you peace of mind and confidence while making such an important life decision.
                   </p>
                 </div>
@@ -469,15 +491,15 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
             {/* Why Verification is Important */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-red-100">
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-red-100 fade-left animation-delay-100 hover:shadow-xl transition-all duration-300">
                 <h4 className="font-bold text-gray-800 mb-4 text-lg">Why Pre-Matrimonial Verification is Important</h4>
                 <p className="text-gray-600 mb-4 text-sm">
                   In today's digital world, profiles can sometimes be incomplete or misleading. Verification helps confirm key details such as identity, career, and personal background.
                 </p>
                 <ul className="space-y-2">
                   {["Verify authenticity of matrimonial profiles", "Avoid misinformation or hidden details", "Build trust between families", "Make informed marriage decisions"].map((item, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm">
-                      <span className="text-red-500 font-bold mt-0.5">✓</span>
+                    <li key={i} className="flex items-start gap-2 text-sm hover:translate-x-1 transition-transform duration-300">
+                      <span className="text-red-500 font-bold mt-0.5 animate-pulse">✓</span>
                       <span className="text-gray-600">{item}</span>
                     </li>
                   ))}
@@ -487,12 +509,12 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                 </p>
               </div>
 
-              <div className="bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl p-6 border border-red-200">
+              <div className="bg-gradient-to-br from-red-50 to-amber-50 rounded-2xl p-6 border border-red-200 fade-right animation-delay-100 hover:shadow-xl transition-all duration-300">
                 <h4 className="font-bold text-gray-800 mb-4 text-lg">Key Benefits</h4>
                 <div className="space-y-3">
                   {["Build trust before marriage commitment", "Ensure transparency in matrimonial alliances", "Protect family interests and reputation", "Make confident, informed decisions"].map((benefit, i) => (
-                    <div key={i} className="flex items-start gap-3">
-                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold mt-0.5 flex-shrink-0">
+                    <div key={i} className="flex items-start gap-3 hover:translate-x-1 transition-transform duration-300">
+                      <div className="w-6 h-6 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold mt-0.5 flex-shrink-0 animate-scale-up">
                         {i + 1}
                       </div>
                       <span className="text-gray-700 text-sm">{benefit}</span>
@@ -505,18 +527,18 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
           {/* ─── WHAT IS CHECKED ─── */}
           <section id="what-checked" className="mb-20 scroll-mt-20">
-            <div className="text-center mb-10">
-              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Comprehensive Checks ✦</p>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            <div className="text-center mb-10 fade-up">
+              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ Comprehensive Checks ✦</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
                 What is Pre-Matrimonial Verification?
               </h2>
-              <p className="text-gray-500 text-sm max-w-2xl mx-auto">
+              <p className="text-gray-500 text-sm max-w-2xl mx-auto animate-fade-up animation-delay-100">
                 A background check done before marriage to confirm that the prospective bride/groom is genuine, trustworthy, and matches the details they've provided.
               </p>
               <div className="flex items-center justify-center gap-3 mt-4">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500" />
-                <div className="w-2 h-2 rounded-full bg-red-500" />
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500" />
+                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
               </div>
             </div>
 
@@ -525,7 +547,8 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
               {verificationCategories.map((item, index) => (
                 <div
                   key={index}
-                  className={`group relative ${item.bg} rounded-2xl p-5 border ${item.border} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                  className={`group relative ${item.bg} rounded-2xl p-5 border ${item.border} hover:shadow-lg transition-all duration-300 hover:-translate-y-1 fade-up`}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <div className="flex items-start gap-3">
                     <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-md group-hover:scale-110 transition-transform duration-300`}>
@@ -535,7 +558,7 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                       <h5 className="font-bold text-gray-800 text-sm mb-2 group-hover:text-red-700 transition-colors">{item.title}</h5>
                       <ul className="space-y-1">
                         {item.points.map((point, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5 text-xs text-gray-600">
+                          <li key={idx} className="flex items-start gap-1.5 text-xs text-gray-600 group-hover:translate-x-1 transition-transform duration-300">
                             <span className="text-amber-500 flex-shrink-0 mt-0.5">▸</span>
                             <span>{point}</span>
                           </li>
@@ -549,9 +572,9 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
             {/* Why Important + Suggestions side by side */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-              <div className="bg-gradient-to-br from-red-600 to-amber-600 rounded-2xl p-6 text-white shadow-xl">
+              <div className="bg-gradient-to-br from-red-600 to-amber-600 rounded-2xl p-6 text-white shadow-xl fade-left animate-gradient-x">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center flex-shrink-0 animate-pulse">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
@@ -560,8 +583,8 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                 </div>
                 <ul className="space-y-2.5">
                   {["Avoid fake profiles and scams", "Ensure transparency before marriage", "Protect family reputation", "Build trust between both parties"].map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5 text-sm text-white/90">
-                      <div className="w-5 h-5 rounded-full bg-white/25 flex items-center justify-center flex-shrink-0">
+                    <li key={idx} className="flex items-center gap-2.5 text-sm text-white/90 hover:translate-x-1 transition-transform duration-300">
+                      <div className="w-5 h-5 rounded-full bg-white/25 flex items-center justify-center flex-shrink-0 animate-scale-up">
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                         </svg>
@@ -572,9 +595,9 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                 </ul>
               </div>
 
-              <div className="bg-white rounded-2xl p-6 border border-red-100 shadow-lg">
+              <div className="bg-white rounded-2xl p-6 border border-red-100 shadow-lg fade-right">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-amber-500 flex items-center justify-center flex-shrink-0 animate-spin-slow">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -588,8 +611,8 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                     { label: "Option 2", title: "Professional Agencies", points: ["Private detective agencies", "Matrimonial verification services"], tag: "bg-amber-100 text-amber-700" },
                     { label: "Option 3", title: "Through Matrimony Apps", points: ["Some platforms offer verified badges", "AI-based profile verification"], tag: "bg-red-100 text-red-700" },
                   ].map((opt, idx) => (
-                    <div key={idx} className="flex gap-3">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold whitespace-nowrap h-fit mt-0.5 ${opt.tag}`}>{opt.label}</span>
+                    <div key={idx} className="flex gap-3 hover:translate-x-1 transition-transform duration-300">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-xs font-semibold whitespace-nowrap h-fit mt-0.5 ${opt.tag} animate-pulse`}>{opt.label}</span>
                       <div>
                         <p className="text-sm font-semibold text-gray-800 mb-1">{opt.title}</p>
                         <ul className="space-y-0.5">
@@ -607,18 +630,19 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
             </div>
 
             {/* Eliteinova Premium Feature Tip */}
-            <div className="relative overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-red-50 to-amber-50 shadow-lg">
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-red-500 to-amber-400" />
+            <div className="relative overflow-hidden rounded-2xl border-2 border-amber-300 bg-gradient-to-r from-amber-50 via-red-50 to-amber-50 shadow-lg fade-up">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 via-red-500 to-amber-400 animate-slide-right" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-shimmer" />
               <div className="p-6">
                 <div className="flex flex-col sm:flex-row items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center flex-shrink-0 shadow-lg animate-rotate">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                     </svg>
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-3">
-                      <span className="px-2.5 py-1 bg-amber-500 text-white text-xs font-bold rounded-full tracking-wide uppercase">Eliteinova Exclusive</span>
+                      <span className="px-2.5 py-1 bg-amber-500 text-white text-xs font-bold rounded-full tracking-wide uppercase animate-bounce-gentle">Eliteinova Exclusive</span>
                       <h4 className="font-bold text-gray-800 text-base">Premium Verification Features</h4>
                     </div>
                     <p className="text-gray-600 text-sm mb-4">Eliteinova offers exclusive premium verification tools to give families complete peace of mind:</p>
@@ -629,9 +653,9 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                         { icon: "🕵️", title: "Background Check Service", desc: "Exclusive to Gold & Diamond members", bg: "bg-red-100 border-red-200", textColor: "text-red-800" },
                         { icon: "🤖", title: "AI Fraud Detection", desc: "Advanced AI-powered screening for suspicious profiles", bg: "bg-amber-100 border-amber-200", textColor: "text-amber-800" },
                       ].map((feature, idx) => (
-                        <div key={idx} className={`rounded-xl p-3.5 border ${feature.bg} flex flex-col gap-1.5`}>
-                          <div className="text-xl leading-none">{feature.icon}</div>
-                          <p className={`text-xs font-bold ${feature.textColor}`}>{feature.title}</p>
+                        <div key={idx} className={`rounded-xl p-3.5 border ${feature.bg} hover:scale-105 transition-all duration-300 fade-up`} style={{ animationDelay: `${idx * 0.1}s` }}>
+                          <div className="text-xl leading-none animate-bounce-gentle">{feature.icon}</div>
+                          <p className={`text-xs font-bold ${feature.textColor} mt-1`}>{feature.title}</p>
                           <p className="text-xs text-gray-500 leading-snug">{feature.desc}</p>
                         </div>
                       ))}
@@ -644,21 +668,21 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
           {/* ─── OUR SERVICES ─── */}
           <section id="our-services" className="mb-20 scroll-mt-20">
-            <div className="text-center mb-10">
-              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ What We Offer ✦</p>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            <div className="text-center mb-10 fade-up">
+              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ What We Offer ✦</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
                 Our Pre-Matrimonial Verification Services
               </h2>
               <div className="flex items-center justify-center gap-3 mt-2">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500" />
-                <div className="w-2 h-2 rounded-full bg-red-500" />
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500" />
+                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {verificationServices.map((service, index) => (
-                <div key={index} className="group relative">
+                <div key={index} className="group relative fade-up" style={{ animationDelay: `${index * 0.1}s` }}>
                   <div className={`absolute inset-0 bg-gradient-to-r ${service.color} rounded-2xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
                   <div className="relative bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 h-full">
                     <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${service.color} flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
@@ -674,30 +698,30 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
           {/* ─── VERIFICATION PROCESS ─── */}
           <section id="verification-process" className="mb-20 scroll-mt-20">
-            <div className="text-center mb-10">
-              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ How It Works ✦</p>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            <div className="text-center mb-10 fade-up">
+              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ How It Works ✦</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
                 Our Verification Process
               </h2>
               <div className="flex items-center justify-center gap-3 mt-2">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500" />
-                <div className="w-2 h-2 rounded-full bg-red-500" />
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500" />
+                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
               {verificationProcess.map((step, index) => (
-                <div key={index} className="relative">
-                  <div className="bg-white rounded-2xl p-6 shadow-lg border border-red-100 h-full">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white font-bold text-lg mb-4">
+                <div key={index} className="relative fade-up" style={{ animationDelay: `${index * 0.15}s` }}>
+                  <div className="bg-white rounded-2xl p-6 shadow-lg border border-red-100 h-full hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white font-bold text-lg mb-4 animate-pulse">
                       {step.step}
                     </div>
                     <h4 className="font-bold text-gray-800 mb-2">{step.title}</h4>
                     <p className="text-gray-500 text-sm">{step.desc}</p>
                   </div>
                   {index < verificationProcess.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
+                    <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10 animate-bounce-gentle">
                       <svg className="w-6 h-6 text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -708,18 +732,18 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
             </div>
 
             {/* Privacy & Confidentiality */}
-            <div className="bg-gradient-to-r from-red-600 to-amber-600 rounded-3xl p-8 md:p-10 text-white">
+            <div className="bg-gradient-to-r from-red-600 to-amber-600 rounded-3xl p-8 md:p-10 text-white fade-up">
               <div className="max-w-3xl mx-auto text-center">
-                <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 animate-rotate">
+                  <svg className="w-8 h-8 text-white animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold mb-4">Privacy & Confidentiality</h3>
-                <p className="text-white/90 mb-4">
+                <h3 className="text-2xl font-bold mb-4 animate-fade-up">Privacy & Confidentiality</h3>
+                <p className="text-white/90 mb-4 animate-fade-up animation-delay-100">
                   At EliteInova, privacy is taken very seriously. All verification processes are handled with strict confidentiality and professional ethics.
                 </p>
-                <p className="text-white/90">
+                <p className="text-white/90 animate-fade-up animation-delay-200">
                   Information collected during the process is shared only with the authorized client and is never disclosed publicly.
                 </p>
               </div>
@@ -728,28 +752,28 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
 
           {/* ─── WHY CHOOSE US ─── */}
           <section id="why-choose" className="mb-20 scroll-mt-20">
-            <div className="text-center mb-10">
-              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3">✦ Why Choose Us ✦</p>
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4">
+            <div className="text-center mb-10 fade-up">
+              <p className="text-sm font-semibold tracking-[0.3em] uppercase text-amber-600 mb-3 animate-slide-up">✦ Why Choose Us ✦</p>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-red-800 via-red-600 to-amber-700 bg-clip-text text-transparent mb-4 animate-fade-up">
                 Why Choose EliteInova for Verification?
               </h2>
               <div className="flex items-center justify-center gap-3 mt-2">
-                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500" />
-                <div className="w-2 h-2 rounded-full bg-red-500" />
-                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500" />
+                <div className="h-px w-20 bg-gradient-to-r from-transparent to-red-500 animate-slide-right" />
+                <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <div className="h-px w-20 bg-gradient-to-l from-transparent to-red-500 animate-slide-left" />
               </div>
             </div>
 
-            <div className="bg-white rounded-3xl p-8 shadow-xl border border-red-100 max-w-3xl mx-auto">
+            <div className="bg-white rounded-3xl p-8 shadow-xl border border-red-100 max-w-3xl mx-auto fade-up hover:shadow-2xl transition-all duration-500">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {whyChooseItems.map((item, index) => (
-                  <div key={index} className="flex items-center gap-3">
-                    <div className="w-7 h-7 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0">✓</div>
+                  <div key={index} className="flex items-center gap-3 group hover:translate-x-1 transition-all duration-300 fade-left" style={{ animationDelay: `${index * 0.1}s` }}>
+                    <div className="w-7 h-7 rounded-full bg-gradient-to-r from-red-500 to-amber-500 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 animate-scale-up group-hover:scale-110 transition-transform duration-300">✓</div>
                     <span className="text-gray-700 text-sm">{item}</span>
                   </div>
                 ))}
               </div>
-              <p className="text-center text-gray-600 mt-6 pt-6 border-t border-red-100 text-sm">
+              <p className="text-center text-gray-600 mt-6 pt-6 border-t border-red-100 text-sm animate-fade-up animation-delay-200">
                 Our services are designed to provide clarity and confidence before making a lifelong commitment.
               </p>
             </div>
@@ -758,7 +782,7 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
           {/* ─── REGISTER NOW / VENDOR FORM CTA ─── */}
           <section id="register-now" className="scroll-mt-20">
             <div
-              className="relative rounded-3xl overflow-hidden"
+              className="relative rounded-3xl overflow-hidden fade-up"
               style={{ background: "linear-gradient(135deg, #7f1d1d 0%, #b91c1c 40%, #92400e 100%)" }}
             >
               {/* Decorative dots */}
@@ -766,27 +790,28 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
                 className="absolute inset-0 opacity-10"
                 style={{ backgroundImage: "radial-gradient(circle at 2px 2px, white 1px, transparent 1px)", backgroundSize: "24px 24px" }}
               />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full animate-shimmer" />
               <div className="relative p-10 md:p-14 text-center">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full text-yellow-200 text-sm font-semibold mb-6 backdrop-blur-sm">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full text-yellow-200 text-sm font-semibold mb-6 backdrop-blur-sm animate-bounce-gentle">
                   <span className="animate-ping w-2 h-2 bg-yellow-400 rounded-full"></span>
                   Register Your Verification Service
                 </div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 animate-fade-up">
                   Are You a Verification Professional?
                 </h2>
-                <p className="text-white/80 text-lg max-w-2xl mx-auto mb-8">
+                <p className="text-white/80 text-lg max-w-2xl mx-auto mb-8 animate-fade-up animation-delay-100">
                   Join EliteInova as a background verification vendor and help families make confident matrimonial decisions. Register your service today.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <button
                     onClick={() => openVendorForm && openVendorForm("background-investigations")}
-                    className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-red-900 font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-lg"
+                    className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-amber-500 text-red-900 font-bold rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 text-lg animate-scale-up"
                   >
                     Register as Vendor
                   </button>
                   <Link
                     to="/background-investigations"
-                    className="px-8 py-4 bg-white/10 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 text-lg backdrop-blur-sm"
+                    className="px-8 py-4 bg-white/10 border border-white/30 text-white font-semibold rounded-xl hover:bg-white/20 hover:scale-105 transition-all duration-300 text-lg backdrop-blur-sm animate-scale-up animation-delay-200"
                   >
                     Browse Vendors
                   </Link>
@@ -803,6 +828,231 @@ export default function PreMatrimonialVerification({ openVendorForm }) {
         .transform-style-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+        
+        /* Animation Keyframes */
+        @keyframes fadeUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slideRight {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+        
+        @keyframes slideLeft {
+          from {
+            transform: scaleX(0);
+          }
+          to {
+            transform: scaleX(1);
+          }
+        }
+        
+        @keyframes scaleUp {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes bounceIn {
+          0% {
+            opacity: 0;
+            transform: scale(0.3);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+          70% {
+            transform: scale(0.9);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        
+        @keyframes pulseGentle {
+          0%, 100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
+        }
+        
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        
+        @keyframes rotate {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+        
+        @keyframes countUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes gradientX {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        /* Animation Classes */
+        .fade-up {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-up.animated {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .fade-left {
+          opacity: 0;
+          transform: translateX(-30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-left.animated {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        
+        .fade-right {
+          opacity: 0;
+          transform: translateX(30px);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-right.animated {
+          opacity: 1;
+          transform: translateX(0);
+        }
+        
+        .scale-in {
+          opacity: 0;
+          transform: scale(0.8);
+          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .scale-in.animated {
+          opacity: 1;
+          transform: scale(1);
+        }
+        
+        .animate-fade-up {
+          animation: fadeUp 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-up {
+          animation: slideUp 0.6s ease-out forwards;
+        }
+        
+        .animate-slide-right {
+          animation: slideRight 0.5s ease-out forwards;
+        }
+        
+        .animate-slide-left {
+          animation: slideLeft 0.5s ease-out forwards;
+        }
+        
+        .animate-scale-up {
+          animation: scaleUp 0.5s ease-out forwards;
+        }
+        
+        .animate-bounce-in {
+          animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+        
+        .animate-pulse-gentle {
+          animation: pulseGentle 2s ease-in-out infinite;
+        }
+        
+        .animate-shimmer {
+          animation: shimmer 3s infinite;
+        }
+        
+        .animate-rotate {
+          animation: rotate 4s linear infinite;
+        }
+        
+        .animate-count-up {
+          animation: countUp 0.8s ease-out forwards;
+        }
+        
+        .animate-gradient-x {
+          animation: gradientX 3s ease infinite;
+          background-size: 200% 200%;
+        }
+        
+        .animate-bounce-gentle {
+          animation: pulseGentle 2s ease-in-out infinite;
+        }
+        
+        .animate-spin-slow {
+          animation: rotate 3s linear infinite;
+        }
+        
+        /* Animation Delays */
+        .animation-delay-100 { animation-delay: 0.1s; }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-300 { animation-delay: 0.3s; }
+        .animation-delay-400 { animation-delay: 0.4s; }
+        .animation-delay-500 { animation-delay: 0.5s; }
       `}</style>
     </div>
   );
