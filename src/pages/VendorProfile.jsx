@@ -482,7 +482,7 @@ const VendorProfile = () => {
           <h3 className="text-base sm:text-lg font-bold text-[#C0392B]">{section.title}</h3>
           <div className="flex-1 h-0.5 bg-gradient-to-r from-[#C0392B] to-[#e8c98a] to-transparent rounded-full ml-3"></div>
         </div>
-        <div className="border-2 border-[#f0d5b0] rounded-xl p-3 sm:p-6">
+        <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 shadow-sm">
           {renderSectionContent(section.id)}
         </div>
       </div>
@@ -494,11 +494,11 @@ const VendorProfile = () => {
       {/* Import Google Fonts */}
       <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       
-      <div className="min-h-screen bg-gradient-to-br from-[#fff5f5] via-[#fffbf0] to-white font-['DM_Sans'] p-2 sm:p-4">
+      <div className="min-h-screen bg-gray-100 p-2 sm:p-4">
         <div className="max-w-7xl mx-auto">
 
           {/* BANNER - Increased height with red and gold theme */}
-          <div className="bg-gradient-to-r from-[#6B0E0E] via-[#9B1F1F] to-[#C0392B] rounded-t-2xl pt-4 sm:pt-6 pb-6 sm:pb-8 px-3 sm:px-6 relative overflow-hidden">
+          <div className="bg-gradient-to-r from-red-900 via-red-700 to-red-600 rounded-t-2xl pt-4 sm:pt-6 pb-6 sm:pb-8 px-3 sm:px-6 relative overflow-hidden border border-gray-200 shadow-lg">
             {/* Decorative golden elements */}
             <div className="absolute top-0 right-0 w-32 sm:w-48 h-32 sm:h-48 bg-[#d4a847]/10 rounded-full -mr-10 sm:-mr-16 -mt-10 sm:-mt-16"></div>
             <div className="absolute bottom-0 left-0 w-24 sm:w-40 h-24 sm:h-40 bg-[#d4a847]/10 rounded-full -ml-8 sm:-ml-12 -mb-8 sm:-mb-12"></div>
@@ -550,55 +550,57 @@ const VendorProfile = () => {
                   </span>
                 </div>
               </div>
-
-              {/* Right side - Email and Website buttons with golden theme */}
-              <div className="flex flex-row sm:flex-col items-center sm:items-end gap-2 w-full sm:w-auto mt-2 sm:mt-0">
-                <a href={`mailto:${vendorData.contactInfo.email}`} className="flex-1 sm:flex-none flex items-center justify-center gap-1 bg-gradient-to-r from-[#d4a847] to-[#e5b95a] text-[#6B0E0E] rounded-lg px-3 sm:px-5 py-1.5 sm:py-2.5 font-bold text-[10px] sm:text-xs hover:shadow-lg hover:scale-105 transition-all">
-                  ✉️ Email
-                </a>
-                <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noreferrer" className="flex-1 sm:flex-none flex items-center justify-center gap-1 bg-transparent border border-[#d4a847] text-[#d4a847] rounded-lg px-3 sm:px-5 py-1.5 sm:py-2.5 font-bold text-[10px] sm:text-xs hover:bg-[#d4a847]/10 hover:scale-105 transition-all">
-                  🌐 Website
-                </a>
-              </div>
             </div>
 
-            {/* Vendor ID and Mobile contact chips */}
-            <div className="mt-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-              {/* Vendor ID - Golden */}
+            {/* Vendor ID, Email, Website and Full View toggle - all in one row */}
+          <div className="mt-4 flex flex-wrap items-center gap-2 justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Vendor ID */}
               <div className="bg-gradient-to-r from-[#d4a847]/20 to-[#e5b95a]/20 backdrop-blur-sm border border-[#d4a847] rounded-lg px-3 sm:px-4 py-1.5 sm:py-2">
                 <p className="text-[8px] sm:text-[10px] uppercase tracking-wider text-[#d4a847] mb-0.5">VENDOR ID</p>
                 <p className="text-xs sm:text-sm font-bold text-[#d4a847] font-mono">{vendorData.id}</p>
               </div>
 
-              {/* Mobile contact chips - Only visible on mobile */}
-              <div className="flex flex-wrap items-center gap-2 sm:hidden">
-                <a href={`tel:${vendorData.contactInfo.mobile.replace(/\s/g, '')}`} className="inline-flex items-center gap-1 bg-[#d4a847]/20 border border-[#d4a847] rounded-lg px-2.5 py-1 text-[#d4a847] text-[10px] font-semibold">
-                  📱 {vendorData.contactInfo.mobile}
-                </a>
-                <span className="inline-flex items-center gap-1 bg-[#d4a847]/20 border border-[#d4a847] rounded-lg px-2.5 py-1 text-[#d4a847] text-[10px] font-semibold">
-                  📍 Chennai
-                </span>
-              </div>
+              {/* Email chip */}
+              <a href={`mailto:${vendorData.contactInfo.email}`} className="inline-flex items-center gap-1 bg-gradient-to-r from-[#d4a847] to-[#e5b95a] text-[#6B0E0E] rounded-lg px-3 py-1.5 font-bold text-[10px] sm:text-xs hover:opacity-90 transition-all">
+                ✉️ Email
+              </a>
+
+              {/* Website chip */}
+              <a href={`https://${vendorData.contactInfo.website}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 bg-transparent border border-[#d4a847] text-[#d4a847] rounded-lg px-3 py-1.5 font-bold text-[10px] sm:text-xs hover:bg-[#d4a847]/10 transition-all">
+                🌐 Website
+              </a>
             </div>
           </div>
+          </div>
+
+          {/* Full View / Back to Normal toggle - right side */}
+              <div className="w-full flex justify-end my-3">
+              <button
+                onClick={() => setShowFullDetails(prev => !prev)}
+                className="inline-flex items-center gap-1.5 bg-white border border-gray-300 rounded-lg px-5 py-2 text-gray-700 text-xs sm:text-sm font-semibold hover:bg-gray-50 shadow-sm transition-all"
+              >
+                {showFullDetails ? '← Normal View' : '👁️ Full View'}
+              </button>
+            </div>
 
           {/* MAIN CONTENT */}
-          <div className="bg-white border-2 border-[#f0d5b0] border-t-2 border-t-[#fdf0d8] rounded-b-2xl p-3 sm:p-6">
+          <div className="bg-white rounded-b-2xl shadow-lg p-3 sm:p-6 border border-gray-200">
 
             {!showFullDetails ? (
               <>
                 {/* Section Navigation with View Full Details button at the end */}
                 <div className="overflow-x-auto mb-4 sm:mb-6 -mx-3 px-3 sm:mx-0 sm:px-0">
-                  <div className="flex min-w-max bg-gradient-to-br from-[#fff9f5] to-[#fffcf0] border border-[#f0e0c0] rounded-xl p-1 gap-0.5 items-stretch">
+                  <div className="flex min-w-max bg-white border border-gray-200 rounded-2xl p-2 gap-1 items-stretch shadow-sm">
                     {sections.map((section) => (
                       <button
                         key={section.id}
                         onClick={() => setActiveSection(section.id)}
-                        className={`flex flex-col items-center gap-0.5 px-2 sm:px-4 py-1.5 sm:py-3 rounded-lg transition-all ${
-                          activeSection === section.id
-                            ? 'bg-gradient-to-br from-[#fff0f0] to-[#fff8e8] shadow-md text-[#C0392B] font-bold'
-                            : 'text-gray-500 hover:text-[#C0392B]'
-                        }`}
+                        className={`flex flex-col items-center gap-0.5 px-2 sm:px-4 py-1.5 sm:py-3 rounded-xl transition-all ${
+                        activeSection === section.id
+                          ? 'bg-red-600 shadow-md text-white font-bold'
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
                       >
                         <span className="text-sm sm:text-base md:text-xl">{section.emoji}</span>
                         <span className="text-[7px] sm:text-[8px] md:text-xs font-bold whitespace-nowrap">{section.title}</span>
@@ -606,13 +608,13 @@ const VendorProfile = () => {
                     ))}
                     
                     {/* View Full Details button in navigation */}
-                    <button
+                    {/* <button
                       onClick={() => setShowFullDetails(true)}
                       className="flex flex-col items-center gap-0.5 px-2 sm:px-4 py-1.5 sm:py-3 rounded-lg transition-all bg-gradient-to-r from-[#C0392B] to-[#e74c3c] text-white font-bold hover:opacity-90"
                     >
                       <span className="text-sm sm:text-base md:text-xl">👁️</span>
                       <span className="text-[7px] sm:text-[8px] md:text-xs font-bold whitespace-nowrap">Full View</span>
-                    </button>
+                    </button> */}
                   </div>
                 </div>
 
@@ -624,7 +626,7 @@ const VendorProfile = () => {
                 </div>
 
                 {/* Active Section Content */}
-                <div className="border-2 border-[#f0d5b0] rounded-xl p-3 sm:p-6">
+                <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 shadow-sm">
                   {renderSectionContent()}
                   
                   {/* Navigation Buttons */}
@@ -680,12 +682,6 @@ const VendorProfile = () => {
                     <span className="text-xl sm:text-2xl md:text-3xl">📋</span>
                     <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-black text-[#C0392B]">Complete Profile</h2>
                   </div>
-                  <button
-                    onClick={() => setShowFullDetails(false)}
-                    className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#9A7B2C] to-[#d4a847] text-white rounded-lg px-4 sm:px-5 py-2 sm:py-2.5 font-bold text-xs sm:text-sm shadow-lg hover:opacity-90 transition-all w-full xs:w-auto"
-                  >
-                    ← Back to Normal
-                  </button>
                 </div>
 
                 {/* All Sections */}
@@ -705,7 +701,7 @@ const VendorProfile = () => {
 // Contact Cards Component - Mobile optimized
 const ContactCards = ({ vendorData, companyLogo }) => (
   <>
-    <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t-2 border-[#fdf0d8]">
+    <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-200">
       <div className="flex items-center mb-3 sm:mb-4">
         <span className="text-base sm:text-lg md:text-xl mr-2">📇</span>
         <h3 className="text-xs sm:text-sm md:text-base font-extrabold text-[#C0392B]">Vendor Contact Details</h3>
@@ -714,7 +710,7 @@ const ContactCards = ({ vendorData, companyLogo }) => (
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
         {/* Primary Address */}
-        <div className="border-2 border-[#e8c98a] rounded-xl p-3 sm:p-5">
+        <div className="border border-gray-200 rounded-2xl p-3 sm:p-5 shadow-sm">
           <h4 className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-extrabold text-[#C0392B] mb-2 sm:mb-3">
             <span className="text-sm sm:text-base">🏢</span> Primary Vendor Address
           </h4>
@@ -737,7 +733,7 @@ const ContactCards = ({ vendorData, companyLogo }) => (
         </div>
 
         {/* Secondary Address */}
-        <div className="border-2 border-[#f5c6c6] rounded-xl p-3 sm:p-5">
+        <div className="border border-gray-200 rounded-2xl p-3 sm:p-5 shadow-sm">
           <h4 className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-extrabold text-[#C0392B] mb-2 sm:mb-3">
             <span className="text-sm sm:text-base">🏛️</span> Office Address (Secondary)
           </h4>
@@ -762,7 +758,7 @@ const ContactCards = ({ vendorData, companyLogo }) => (
     </div>
 
     {/* Enquiry Section - Mobile optimized */}
-    <div className="mt-3 sm:mt-4 bg-gradient-to-br from-[#fff5f0] via-[#fff8f0] to-[#fff5e8] border-2 border-[#f0d5b0] rounded-xl p-3 sm:p-5">
+    <div className="mt-3 sm:mt-4 bg-gray-50 border border-gray-200 rounded-2xl p-3 sm:p-5 shadow-sm">
       <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4">
         <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-[#f5f0e8] rounded-xl flex items-center justify-center flex-shrink-0 border border-[#e8d5a0]">
           <span className="text-xl sm:text-2xl md:text-3xl">💼</span>

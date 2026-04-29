@@ -32,13 +32,15 @@ import DecorationsVendorForm from './Components/DecorationsForm';
 import EntertainmentVendorForm from './Components/EntertainmentForm';
 import InvitationVendorForm from './Components/InvitationForm';
 import StylingVendorForm from './Components/StylingForm';
-import AdminDashboard from './pages/AdminDashboard';
+import AdminDashboard from './pages/admin/AdminDashboard';
 
 // Import Background Investigations components
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
 import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
 // Import Pre-Matrimonial Verification page
 import PreMatrimonialVerification from './pages/PreMatrimonialVerification';
+
+import FloatingButtons from './components/FloatingButtons';
 
 // NOTE: VendorDetails is now a modal component used inside each page.
 // It is NO LONGER used as a route here in App.jsx.
@@ -64,6 +66,7 @@ function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [activeFormType, setActiveFormType] = useState(null);
   const [showVendorLoginModal, setShowVendorLoginModal] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
 
   const openVendorForm = (formType) => {
     console.log(`App.jsx: Opening ${formType} form`);
@@ -108,6 +111,22 @@ function App() {
     }
   };
 
+  // Check if current path is admin panel to hide Header
+  useEffect(() => {
+    const checkPath = () => {
+      const isAdminPath = window.location.pathname.startsWith('/admin-panel');
+      setShowHeader(!isAdminPath);
+    };
+    
+    checkPath();
+    
+    // Listen for route changes
+    window.addEventListener('popstate', checkPath);
+    return () => {
+      window.removeEventListener('popstate', checkPath);
+    };
+  }, []);
+
   // Listen for form opening events from anywhere in the app
   useEffect(() => {
     const handleGlobalFormOpen = (event) => {
@@ -121,14 +140,28 @@ function App() {
     };
   }, []);
 
+  // Layout wrapper component that conditionally renders Header
+  const Layout = ({ children }) => {
+    const location = window.location.pathname;
+    const isAdminRoute = location.startsWith('/admin-panel');
+    
+    return (
+      <div className="min-h-screen">
+        {!isAdminRoute && (
+          <Header 
+            onOpenVendorForm={openVendorForm} 
+            onOpenVendorLoginModal={openVendorLoginModal}
+          />
+        )}
+        {children}
+        {!isAdminRoute && <FloatingButtons />}
+      </div>
+    );
+  };
+
   return (
     <Router>
-      <div className="min-h-screen">
-        <Header 
-          onOpenVendorForm={openVendorForm} 
-          onOpenVendorLoginModal={openVendorLoginModal}
-        />
-        
+      <Layout>
         {isFormOpen && renderVendorForm()}
 
         {showVendorLoginModal && (
@@ -139,7 +172,6 @@ function App() {
         )}
 
         <Routes>
-          <Route path="/" element={<Home />} />
           {/* ── Admin Dashboard — full screen, NO Header ── */}
           <Route path="/admin-panel" element={<AdminDashboard />} />
           <Route path="/admin-panel/*" element={<AdminDashboard />} />
@@ -157,8 +189,6 @@ function App() {
           
           {/* ============================================ */}
           {/* CUSTOMER SERVICE LISTING PAGES */}
-          {/* VendorDetails now opens as a modal inside each page.
-              The /:id detail routes are no longer needed here. */}
           {/* ============================================ */}
           <Route path="/photography" element={<PhotographyWrapper openVendorForm={openVendorForm} />} />
           <Route path="/catering" element={<CateringWrapper openVendorForm={openVendorForm} />} />
@@ -209,7 +239,7 @@ function App() {
           <Route path="/register" element={<RegisterChoice />} />
           <Route path="*" element={<Home />} />
         </Routes>
-      </div>
+      </Layout>
     </Router>
   );
 }

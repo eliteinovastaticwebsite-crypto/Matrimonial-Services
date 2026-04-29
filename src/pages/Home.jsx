@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import VendorLoginForm from './VendorLoginForm';
 
-import banner1 from '../assets/banner1.png';
+// import banner1 from '../assets/banner1.png';
 import banner2 from '../assets/banner2.png';
 import banner3 from '../assets/banner3.png';
 import banner4 from '../assets/banner4.png';
@@ -26,11 +26,11 @@ const Home = () => {
   const touchOnButton = useRef(false);
 
   const banners = [
-    { id: 1, image: banner1 },
-    { id: 2, image: banner2 },
-    { id: 3, image: banner3 },
-    { id: 4, image: banner4 },
-    { id: 5, image: banner5 },
+    { id: 1, image: banner2 },
+    { id: 2, image: banner3 },
+    { id: 3, image: banner4 },
+    { id: 4, image: banner5 },
+    // { id: 5, image: banner5 },
   ];
 
   useEffect(() => {
