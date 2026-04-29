@@ -1,8 +1,8 @@
 import React from 'react';
-import { AdminSidebar } from '../../components/admin/layout/AdminSidebar';
-import { AdminHeader } from '../../components/admin/layout/AdminHeader';
-import { AdminBreadcrumb } from '../../components/admin/layout/AdminBreadcrumb';
-import { RightPanel } from '../../components/admin/RightPanel';
+import { AdminSidebar } from '../../Components/admin/layout/AdminSidebar';
+import { AdminHeader } from '../../Components/admin/layout/AdminHeader';
+import { AdminBreadcrumb } from '../../Components/admin/layout/AdminBreadcrumb';
+import { RightPanel } from '../../Components/admin/RightPanel';
 import { useAdminNavigation } from '../../hooks/admin/useAdminNavigation';
 import { menuConfig } from '../../constants/admin/menuConfig';
 
@@ -32,7 +32,7 @@ class ErrorBoundary extends React.Component {
             <pre className="text-sm text-red-600 mt-2 overflow-auto whitespace-pre-wrap">
               {this.state.error?.toString()}
               {'\n\n'}
-              {this.state.errorInfo?.componentStack}
+              {this.state.errorInfo?.Componentstack}
             </pre>
           </details>
         </div>
