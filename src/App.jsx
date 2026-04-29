@@ -34,13 +34,12 @@ import InvitationVendorForm from './Components/InvitationForm';
 import StylingVendorForm from './Components/StylingForm';
 import AdminDashboard from './pages/admin/AdminDashboard';
 
-// Import Background Investigations components
 import BackgroundInvestigationsForm from './Components/BackgroundInvestigationsForm';
 import BackgroundInvestigationsPage from './pages/BackgroundInvestigationsPage';
 // Import Pre-Matrimonial Verification page
 import PreMatrimonialVerification from './pages/PreMatrimonialVerification';
 
-import FloatingButtons from './components/FloatingButtons';
+import FloatingButtons from './Components/FloatingButtons';
 
 // NOTE: VendorDetails is now a modal component used inside each page.
 // It is NO LONGER used as a route here in App.jsx.
